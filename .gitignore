@@ -1,0 +1,26 @@
+*/.settings
+*/.idea
+*.class
+*csproj.user
+*.css.map
+
+node_modules
+
+dist
+
+*.log
+.idea
+.sass-cache
+.DS_Store
+tmp
+
+.project
+.settings
+
+# ignore file system blob storage files
+blob-local-storage
+
+config/config.dev*.js
+
+*.swp
+*~
