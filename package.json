@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "build": "webpack && cp ./src/common/index.html ./dist/index.html && cp ./src/common/usermanagement.js"
+    "build": "node ./node_modules/webpack/bin/webpack.js && cp ./src/server/usermanagement.js ./dist/usermanagement.js",
+    "webpack": "node ./node_modules/webpack/bin/webpack.js"
   },
   "repository": {
     "type": "git",
@@ -27,11 +28,11 @@
     "babel-preset-react": "^6.5.0",
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
-    "webgme": "^2.0.0",
-    "webpack": "^1.13.0"
+    "webgme": "^2.0.0"
   },
   "dependencies": {
     "react": "^15.0.2",
-    "react-dom": "^15.0.2"
+    "react-dom": "^15.0.2",
+    "webpack": "^1.13.0"
   }
 }
