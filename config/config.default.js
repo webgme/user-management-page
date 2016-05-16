@@ -3,13 +3,14 @@
  * @author kecso / https://github.com/kecso
  */
 
-var config = require('webgme/config/config.default');
+var config = require('webgme/config/config.default'),
+    path = require('path');
 
-config.server.port = 8778;
+config.server.port = 8888;
 
 config.rest.components = {
-    'usermanagement': './../../../../dist/usermanagement'
+    'usermanagement': path.resolve('./src/server/usermanagement')
 };
 
-config.client.appDir = './dist';
+//config.client.appDir = './dist';
 module.exports = config;
