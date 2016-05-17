@@ -1,4 +1,4 @@
-var BaseClient = require('./baseClient');
+import BaseClient from './baseClient'
 
 class UserClient extends BaseClient {
 
@@ -7,7 +7,7 @@ class UserClient extends BaseClient {
     }
 
     getCurrentUser () {
-        super.get('users', '');
+        super.get('user');
     };
 
 }

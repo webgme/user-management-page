@@ -1,4 +1,4 @@
-var superagent = require('superagent');
+import superagent from 'superagent'
 
 class BaseClient {
 
@@ -6,7 +6,8 @@ class BaseClient {
         this.baseUrl = baseUrl;
     }
 
-    get (path, query, callback) {
+    get (path, query) {
+        query = query || '';
         var url = this.baseUrl + path + '/' + query;
 
         var getPromise = new Promise ( function (resolve, reject) {
@@ -19,15 +20,11 @@ class BaseClient {
                         resolve(res.body);
                     }
                 })
-        });
-
-        getPromise
-            .then(function (response) {
-            console.log('Data fetched: ', response);
-            })
-            .catch(function (error) {
+        }).then(function (response) {
+            console.log('Data fetched!: ', response);
+        }).catch(function (error) {
                 console.error('Error fetching data. ', error);
-            });
+        });
 
         return getPromise;
     }

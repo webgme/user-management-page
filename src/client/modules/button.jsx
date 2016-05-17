@@ -31,6 +31,7 @@ export default class Button extends React.Component {
                 self.setState({label: userData._id});
             }
         });
+        
     }
 
     render() {

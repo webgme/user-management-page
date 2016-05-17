@@ -1,4 +1,4 @@
-var UserClient = require('./userClient');
+import UserClient from './userClient'
 
 function RestClient(baseUrl) {
     baseUrl = baseUrl || '/api/';

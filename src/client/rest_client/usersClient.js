@@ -1,4 +1,4 @@
-var BaseClient = require('./baseClient');
+import BaseClient from './baseClient'
 
 class UsersClient extends BaseClient {
 
@@ -6,15 +6,8 @@ class UsersClient extends BaseClient {
         super(baseUrl);
     }
 
-    getAllUsers (callback) {
-        super.get('users', null, function (err, result) {
-            if (err) {
-                callback(err);
-            } else {
-                // The body of the result contains a parsed JSON object with the result-data.
-                callback(null, result.body);
-            }
-        });
+    getAllUsers () {
+        super.get('users');
     };
 
 }
