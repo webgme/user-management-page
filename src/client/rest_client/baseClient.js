@@ -10,7 +10,7 @@ class BaseClient {
         query = query || '';
         var url = this.baseUrl + path + '/' + query;
 
-        var getPromise = new Promise ( function (resolve, reject) {
+        return new Promise ( function (resolve, reject) {
             superagent
                 .get(url)
                 .end( function(err, res) {
@@ -20,17 +20,10 @@ class BaseClient {
                         resolve(res.body);
                     }
                 })
-        }).then(function (response) {
-            console.log('Data fetched!: ', response);
-        }).catch(function (error) {
-                console.error('Error fetching data. ', error);
         });
-
-        return getPromise;
     }
 
-    //TO-DO: do the same for put, patch, delete
-    //       fix calls for put patch delete
+    //TO-DO: put the base methods in for put, patch, and delete
 
 }
 

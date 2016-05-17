@@ -1,15 +1,15 @@
 import BaseClient from './baseClient'
 
-class OrgsClient extends BaseClient {
+class OrganizationsClient extends BaseClient {
 
     constructor(baseUrl) {
         super(baseUrl);
     }
 
-    getAllOrgs () {
+    getAllOrganizations () {
         super.get('orgs');
     }
 
 }
 
-module.exports = OrgsClient;
+module.exports = OrganizationsClient;

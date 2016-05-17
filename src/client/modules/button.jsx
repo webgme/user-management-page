@@ -31,7 +31,9 @@ export default class Button extends React.Component {
                 self.setState({label: userData._id});
             }
         });
-        
+
+        //self.restClient.user.getCurrentUserData('email');
+
     }
 
     render() {
