@@ -1,12 +1,12 @@
 var BaseClient = require('./baseClient');
 
-class UserClient extends BaseClient {
+class OrgsClient extends BaseClient {
 
     constructor(baseUrl) {
         super(baseUrl);
     }
 
-    getCurrentUser (callback) {
+    getAllOrgs (callback) {
         super.get('user', null, function (err, result) {
             if (err) {
                 callback(err);
@@ -19,4 +19,4 @@ class UserClient extends BaseClient {
 
 }
 
-module.exports = UserClient;
+module.exports = OrgsClient;

@@ -1,5 +1,5 @@
 import React from 'react'
-import RestClient from '../restclient/restClient'
+import RestClient from '../rest_client/restClient'
 
 export default class Button extends React.Component {
 
@@ -21,7 +21,7 @@ export default class Button extends React.Component {
         // This is an example for state changes.
         self.setState({label: 'getting...'});
 
-        self.restClient.user.getUser(function (err, userData) {
+        self.restClient.user.getCurrentUser(function (err, userData) {
             if (err) {
                 console.error(err);
             } else {
