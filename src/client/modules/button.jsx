@@ -1,5 +1,5 @@
 import React from 'react'
-import RestClient from './../restclient/restclients'
+import RestClient from '../restclient/restClient'
 
 export default class Button extends React.Component {
 
