@@ -6,11 +6,11 @@ class BaseClient {
         this.baseUrl = baseUrl;
     }
 
-    get (path, query) {
+    get(path, query) {
         query = query || '';
         var url = this.baseUrl + path + '/' + query;
 
-        return new Promise ( function (resolve, reject) {
+        return new Promise( function (resolve, reject) {
             superagent
                 .get(url)
                 .end( function(err, res) {
@@ -23,7 +23,43 @@ class BaseClient {
         });
     }
 
+    put(path, value) {
+        var url = this.baseUrl + path;
+
+        return new Promise( function(resolve, reject) {
+            superagent
+                .put(url)
+                .send(value)
+                .end( function(err, res) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        //console.log(res.body);
+                        resolve(res.body);
+                    }
+                })
+        });
+
+    }
+
+
     //TO-DO: put the base methods in for put, patch, and delete
+    delete(path) {
+        var url = this.baseUrl + path;
+
+        return new Promise( function (resolve, reject) {
+            superagent
+                .delete(url)
+                .end( function(err, res) {
+                    if (err || !res.ok) {
+                        reject(err);
+                    } else {
+                        resolve(res.body);
+                    }
+                })
+        });
+    }
 
 }
 

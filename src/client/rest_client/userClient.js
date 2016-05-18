@@ -14,24 +14,29 @@ class UserClient extends BaseClient {
     // - updateUserData
     // -
 
-    getCurrentUser () {
+    getCurrentUser() {
         return super
             .get('user');
-            //.then( function (response) {
-            //    //this.saveUser = response;
-            //    console.log('Data fetched: ', response);
-            //    console.log('ID should be: ' , response['_id']);
-            //    console.log('Email should be: ', response['email']);
-            //})
-            //.catch ( function (error) {
-            //    console.log('Error fetching data. ', error);
-            //});
+    }
+    
+    deleteCurrentUser() {
+        return super
+            .delete('user')
+            .then( function() {
+                console.log('Successfully deleted user');
+            }).catch( function() {
+                console.log('Error deleting user.');
+            });
     }
 
-    getCurrentUserData (dataField) {
-        //console.log('Requested field: ', dataField, ' - ', this.saveUser[dataField]);
+    getCurrentUserData() {
+        return super.get('user/data');
     }
-
+    
+    setCurrentUserData(value) {
+        return super.put('user/data', value);
+    }
+    
 }
 
 module.exports = UserClient;

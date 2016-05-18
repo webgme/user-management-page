@@ -48,14 +48,49 @@ describe('rest client test', function () {
 
         it('should list the guest', function (done) {
             console.log('rest', rest);
+            console.log(rest.user);
             rest.user.getCurrentUser()
                 .then(function (userData) {
+                    console.log(userData);
                     expect(userData._id).to.equal('guest');
                     done();
                 })
                 .catch(function (err){
                     done(err);
+                });
+        });
+
+        it.skip('should list the guest email', function (done) {
+            rest.user.getCurrentUserData()
+                .then(function (userEmail) {
+                    expect(userEmail).to.equal('guest@example.com');
+                    done();
                 })
-        })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should set the user data', function (done) {
+            var newData = {customData: 'myData'};
+
+            rest.user.getCurrentUserData()
+                .then( function(userData) {
+                    //console.log(userData);
+                    expect(userData).to.deep.equal({});
+                    return rest.user.setCurrentUserData(newData);
+                }).then(function (userData) {
+                    console.log(userData);
+                    return rest.user.getCurrentUserData();
+                }).then( function(userData) {
+                    //console.log(userData);
+                    expect(userData).to.deep.equal(newData);
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
     });
 });
