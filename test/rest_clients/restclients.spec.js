@@ -14,7 +14,8 @@ describe('rest client test', function () {
             })
             .then(function () {
                 return Q.allDone([
-                    gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true})
+                    gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
+                    gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true})
                 ]);
             })
             .then(function () {
@@ -64,6 +65,7 @@ describe('rest client test', function () {
             rest.user.getCurrentUser()
                 .then(function (userData) {
                     console.log(userData);
+                    console.log('\nEmail: ', userData['email']);
                     expect(userData['email']).to.equal('guest@example.com');
                     done();
                 })
@@ -77,18 +79,75 @@ describe('rest client test', function () {
 
             rest.user.getCurrentUserData()
                 .then( function(userData) {
-                    //console.log(userData);
+                    console.log(userData);
                     expect(userData).to.deep.equal({});
                     return rest.user.setCurrentUserData(newData);
                 }).then(function (userData) {
-                    console.log(userData);
-                    return rest.user.getCurrentUserData();
+                console.log(userData);
+                return rest.user.getCurrentUserData();
                 }).then( function(userData) {
                     //console.log(userData);
                     expect(userData).to.deep.equal(newData);
                     done();
-                })
-                .catch(function (err){
+                }).catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should update the user data', function (done) {
+            var oldData = {customData: 'myData'};
+            var updatedData = {customData: 'myUpdatedData'};
+
+            rest.user.getCurrentUserData()
+                .then( function(userData) {
+                    console.log('Before: ', userData);
+                    expect(userData).to.deep.equal(oldData);
+                    return rest.user.updateCurrentUserData(updatedData);
+                }).then(function (userData) {
+                    //console.log(userData);
+                    return rest.user.getCurrentUserData();
+                }).then( function(userData) {
+                    console.log('After: ', userData);
+                    expect(userData).to.deep.equal(updatedData);
+                    done();
+                }).catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should delete the user data', function (done) {
+            var oldData = {customData: 'myUpdatedData'};
+
+            rest.user.getCurrentUserData()
+                .then( function(userData) {
+                    console.log('Before: ', userData);
+                    expect(userData).to.deep.equal(oldData);
+                    return rest.user.deleteCurrentUserData();
+                }).then(function () {
+                    return rest.user.getCurrentUserData();
+                }).then( function(userData) {
+                    console.log('After: ', userData);
+                    expect(userData).to.deep.equal({});
+                    done();
+                }).catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should delete the current user', function (done) {
+            rest.users.getAllUsers()
+                .then( function(usersList) {
+                    console.log('Before deleting: ', usersList);
+                }).then( function() {
+                    rest.user.deleteCurrentUser()
+                }).then( function() {
+                    rest.users.getAllUsers()
+                }).then( function(usersList) {
+                    console.log('After deleting: ', usersList);
+                //4 people accounts (guest, test, user, admin, should be 3 after deleting guest)
+                    expect(usersList.length).to.deep.equal(3);
+                    done();
+                }).catch(function (err){
                     done(err);
                 });
         });
@@ -108,16 +167,48 @@ describe('rest client test', function () {
             server.stop(done);
         });
 
-        it('should list the users on the server', function (done) {
+        it('should list all the users on the server', function (done) {
             console.log('rest', rest);
             console.log(rest.users);
             rest.users.getAllUsers()
                 .then(function (usersData) {
                     console.log(usersData);
-                    expect(usersData[0]._id).to.equal('guest');
+                    expect(usersData[0]._id).to.equal('admin');
                     done();
                 })
                 .catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should list specific user by username', function (done) {
+            rest.users.getUser('test')
+                .then(function (userData) {
+                    console.log(userData);
+                    expect(userData.email).to.equal('test@example.com');
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should list specific user\'s data', function (done) {
+            rest.users.getAllUsers()
+                .then( function(usersList) {
+                    console.log('Initial: ', usersList);
+                }).then (function () {
+                    return rest.user.setCurrentUserData({customData: 'myUpdatedData'});
+                }).then( function() {
+                    return rest.users.getUserData('guest')
+                }).then( function(userData) {
+                    console.log('User data:', userData);
+                    expect(userData).to.deep.equal({customData: 'myUpdatedData'});
+                    return rest.users.getAllUsers()
+                }).then( function(usersList) {
+                    console.log('After: ', usersList);
+                    done();
+                }).catch(function (err){
                     done(err);
                 });
         });

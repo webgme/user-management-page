@@ -6,14 +6,6 @@ class UserClient extends BaseClient {
         super(baseUrl);
     }
 
-    //Methods that should be in user:
-    // - getCurrentUser
-    // - deleteCurrentUser
-    // - getCurrentUser : data field
-    // - addDataToUser
-    // - updateUserData
-    // -
-
     getCurrentUser() {
         return super.get('user');
     }
@@ -28,6 +20,14 @@ class UserClient extends BaseClient {
     
     setCurrentUserData(value) {
         return super.put('user/data', value);
+    }
+    
+    updateCurrentUserData(value) {
+        return super.put('user/data', value);
+    }
+
+    deleteCurrentUserData(value) {
+        return super.delete('user/data');
     }
     
 }

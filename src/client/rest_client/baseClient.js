@@ -42,8 +42,26 @@ class BaseClient {
 
     }
 
+    patch(path, value) {
+        var url = this.baseUrl + path;
 
-    //TO-DO: put the base methods in for put, patch, and delete
+        return new Promise( function(resolve, reject) {
+            superagent
+                .patch(url)
+                .send(value)
+                .end( function(err, res) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(res.body);
+                    }
+                })
+        });
+
+    }
+
+
     delete(path) {
         var url = this.baseUrl + path;
 
