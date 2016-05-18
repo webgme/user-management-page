@@ -15,17 +15,17 @@ class UserClient extends BaseClient {
     // -
 
     getCurrentUser () {
-        super
-            .get('user')
-            .then( function (response) {
-                //this.saveUser = response;
-                console.log('Data fetched: ', response);
-                console.log('ID should be: ' , response['_id']);
-                console.log('Email should be: ', response['email']);
-            })
-            .catch ( function (error) {
-                console.log('Error fetching data. ', error);
-            });
+        return super
+            .get('user');
+            //.then( function (response) {
+            //    //this.saveUser = response;
+            //    console.log('Data fetched: ', response);
+            //    console.log('ID should be: ' , response['_id']);
+            //    console.log('Email should be: ', response['email']);
+            //})
+            //.catch ( function (error) {
+            //    console.log('Error fetching data. ', error);
+            //});
     }
 
     getCurrentUserData (dataField) {

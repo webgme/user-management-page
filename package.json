@@ -28,7 +28,9 @@
     "babel-preset-react": "^6.5.0",
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
-    "webgme": "^2.0.0"
+    "webgme": "^2.0.0",
+    "mocha": "^2.4.5",
+    "chai": "3.5.0"
   },
   "dependencies": {
     "react": "^15.0.2",

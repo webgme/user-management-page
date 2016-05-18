@@ -15,7 +15,7 @@ class BaseClient {
                 .get(url)
                 .end( function(err, res) {
                     if (err || !res.ok) {
-                        reject();
+                        reject(err);
                     } else {
                         resolve(res.body);
                     }
