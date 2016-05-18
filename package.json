@@ -4,7 +4,7 @@
   "description": "User management page for webgme",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
     "start": "node app.js",
     "build": "node ./node_modules/webpack/bin/webpack.js && cp ./src/server/usermanagement.js ./dist/usermanagement.js",
     "webpack": "node ./node_modules/webpack/bin/webpack.js"
