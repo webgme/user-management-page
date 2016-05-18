@@ -6,7 +6,8 @@
 
 var express = require('express'),
     router = express.Router(),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    logger;
 
 function serveFile(fileName, res) {
     var options = {
@@ -18,19 +19,19 @@ function serveFile(fileName, res) {
         }
     };
 
+    logger.info('serving file', fileName);
     res.sendFile(fileName, options, function (err) {
         if (err) {
-            logger.error('Falied to send ' + fileName, err);
+            logger.error('Failed to send ' + fileName, err);
             res.status(err.status).end();
         }
     });
 }
 
 function initialize(middlewareOpts) {
-    var logger = middlewareOpts.logger.fork('UserManagementPage'),
-    //gmeConfig = middlewareOpts.gmeConfig,
-        ensureAuthenticated = middlewareOpts.ensureAuthenticated;
+    var ensureAuthenticated = middlewareOpts.ensureAuthenticated;
 
+    logger = middlewareOpts.logger.fork('UserManagementPage');
     logger.debug('initializing ...');
 
     router.use(bodyParser.json({}));
