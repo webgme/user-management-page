@@ -47,7 +47,7 @@ describe('rest client test', function () {
             server.stop(done);
         });
 
-        it('should list the guest', function (done) {
+        it('should list the guest (current user)', function (done) {
             console.log('rest', rest);
             console.log(rest.user);
             rest.user.getCurrentUser()
@@ -82,14 +82,17 @@ describe('rest client test', function () {
                     console.log(userData);
                     expect(userData).to.deep.equal({});
                     return rest.user.setCurrentUserData(newData);
-                }).then(function (userData) {
-                console.log(userData);
-                return rest.user.getCurrentUserData();
-                }).then( function(userData) {
+                })
+                .then(function (userData) {
+                    console.log(userData);
+                    return rest.user.getCurrentUserData();
+                })
+                .then( function(userData) {
                     //console.log(userData);
                     expect(userData).to.deep.equal(newData);
                     done();
-                }).catch(function (err){
+                })
+                .catch(function (err){
                     done(err);
                 });
         });
@@ -103,14 +106,17 @@ describe('rest client test', function () {
                     console.log('Before: ', userData);
                     expect(userData).to.deep.equal(oldData);
                     return rest.user.updateCurrentUserData(updatedData);
-                }).then(function (userData) {
+                })
+                .then(function (userData) {
                     //console.log(userData);
                     return rest.user.getCurrentUserData();
-                }).then( function(userData) {
+                })
+                .then( function(userData) {
                     console.log('After: ', userData);
                     expect(userData).to.deep.equal(updatedData);
                     done();
-                }).catch(function (err){
+                })
+                .catch(function (err){
                     done(err);
                 });
         });
@@ -123,13 +129,16 @@ describe('rest client test', function () {
                     console.log('Before: ', userData);
                     expect(userData).to.deep.equal(oldData);
                     return rest.user.deleteCurrentUserData();
-                }).then(function () {
+                })
+                .then(function () {
                     return rest.user.getCurrentUserData();
-                }).then( function(userData) {
+                })
+                .then( function(userData) {
                     console.log('After: ', userData);
                     expect(userData).to.deep.equal({});
                     done();
-                }).catch(function (err){
+                })
+                .catch(function (err){
                     done(err);
                 });
         });
@@ -138,16 +147,20 @@ describe('rest client test', function () {
             rest.users.getAllUsers()
                 .then( function(usersList) {
                     console.log('Before deleting: ', usersList);
-                }).then( function() {
+                })
+                .then( function() {
                     rest.user.deleteCurrentUser()
-                }).then( function() {
+                })
+                .then( function() {
                     rest.users.getAllUsers()
-                }).then( function(usersList) {
+                })
+                .then( function(usersList) {
                     console.log('After deleting: ', usersList);
-                //4 people accounts (guest, test, user, admin, should be 3 after deleting guest)
+                //4 accounts (guest, test, user, admin, should be 3 after deleting guest)
                     expect(usersList.length).to.deep.equal(3);
                     done();
-                }).catch(function (err){
+                })
+                .catch(function (err){
                     done(err);
                 });
         });
@@ -193,22 +206,42 @@ describe('rest client test', function () {
                 });
         });
 
+        //Unfinished test:
+        // it('should add user by username', function (done) {
+        //     var userBody = {password: ''}
+        //     rest.users.getAllUsers()
+        //         .then(function (usersList) {
+        //             console.log('Before adding: ', usersList);
+        //         })
+        //         .then(function () {
+        //             rest.users.addUser()
+        //         })
+        //         .catch(function (err){
+        //             done(err);
+        //         });
+        // });
+
         it('should list specific user\'s data', function (done) {
             rest.users.getAllUsers()
                 .then( function(usersList) {
                     console.log('Initial: ', usersList);
-                }).then (function () {
+                })
+                .then (function () {
                     return rest.user.setCurrentUserData({customData: 'myUpdatedData'});
-                }).then( function() {
+                })
+                .then( function() {
                     return rest.users.getUserData('guest')
-                }).then( function(userData) {
+                })
+                .then( function(userData) {
                     console.log('User data:', userData);
                     expect(userData).to.deep.equal({customData: 'myUpdatedData'});
                     return rest.users.getAllUsers()
-                }).then( function(usersList) {
+                })
+                .then( function(usersList) {
                     console.log('After: ', usersList);
                     done();
-                }).catch(function (err){
+                })
+                .catch(function (err){
                     done(err);
                 });
         });
