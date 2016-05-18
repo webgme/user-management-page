@@ -7,7 +7,7 @@ class UsersClient extends BaseClient {
     }
 
     getAllUsers () {
-        super.get('users');
+        return super.get('users');
     };
 
 }

@@ -35,7 +35,6 @@ class BaseClient {
                         console.log(err);
                         reject(err);
                     } else {
-                        //console.log(res.body);
                         resolve(res.body);
                     }
                 })

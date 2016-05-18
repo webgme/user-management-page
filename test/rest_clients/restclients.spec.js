@@ -60,10 +60,11 @@ describe('rest client test', function () {
                 });
         });
 
-        it.skip('should list the guest email', function (done) {
-            rest.user.getCurrentUserData()
-                .then(function (userEmail) {
-                    expect(userEmail).to.equal('guest@example.com');
+        it('should list the guest email', function (done) {
+            rest.user.getCurrentUser()
+                .then(function (userData) {
+                    console.log(userData);
+                    expect(userData['email']).to.equal('guest@example.com');
                     done();
                 })
                 .catch(function (err){
@@ -85,6 +86,93 @@ describe('rest client test', function () {
                 }).then( function(userData) {
                     //console.log(userData);
                     expect(userData).to.deep.equal(newData);
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+    });
+
+    describe('user(s) client', function () {
+        var server = testFixture.WebGME.standaloneServer(gmeConfig),
+            rest;
+
+        before(function (done) {
+            rest = new Rest(server.getUrl() + '/api/');
+            server.start(done);
+        });
+
+        after(function (done) {
+            server.stop(done);
+        });
+
+        it('should list the users on the server', function (done) {
+            console.log('rest', rest);
+            console.log(rest.users);
+            rest.users.getAllUsers()
+                .then(function (usersData) {
+                    console.log(usersData);
+                    expect(usersData[0]._id).to.equal('guest');
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+    });
+
+    describe('projects client', function () {
+        var server = testFixture.WebGME.standaloneServer(gmeConfig),
+            rest;
+
+        before(function (done) {
+            rest = new Rest(server.getUrl() + '/api/');
+            server.start(done);
+        });
+
+        after(function (done) {
+            server.stop(done);
+        });
+
+        it('should list all the projects (which is empty)', function (done) {
+            console.log('rest', rest);
+            console.log(rest.projects);
+            rest.projects.getAllProjects()
+                .then(function (projectsData) {
+                    console.log(projectsData);
+                    expect(projectsData).to.deep.equal([]);
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+    });
+
+    describe('organizations client', function () {
+        var server = testFixture.WebGME.standaloneServer(gmeConfig),
+            rest;
+
+        before(function (done) {
+            rest = new Rest(server.getUrl() + '/api/');
+            server.start(done);
+        });
+
+        after(function (done) {
+            server.stop(done);
+        });
+
+        it('should list all the organizations (which is empty)', function (done) {
+            console.log('rest', rest);
+            console.log(rest.organizations);
+            rest.organizations.getAllOrganizations()
+                .then(function (organizationsData) {
+                    console.log(organizationsData);
+                    expect(organizationsData).to.deep.equal([]);
                     done();
                 })
                 .catch(function (err){

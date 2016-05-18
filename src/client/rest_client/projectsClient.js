@@ -7,7 +7,7 @@ class ProjectsClient extends BaseClient {
     }
 
     getAllProjects () {
-        super.get('projects');
+        return super.get('projects');
     };
 
 }

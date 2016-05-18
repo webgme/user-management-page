@@ -7,7 +7,7 @@ class OrganizationsClient extends BaseClient {
     }
 
     getAllOrganizations () {
-        super.get('orgs');
+        return super.get('orgs');
     }
 
 }

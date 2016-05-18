@@ -15,18 +15,11 @@ class UserClient extends BaseClient {
     // -
 
     getCurrentUser() {
-        return super
-            .get('user');
+        return super.get('user');
     }
     
     deleteCurrentUser() {
-        return super
-            .delete('user')
-            .then( function() {
-                console.log('Successfully deleted user');
-            }).catch( function() {
-                console.log('Error deleting user.');
-            });
+        return super.delete('user')
     }
 
     getCurrentUserData() {
