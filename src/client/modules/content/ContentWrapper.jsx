@@ -1,4 +1,5 @@
 import React from 'react'
+import ProjectsPage from './pages/ProjectsPage.jsx'
 
 export default class ContentWrapper extends React.Component {
     constructor(props) {
@@ -18,9 +19,8 @@ export default class ContentWrapper extends React.Component {
                 </ol>
             </section>
 
-            <section className="content">
-                This is where the good stuff should go ...
-            </section>
+            <ProjectsPage />
+
         </div>
     }
 }
