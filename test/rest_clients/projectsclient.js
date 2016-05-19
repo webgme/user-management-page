@@ -60,10 +60,10 @@ describe('Projects Rest Client', function () {
     });
 
     it('should list all the projects (which at first is 2)', function (done) {
-        console.log(rest.projects);
+        logger.debug(rest.projects);
         rest.projects.getAllProjects()
             .then(function (projects) {
-                console.log('Projects: ', projects);
+                logger.debug('Projects: ', projects);
                 expect(projects.length).to.deep.equal(2);
                 done();
             })
@@ -77,7 +77,7 @@ describe('Projects Rest Client', function () {
 
         rest.projects.getAllProjects()
             .then(function (projectsData) {
-                console.log('Before Project data: ', projectsData);
+                logger.debug('Before Project data: ', projectsData);
                 expect(projectsData.length).to.deep.equal(2);
                 return rest.projects.addProject('guest', 'myProject', newProj);
             })
@@ -85,7 +85,7 @@ describe('Projects Rest Client', function () {
                 return rest.projects.getAllProjects();
             })
             .then(function (projectData) {
-                console.log('After project data: ', projectData);
+                logger.debug('After project data: ', projectData);
                 expect(projectData.length).to.equal(3);
                 return rest.projects.deleteProject('guest', 'myProject');
             })
@@ -93,7 +93,7 @@ describe('Projects Rest Client', function () {
                 return rest.projects.getAllProjects();
             })
             .then(function (projectData) {
-                console.log('After project deleted: ', projectData);
+                logger.debug('After project deleted: ', projectData);
                 expect(projectData.length).to.equal(2);
                 done();
             })

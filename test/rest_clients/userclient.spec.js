@@ -48,11 +48,11 @@ describe('User Rest Client', function () {
     });
 
     it('should list the guest (current user)', function (done) {
-        console.log('rest', rest);
-        console.log(rest.user);
+        logger.debug('rest', rest);
+        logger.debug(rest.user);
         rest.user.getCurrentUser()
             .then(function (userData) {
-                console.log(userData);
+                logger.debug(userData);
                 expect(userData._id).to.equal('guest');
                 done();
             })
@@ -64,8 +64,8 @@ describe('User Rest Client', function () {
     it('should list the guest email', function (done) {
         rest.user.getCurrentUser()
             .then(function (userData) {
-                console.log(userData);
-                console.log('\nEmail: ', userData.email);
+                logger.debug(userData);
+                logger.debug('\nEmail: ', userData.email);
                 expect(userData.email).to.equal('guest@example.com');
                 done();
             })
@@ -79,7 +79,7 @@ describe('User Rest Client', function () {
 
         rest.user.getCurrentUser()
             .then(function (user) {
-                console.log('Before: ', user);
+                logger.debug('Before: ', user);
                 expect(user.email).to.deep.equal('guest@example.com');
                 return rest.user.updateCurrentUser(newUserObj);
             })
@@ -87,7 +87,7 @@ describe('User Rest Client', function () {
                 return rest.user.getCurrentUser();
             })
             .then(function (user) {
-                console.log('After: ', user);
+                logger.debug('After: ', user);
                 expect(user.email).to.deep.equal('newPatchedEmail@test.com');
                 done();
             })
@@ -101,16 +101,16 @@ describe('User Rest Client', function () {
 
         rest.user.getCurrentUserData()
             .then(function (userData) {
-                console.log(userData);
+                logger.debug(userData);
                 expect(userData).to.deep.equal({});
                 return rest.user.setCurrentUserData(newData);
             })
             .then(function (userData) {
-                console.log(userData);
+                logger.debug(userData);
                 return rest.user.getCurrentUserData();
             })
             .then(function (userData) {
-                //console.log(userData);
+                //logger.debug(userData);
                 expect(userData).to.deep.equal(newData);
                 done();
             })
@@ -124,7 +124,7 @@ describe('User Rest Client', function () {
 
         rest.user.getCurrentUserData()
             .then(function (userData) {
-                console.log(userData);
+                logger.debug(userData);
                 expect(userData).to.deep.equal(currentData);
                 done();
             })
@@ -139,16 +139,16 @@ describe('User Rest Client', function () {
 
         rest.user.getCurrentUserData()
             .then(function (userData) {
-                console.log('Before: ', userData);
+                logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
                 return rest.user.updateCurrentUserData(updatedData);
             })
             .then(function (userData) {
-                //console.log(userData);
+                //logger.debug(userData);
                 return rest.user.getCurrentUserData();
             })
             .then(function (userData) {
-                console.log('After: ', userData);
+                logger.debug('After: ', userData);
                 expect(userData).to.deep.equal(updatedData);
                 done();
             })
@@ -162,7 +162,7 @@ describe('User Rest Client', function () {
 
         rest.user.getCurrentUserData()
             .then(function (userData) {
-                console.log('Before: ', userData);
+                logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
                 return rest.user.deleteCurrentUserData();
             })
@@ -170,7 +170,7 @@ describe('User Rest Client', function () {
                 return rest.user.getCurrentUserData();
             })
             .then(function (userData) {
-                console.log('After: ', userData);
+                logger.debug('After: ', userData);
                 expect(userData).to.deep.equal({});
                 done();
             })
@@ -180,7 +180,7 @@ describe('User Rest Client', function () {
     it('should delete the current user', function (done) {
         rest.users.getAllUsers()
             .then(function (usersList) {
-                console.log('Before deleting: ', usersList);
+                logger.debug('Before deleting: ', usersList);
             })
             .then(function () {
                 return rest.user.deleteCurrentUser();
@@ -189,7 +189,7 @@ describe('User Rest Client', function () {
                 return rest.users.getAllUsers();
             })
             .then(function (usersList) {
-                console.log('After deleting: ', usersList);
+                logger.debug('After deleting: ', usersList);
                 //4 accounts (guest, test, user, admin, should be 3 after deleting guest)
                 expect(usersList.length).to.deep.equal(3);
                 done();

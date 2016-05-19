@@ -47,11 +47,11 @@ describe('Users Rest Client', function () {
     });
 
     it('should list all the users on the server', function (done) {
-        console.log('rest', rest);
-        console.log(rest.users);
+        logger.debug('rest', rest);
+        logger.debug(rest.users);
         rest.users.getAllUsers()
             .then(function (usersData) {
-                console.log(usersData);
+                logger.debug(usersData);
                 expect(typeof usersData[0]._id).to.equal('string');
                 done();
             })
@@ -63,7 +63,7 @@ describe('Users Rest Client', function () {
     it('should list specific user by username', function (done) {
         rest.users.getUser('test')
             .then(function (userData) {
-                console.log(userData);
+                logger.debug(userData);
                 expect(userData.email).to.equal('test@example.com');
                 done();
             })
@@ -77,7 +77,7 @@ describe('Users Rest Client', function () {
     //     var userBody = {password: ''}
     //     rest.users.getAllUsers()
     //         .then(function (usersList) {
-    //             console.log('Before adding: ', usersList);
+    //             logger.debug('Before adding: ', usersList);
     //         })
     //         .then(function () {
     //             rest.users.addUser()
@@ -90,7 +90,7 @@ describe('Users Rest Client', function () {
     it('should list specific user\'s data', function (done) {
         rest.users.getAllUsers()
             .then( function(usersList) {
-                console.log('Initial: ', usersList);
+                logger.debug('Initial: ', usersList);
             })
             .then (function () {
                 return rest.user.setCurrentUserData({customData: 'myUpdatedData'});
@@ -99,12 +99,12 @@ describe('Users Rest Client', function () {
                 return rest.users.getUserData('guest');
             })
             .then( function(userData) {
-                console.log('User data:', userData);
+                logger.debug('User data:', userData);
                 expect(userData).to.deep.equal({customData: 'myUpdatedData'});
                 return rest.users.getAllUsers();
             })
             .then( function(usersList) {
-                console.log('After: ', usersList);
+                logger.debug('After: ', usersList);
                 done();
             })
             .catch(function (err){

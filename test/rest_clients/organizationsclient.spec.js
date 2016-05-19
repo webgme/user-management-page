@@ -52,11 +52,11 @@ describe('Organizations Rest Client', function () {
     });
 
     it('should list all the organizations (which is empty)', function (done) {
-        console.log('rest', rest);
-        console.log(rest.organizations);
+        logger.debug('rest', rest);
+        logger.debug(rest.organizations);
         rest.organizations.getAllOrganizations()
             .then(function (organizationsData) {
-                console.log(organizationsData);
+                logger.debug(organizationsData);
                 expect(organizationsData instanceof Array).to.deep.equal(true);
                 done();
             })
