@@ -5,7 +5,7 @@ import OrganizationsClient from './organizationsClient'
 
 function RestClient(baseUrl) {
     baseUrl = baseUrl || '/api/';
-
+    
     this.user = new UserClient(baseUrl);
     this.users = new UsersClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);

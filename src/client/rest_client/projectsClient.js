@@ -14,8 +14,18 @@ class ProjectsClient extends BaseClient {
         return super.get('projects', ownerId + '/' + projectName);
     }
 
-    addProject(ownerId, projectName, projectObj) {
-        return super.put('projects/' + ownerId + '/' + projectName, projectObj);
+    /**
+     * Creates a new project.
+     * @param {string} ownerId
+     * @param {string} projectName
+     * @param {object} parameters - Specifies where the seed is coming from. //TODO: WebGME needs to update these!
+     * @param {string} parameters.type - Which type of seeding should be used.
+     * @param {string} parameters.seedName - Name of the seed.
+     * @param {string} parameters.branchName - Name of branch if seeding from existing project.
+     * @returns {Promise} //TODO: How to document the resolved value.
+     */
+    addProject(ownerId, projectName, parameters) {
+        return super.put('projects/' + ownerId + '/' + projectName, parameters);
     }
 
     updateProject(ownerId, projectName, projectObj) {
@@ -34,8 +44,18 @@ class ProjectsClient extends BaseClient {
         return super.put('projects/' + ownerId + '/' + projectName + '/' + userOrOrgId, rights);
     }
 
+    /**
+     * Gets the latest commits for the project.
+     * @param {string} ownerId
+     * @param {string} projectName
+     * @param {number} [numCommits=100] - Maximum number of commits to retrieve.
+     * @returns {Promise} //TODO: How to document the resolved value.
+     */
     getLatestCommits(ownerId, projectName, numCommits) {
-        return super.get('projects/' + ownerId + '/' + projectName, numCommits);
+        var query;
+        numCommits = numCommits || 100;
+        query = '?n=' + numCommits;
+        return super.get('projects/' + ownerId + '/' + projectName, query);
     }
 
     getCommitById(ownerId, projectName, commitId) {
