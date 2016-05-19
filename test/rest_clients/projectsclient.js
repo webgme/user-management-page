@@ -1,6 +1,6 @@
 var testFixture = require('../globals');
 
-describe.only('Projects Rest Client', function () {
+describe('Projects Rest Client', function () {
     var expect = testFixture.expect,
         Q = testFixture.Q,
         gmeConfig = testFixture.getGmeConfig(),
