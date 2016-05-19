@@ -1,4 +1,4 @@
-import superagent from 'superagent'
+import superagent from 'superagent';
 
 class BaseClient {
 

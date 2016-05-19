@@ -1,4 +1,4 @@
-import BaseClient from './baseClient'
+import BaseClient from './baseClient';
 
 class ProjectsClient extends BaseClient {
 
@@ -6,6 +6,10 @@ class ProjectsClient extends BaseClient {
         super(baseUrl);
     }
 
+    /**
+     * Gets a list of all the projects (only lists the projects where the user has at least read access)
+     * @returns {Promise} //TODO: How to document the resolved value.
+     */
     getAllProjects () {
         return super.get('projects');
     }
@@ -21,7 +25,8 @@ class ProjectsClient extends BaseClient {
      * @param {object} parameters - Specifies where the seed is coming from. //TODO: WebGME needs to update these!
      * @param {string} parameters.type - Which type of seeding should be used.
      * @param {string} parameters.seedName - Name of the seed.
-     * @param {string} parameters.branchName - Name of branch if seeding from existing project.
+     * @param {string} parameters.seedBranch - Name of branch if seeding from existing project.
+     * @param {string} parameters.ownerId - ID of owner
      * @returns {Promise} //TODO: How to document the resolved value.
      */
     addProject(ownerId, projectName, parameters) {

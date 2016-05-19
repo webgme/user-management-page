@@ -15,12 +15,12 @@ export default class App extends React.Component {
 
     /**
      * ---------------------------------------------------------|
-     * SKINS         | skin-blue                               |
-     *               | skin-black                              |
-     *               | skin-purple                             |
-     *               | skin-yellow                             |
-     *               | skin-red                                |
-     *               | skin-green                              |
+     * SKINS         | skin-blue                                |
+     *               | skin-black                               |
+     *               | skin-purple                              |
+     *               | skin-yellow                              |
+     *               | skin-red                                 |
+     *               | skin-green                               |
      * ---------------------------------------------------------|
      * @returns {XML}
      */

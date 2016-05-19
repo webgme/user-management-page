@@ -1,4 +1,4 @@
-import BaseClient from './baseClient'
+import BaseClient from './baseClient';
 
 class OrganizationsClient extends BaseClient {
 
@@ -6,6 +6,10 @@ class OrganizationsClient extends BaseClient {
         super(baseUrl);
     }
 
+    /**
+     * Gets a list of all organizations
+     * @returns {Promise} //TODO: How to document the resolved value.
+     */
     getAllOrganizations () {
         return super.get('orgs');
     }
@@ -31,11 +35,11 @@ class OrganizationsClient extends BaseClient {
     }
 
     makeAdminOfOrganization(organizationName, username) {
-        return super.put('orgs/' + organization + '/admins/' + username)
+        return super.put('orgs/' + organizationName + '/admins/' + username);
     }
 
     removeAdminOfOrganization(organizationName, username) {
-        return super.delete('orgs/' + organization + '/admins/' + username)
+        return super.delete('orgs/' + organizationName + '/admins/' + username);
     }
 
 }

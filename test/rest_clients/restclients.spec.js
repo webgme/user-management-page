@@ -15,7 +15,12 @@ describe('rest client test', function () {
             .then(function () {
                 return Q.allDone([
                     gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
-                    gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true})
+                    gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true}),
+                    gmeAuth.addProject('guest', 'testProject',
+                        {type: 'myType', seedName: 'mySeedName', seedBranch: 'mySeedBranch', ownerId: 'guest'}),
+                    //guest probably doesn't have guest.canCreate == true
+                    gmeAuth.addProject('user', 'userProject',
+                        {type: 'db', seedName: 'user+projSeedName', seedBranch: 'master', ownerId: 'user'})
                 ]);
             })
             .then(function () {
@@ -65,8 +70,30 @@ describe('rest client test', function () {
             rest.user.getCurrentUser()
                 .then(function (userData) {
                     console.log(userData);
-                    console.log('\nEmail: ', userData['email']);
-                    expect(userData['email']).to.equal('guest@example.com');
+                    console.log('\nEmail: ', userData.email);
+                    expect(userData.email).to.equal('guest@example.com');
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should patch the user', function (done) {
+            var newUserObj = {email: 'newPatchedEmail@test.com'};
+
+            rest.user.getCurrentUser()
+                .then( function(user) {
+                    console.log('Before: ', user);
+                    expect(user.email).to.deep.equal('guest@example.com');
+                    return rest.user.updateCurrentUser(newUserObj);
+                })
+                .then(function () {
+                    return rest.user.getCurrentUser();
+                })
+                .then( function(user) {
+                    console.log('After: ', user);
+                    expect(user.email).to.deep.equal('newPatchedEmail@test.com');
                     done();
                 })
                 .catch(function (err){
@@ -90,6 +117,20 @@ describe('rest client test', function () {
                 .then( function(userData) {
                     //console.log(userData);
                     expect(userData).to.deep.equal(newData);
+                    done();
+                })
+                .catch(function (err){
+                    done(err);
+                });
+        });
+
+        it('should get the user data', function (done) {
+            var currentData = {customData: 'myData'};
+
+            rest.user.getCurrentUserData()
+                .then( function(userData) {
+                    console.log(userData);
+                    expect(userData).to.deep.equal(currentData);
                     done();
                 })
                 .catch(function (err){
@@ -149,10 +190,10 @@ describe('rest client test', function () {
                     console.log('Before deleting: ', usersList);
                 })
                 .then( function() {
-                    rest.user.deleteCurrentUser()
+                    rest.user.deleteCurrentUser();
                 })
                 .then( function() {
-                    rest.users.getAllUsers()
+                    rest.users.getAllUsers();
                 })
                 .then( function(usersList) {
                     console.log('After deleting: ', usersList);
@@ -230,12 +271,12 @@ describe('rest client test', function () {
                     return rest.user.setCurrentUserData({customData: 'myUpdatedData'});
                 })
                 .then( function() {
-                    return rest.users.getUserData('guest')
+                    return rest.users.getUserData('guest');
                 })
                 .then( function(userData) {
                     console.log('User data:', userData);
                     expect(userData).to.deep.equal({customData: 'myUpdatedData'});
-                    return rest.users.getAllUsers()
+                    return rest.users.getAllUsers();
                 })
                 .then( function(usersList) {
                     console.log('After: ', usersList);
@@ -261,16 +302,37 @@ describe('rest client test', function () {
             server.stop(done);
         });
 
-        it('should list all the projects (which is empty)', function (done) {
-            console.log('rest', rest);
+        it('should list all the projects (which at first is empty)', function (done) {
             console.log(rest.projects);
             rest.projects.getAllProjects()
-                .then(function (projectsData) {
-                    console.log(projectsData);
-                    expect(projectsData).to.deep.equal([]);
+                .then(function (projects) {
+                    console.log('Projects: ', projects);
+                    expect(projects).to.deep.equal([]);
                     done();
                 })
-                .catch(function (err){
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
+        it('should add a new project', function (done) {
+            var newProj = {type: 'db', seedName: 'mySeedName', seedBranch: 'mySeedBranch', ownerId: 'guest'};
+
+            rest.projects.getAllProjects()
+                .then(function (projectsData) {
+                    console.log('Before Project data: ', projectsData);
+                    expect(projectsData).to.deep.equal([]);
+                    return rest.projects.addProject('guest', 'myProject', newProj);
+                })
+                .then(function () {
+                    return rest.projects.getAllProjects();
+                })
+                .then(function (projectData) {
+                    console.log('After project data: ', projectData);
+                    expect(projectData[0].type).to.equal('myType');
+                    done();
+                })
+                .catch(function (err) {
                     done(err);
                 });
         });
