@@ -1,4 +1,4 @@
-/*globals*/
+/*eslint-env node, mocha*/
 var testFixture = require('../globals');
 
 describe('User Rest Client', function () {
@@ -91,7 +91,9 @@ describe('User Rest Client', function () {
     });
 
     it('should set the user data', function (done) {
-        var newData = {customData: 'myData'};
+        var newData = {
+            customData: 'myData'
+        };
 
         rest.user.getCurrentUserData()
             .then(function (userData) {

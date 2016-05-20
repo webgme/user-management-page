@@ -16,7 +16,7 @@ export default class Button extends React.Component {
         };
     }
 
-    onClick(/*event*/) {
+    onClick(/* event */) {
         var self = this;
         // This is an example for state changes.
         self.setState({label: 'getting...'});
@@ -27,13 +27,12 @@ export default class Button extends React.Component {
             } else {
                 console.log("Got user info: ", userData);
 
-                //This is an example state change.
+                // This is an example state change.
                 self.setState({label: userData._id});
             }
         });
 
-        //self.restClient.user.getCurrentUserData('email');
-
+        // self.restClient.user.getCurrentUserData('email');
     }
 
     render() {

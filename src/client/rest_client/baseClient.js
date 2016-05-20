@@ -1,3 +1,4 @@
+/*eslint-env node, browser, es6*/
 import superagent from 'superagent';
 
 class BaseClient {
