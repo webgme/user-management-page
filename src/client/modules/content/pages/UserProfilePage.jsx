@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ProjectsPage extends React.Component {
+export default class UserProfilePage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -8,7 +8,7 @@ export default class ProjectsPage extends React.Component {
 
     render() {
         return <section className="content">
-            ProjectsPage Content
+            UserProfilePage Content
         </section>;
     }
 

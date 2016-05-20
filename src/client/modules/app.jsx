@@ -22,7 +22,7 @@ export default class App extends React.Component {
      *               | skin-red                                 |
      *               | skin-green                               |
      * ---------------------------------------------------------|
-     * @returns {XML}
+     * @return {XML} Can make this a user setting in the future
      */
     render() {
         return <div className="wrapper skin-blue">
@@ -30,6 +30,6 @@ export default class App extends React.Component {
             <SideBar/>
             <ContentWrapper/>
             <Footer/>
-        </div>
+        </div>;
     }
 }

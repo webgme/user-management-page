@@ -1,4 +1,4 @@
-/*eslint-env node, browser, es6*/
+/* eslint-env node, browser */
 import superagent from 'superagent';
 
 class BaseClient {
@@ -11,7 +11,7 @@ class BaseClient {
         query = query || '';
         var url = this.baseUrl + path + '/' + query;
 
-        return new Promise( function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             superagent
                 .get(url)
                 .end( function(err, res) {
@@ -27,7 +27,7 @@ class BaseClient {
     put(path, value) {
         var url = this.baseUrl + path;
 
-        return new Promise( function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             superagent
                 .put(url)
                 .send(value)
@@ -46,7 +46,7 @@ class BaseClient {
     patch(path, value) {
         var url = this.baseUrl + path;
 
-        return new Promise( function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             superagent
                 .patch(url)
                 .send(value)
@@ -59,16 +59,15 @@ class BaseClient {
                     }
                 });
         });
-
     }
-    
+
     delete(path) {
         var url = this.baseUrl + path;
 
-        return new Promise( function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             superagent
                 .delete(url)
-                .end( function(err, res) {
+                .end(function(err, res) {
                     if (err || !res.ok) {
                         reject(err);
                     } else {
