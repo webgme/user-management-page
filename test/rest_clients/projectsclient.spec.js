@@ -18,7 +18,6 @@ describe('Projects Rest Client', function () {
             .then(function (gmeAuth_) {
                 gmeAuth = gmeAuth_;
                 storage = testFixture.getMongoStorage(logger, gmeConfig, gmeAuth);
-
                 return storage.openDatabase();
             })
             .then(function () {
@@ -67,9 +66,7 @@ describe('Projects Rest Client', function () {
                 expect(projects.length).to.deep.equal(2);
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should add a new project', function (done) {
@@ -97,8 +94,6 @@ describe('Projects Rest Client', function () {
                 expect(projectData.length).to.equal(2);
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 });

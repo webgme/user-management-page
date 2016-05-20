@@ -19,7 +19,7 @@ class BaseClient {
                     } else {
                         resolve(res.body);
                     }
-                })
+                });
         });
     }
 
@@ -37,7 +37,7 @@ class BaseClient {
                     } else {
                         resolve(res.body);
                     }
-                })
+                });
         });
 
     }
@@ -56,12 +56,11 @@ class BaseClient {
                     } else {
                         resolve(res.body);
                     }
-                })
+                });
         });
 
     }
-
-
+    
     delete(path) {
         var url = this.baseUrl + path;
 
@@ -74,7 +73,7 @@ class BaseClient {
                     } else {
                         resolve(res.body);
                     }
-                })
+                });
         });
     }
 

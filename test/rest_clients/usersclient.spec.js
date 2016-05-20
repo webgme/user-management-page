@@ -27,6 +27,11 @@ describe('Users Rest Client', function () {
                         read: true,
                         write: true,
                         delete: true
+                    }),
+                    gmeAuth.authorizeByUserId('guest', 'guest+project', 'create', {
+                        read: true,
+                        write: true,
+                        delete: true
                     })
                 ]);
             })
@@ -55,9 +60,7 @@ describe('Users Rest Client', function () {
                 expect(typeof usersData[0]._id).to.equal('string');
                 done();
             })
-            .catch(function (err){
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should list specific user by username', function (done) {
@@ -67,25 +70,8 @@ describe('Users Rest Client', function () {
                 expect(userData.email).to.equal('test@example.com');
                 done();
             })
-            .catch(function (err){
-                done(err);
-            });
+            .catch(done);
     });
-
-    //Unfinished test:
-    // it('should add user by username', function (done) {
-    //     var userBody = {password: ''}
-    //     rest.users.getAllUsers()
-    //         .then(function (usersList) {
-    //             logger.debug('Before adding: ', usersList);
-    //         })
-    //         .then(function () {
-    //             rest.users.addUser()
-    //         })
-    //         .catch(function (err){
-    //             done(err);
-    //         });
-    // });
 
     it('should list specific user\'s data', function (done) {
         rest.users.getAllUsers()
@@ -107,8 +93,31 @@ describe('Users Rest Client', function () {
                 logger.debug('After: ', usersList);
                 done();
             })
-            .catch(function (err){
-                done(err);
-            });
+            .catch(done);
     });
+
+    //TODO: authenticate guest (current) to be able to add new users
+    it('should add a new user', function (done) {
+        rest.users.getAllUsers()
+            .then( function(usersList) {
+                logger.debug('Initial: ', usersList);
+            })
+            .then (function () {
+                return rest.users.addUser('justAdded', {_id: 'justAdded', email: 'just@added.com'});
+            })
+            .then( function() {
+                return rest.users.getUserData('justAdded');
+            })
+            .then( function(userData) {
+                logger.debug('User data:', userData);
+                expect(userData).email.to.deep.equal('just@added.com');
+                return rest.users.getAllUsers();
+            })
+            .then( function(usersList) {
+                logger.debug('After: ', usersList);
+                done();
+            })
+            .catch(done);
+    });
+
 });

@@ -1,8 +1,8 @@
-import React from 'react'
-import Header from './header/Header.jsx'
-import SideBar from './sidebar/SideBar.jsx'
-import ContentWrapper from './content/ContentWrapper.jsx'
-import Footer from './footer/Footer.jsx'
+import React from 'react';
+import Header from './header/Header.jsx';
+import SideBar from './sidebar/SideBar.jsx';
+import ContentWrapper from './content/ContentWrapper.jsx';
+import Footer from './footer/Footer.jsx';
 
 /**
  * This is the main layout of the web-page.

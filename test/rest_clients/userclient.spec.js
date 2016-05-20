@@ -56,9 +56,7 @@ describe('User Rest Client', function () {
                 expect(userData._id).to.equal('guest');
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should list the guest email', function (done) {
@@ -69,12 +67,10 @@ describe('User Rest Client', function () {
                 expect(userData.email).to.equal('guest@example.com');
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
-    it('should patch the user', function (done) {
+    it('should update the user', function (done) {
         var newUserObj = {email: 'newPatchedEmail@test.com'};
 
         rest.user.getCurrentUser()
@@ -91,9 +87,7 @@ describe('User Rest Client', function () {
                 expect(user.email).to.deep.equal('newPatchedEmail@test.com');
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should set the user data', function (done) {
@@ -110,13 +104,10 @@ describe('User Rest Client', function () {
                 return rest.user.getCurrentUserData();
             })
             .then(function (userData) {
-                //logger.debug(userData);
                 expect(userData).to.deep.equal(newData);
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should get the user data', function (done) {
@@ -128,9 +119,7 @@ describe('User Rest Client', function () {
                 expect(userData).to.deep.equal(currentData);
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should update the user data', function (done) {
@@ -152,9 +141,7 @@ describe('User Rest Client', function () {
                 expect(userData).to.deep.equal(updatedData);
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 
     it('should delete the user data', function (done) {
@@ -194,8 +181,6 @@ describe('User Rest Client', function () {
                 expect(usersList.length).to.deep.equal(3);
                 done();
             })
-            .catch(function (err) {
-                done(err);
-            });
+            .catch(done);
     });
 });

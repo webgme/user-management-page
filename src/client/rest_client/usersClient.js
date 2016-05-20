@@ -1,4 +1,4 @@
-import BaseClient from './baseClient'
+import BaseClient from './baseClient';
 
 class UsersClient extends BaseClient {
 
@@ -15,11 +15,11 @@ class UsersClient extends BaseClient {
     }
 
     addUser(username, userObj) {
-        return super.put('users/' + username, userObj)
+        return super.put('users/' + username, userObj);
     }
 
     updateUser(username, userObj) {
-        return super.patch('users/' + username, userObj)
+        return super.patch('users/' + username, userObj);
     }
 
     deleteUser(username) {
@@ -31,11 +31,11 @@ class UsersClient extends BaseClient {
     }
 
     addUserData(username, userData) {
-        return super.put('users/' + username + '/data', userData)
+        return super.put('users/' + username + '/data', userData);
     }
 
     updateUserData(username, userData) {
-        return super.patch('users/' + username + '/data', userData)
+        return super.patch('users/' + username + '/data', userData);
     }
 
     deleteUserData(username) {

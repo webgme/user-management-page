@@ -2,6 +2,7 @@ import React from 'react'
 import ProjectsPage from './pages/ProjectsPage.jsx'
 
 export default class ContentWrapper extends React.Component {
+    
     constructor(props) {
         super(props);
     }

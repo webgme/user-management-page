@@ -51,7 +51,7 @@ describe('Organizations Rest Client', function () {
             .nodeify(done);
     });
 
-    it('should list all the organizations (which is empty)', function (done) {
+    it('should list all the organizations', function (done) {
         logger.debug('rest', rest);
         logger.debug(rest.organizations);
         rest.organizations.getAllOrganizations()
@@ -60,8 +60,6 @@ describe('Organizations Rest Client', function () {
                 expect(organizationsData instanceof Array).to.deep.equal(true);
                 done();
             })
-            .catch(function (err){
-                done(err);
-            });
+            .catch(done);
     });
 });
