@@ -1,7 +1,7 @@
 /* eslint-env node, mocha*/
 var testFixture = require('../globals');
 
-describe('User Rest Client', function () {
+describe('User Rest Client', function() {
     var expect = testFixture.expect,
         Q = testFixture.Q,
         gmeConfig = testFixture.getGmeConfig(),
@@ -61,7 +61,7 @@ describe('User Rest Client', function () {
 
     it('should list the guest email', function(done) {
         rest.user.getCurrentUser()
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug(userData);
                 logger.debug('\nEmail: ', userData.email);
                 expect(userData.email).to.equal('guest@example.com');
@@ -166,7 +166,7 @@ describe('User Rest Client', function () {
             .catch(done);
     });
 
-    it('should delete the current user', function (done) {
+    it('should delete the current user', function(done) {
         rest.users.getAllUsers()
             .then(function(usersList) {
                 logger.debug('Before deleting: ', usersList);

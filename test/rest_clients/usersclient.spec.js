@@ -102,7 +102,7 @@ describe('Users Rest Client', function() {
 
         rest.users.getUser('guest')
             .then(function(guestUser) {
-                console.log('Before: ', guestUser);
+                logger.debug('Before: ', guestUser);
                 expect(guestUser.email).to.deep.equal('guest@example.com');
                 return rest.users.updateUser('guest', newUserObj);
             })
@@ -110,7 +110,7 @@ describe('Users Rest Client', function() {
                 return rest.users.getUser('guest');
             })
             .then(function(guestUser) {
-                console.log('After: ', guestUser);
+                logger.debug('After: ', guestUser);
                 expect(guestUser.email).to.deep.equal('newPatchedEmail@test.com');
                 done();
             })
@@ -121,7 +121,7 @@ describe('Users Rest Client', function() {
     it('should delete a user', function(done) {
         rest.users.getAllUsers()
             .then(function(allUsers) {
-                console.log('Before: ', allUsers);
+                logger.debug('Before: ', allUsers);
                 expect(allUsers.length).to.deep.equal(4);
             })
             .then(function() {
@@ -131,7 +131,7 @@ describe('Users Rest Client', function() {
                 return rest.users.getAllUsers();
             })
             .then(function(allUsers) {
-                console.log('After: ', allUsers);
+                logger.debug('After: ', allUsers);
                 expect(allUsers.length).to.deep.equal(3);
                 done();
             })
@@ -170,14 +170,14 @@ describe('Users Rest Client', function() {
 
         rest.users.getUserData('test')
             .then(function(userData) {
-                console.log('Before: (should be {})', userData);
+                logger.debug('Before: (should be {})', userData);
                 return rest.users.setUserData('test', newData);
             })
             .then(function() {
                 return rest.users.getUserData('test');
             })
             .then(function(userData) {
-                console.log('After: ', userData);
+                logger.debug('After: ', userData);
                 expect(userData).to.deep.equal(newData);
                 done();
             })
@@ -194,7 +194,7 @@ describe('Users Rest Client', function() {
 
         rest.users.setUserData('test', oldData)
             .then(function(userData) {
-                console.log('Before: ', userData);
+                logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
                 return rest.users.updateUserData('test', updatedData);
             })
@@ -202,7 +202,7 @@ describe('Users Rest Client', function() {
                 return rest.user.getUserData('test');
             })
             .then(function(userData) {
-                console.log('After: ', userData);
+                logger.debug('After: ', userData);
                 expect(userData).to.deep.equal(updatedData);
                 done();
             })
@@ -221,7 +221,7 @@ describe('Users Rest Client', function() {
                 rest.users.getUserData('test')
             })
             .then(function(userData) {
-                console.log('Before: ', userData);
+                logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
                 return rest.users.deleteUserData('test');
             })
@@ -229,7 +229,7 @@ describe('Users Rest Client', function() {
                 return rest.users.getUserData('test');
             })
             .then(function(userData) {
-                console.log('After: ', userData);
+                logger.debug('After: ', userData);
                 expect(userData).to.deep.equal({});
                 done();
             })

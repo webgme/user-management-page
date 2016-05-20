@@ -3,6 +3,10 @@ import UsersClient from './usersClient';
 import ProjectsClient from './projectsClient';
 import OrganizationsClient from './organizationsClient';
 
+/**
+ * Single rest clients that contains user, users, projects, and orgs clients
+ * @param {string} baseUrl - the base url
+ */
 function RestClient(baseUrl) {
     baseUrl = baseUrl || '/api/';
 

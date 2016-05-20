@@ -7,6 +7,12 @@ class BaseClient {
         this.baseUrl = baseUrl;
     }
 
+    /**
+     * General GET request
+     * @param {string} path - path
+     * @param {string} query - query if any
+     * @return {Promise} //TODO: How to document the resolved value.
+     */
     get(path, query) {
         query = query || '';
         var url = this.baseUrl + path + '/' + query;
@@ -14,7 +20,7 @@ class BaseClient {
         return new Promise(function(resolve, reject) {
             superagent
                 .get(url)
-                .end( function(err, res) {
+                .end(function(err, res) {
                     if (err || !res.ok) {
                         reject(err);
                     } else {
@@ -24,6 +30,12 @@ class BaseClient {
         });
     }
 
+    /**
+     * General PUT request
+     * @param {string} path - path
+     * @param {object} value - value to be set
+     * @return {Promise} //TODO: How to document the resolved value.
+     */
     put(path, value) {
         var url = this.baseUrl + path;
 
@@ -31,7 +43,7 @@ class BaseClient {
             superagent
                 .put(url)
                 .send(value)
-                .end( function(err, res) {
+                .end(function(err, res) {
                     if (err) {
                         console.log(err);
                         reject(err);
@@ -43,6 +55,12 @@ class BaseClient {
 
     }
 
+    /**
+     * General PATCH request
+     * @param {string} path - path
+     * @param {object} value - value to be updated
+     * @return {Promise} //TODO: How to document the resolved value.
+     */
     patch(path, value) {
         var url = this.baseUrl + path;
 
@@ -50,7 +68,7 @@ class BaseClient {
             superagent
                 .patch(url)
                 .send(value)
-                .end( function(err, res) {
+                .end(function(err, res) {
                     if (err) {
                         console.log(err);
                         reject(err);
@@ -61,6 +79,11 @@ class BaseClient {
         });
     }
 
+    /**
+     * General DELETE request
+     * @param {string} path - path
+     * @return {Promise} //TODO: How to document the resolved value.
+     */
     delete(path) {
         var url = this.baseUrl + path;
 

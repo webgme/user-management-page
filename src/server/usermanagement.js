@@ -20,7 +20,7 @@ function serveFile(fileName, res) {
     };
 
     logger.info('serving file', fileName);
-    res.sendFile(fileName, options, function (err) {
+    res.sendFile(fileName, options, function(err) {
         if (err) {
             logger.error('Failed to send ' + fileName, err);
             res.status(err.status).end();
@@ -36,17 +36,17 @@ function initialize(middlewareOpts) {
 
     router.use(bodyParser.json({}));
     router.use(bodyParser.urlencoded({extended: true}));
-    router.use('*', function (req, res, next) {
+    router.use('*', function(req, res, next) {
         // TODO: set all headers, check rate limit, etc.
         res.setHeader('X-WebGME-Media-Type', 'webgme.v2');
         next();
     });
 
-    router.get('/', function (req, res) {
+    router.get('/', function(req, res) {
         serveFile('index.html', res);
     });
 
-    router.get('/:name', function (req, res) {
+    router.get('/:name', function(req, res) {
         serveFile(req.params.name, res);
     });
 
