@@ -25,10 +25,14 @@ module.exports = {
 
             // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
             // loads bootstrap's css.
-            {test: /\.(woff|woff2)$/, loader: "url-loader?limit=10000&mimetype=application/font-woff"},
-            {test: /\.ttf$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream"},
-            {test: /\.eot$/, loader: "file-loader"},
-            {test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml"}
+
+            // Configure font-awesome loaders
+            {test: /\.woff(2)?(\?v=\d\.\d\.\d)?$/, loader: "url-loader?limit=10000&minetype=application/font-woff"},
+            {test: /\.(ttf|eot|svg)(\?v=\d\.\d\.\d)?$/, loader: "file-loader"}
+            // {test: /\.(woff|woff2)$/, loader: "url-loader?limit=10000&mimetype=application/font-woff"},
+            // {test: /\.ttf$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream"},
+            // {test: /\.eot$/, loader: "file-loader"},
+            // {test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml"}
         ]
     },
     plugins: [

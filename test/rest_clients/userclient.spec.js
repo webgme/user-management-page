@@ -1,4 +1,4 @@
-/*eslint-env node, mocha*/
+/* eslint-env node, mocha*/
 var testFixture = require('../globals');
 
 describe('User Rest Client', function () {
@@ -11,18 +11,18 @@ describe('User Rest Client', function () {
         rest,
         gmeAuth;
 
-    before(function (done) {
+    before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
-            .then(function (gmeAuth_) {
+            .then(function(gmeAuth_) {
                 gmeAuth = gmeAuth_;
             })
-            .then(function () {
+            .then(function() {
                 return Q.allDone([
                     gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true})
                 ]);
             })
-            .then(function () {
+            .then(function() {
                 return Q.allDone([
                     gmeAuth.authorizeByUserId('user', 'user+project', 'create', {
                         read: true,
@@ -31,7 +31,7 @@ describe('User Rest Client', function () {
                     })
                 ]);
             })
-            .then(function () {
+            .then(function() {
                 server = testFixture.WebGME.standaloneServer(gmeConfig);
                 rest = new Rest(server.getUrl() + '/api/');
                 return Q.ninvoke(server, 'start');
@@ -39,7 +39,7 @@ describe('User Rest Client', function () {
             .nodeify(done);
     });
 
-    after(function (done) {
+    after(function(done) {
         Q.allDone([
             Q.ninvoke(server, 'stop'),
             gmeAuth.unload()
@@ -47,11 +47,11 @@ describe('User Rest Client', function () {
             .nodeify(done);
     });
 
-    it('should list the guest (current user)', function (done) {
+    it('should list the guest (current user)', function(done) {
         logger.debug('rest', rest);
         logger.debug(rest.user);
         rest.user.getCurrentUser()
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug(userData);
                 expect(userData._id).to.equal('guest');
                 done();
@@ -59,7 +59,7 @@ describe('User Rest Client', function () {
             .catch(done);
     });
 
-    it('should list the guest email', function (done) {
+    it('should list the guest email', function(done) {
         rest.user.getCurrentUser()
             .then(function (userData) {
                 logger.debug(userData);
@@ -70,19 +70,19 @@ describe('User Rest Client', function () {
             .catch(done);
     });
 
-    it('should update the user', function (done) {
+    it('should update the user', function(done) {
         var newUserObj = {email: 'newPatchedEmail@test.com'};
 
         rest.user.getCurrentUser()
-            .then(function (user) {
+            .then(function(user) {
                 logger.debug('Before: ', user);
                 expect(user.email).to.deep.equal('guest@example.com');
                 return rest.user.updateCurrentUser(newUserObj);
             })
-            .then(function () {
+            .then(function() {
                 return rest.user.getCurrentUser();
             })
-            .then(function (user) {
+            .then(function(user) {
                 logger.debug('After: ', user);
                 expect(user.email).to.deep.equal('newPatchedEmail@test.com');
                 done();
@@ -90,33 +90,33 @@ describe('User Rest Client', function () {
             .catch(done);
     });
 
-    it('should set the user data', function (done) {
+    it('should set the user data', function(done) {
         var newData = {
             customData: 'myData'
         };
 
         rest.user.getCurrentUserData()
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug(userData);
                 expect(userData).to.deep.equal({});
                 return rest.user.setCurrentUserData(newData);
             })
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug(userData);
                 return rest.user.getCurrentUserData();
             })
-            .then(function (userData) {
+            .then(function(userData) {
                 expect(userData).to.deep.equal(newData);
                 done();
             })
             .catch(done);
     });
 
-    it('should get the user data', function (done) {
+    it('should get the user data', function(done) {
         var currentData = {customData: 'myData'};
 
         rest.user.getCurrentUserData()
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug(userData);
                 expect(userData).to.deep.equal(currentData);
                 done();
@@ -124,21 +124,21 @@ describe('User Rest Client', function () {
             .catch(done);
     });
 
-    it('should update the user data', function (done) {
+    it('should update the user data', function(done) {
         var oldData = {customData: 'myData'};
         var updatedData = {customData: 'myUpdatedData'};
 
         rest.user.getCurrentUserData()
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
                 return rest.user.updateCurrentUserData(updatedData);
             })
-            .then(function (userData) {
-                //logger.debug(userData);
+            .then(function(userData) {
+                // logger.debug(userData);
                 return rest.user.getCurrentUserData();
             })
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug('After: ', userData);
                 expect(userData).to.deep.equal(updatedData);
                 done();
@@ -146,19 +146,19 @@ describe('User Rest Client', function () {
             .catch(done);
     });
 
-    it('should delete the user data', function (done) {
+    it('should delete the user data', function(done) {
         var oldData = {customData: 'myUpdatedData'};
 
         rest.user.getCurrentUserData()
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
                 return rest.user.deleteCurrentUserData();
             })
-            .then(function () {
+            .then(function() {
                 return rest.user.getCurrentUserData();
             })
-            .then(function (userData) {
+            .then(function(userData) {
                 logger.debug('After: ', userData);
                 expect(userData).to.deep.equal({});
                 done();
@@ -168,18 +168,18 @@ describe('User Rest Client', function () {
 
     it('should delete the current user', function (done) {
         rest.users.getAllUsers()
-            .then(function (usersList) {
+            .then(function(usersList) {
                 logger.debug('Before deleting: ', usersList);
             })
-            .then(function () {
+            .then(function() {
                 return rest.user.deleteCurrentUser();
             })
-            .then(function () {
+            .then(function() {
                 return rest.users.getAllUsers();
             })
-            .then(function (usersList) {
+            .then(function(usersList) {
                 logger.debug('After deleting: ', usersList);
-                //4 accounts (guest, test, user, admin, should be 3 after deleting guest)
+                // 4 accounts (guest, test, user, admin, should be 3 after deleting guest)
                 expect(usersList.length).to.deep.equal(3);
                 done();
             })

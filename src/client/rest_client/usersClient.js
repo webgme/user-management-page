@@ -30,7 +30,7 @@ class UsersClient extends BaseClient {
         return super.get('users', (username + '/data') );
     }
 
-    addUserData(username, userData) {
+    setUserData(username, userData) {
         return super.put('users/' + username + '/data', userData);
     }
 
