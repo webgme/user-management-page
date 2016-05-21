@@ -21,7 +21,7 @@ export default class Button extends React.Component {
         // This is an example for state changes.
         self.setState({label: 'getting...'});
 
-        self.restClient.user.getCurrentUser(function (err, userData) {
+        self.restClient.user.getCurrentUser(function(err, userData) {
             if (err) {
                 console.error(err);
             } else {
@@ -36,6 +36,7 @@ export default class Button extends React.Component {
     }
 
     render() {
-        return <button type="button" className="btn btn-default" onClick={this.onClick}>{this.state.label}</button>
+        return <button type="button" className="btn btn-default" onClick={this.onClick}>{this.state.label}</button>;
     }
+
 }

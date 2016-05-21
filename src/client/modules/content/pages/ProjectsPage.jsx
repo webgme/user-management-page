@@ -1,4 +1,5 @@
 import React from 'react';
+import ProjectDataTable from './projectsdatatable/ProjectsDataTable.jsx';
 
 export default class ProjectsPage extends React.Component {
 
@@ -8,7 +9,8 @@ export default class ProjectsPage extends React.Component {
 
     render() {
         return <section className="content">
-            ProjectsPage Content
+            <h1> Projects </h1>
+            <ProjectDataTable />
         </section>;
     }
 

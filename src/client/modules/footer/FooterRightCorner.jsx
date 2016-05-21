@@ -8,7 +8,7 @@ export default class FooterCopyright extends React.Component {
 
     render() {
         return <div className="pull-right hidden-xs">
-            WebGME Profile
+            Version 0.1.0-beta1
         </div>;
     }
 
