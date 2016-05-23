@@ -40,18 +40,27 @@ class ProjectsClient extends BaseClient {
     }
 
     /**
-     * Gets specific project
+     * Updates the metadata info of a specific project.
+     * Requires write access (FIXME: webgme should consider to only allow siteAdmins to do this).
+     * TODO: webgme should consider adding a description field.
      * @param {string} ownerId - id of owner
      * @param {string} projectName - name of project
-     * @param {object} projectObj - object containing project data to be updated
+     * @param {object} info - object containing project info data to be updated.
+     * @param {string} [parameters.viewedAt] - Sets the last viewed time.
+     * @param {string} [parameters.viewer] - Sets the last user who viewed the project.
+     * @param {string} [parameters.modifiedAt] - Sets the last modified time.
+     * @param {string} [parameters.modifier] - Sets the last user who modified the project.
+     * @param {string} [parameters.createdAt] - Sets the creator of the project.
+     * @param {string} [parameters.creator] - Sets the user who created the project.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    updateProject(ownerId, projectName, projectObj) {
-        return super.patch('projects/' + ownerId + '/' + projectName, projectObj);
+    updateProject(ownerId, projectName, info) {
+        return super.patch('projects/' + ownerId + '/' + projectName, info);
     }
 
     /**
-     * Deletes a specific project
+     * Deletes a specific project.
+     * Requires delete access.
      * @param {string} ownerId - id of owner
      * @param {string} projectName - name of project
      * @return {Promise} //TODO: How to document the resolved value.
@@ -61,7 +70,8 @@ class ProjectsClient extends BaseClient {
     }
 
     /**
-     * Removes a user or organization's right to a project
+     * Removes a user or organization's right to a project.
+     * Requires ownership, admin in org with ownership, or siteAdmin.
      * @param {string} ownerId - id of owner
      * @param {string} projectName - name of project
      * @param {string} userOrOrgId - id of user or org losing rights to project
@@ -72,7 +82,8 @@ class ProjectsClient extends BaseClient {
     }
 
     /**
-     * Grants a user or organization rights to a project
+     * Grants a user or organization rights to a project.
+     * Requires ownership, admin in org with ownership, or siteAdmin.
      * @param {string} ownerId - id of owner
      * @param {string} projectName - name of project
      * @param {string} userOrOrgId - id of user or org gaining rights to project
@@ -85,6 +96,7 @@ class ProjectsClient extends BaseClient {
 
     /**
      * Gets the latest commits for the project.
+     * Requires read access.
      * @param {string} ownerId - owner's id
      * @param {string} projectName = name of project
      * @param {number} [numCommits=100] - Maximum number of commits to retrieve.
@@ -98,7 +110,8 @@ class ProjectsClient extends BaseClient {
     }
 
     /**
-     * Retrieves commit object associated with commitId (Requires read access)
+     * Retrieves commit object associated with commitId.
+     * Requires read access.
      * @param {string} ownerId - owner's id
      * @param {string} projectName = name of project
      * @param {string} commitId - commit hash, with or w/o URL-enconded '#'
@@ -134,7 +147,8 @@ class ProjectsClient extends BaseClient {
     }
 
     /**
-     * Get a list of branches. Requires read access for project.
+     * Get a list of branches.
+     * Requires read access.
      * @param {string} ownerId - owner's id
      * @param {string} projectName = name of project
      * @return {Promise} //TODO: How to document the resolved value.

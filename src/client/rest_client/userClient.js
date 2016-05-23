@@ -17,13 +17,10 @@ class UserClient extends BaseClient {
     /**
      * TODO: WebGme needs API doc update on patch requests for user (currently exists in the implementation)
      * @param {object} parameters - Specifies the user info to be updated
-     * @param {string} parameters._id - New user ID
-     * @param {boolean} parameters.canCreate - Boolean to indicate whether or not a user can create
      * @param {string} parameters.email - New user email
-     * @param {array} parameters.orgs - Array of strings of organization names that user is a part of
-     * @param {object} parameters.projects - List of objects(individual projects}
-     * @param {string} parameters.projects.name - Name of each project
-     * @param {object} parameters.projects.permissions - Object with booleans for read, write, and delete
+     * @param {string} parameters.password - New user password
+     * @param {boolean} parameters.canCreate - Boolean to indicate whether or not a user can create
+     * @param {boolean} parameters.siteAdmin - Boolean to indicate whether or not a user is site admin
      * @param {object} parameters.data - New user data
      * @param {object} parameters.settings - New user settings
      * @return {Promise} //TODO: How to document the resolved value.
