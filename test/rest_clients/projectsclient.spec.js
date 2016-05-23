@@ -58,38 +58,48 @@ describe('Projects Rest Client', function () {
             .nodeify(done);
     });
 
-    it('should list all the projects (which at first is 2)', function (done) {
+    it('should list all the projects (which at first is 2)', function(done) {
         logger.debug(rest.projects);
         rest.projects.getAllProjects()
-            .then(function (projects) {
-                logger.debug('Projects: ', projects);
+            .then(function(projects) {
+                console.log('Projects: ', projects);
                 expect(projects.length).to.deep.equal(2);
                 done();
             })
             .catch(done);
     });
 
-    it('should add a new project', function (done) {
+    it('should list last commit date', function(done) {
+        console.log(rest.projects);
+        rest.projects.getLastModified('guest', 'guest+PROJECT1')
+            .then(function(date) {
+                console.log(date);
+                done();
+            })
+            .catch(done);
+    });
+
+    it('should add a new project', function(done) {
         var newProj = {type: 'file', seedName: 'EmptyProject', ownerId: 'guest'};
 
         rest.projects.getAllProjects()
-            .then(function (projectsData) {
+            .then(function(projectsData) {
                 logger.debug('Before Project data: ', projectsData);
                 expect(projectsData.length).to.deep.equal(2);
                 return rest.projects.addProject('guest', 'myProject', newProj);
             })
-            .then(function () {
+            .then(function() {
                 return rest.projects.getAllProjects();
             })
-            .then(function (projectData) {
+            .then(function(projectData) {
                 logger.debug('After project data: ', projectData);
                 expect(projectData.length).to.equal(3);
                 return rest.projects.deleteProject('guest', 'myProject');
             })
-            .then(function () {
+            .then(function() {
                 return rest.projects.getAllProjects();
             })
-            .then(function (projectData) {
+            .then(function(projectData) {
                 logger.debug('After project deleted: ', projectData);
                 expect(projectData.length).to.equal(2);
                 done();

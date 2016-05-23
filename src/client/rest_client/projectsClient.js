@@ -283,6 +283,19 @@ class ProjectsClient extends BaseClient {
         return super.delete('projects/' + ownerId + '/' + projectName + '/tags/' + tagId);
     }
 
+    /**
+     * Gets the date a specific project was last modified. Requires read access-implicit because calls getLatestCommits
+     * @param {string} ownerId - owner's id
+     * @param {string} projectName - name of project
+     * @return {Date} date last modified
+     */
+    getLastModified(ownerId, projectName) {
+        return this.getLatestCommits(ownerId, projectName, 1)
+            .then(function(data) {
+                return new Date(data[0].time);
+            });
+    }
+
 }
 
 module.exports = ProjectsClient;
