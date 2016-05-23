@@ -1,5 +1,7 @@
-import React from "react";
-import DataTableEntry from "./DataTableEntry.jsx";
+import React from 'react';
+import DataTableEntry from './DataTableEntry.jsx';
+import DataTableCategory from './DataTableCategory.jsx';
+import DataTablePagination from './DataTablePagination.jsx';
 
 var ProjectsDataTable = React.createClass({
 
@@ -27,21 +29,29 @@ var ProjectsDataTable = React.createClass({
         }
     ],
 
+    dataTableCategories: ['Project Name:', 'Owner', 'Organization:', 'Last Viewed:', 'Last Changed:'],
+
     render: function() {
 
+        // Formatting table categories
+        var categories = this.dataTableCategories;
+        var formattedCategories = [];
+        for (let i = 0; i < categories.length; i++) {
+            formattedCategories.push(<DataTableCategory name={categories[i]}/>);
+        }
+
+        // Formatting table entries
         var projectList = this.mockDataForNow;
         var formattedEntries = [];
 
-        for (var i = 0; i < projectList.length; i++) {
-
+        for (var project of projectList) {// projectList) {
             var eachEntry = {};
 
-            for (var field in projectList[i]) {
-                if (projectList[i].hasOwnProperty(field)) {
-                    eachEntry[field] = projectList[i][field]; // Why does dot notation vs bracket matter???
+            for (var field in project) {
+                if (project.hasOwnProperty(field)) {
+                    eachEntry[field] = project[field];
                 }
             }
-
             formattedEntries.push(<DataTableEntry {...eachEntry} />);
         }
 
@@ -83,66 +93,23 @@ var ProjectsDataTable = React.createClass({
                                    className="table table-bordered table-striped dataTable"
                                    role="grid"
                                    aria-describedby="example1_info">
+
                                 <thead>
                                 <tr role="row">
-                                    <th className="sorting_asc"
-                                        tabIndex="0"
-                                        aria-controls="example1"
-                                        rowSpan="1"
-                                        colSpan="1" aria-sort="ascending"
-                                        aria-label="Rendering engine: activate to sort column descending">
-                                        Project Name
-                                    </th>
-                                    <th className="sorting"
-                                        tabIndex="0"
-                                        aria-controls="example1"
-                                        rowSpan="1"
-                                        colSpan="1"
-                                        aria-label="Browser: activate to sort column ascending">
-                                        Owner:
-                                    </th>
-                                    <th className="sorting"
-                                        tabIndex="0"
-                                        aria-controls="example1"
-                                        rowSpan="1"
-                                        colSpan="1"
-                                        aria-label="Platform(s): activate to sort column ascending">
-                                        OwnerID:
-                                    </th>
-                                    <th className="sorting"
-                                        tabIndex="0"
-                                        aria-controls="example1"
-                                        rowSpan="1"
-                                        colSpan="1"
-                                        aria-label="Engine version: activate to sort column ascending">
-                                        Organization
-                                    </th>
-                                    <th className="sorting"
-                                        tabIndex="0"
-                                        aria-controls="example1"
-                                        rowSpan="1"
-                                        colSpan="1"
-                                        aria-label="CSS grade: activate to sort column ascending">
-                                        Last Changed
-                                    </th>
+                                    {formattedCategories}
                                 </tr>
                                 </thead>
 
-
                                 <tbody>
-
-                                {formattedEntries}
-
+                                    {formattedEntries}
                                 </tbody>
 
-
                                 <tfoot>
-                                <tr><th rowSpan="1" colSpan="1">Rendering engine</th>
-                                    <th rowSpan="1" colSpan="1">Browser</th>
-                                    <th rowSpan="1" colSpan="1">Platform(s)</th>
-                                    <th rowSpan="1" colSpan="1">Engine version</th>
-                                    <th rowSpan="1" colSpan="1">CSS grade</th></tr>
+                                <tr>
+                                    {formattedCategories}
+                                </tr>
                                 </tfoot>
+
                             </table>
                         </div>
                     </div>
@@ -153,36 +120,9 @@ var ProjectsDataTable = React.createClass({
                                  role="status"
                                  aria-live="polite">Showing 1 to {formattedEntries.length}</div>
                         </div>
-                        <div className="col-sm-7">
-                            <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                <ul className="pagination">
-                                    <li className="paginate_button previous disabled" id="example1_previous">
-                                        <a href="#" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
-                                    </li>
-                                    <li className="paginate_button active">
-                                        <a href="#" aria-controls="example1" data-dt-idx="1" tabIndex="0">1</a>
-                                    </li>
-                                    <li className="paginate_button ">
-                                        <a href="#" aria-controls="example1" data-dt-idx="2" tabIndex="0">2</a>
-                                    </li>
-                                    <li className="paginate_button ">
-                                        <a href="#" aria-controls="example1" data-dt-idx="3" tabIndex="0">3</a>
-                                    </li>
-                                    <li className="paginate_button ">
-                                        <a href="#" aria-controls="example1" data-dt-idx="4" tabIndex="0">4</a>
-                                    </li>
-                                    <li className="paginate_button ">
-                                        <a href="#" aria-controls="example1" data-dt-idx="5" tabIndex="0">5</a>
-                                    </li>
-                                    <li className="paginate_button ">
-                                        <a href="#" aria-controls="example1" data-dt-idx="6" tabIndex="0">6</a>
-                                    </li>
-                                    <li className="paginate_button next" id="example1_next">
-                                        <a href="#" aria-controls="example1" data-dt-idx="7" tabIndex="0">Next</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+
+                        <DataTablePagination />
+
                     </div>
                 </div>
             </div>
@@ -192,15 +132,3 @@ var ProjectsDataTable = React.createClass({
 });
 
 module.exports = ProjectsDataTable;
-
-
-
-
-
-
-
-
-
-
-
-

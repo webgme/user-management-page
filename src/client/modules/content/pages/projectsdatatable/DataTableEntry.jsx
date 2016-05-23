@@ -1,6 +1,6 @@
 import React from 'react';
 
-var DataTableEntry = React.createClass({
+class DataTableEntry extends React.Component {
 
     render() {
         return <tr role="row" className="odd">
@@ -11,6 +11,14 @@ var DataTableEntry = React.createClass({
             <td>{this.props.lastChanged}</td>
         </tr>;
     }
-});
+}
 
-module.exports = DataTableEntry;
+DataTableEntry.propTypes = {
+    name: React.PropTypes.string,
+    owner: React.PropTypes.string,
+    organization: React.PropTypes.string,
+    lastViewed: React.PropTypes.string,
+    lastChanged: React.PropTypes.string
+};
+
+export default DataTableEntry;
