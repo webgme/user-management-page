@@ -1,6 +1,7 @@
+/* eslint-env mocha */
 var testFixture = require('../globals');
 
-describe('Organizations Rest Client', function () {
+describe('Organizations Rest Client', function() {
     var expect = testFixture.expect,
         Q = testFixture.Q,
         gmeConfig = testFixture.getGmeConfig(),
@@ -10,21 +11,21 @@ describe('Organizations Rest Client', function () {
         rest,
         gmeAuth;
 
-    before(function (done) {
+    before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
-            .then(function (gmeAuth_) {
+            .then(function(gmeAuth_) {
                 gmeAuth = gmeAuth_;
             })
-            .then(function () {
+            .then(function() {
                 return Q.allDone([
                     gmeAuth.addUser('userOrgA', 'user@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addUser('userOrgAB', 'test@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addUser('userOrgB', 'test@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addOrganization('orgA', {someInfo: true})
-                    //TODO: Add and org B and maybe an empty one
+                    // TODO: Add and org B and maybe an empty one
                 ]);
             })
-            .then(function () {
+            .then(function() {
                 return Q.allDone([
                     gmeAuth.authorizeOrganization('orgA', 'user+project', 'create', {
                         read: true,
@@ -35,7 +36,7 @@ describe('Organizations Rest Client', function () {
                     gmeAuth.setAdminForUserInOrganization('userOrgA', 'orgA', true)
                 ]);
             })
-            .then(function () {
+            .then(function() {
                 server = testFixture.WebGME.standaloneServer(gmeConfig);
                 rest = new Rest(server.getUrl() + '/api/');
                 return Q.ninvoke(server, 'start');
@@ -43,7 +44,7 @@ describe('Organizations Rest Client', function () {
             .nodeify(done);
     });
 
-    after(function (done) {
+    after(function(done) {
         Q.allDone([
             Q.ninvoke(server, 'stop'),
             gmeAuth.unload()
@@ -51,11 +52,11 @@ describe('Organizations Rest Client', function () {
             .nodeify(done);
     });
 
-    it('should list all the organizations', function (done) {
+    it('should list all the organizations', function(done) {
         logger.debug('rest', rest);
         logger.debug(rest.organizations);
         rest.organizations.getAllOrganizations()
-            .then(function (organizationsData) {
+            .then(function(organizationsData) {
                 logger.debug(organizationsData);
                 expect(organizationsData instanceof Array).to.deep.equal(true);
                 done();

@@ -1,4 +1,4 @@
-/* globals it, before, after, describe */
+/* eslint-env mocha */
 var testFixture = require('../globals');
 
 describe('Users Rest Client', function() {
@@ -218,7 +218,7 @@ describe('Users Rest Client', function() {
 
         rest.users.setUserData('test', oldData)
             .then(function() {
-                rest.users.getUserData('test')
+                rest.users.getUserData('test');
             })
             .then(function(userData) {
                 logger.debug('Before: ', userData);

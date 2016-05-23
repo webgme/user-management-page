@@ -1,6 +1,7 @@
+/* eslint-env mocha */
 var testFixture = require('../globals');
 
-describe('Projects Rest Client', function () {
+describe('Projects Rest Client', function() {
     var expect = testFixture.expect,
         Q = testFixture.Q,
         gmeConfig = testFixture.getGmeConfig(),
@@ -13,19 +14,19 @@ describe('Projects Rest Client', function () {
         storage,
         gmeAuth;
 
-    before(function (done) {
+    before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
-            .then(function (gmeAuth_) {
+            .then(function(gmeAuth_) {
                 gmeAuth = gmeAuth_;
                 storage = testFixture.getMongoStorage(logger, gmeConfig, gmeAuth);
                 return storage.openDatabase();
             })
-            .then(function () {
+            .then(function() {
                 return Q.allDone([
                     gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true})
                 ]);
             })
-            .then(function () {
+            .then(function() {
                 return Q.allDone([
                     testFixture.importProject(storage, {
                         projectSeed: testFixture.SEED_DIR + 'EmptyProject.webgmex',
@@ -41,7 +42,7 @@ describe('Projects Rest Client', function () {
                     })
                 ]);
             })
-            .then(function () {
+            .then(function() {
                 server = testFixture.WebGME.standaloneServer(gmeConfig);
                 rest = new Rest(server.getUrl() + '/api/');
                 return Q.ninvoke(server, 'start');
@@ -49,7 +50,7 @@ describe('Projects Rest Client', function () {
             .nodeify(done);
     });
 
-    after(function (done) {
+    after(function(done) {
         Q.allDone([
             Q.ninvoke(server, 'stop'),
             gmeAuth.unload(),
@@ -62,7 +63,7 @@ describe('Projects Rest Client', function () {
         logger.debug(rest.projects);
         rest.projects.getAllProjects()
             .then(function(projects) {
-                console.log('Projects: ', projects);
+                logger.debug('Projects: ', projects);
                 expect(projects.length).to.deep.equal(2);
                 done();
             })
@@ -70,10 +71,10 @@ describe('Projects Rest Client', function () {
     });
 
     it('should list last commit date', function(done) {
-        console.log(rest.projects);
+        logger.debug(rest.projects);
         rest.projects.getLastModified('guest', 'guest+PROJECT1')
             .then(function(date) {
-                console.log(date);
+                logger.debug(date);
                 done();
             })
             .catch(done);

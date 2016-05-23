@@ -15,17 +15,6 @@ function RestClient(baseUrl) {
     this.projects = new ProjectsClient(baseUrl);
     this.organizations = new OrganizationsClient(baseUrl);
 
-    /**
-     * Last modified
-     * @
-     */
-    function lastModified(ownerId, projectName) {
-        
-    }
 }
-
-
-
-
 
 module.exports = RestClient;

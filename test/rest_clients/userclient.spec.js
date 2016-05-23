@@ -135,7 +135,7 @@ describe('User Rest Client', function() {
                 return rest.user.updateCurrentUserData(updatedData);
             })
             .then(function(userData) {
-                // logger.debug(userData);
+                logger.debug(userData);
                 return rest.user.getCurrentUserData();
             })
             .then(function(userData) {
