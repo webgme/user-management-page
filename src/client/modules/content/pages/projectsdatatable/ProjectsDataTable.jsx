@@ -1,12 +1,50 @@
-import React from 'react';
+import React from "react";
+import DataTableEntry from "./DataTableEntry.jsx";
 
-export default class ProjectsDataTable extends React.Component {
+var ProjectsDataTable = React.createClass({
 
-    constructor(props) {
-        super(props);
-    }
+    mockDataForNow: [
+        {
+            name: 'DeepForge',
+            owner: 'Brian',
+            organization: '-',
+            lastViewed: '5/29/2016',
+            lastChanged: '5/20/2016' // convert to Date objects later
+        },
+        {
+            name: 'test project',
+            owner: 'test',
+            organization: '-',
+            lastViewed: 'date',
+            lastChanged: 'date' // convert to Date objects later
+        },
+        {
+            name: 'other test project',
+            owner: 'test',
+            organization: '-',
+            lastViewed: 'date',
+            lastChanged: 'date' // convert to Date objects later
+        }
+    ],
 
-    render() {
+    render: function() {
+
+        var projectList = this.mockDataForNow;
+        var formattedEntries = [];
+
+        for (var i = 0; i < projectList.length; i++) {
+
+            var eachEntry = {};
+
+            for (var field in projectList[i]) {
+                if (projectList[i].hasOwnProperty(field)) {
+                    eachEntry[field] = projectList[i][field]; // Why does dot notation vs bracket matter???
+                }
+            }
+
+            formattedEntries.push(<DataTableEntry {...eachEntry} />);
+        }
+
         return <div className="box">
             <div className="box-header">
                 <h3 className="box-title">Data Table With Full Features</h3>
@@ -89,69 +127,15 @@ export default class ProjectsDataTable extends React.Component {
                                     </th>
                                 </tr>
                                 </thead>
+
+
                                 <tbody>
 
-                                <tr role="row" className="odd">
-                                    <td className="sorting_1">DeepForge</td>
-                                    <td>Brian</td>
-                                    <td>brianUserName</td>
-                                    <td>-</td>
-                                    <td>5/20/2016</td>
-                                </tr><tr role="row" className="even">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Firefox 1.5</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="odd">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Firefox 2.0</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="even">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Firefox 3.0</td>
-                                    <td>Win 2k+ / OSX.3+</td>
-                                    <td>1.9</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="odd">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Camino 1.0</td>
-                                    <td>OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="even">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Camino 1.5</td>
-                                    <td>OSX.3+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="odd">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Netscape 7.2</td>
-                                    <td>Win 95+ / Mac OS 8.6-9.2</td>
-                                    <td>1.7</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="even">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Netscape Browser 8</td>
-                                    <td>Win 98SE+</td>
-                                    <td>1.7</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="odd">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Netscape Navigator 9</td>
-                                    <td>Win 98+ / OSX.2+</td>
-                                    <td>1.8</td>
-                                    <td>A</td>
-                                </tr><tr role="row" className="even">
-                                    <td className="sorting_1">Gecko</td>
-                                    <td>Mozilla 1.0</td>
-                                    <td>Win 95+ / OSX.1+</td>
-                                    <td>1</td>
-                                    <td>A</td>
-                                </tr></tbody>
+                                {formattedEntries}
+
+                                </tbody>
+
+
                                 <tfoot>
                                 <tr><th rowSpan="1" colSpan="1">Rendering engine</th>
                                     <th rowSpan="1" colSpan="1">Browser</th>
@@ -167,7 +151,7 @@ export default class ProjectsDataTable extends React.Component {
                             <div className="dataTables_info"
                                  id="example1_info"
                                  role="status"
-                                 aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                                 aria-live="polite">Showing 1 to {formattedEntries.length}</div>
                         </div>
                         <div className="col-sm-7">
                             <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
@@ -205,4 +189,18 @@ export default class ProjectsDataTable extends React.Component {
         </div>;
     }
 
-}
+});
+
+module.exports = ProjectsDataTable;
+
+
+
+
+
+
+
+
+
+
+
+
