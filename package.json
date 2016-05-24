@@ -4,9 +4,9 @@
   "description": "User management page for webgme",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "build": "node ./node_modules/webpack/bin/webpack.js && cp ./src/server/usermanagement.js ./dist/usermanagement.js",
+    "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
+    "test_cover": "node ./node_modules/babel-istanbul/lib/cli.js --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec --timeout 10000 --recursive test",
     "webpack": "node ./node_modules/webpack/bin/webpack.js"
   },
   "repository": {
@@ -19,20 +19,42 @@
     "url": "https://github.com/webgme/user-management-page/issues"
   },
   "homepage": "https://github.com/webgme/user-management-page#readme",
-  "devDependencies": {
-    "http-server": "^0.8.5",
-    "webpack-dev-server": "^1.14.1",
+  "dependencies": {
+    "admin-lte": "^2.3.3",
     "babel-core": "^6.8.0",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-react": "^6.5.0",
-    "body-parser": "^1.15.1",
-    "express": "^4.13.4",
-    "webgme": "^2.0.0"
-  },
-  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "bootstrap-webpack": "0.0.5",
+    "css-loader": "^0.23.1",
+    "exports-loader": "^0.6.3",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "font-awesome": "^4.5.0",
+    "font-awesome-webpack": "0.0.4",
+    "imports-loader": "^0.6.5",
+    "jquery": "^2.2.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
+    "style-loader": "^0.13.1",
+    "superagent": "^1.8.3",
+    "url-loader": "^0.5.7",
     "webpack": "^1.13.0"
+  },
+  "devDependencies": {
+    "babel-istanbul": "^0.8.0",
+    "body-parser": "^1.15.1",
+    "chai": "3.5.0",
+    "eslint": "^2.10.2",
+    "eslint-config-google": "^0.5.0",
+    "eslint-plugin-react": "^5.1.1",
+    "express": "^4.13.4",
+    "http-server": "^0.8.5",
+    "mocha": "^2.4.5",
+    "webgme": "^2.0.0",
+    "webpack-dev-server": "^1.14.1"
   }
 }

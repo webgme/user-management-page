@@ -7,6 +7,14 @@
 node_modules
 
 dist/*.js
+dist/*.eot
+dist/*.jpg
+dist/*.woff2
+dist/*.woff
+dist/*.map
+dist/*.svg
+dist/*.ttf
+test-tmp/**
 
 *.log
 .idea
