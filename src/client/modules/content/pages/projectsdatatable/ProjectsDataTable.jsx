@@ -7,6 +7,7 @@ var ProjectsDataTable = React.createClass({
 
     mockDataForNow: [
         {
+            id: 1,
             name: 'DeepForge',
             owner: 'Brian',
             organization: '-',
@@ -14,6 +15,7 @@ var ProjectsDataTable = React.createClass({
             lastChanged: '5/20/2016' // convert to Date objects later
         },
         {
+            id: 2,
             name: 'test project',
             owner: 'test',
             organization: '-',
@@ -21,6 +23,7 @@ var ProjectsDataTable = React.createClass({
             lastChanged: 'date' // convert to Date objects later
         },
         {
+            id: 3,
             name: 'other test project',
             owner: 'test',
             organization: '-',
@@ -29,7 +32,13 @@ var ProjectsDataTable = React.createClass({
         }
     ],
 
-    dataTableCategories: ['Project Name:', 'Owner', 'Organization:', 'Last Viewed:', 'Last Changed:'],
+    dataTableCategories: [
+        {id: 1, name: 'Project Name:'},
+        {id: 2, name: 'Owner'},
+        {id: 3, name: 'Organization:'},
+        {id: 4, name: 'Last Viewed:'},
+        {id: 5, name: 'Last Changed:'}
+    ],
 
     render: function() {
 
@@ -37,14 +46,14 @@ var ProjectsDataTable = React.createClass({
         let formattedCategories = [];
         let categories = this.dataTableCategories;
         categories.forEach(function(category) {
-            formattedCategories.push(<DataTableCategory name={category}/>);
+            formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
         });
 
         // Formatting table entries
         let projectList = this.mockDataForNow;
         let formattedEntries = [];
         projectList.forEach(function(project) {
-            formattedEntries.push(<DataTableEntry {...Object.assign({}, project)} />);
+            formattedEntries.push(<DataTableEntry key={project.id} {...Object.assign({}, project)} />);
         });
 
         return <div className="box">
