@@ -34,26 +34,18 @@ var ProjectsDataTable = React.createClass({
     render: function() {
 
         // Formatting table categories
-        var categories = this.dataTableCategories;
-        var formattedCategories = [];
-        for (let i = 0; i < categories.length; i++) {
-            formattedCategories.push(<DataTableCategory name={categories[i]}/>);
-        }
+        let formattedCategories = [];
+        let categories = this.dataTableCategories;
+        categories.forEach(function(category) {
+            formattedCategories.push(<DataTableCategory name={category}/>);
+        });
 
         // Formatting table entries
-        var projectList = this.mockDataForNow;
-        var formattedEntries = [];
-
-        for (var project of projectList) {// projectList) {
-            var eachEntry = {};
-
-            for (var field in project) {
-                if (project.hasOwnProperty(field)) {
-                    eachEntry[field] = project[field];
-                }
-            }
-            formattedEntries.push(<DataTableEntry {...eachEntry} />);
-        }
+        let projectList = this.mockDataForNow;
+        let formattedEntries = [];
+        projectList.forEach(function(project) {
+            formattedEntries.push(<DataTableEntry {...Object.assign({}, project)} />);
+        });
 
         return <div className="box">
             <div className="box-header">
