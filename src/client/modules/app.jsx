@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import Header from './header/Header.jsx';
 import SideBar from './sidebar/SideBar.jsx';
@@ -11,6 +12,15 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {route: window.location.pathname + window.location.hash.substr(1)};
+    }
+
+    componentDidMount() {
+        window.addEventListener('hashchange', () => {
+            this.setState({
+                route: window.location.pathname + window.location.hash.substr(1)
+            });
+        });
     }
 
     /**
@@ -25,10 +35,11 @@ export default class App extends React.Component {
      * @return {XML} Can make this a user setting in the future
      */
     render() {
+
         return <div className="wrapper skin-blue">
             <Header/>
             <SideBar/>
-            <ContentWrapper/>
+            <ContentWrapper passRoute={this.state.route}/>
             <Footer/>
         </div>;
     }

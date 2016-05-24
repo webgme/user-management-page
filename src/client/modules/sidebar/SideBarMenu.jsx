@@ -1,4 +1,3 @@
-/* globals*/
 import React from 'react';
 
 export default class SideBarMenu extends React.Component {
@@ -11,13 +10,13 @@ export default class SideBarMenu extends React.Component {
         return <ul className="sidebar-menu">
             <li className="header">Site Navigation</li>
             <li className="active">
-                <a href="#"><i className="fa-user"/> <span>My Profile</span> </a>
+                <a href="#/profile/"><i className="fa fa-user"/> <span>My Profile</span> </a>
             </li>
             <li>
-                <a href="#"><i className="fa-cubes"/> <span>My Projects</span> </a>
+                <a href="#/projects/"><i className="fa fa-cubes"/> <span>My Projects</span> </a>
             </li>
             <li>
-                <a href="#"><i className="fa-university"/> <span>My Organizations</span> </a>
+                <a href="#/organizations/"><i className="fa fa-university"/> <span>My Organizations</span> </a>
             </li>
             <li className="treeview">
                 <a href="#">
