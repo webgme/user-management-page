@@ -1,6 +1,6 @@
 import BaseClient from './baseClient';
 
-class OrganizationsClient extends BaseClient {
+export default class OrganizationsClient extends BaseClient {
 
     constructor(baseUrl) {
         super(baseUrl);
@@ -83,5 +83,3 @@ class OrganizationsClient extends BaseClient {
     }
 
 }
-
-module.exports = OrganizationsClient;

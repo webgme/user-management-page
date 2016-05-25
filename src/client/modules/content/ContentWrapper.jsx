@@ -9,6 +9,7 @@ export default class ContentWrapper extends React.Component {
 
     constructor(props) {
         super(props);
+        this.restClient = props.restClient;
     }
 
     render() {
@@ -32,7 +33,7 @@ export default class ContentWrapper extends React.Component {
 
         return <div className="content-wrapper">
             <ContentWrapperHeader/>
-            <Child/>
+            <Child restClient={this.restClient}/>
         </div>;
     }
 
