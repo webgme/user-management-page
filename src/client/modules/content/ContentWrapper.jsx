@@ -3,7 +3,7 @@ import React from 'react';
 import OrganizationsPage from './pages/OrganizationsPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import UserProfilePage from './pages/UserProfilePage.jsx';
-import {Route} from 'react-router';
+import {Router, Route, hashHistory, browserHistory} from 'react-router';
 
 export default class ContentWrapper extends React.Component {
 
@@ -35,14 +35,11 @@ export default class ContentWrapper extends React.Component {
                 <Route path="/profile" component={UserProfilePage}/>
                 <Route path="/organizations" component={OrganizationsPage}/>
             </Router>
+            
         </div>;
     }
 
 }
-//
-// <Route path="/projects" component={ProjectsPage}/>
-// <Route path="/profile" component={UserProfilePage}/>
-//     <Route path="/organizations" component={OrganizationsPage}/>
 
 ContentWrapper.propTypes = {
     passRoute: React.PropTypes.string,
