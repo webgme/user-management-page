@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class SideBarMenu extends React.Component {
 
@@ -7,7 +8,14 @@ export default class SideBarMenu extends React.Component {
     }
 
     render() {
-        return <ul className="sidebar-menu">
+
+        let sidebarCategoryStyle = {
+            "line-height": "30px",
+            "font-family": "\"Helvetica Neue\", Roboto, Arial, \"Droid Sans\", sans-serif",
+            "color": "#E7E7E7"
+        };
+
+        return <ul className="sidebar-menu" style={sidebarCategoryStyle}>
             <li className="header">Site Navigation</li>
             <li className="active">
                 <a href="#/profile/"><i className="fa fa-user"/> <span>My Profile</span> </a>

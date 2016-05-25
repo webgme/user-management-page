@@ -13,16 +13,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {route: window.location.pathname + window.location.hash.substr(1)};
         this.restClient = new RestClient('', true);
-    }
-
-    componentDidMount() {
-        window.addEventListener('hashchange', () => {
-            this.setState({
-                route: window.location.pathname + window.location.hash.substr(1)
-            });
-        });
     }
 
     /**

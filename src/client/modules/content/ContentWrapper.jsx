@@ -13,23 +13,6 @@ export default class ContentWrapper extends React.Component {
 
     render() {
 
-        let Child;
-        switch (this.props.passRoute.match(/\w+\/$/)[0]) {
-        case 'projects/':
-            Child = ProjectsPage;
-            break;
-        case 'profile/':
-            Child = UserProfilePage;
-            break;
-        case 'organizations/':
-            Child = OrganizationsPage;
-            break;
-        default:
-            Child = ProjectsPage;
-            // First time registering the URL
-            window.location.hash = '#/projects/';
-        }
-
         return <div className="content-wrapper">
 
             <section className="content-header">
