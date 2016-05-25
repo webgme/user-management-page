@@ -2,6 +2,15 @@ import React from 'react';
 
 class DataTableEntry extends React.Component {
 
+    // render() {
+    //     return <tr role="row" className="odd">
+    //         <td className="sorting_1"><a href="#">{this.props.name}</a></td>
+    //         <td>{this.props.owner}</td>
+    //         <td>{this.props.info.viewedAt}</td>
+    //         <td>{this.props.info.modifiedAt}</td>
+    //     </tr>;
+    // }
+
     render() {
         return <tr role="row" className="odd">
             <td className="sorting_1"><a href="#">{this.props.name}</a></td>

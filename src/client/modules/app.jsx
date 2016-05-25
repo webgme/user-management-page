@@ -4,6 +4,7 @@ import Header from './header/Header.jsx';
 import SideBar from './sidebar/SideBar.jsx';
 import ContentWrapper from './content/ContentWrapper.jsx';
 import Footer from './footer/Footer.jsx';
+import RestClient from '../rest_client/restClient.js';
 
 /**
  * This is the main layout of the web-page.
@@ -13,6 +14,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {route: window.location.pathname + window.location.hash.substr(1)};
+        this.restClient = new RestClient('', true);
     }
 
     componentDidMount() {
@@ -38,8 +40,8 @@ export default class App extends React.Component {
 
         return <div className="wrapper skin-blue">
             <Header/>
-            <SideBar/>
-            <ContentWrapper passRoute={this.state.route}/>
+            <SideBar restClient={this.restClient}/>
+            <ContentWrapper passRoute={this.state.route} />
             <Footer/>
         </div>;
     }

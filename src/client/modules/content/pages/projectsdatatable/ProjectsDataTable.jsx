@@ -46,14 +46,15 @@ var ProjectsDataTable = React.createClass({
         let formattedCategories = [];
         let categories = this.dataTableCategories;
         categories.forEach(function(category) {
-            formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
+            formattedCategories.push(<DataTableCategory name={category.name}/>);
         });
+
 
         // Formatting table entries
         let projectList = this.mockDataForNow;
         let formattedEntries = [];
         projectList.forEach(function(project) {
-            formattedEntries.push(<DataTableEntry key={project.id} {...Object.assign({}, project)} />);
+            formattedEntries.push(<DataTableEntry {...Object.assign({}, project)} />);
         });
 
         return <div className="box">
@@ -102,7 +103,7 @@ var ProjectsDataTable = React.createClass({
                                 </thead>
 
                                 <tbody>
-                                    {formattedEntries}
+                                {formattedEntries}
                                 </tbody>
 
                                 <tfoot>
@@ -128,6 +129,7 @@ var ProjectsDataTable = React.createClass({
                 </div>
             </div>
         </div>;
+
     }
 
 });

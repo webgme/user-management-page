@@ -2,8 +2,9 @@ import BaseClient from './baseClient';
 
 class ProjectsClient extends BaseClient {
 
-    constructor(baseUrl) {
+    constructor(baseUrl, debugMode) {
         super(baseUrl);
+        this.debugMode = debugMode;
     }
 
     /**
@@ -11,7 +12,55 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllProjects() {
-        return super.get('projects');
+        var promise;
+        if (this.debugMode) {
+            promise = new Promise(function(resolve, reject) {
+                resolve([
+                    {
+                        _id: "johnDoe+Test_Project",
+                        owner: "johnDoe",
+                        name: "Test_Project",
+                        info: {
+                            createdAt: "2016-05-25T15:44:55.026Z",
+                            viewedAt: "2016-05-25T15:45:06.985Z",
+                            modifiedAt: "2016-05-25T15:44:55.295Z",
+                            creator: "johnDoe",
+                            viewer: "johnDoe",
+                            modifier: "johnDoe"
+                        }
+                    },
+                    {
+                        _id: "johnDoe+Some_Project",
+                        owner: "johnDoe",
+                        name: "Some_Project",
+                        info: {
+                            createdAt: "2016-05-25T15:45:06.723Z",
+                            viewedAt: "2016-05-25T15:51:11.066Z",
+                            modifiedAt: "2016-05-25T15:45:06.947Z",
+                            creator: "johnDoe",
+                            viewer: "johnDoe",
+                            modifier: "johnDoe"
+                        }
+                    },
+                    {
+                        _id: "johnDoe+Third_Project",
+                        owner: "johnDoe",
+                        name: "Third_Project",
+                        info: {
+                            createdAt: "2016-05-25T15:51:36.271Z",
+                            viewedAt: "2016-05-25T15:51:36.664Z",
+                            modifiedAt: "2016-05-25T15:51:36.626Z",
+                            creator: "johnDoe",
+                            viewer: "johnDoe",
+                            modifier: "johnDoe"
+                        }
+                    }
+                ]);
+            });
+        } else {
+            promise = super.get('projects');
+        }
+        return promise;
     }
 
     /**

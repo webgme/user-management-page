@@ -7,13 +7,14 @@ export default class SideBar extends React.Component {
 
     constructor(props) {
         super(props);
+        this.restClient = props.restClient;
     }
 
     render() {
         return <aside className="main-sidebar">
 
             <section className="sidebar">
-                <SideBarUserPanel />
+                <SideBarUserPanel restClient={this.restClient}/>
                 <SideBarSearchForm />
                 <SideBarMenu />
             </section>
