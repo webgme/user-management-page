@@ -25,6 +25,6 @@ export default class NotificationsMenu extends React.Component {
                 </li>
                 <li className="footer"><a href="#">View all</a></li>
             </ul>
-        </li>
+        </li>;
     }
 }

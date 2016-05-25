@@ -90,12 +90,6 @@ export default class ProjectsDataTable extends React.Component {
                                 {formattedEntries}
                                 </tbody>
 
-                                <tfoot>
-                                <tr>
-                                    {formattedCategories}
-                                </tr>
-                                </tfoot>
-
                             </table>
                         </div>
                     </div>
@@ -117,3 +111,7 @@ export default class ProjectsDataTable extends React.Component {
     }
 
 }
+
+ProjectsDataTable.propTypes = {
+    restClient: React.PropTypes.Object
+};

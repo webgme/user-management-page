@@ -39,7 +39,7 @@ export default class App extends React.Component {
     render() {
 
         return <div className="wrapper skin-blue">
-            <Header/>
+            <Header restClient={this.restClient}/>
             <SideBar restClient={this.restClient}/>
             <ContentWrapper passRoute={this.state.route} restClient={this.restClient}/>
             <Footer/>

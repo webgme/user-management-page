@@ -35,6 +35,6 @@ export default class TasksMenu extends React.Component {
                     <a href="#">View all tasks</a>
                 </li>
             </ul>
-        </li>
+        </li>;
     }
 }

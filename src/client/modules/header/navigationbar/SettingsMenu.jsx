@@ -9,6 +9,6 @@ export default class SettingsMenu extends React.Component {
     render() {
         return <li className="nondropdown settings-menu">
             <a href="#" data-toggle="control-sidebar"><i className="fa fa-gears"/></a>
-        </li>
+        </li>;
     }
 }
