@@ -1,9 +1,10 @@
 import BaseClient from './baseClient';
 
-class UserClient extends BaseClient {
+export default class UserClient extends BaseClient {
 
-    constructor(baseUrl) {
+    constructor(baseUrl, debugMode) {
         super(baseUrl);
+        this.debugMode = debugMode;
     }
 
     /**
@@ -11,7 +12,41 @@ class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getCurrentUser() {
-        return super.get('user');
+        var promise;
+        if (this.debugMode) {
+            promise = new Promise(function(resolve, reject) {
+                resolve({
+                    _id: "johnDoe",
+                    email: "john@Doe.com",
+                    canCreate: true,
+                    data: {},
+                    settings: {},
+                    projects: {
+                        'johnDoe+Test_Project': {
+                            read: true,
+                            write: true,
+                            delete: true
+                        },
+                        'johnDoe+Some_Project': {
+                            read: true,
+                            write: true,
+                            delete: true
+                        },
+                        'johnDoe+Third_Project': {
+                            read: true,
+                            write: true,
+                            delete: true
+                        }
+                    },
+                    type: "User",
+                    orgs: [],
+                    siteAdmin: true
+                });
+            });
+        } else {
+            promise = super.get('user');
+        }
+        return promise;
     }
 
     /**
@@ -72,5 +107,3 @@ class UserClient extends BaseClient {
     }
 
 }
-
-module.exports = UserClient;

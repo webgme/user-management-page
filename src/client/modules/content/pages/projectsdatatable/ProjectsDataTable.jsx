@@ -3,57 +3,42 @@ import DataTableEntry from './DataTableEntry.jsx';
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';
 
-var ProjectsDataTable = React.createClass({
+export default class ProjectsDataTable extends React.Component {
 
-    mockDataForNow: [
-        {
-            id: 1,
-            name: 'DeepForge',
-            owner: 'Brian',
-            organization: '-',
-            lastViewed: '5/29/2016',
-            lastChanged: '5/20/2016' // convert to Date objects later
-        },
-        {
-            id: 2,
-            name: 'test project',
-            owner: 'test',
-            organization: '-',
-            lastViewed: 'date',
-            lastChanged: 'date' // convert to Date objects later
-        },
-        {
-            id: 3,
-            name: 'other test project',
-            owner: 'test',
-            organization: '-',
-            lastViewed: 'date',
-            lastChanged: 'date' // convert to Date objects later
-        }
-    ],
+    constructor(props) {
+        super(props);
+        this.restClient = props.restClient;
+        this.state = {projects: []};
+    }
 
-    dataTableCategories: [
-        {id: 1, name: 'Project Name:'},
-        {id: 2, name: 'Owner'},
-        {id: 3, name: 'Organization:'},
-        {id: 4, name: 'Last Viewed:'},
-        {id: 5, name: 'Last Changed:'}
-    ],
+    componentDidMount() {
+        var self = this;
+        this.restClient.projects.getAllProjects()
+            .then(function(data) {
+                self.setState({projects: data});
+            });
+    }
 
-    render: function() {
+    render() {
 
         // Formatting table categories
         let formattedCategories = [];
-        let categories = this.dataTableCategories;
+        let categories = [
+            {id: 1, name: 'Project Name:'},
+            {id: 2, name: 'Owner'},
+            {id: 3, name: 'Organization:'},
+            {id: 4, name: 'Last Viewed:'},
+            {id: 5, name: 'Last Changed:'}
+        ];
         categories.forEach(function(category) {
-            formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
+            formattedCategories.push(<DataTableCategory name={category.name}/>);
         });
 
         // Formatting table entries
-        let projectList = this.mockDataForNow;
+        let projectList = this.state.projects;
         let formattedEntries = [];
         projectList.forEach(function(project) {
-            formattedEntries.push(<DataTableEntry key={project.id} {...Object.assign({}, project)} />);
+            formattedEntries.push(<DataTableEntry {...Object.assign({}, project)} />);
         });
 
         return <div className="box">
@@ -102,14 +87,8 @@ var ProjectsDataTable = React.createClass({
                                 </thead>
 
                                 <tbody>
-                                    {formattedEntries}
+                                {formattedEntries}
                                 </tbody>
-
-                                <tfoot>
-                                <tr>
-                                    {formattedCategories}
-                                </tr>
-                                </tfoot>
 
                             </table>
                         </div>
@@ -128,8 +107,11 @@ var ProjectsDataTable = React.createClass({
                 </div>
             </div>
         </div>;
+
     }
 
-});
+}
 
-module.exports = ProjectsDataTable;
+ProjectsDataTable.propTypes = {
+    restClient: React.PropTypes.Object
+};

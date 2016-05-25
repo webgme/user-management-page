@@ -1,6 +1,4 @@
 import React from 'react';
-import FooterCopyright from './FooterCopyright.jsx';
-import FooterRightCorner from './FooterRightCorner.jsx';
 
 export default class Footer extends React.Component {
 
@@ -10,8 +8,17 @@ export default class Footer extends React.Component {
 
     render() {
         return <footer className="main-footer">
-            <FooterCopyright />
-            <FooterRightCorner />
+
+            <strong>Copyright &copy; 2016
+                <a href="https://www.webgme.org" target="_blank">
+                    Vanderbilt University ISIS WebGME
+                </a>.All rights reserved.
+            </strong>
+
+            <div className="pull-right hidden-xs">
+                Version 0.1.0-beta1
+            </div>;
+
         </footer>;
     }
 

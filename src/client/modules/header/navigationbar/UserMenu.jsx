@@ -17,7 +17,7 @@ export default class UserMenu extends React.Component {
                     <img src="./user2-160x160.jpg" className="img-circle" alt="User Image"/>
 
                     <p>
-                        Alexander Pierce - Web Developer
+                        Alexander Pierce - WebGME
                         <small>Member since Nov. 2012</small>
                     </p>
                 </li>
@@ -43,6 +43,6 @@ export default class UserMenu extends React.Component {
                     </div>
                 </li>
             </ul>
-        </li>
+        </li>;
     }
 }
