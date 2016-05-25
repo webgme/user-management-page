@@ -15,7 +15,5 @@ require('admin-lte/dist/css/skins/_all-skins.min.css');
 require('admin-lte/dist/js/app');
 
 render((
-    <Router history={hashHistory}>
-        <Route path="/" component={App}/>
-    </Router>
+    <App/>
 ), document.getElementById('mainEntry'));

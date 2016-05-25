@@ -29,6 +29,12 @@ export default class ContentWrapper extends React.Component {
                     </li>
                 </ol>
             </section>
+
+            <Router>
+                <Route path="/projects" component={ProjectsPage}/>
+                <Route path="/profile" component={UserProfilePage}/>
+                <Route path="/organizations" component={OrganizationsPage}/>
+            </Router>
         </div>;
     }
 
