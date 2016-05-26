@@ -29,7 +29,7 @@ export default class ProjectsDataTable extends React.Component {
 
     handleSelect(event) {
         this.setState({
-            selectValue: event.target.value
+            selectValue: parseInt(event.target.value.trim())
         });
     }
 
@@ -55,40 +55,34 @@ export default class ProjectsDataTable extends React.Component {
         });
 
 
-        // Formatting table entries
-        let formattedEntries = [],
-            projectList = this.state.projects,
-            self = this,
-            startIndexInProjects = ( self.state.pageNumber - 1 ) * self.state.selectValue,
+        // Setting up bounds
+        let projectList = this.state.projects,
+            startIndexInProjects = ( this.state.pageNumber - 1 ) * this.state.selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd;
 
         // Putting together "show string"
-        if (projectList.length > (startIndexInProjects + self.state.selectValue)) {
-            displayNumEnd = startIndexInProjects + self.state.selectValue;
+        if (projectList.length > (startIndexInProjects + this.state.selectValue)) {
+            displayNumEnd = (startIndexInProjects + this.state.selectValue);
         } else {
             displayNumEnd = projectList.length;
         }
-
         let showString = 'Showing ' + displayNumStart + ' to ' + displayNumEnd;
         if (displayNumStart > projectList.length) {
             showString = 'Nothing to show.';
         }
 
-        projectList.forEach(function(project, index) {
-            let eachProject = Object.assign({}, project);
-            eachProject.id = index;
-            // change this to reduce later or filter (consider efficiency though)
-            // account for page number
+        // Formatting table entries
+        let formattedEntries = [];
+        for(let i = displayNumStart; i < displayNumEnd; i++) {
+            formattedEntries.push(<DataTableEntry key={i} {...Object.assign({}, projectList[i])} />);
+        }
 
-            if (index >= startIndexInProjects && index < (startIndexInProjects + self.state.selectValue)) {
-                formattedEntries.push(<DataTableEntry key={eachProject.id} {...eachProject} />);
-            }
-        });
 
         //Formatting selections (can make more efficient later)
         let selectOptions = [10, 25, 50 , 100];
 
+        
         return <div className="box">
             <div className="box-header">
                 <h3 className="box-title">Data Table With Full Features</h3>
