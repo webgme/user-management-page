@@ -38,7 +38,7 @@ export default class SideBarUserPanel extends React.Component {
         };
 
         let imageStyle = {
-            "max-width": "70px"
+            "maxWidth": "70px"
         };
 
         return <div className="user-panel" style={panelStyle}>

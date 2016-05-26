@@ -10,8 +10,8 @@ export default class SideBarMenu extends React.Component {
     render() {
 
         let sidebarCategoryStyle = {
-            "line-height": "30px",
-            "font-family": "\"Helvetica Neue\", Roboto, Arial, \"Droid Sans\", sans-serif",
+            "lineHeight": "30px",
+            "fontFamily": "\"Helvetica Neue\", Roboto, Arial, \"Droid Sans\", sans-serif",
             "color": "#E7E7E7"
         };
 

@@ -1,15 +1,11 @@
 /* global window */
 import React from 'react';
-import OrganizationsPage from './pages/OrganizationsPage.jsx';
-import ProjectsPage from './pages/ProjectsPage.jsx';
-import UserProfilePage from './pages/UserProfilePage.jsx';
 import {Router, Route, hashHistory, browserHistory} from 'react-router';
 
 export default class ContentWrapper extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = props.restClient;
     }
 
     render() {
@@ -31,12 +27,8 @@ export default class ContentWrapper extends React.Component {
             </section>
 
             {this.props.children}
-            
+
         </div>;
     }
 
 }
-
-ContentWrapper.propTypes = {
-    restClient: React.PropTypes.Object
-};

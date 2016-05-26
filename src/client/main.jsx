@@ -7,10 +7,7 @@ import ProjectsPage from './modules/content/pages/ProjectsPage.jsx';
 import UserProfilePage from './modules/content/pages/UserProfilePage.jsx';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage.jsx';
 import ContentWrapper from './modules/content/ContentWrapper.jsx';
-import Header from './modules/header/Header.jsx';
-import Sidebar from './modules/sidebar/SideBar.jsx';
-import Footer from './modules/footer/Footer.jsx';
-
+import ProjectPage from './modules/content/pages/ProjectPage.jsx';
 
 require('bootstrap-webpack');
 require('font-awesome-webpack');
@@ -25,9 +22,16 @@ render((
         <Route path='/' component={App}>
 
             <Route component={ContentWrapper}>
+
                 <Route path='/projects' component={ProjectsPage}/>
+
+                {/*Singular project needs same space so not a subcomponent*/}
+                <Route path="/projects/:ownerId/:projectName" component={ProjectPage}/>
+
                 <Route path='/profile' component={UserProfilePage}/>
+
                 <Route path='/organizations' component={OrganizationsPage}/>
+
             </Route>
 
         </Route>
