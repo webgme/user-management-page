@@ -30,11 +30,7 @@ export default class ContentWrapper extends React.Component {
                 </ol>
             </section>
 
-            <Router>
-                <Route path="/projects" component={ProjectsPage}/>
-                <Route path="/profile" component={UserProfilePage}/>
-                <Route path="/organizations" component={OrganizationsPage}/>
-            </Router>
+            {this.props.children}
             
         </div>;
     }
@@ -42,6 +38,5 @@ export default class ContentWrapper extends React.Component {
 }
 
 ContentWrapper.propTypes = {
-    passRoute: React.PropTypes.string,
     restClient: React.PropTypes.Object
 };

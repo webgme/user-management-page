@@ -5,6 +5,7 @@ import SideBar from './sidebar/SideBar.jsx';
 import ContentWrapper from './content/ContentWrapper.jsx';
 import Footer from './footer/Footer.jsx';
 import RestClient from '../rest_client/restClient.js';
+import {Route} from 'react-router';
 
 /**
  * This is the main layout of the web-page.
@@ -29,10 +30,11 @@ export default class App extends React.Component {
      */
     render() {
 
+        console.log('in app', this.props);
         return <div className="wrapper skin-blue">
-            <Header restClient={this.restClient}/>
+            <Header/>
             <SideBar restClient={this.restClient}/>
-            <ContentWrapper restClient={this.restClient}/>
+            {this.props.children} {/*<-- This is the ContentWrapper*/}
             <Footer/>
         </div>;
     }
