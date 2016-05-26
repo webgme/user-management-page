@@ -7,17 +7,17 @@ export default class UserMenu extends React.Component {
     }
 
     render() {
+
         return <li className="dropdown user user-menu">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                <img src="./user2-160x160.jpg" className="user-image" alt="User Image"/>
-                <span className="hidden-xs">Alexander Pierce</span>
+                <img src="https://webgme.org/images/webgme-header-logo.png" className="user-image" alt="User Image"/>
+                <span className="hidden-xs">First Last</span>
             </a>
             <ul className="dropdown-menu">
                 <li className="user-header">
-                    <img src="./user2-160x160.jpg" className="img-circle" alt="User Image"/>
-
+                    <img src="https://webgme.org/images/webgme-header-logo.png" className="img-circle" alt="User Image"/>
                     <p>
-                        Alexander Pierce - WebGME
+                        Alexander Pierce - Web Developer
                         <small>Member since Nov. 2012</small>
                     </p>
                 </li>

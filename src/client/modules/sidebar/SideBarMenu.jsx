@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class SideBarMenu extends React.Component {
 
@@ -7,16 +8,23 @@ export default class SideBarMenu extends React.Component {
     }
 
     render() {
-        return <ul className="sidebar-menu">
+
+        let sidebarCategoryStyle = {
+            "lineHeight": "30px",
+            "fontFamily": "\"Helvetica Neue\", Roboto, Arial, \"Droid Sans\", sans-serif",
+            "color": "#E7E7E7"
+        };
+
+        return <ul className="sidebar-menu" style={sidebarCategoryStyle}>
             <li className="header">Site Navigation</li>
             <li className="active">
-                <a href="#/profile/"><i className="fa fa-user"/> <span>My Profile</span> </a>
+                <Link to="/profile"><i className="fa fa-user"/> <span>My Profile</span> </Link>
             </li>
             <li>
-                <a href="#/projects/"><i className="fa fa-cubes"/> <span>My Projects</span> </a>
+                <Link to="/projects"><i className="fa fa-cubes"/> <span>My Projects</span> </Link>
             </li>
             <li>
-                <a href="#/organizations/"><i className="fa fa-university"/> <span>My Organizations</span> </a>
+                <Link to="/organizations"><i className="fa fa-university"/> <span>My Organizations</span> </Link>
             </li>
             <li className="treeview">
                 <a href="#">

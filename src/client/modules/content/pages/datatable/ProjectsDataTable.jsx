@@ -2,12 +2,13 @@ import React from 'react';
 import DataTableEntry from './DataTableEntry.jsx';
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';
+import RestClient from '../../../../rest_client/restClient.js';
 
 export default class ProjectsDataTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = props.restClient;
+        this.restClient = new RestClient('', true);
         this.state = {projects: []};
     }
 
@@ -20,7 +21,7 @@ export default class ProjectsDataTable extends React.Component {
     }
 
     render() {
-
+        
         // Formatting table categories
         let formattedCategories = [];
         let categories = [
@@ -31,14 +32,16 @@ export default class ProjectsDataTable extends React.Component {
             {id: 5, name: 'Last Changed:'}
         ];
         categories.forEach(function(category) {
-            formattedCategories.push(<DataTableCategory name={category.name}/>);
+            formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
         });
 
         // Formatting table entries
         let projectList = this.state.projects;
         let formattedEntries = [];
-        projectList.forEach(function(project) {
-            formattedEntries.push(<DataTableEntry {...Object.assign({}, project)} />);
+        projectList.forEach(function(project, index) {
+            let eachProject = Object.assign({}, project);
+            eachProject.id = index;
+            formattedEntries.push(<DataTableEntry key={eachProject.id} {...eachProject} />);
         });
 
         return <div className="box">
@@ -111,7 +114,3 @@ export default class ProjectsDataTable extends React.Component {
     }
 
 }
-
-ProjectsDataTable.propTypes = {
-    restClient: React.PropTypes.Object
-};
