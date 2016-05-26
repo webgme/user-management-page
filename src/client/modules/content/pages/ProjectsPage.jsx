@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjectDataTable from './projectsdatatable/ProjectsDataTable.jsx';
+import ProjectsDataTable from './datatable/ProjectsDataTable.jsx';
 
 export default class ProjectsPage extends React.Component {
 
@@ -11,7 +11,7 @@ export default class ProjectsPage extends React.Component {
     render() {
         return <section className="content">
             <h1> Projects </h1>
-            <ProjectDataTable restClient={this.restClient}/>
+            <ProjectsDataTable restClient={this.restClient}/>
         </section>;
     }
 

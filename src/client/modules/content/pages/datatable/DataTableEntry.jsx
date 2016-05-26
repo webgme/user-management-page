@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-
 export default class DataTableEntry extends React.Component {
 
     render() {
@@ -21,6 +20,7 @@ export default class DataTableEntry extends React.Component {
             <td>{this.props.info.viewedAt}</td>
 
             <td>{this.props.info.modifiedAt}</td>
+            
         </tr>;
     }
 }

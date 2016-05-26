@@ -1,6 +1,6 @@
 import React from 'react';
 
-class DataTableCategories extends React.Component {
+export default class DataTableCategories extends React.Component {
 
     render() {
         return <th className="sorting_asc"
@@ -17,5 +17,3 @@ class DataTableCategories extends React.Component {
 DataTableCategories.propTypes = {
     name: React.PropTypes.string
 };
-
-export default DataTableCategories;
