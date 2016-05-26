@@ -9,7 +9,12 @@ export default class ProjectsDataTable extends React.Component {
     constructor(props) {
         super(props);
         this.restClient = new RestClient('', true);
-        this.state = {projects: []};
+        this.state = {
+            projects: [],
+            selectValue: 10
+        };
+        {/* This is required for nonReact functions to use this in its context*/}
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     componentDidMount() {
@@ -20,8 +25,14 @@ export default class ProjectsDataTable extends React.Component {
             });
     }
 
+    handleSelect(event) {
+        this.setState({
+            selectValue: event.target.value
+        });
+    }
+
     render() {
-        
+
         // Formatting table categories
         let formattedCategories = [];
         let categories = [
@@ -35,14 +46,22 @@ export default class ProjectsDataTable extends React.Component {
             formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
         });
 
+
         // Formatting table entries
         let projectList = this.state.projects;
         let formattedEntries = [];
+        let self = this;
         projectList.forEach(function(project, index) {
             let eachProject = Object.assign({}, project);
             eachProject.id = index;
-            formattedEntries.push(<DataTableEntry key={eachProject.id} {...eachProject} />);
+            // change this to reduce later or filter (consider efficiency though)
+            if (index < self.state.selectValue) {
+                formattedEntries.push(<DataTableEntry key={eachProject.id} {...eachProject} />);
+            }
         });
+
+        //Formatting selections (can make more efficient later)
+        let selectOptions = [10, 25, 50 , 100];
 
         return <div className="box">
             <div className="box-header">
@@ -51,12 +70,15 @@ export default class ProjectsDataTable extends React.Component {
             <div className="box-body">
                 <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
                     <div className="row">
+
+                        {/* Number of entries shown */}
                         <div className="col-sm-6">
                             <div className="dataTables_length" id="example1_length">
                                 <label>Show
                                     <select name="example1_length"
                                             aria-controls="example1"
-                                            className="form-control input-sm">
+                                            className="form-control input-sm"
+                                            onChange={this.handleSelect}>
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
@@ -65,6 +87,8 @@ export default class ProjectsDataTable extends React.Component {
                                 </label>
                             </div>
                         </div>
+
+                        {/* Search bar */}
                         <div className="col-sm-6">
                             <div id="example1_filter" className="dataTables_filter">
                                 <label>Search:
@@ -75,6 +99,7 @@ export default class ProjectsDataTable extends React.Component {
                                 </label>
                             </div>
                         </div>
+
                     </div>
                     <div className="row">
                         <div className="col-sm-12">
@@ -96,17 +121,20 @@ export default class ProjectsDataTable extends React.Component {
                             </table>
                         </div>
                     </div>
+
                     <div className="row">
                         <div className="col-sm-5">
                             <div className="dataTables_info"
                                  id="example1_info"
                                  role="status"
-                                 aria-live="polite">Showing 1 to {formattedEntries.length}</div>
+                                 aria-live="polite">Showing 1 to {formattedEntries.length}
+                            </div>
                         </div>
 
                         <DataTablePagination />
 
                     </div>
+
                 </div>
             </div>
         </div>;

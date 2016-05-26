@@ -3,9 +3,17 @@ import React from 'react';
 export default class DataTableEntry extends React.Component {
 
     render() {
+
+        let paginationStyle = {
+            "marginTop": "20px",
+            "marginRight": "170px",
+            "marginBottom": "20px",
+            "marginLeft": "170px"
+        };
+
         return <div className="col-sm-7">
             <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                <ul className="pagination">
+                <ul className="pagination" style={paginationStyle}>
                     <li className="paginate_button previous disabled" id="example1_previous">
                         <a href="#" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
                     </li>

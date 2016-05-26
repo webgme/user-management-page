@@ -15,8 +15,6 @@ export default class SideBarMenu extends React.Component {
             "color": "#E7E7E7"
         };
 
-        console.log('in sidebarmenu, props: ', this.props);
-
         return (
 
         <ul className="sidebar-menu" style={sidebarCategoryStyle}>
@@ -24,15 +22,11 @@ export default class SideBarMenu extends React.Component {
             <li className="header">Site Navigation</li>
 
             <li className={this.props.location.pathname === '/profile' ? 'active' : ''}>
-                <Link to="/profile">
-                    <i className="fa fa-user"/><span>My Profile</span>
-                </Link>
+                <Link to="/profile"><i className="fa fa-user"/> <span>My Profile</span> </Link>
             </li>
 
             <li className={this.props.location.pathname === '/projects' ? 'active' : ''}>
-                <Link to="/projects">
-                    <i className="fa fa-cubes"/><span>My Projects</span>
-                </Link>
+                <Link to="/projects"><i className="fa fa-cubes"/> <span>My Projects</span> </Link>
             </li>
 
             <li className={this.props.location.pathname === '/organizations' ? 'active' : ''}>
