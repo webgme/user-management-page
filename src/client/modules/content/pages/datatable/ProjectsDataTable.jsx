@@ -11,10 +11,12 @@ export default class ProjectsDataTable extends React.Component {
         this.restClient = new RestClient('', true);
         this.state = {
             projects: [],
-            selectValue: 10
+            selectValue: 10,
+            pageNumber: 1
         };
-        {/* This is required for nonReact functions to use this in its context*/}
+        {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
+        this.handlePagination = this.handlePagination.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +30,12 @@ export default class ProjectsDataTable extends React.Component {
     handleSelect(event) {
         this.setState({
             selectValue: event.target.value
+        });
+    }
+
+    handlePagination(event) {
+        this.setState({
+            pageNumber: parseInt(event.target.innerHTML.trim(), 10)
         });
     }
 
@@ -48,14 +56,32 @@ export default class ProjectsDataTable extends React.Component {
 
 
         // Formatting table entries
-        let projectList = this.state.projects;
-        let formattedEntries = [];
-        let self = this;
+        let formattedEntries = [],
+            projectList = this.state.projects,
+            self = this,
+            startIndexInProjects = ( self.state.pageNumber - 1 ) * self.state.selectValue,
+            displayNumStart = startIndexInProjects + 1,
+            displayNumEnd;
+
+        // Putting together "show string"
+        if (projectList.length > (startIndexInProjects + self.state.selectValue)) {
+            displayNumEnd = startIndexInProjects + self.state.selectValue;
+        } else {
+            displayNumEnd = projectList.length;
+        }
+
+        let showString = 'Showing ' + displayNumStart + ' to ' + displayNumEnd;
+        if (displayNumStart > projectList.length) {
+            showString = 'Nothing to show.';
+        }
+
         projectList.forEach(function(project, index) {
             let eachProject = Object.assign({}, project);
             eachProject.id = index;
             // change this to reduce later or filter (consider efficiency though)
-            if (index < self.state.selectValue) {
+            // account for page number
+
+            if (index >= startIndexInProjects && index < (startIndexInProjects + self.state.selectValue)) {
                 formattedEntries.push(<DataTableEntry key={eachProject.id} {...eachProject} />);
             }
         });
@@ -127,11 +153,40 @@ export default class ProjectsDataTable extends React.Component {
                             <div className="dataTables_info"
                                  id="example1_info"
                                  role="status"
-                                 aria-live="polite">Showing 1 to {formattedEntries.length}
+                                 aria-live="polite">{showString}
                             </div>
                         </div>
 
-                        <DataTablePagination />
+                        <div className="col-sm-7">
+                            <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul className="pagination">
+                                    <li className="paginate_button previous disabled" id="example1_previous">
+                                        <a href="#" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
+                                    </li>
+                                    <li className={this.state.pageNumber === 1 ? "paginate_button active" : "paginate_button "}>
+                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="1" tabIndex="0">1</a>
+                                    </li>
+                                    <li className={this.state.pageNumber === 2 ? "paginate_button active" : "paginate_button "}>
+                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="2" tabIndex="0">2</a>
+                                    </li>
+                                    <li className={this.state.pageNumber === 3 ? "paginate_button active" : "paginate_button "}>
+                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="3" tabIndex="0">3</a>
+                                    </li>
+                                    <li className={this.state.pageNumber === 4 ? "paginate_button active" : "paginate_button "}>
+                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="4" tabIndex="0">4</a>
+                                    </li>
+                                    <li className={this.state.pageNumber === 5 ? "paginate_button active" : "paginate_button "}>
+                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="5" tabIndex="0">5</a>
+                                    </li>
+                                    <li className={this.state.pageNumber === 6 ? "paginate_button active" : "paginate_button "}>
+                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="6" tabIndex="0">6</a>
+                                    </li>
+                                    <li className="paginate_button next" id="example1_next">
+                                        <a href="#" aria-controls="example1" data-dt-idx="7" tabIndex="0">Next</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
                     </div>
 
