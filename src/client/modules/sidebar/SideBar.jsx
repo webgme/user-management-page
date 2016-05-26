@@ -34,7 +34,3 @@ export default class SideBar extends React.Component {
     }
 
 }
-
-SideBar.propTypes = {
-    restClient: React.PropTypes.func
-};

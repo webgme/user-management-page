@@ -32,17 +32,16 @@ export default class ProjectsDataTable extends React.Component {
             {id: 5, name: 'Last Changed:'}
         ];
         categories.forEach(function(category) {
-            formattedCategories.push(<DataTableCategory name={category.name}/>);
+            formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
         });
 
         // Formatting table entries
-
-        console.log('printing inside render: ', this.state.projects);
-        
         let projectList = this.state.projects;
         let formattedEntries = [];
-        projectList.forEach(function(project) {
-            formattedEntries.push(<DataTableEntry {...Object.assign({}, project)} />);
+        projectList.forEach(function(project, index) {
+            let eachProject = Object.assign({}, project);
+            eachProject.id = index;
+            formattedEntries.push(<DataTableEntry key={eachProject.id} {...eachProject} />);
         });
 
         return <div className="box">

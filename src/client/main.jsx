@@ -2,7 +2,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 import App from './modules/app.jsx';
-import {Router, Route, hashHistory, browserHistory} from 'react-router';
+import {Router, Route, hashHistory, IndexRedirect} from 'react-router';
 import ProjectsPage from './modules/content/pages/ProjectsPage.jsx';
 import UserProfilePage from './modules/content/pages/UserProfilePage.jsx';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage.jsx';
@@ -20,6 +20,8 @@ render((
     <Router history={hashHistory}>
 
         <Route path='/' component={App}>
+
+            <IndexRedirect to="/projects"/>
 
             <Route component={ContentWrapper}>
 
