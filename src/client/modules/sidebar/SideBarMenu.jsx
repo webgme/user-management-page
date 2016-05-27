@@ -15,17 +15,24 @@ export default class SideBarMenu extends React.Component {
             "color": "#E7E7E7"
         };
 
-        return <ul className="sidebar-menu" style={sidebarCategoryStyle}>
+        return (
+
+        <ul className="sidebar-menu" style={sidebarCategoryStyle}>
+
             <li className="header">Site Navigation</li>
-            <li className="active">
+
+            <li className={this.props.location.pathname === '/profile' ? 'active' : ''}>
                 <Link to="/profile"><i className="fa fa-user"/> <span>My Profile</span> </Link>
             </li>
-            <li>
+
+            <li className={this.props.location.pathname === '/projects' ? 'active' : ''}>
                 <Link to="/projects"><i className="fa fa-cubes"/> <span>My Projects</span> </Link>
             </li>
-            <li>
+
+            <li className={this.props.location.pathname === '/organizations' ? 'active' : ''}>
                 <Link to="/organizations"><i className="fa fa-university"/> <span>My Organizations</span> </Link>
             </li>
+
             <li className="treeview">
                 <a href="#">
                     <i className="fa fa-link"/> <span>Multilevel</span> <i className="fa fa-angle-left pull-right"/>
@@ -35,7 +42,9 @@ export default class SideBarMenu extends React.Component {
                     <li><a href="#"><i className="fa fa-circle-o"></i>Sublevel 2</a></li>
                 </ul>
             </li>
-        </ul>;
+
+        </ul>
+        );
     }
 
 }
