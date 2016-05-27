@@ -12,13 +12,15 @@ export default class ProjectsDataTable extends React.Component {
         this.state = {
             projects: [],
             selectValue: 10,
-            pageNumber: 1
+            pageNumber: 1,
+            searchText: ''
         };
         {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
         this.handleNextPagination = this.handleNextPagination.bind(this);
         this.handlePreviousPagination = this.handlePreviousPagination.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -55,6 +57,14 @@ export default class ProjectsDataTable extends React.Component {
         });
     }
 
+    handleSearch(event) {
+        console.log('Old search state: ', this.state.searchText);
+        this.setState({
+            searchText: event.target.value
+        });
+        console.log('New search state: ', this.state.searchText);
+    }
+
     render() {
 
         // Formatting table categories
@@ -72,7 +82,11 @@ export default class ProjectsDataTable extends React.Component {
 
 
         // Setting up bounds
-        let projectList = this.state.projects,
+        let self = this;
+        let projectList = this.state.projects.filter( oneProject => {
+            let filterRegex = new RegExp(self.state.searchText);
+            return filterRegex.test(oneProject.name);
+        }),
             startIndexInProjects = ( this.state.pageNumber - 1 ) * this.state.selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd;
@@ -140,10 +154,12 @@ export default class ProjectsDataTable extends React.Component {
                         <div className="col-sm-6">
                             <div id="example1_filter" className="dataTables_filter">
                                 <label>Search:
-                                    <input type="search"
+                                    <input type="text"
                                            className="form-control input-sm"
-                                           placeholder=""
-                                           aria-controls="example1" />
+                                           placeholder="Filter by project name"
+                                           value={this.state.searchText}
+                                           aria-controls="example1"
+                                           onChange={this.handleSearch}/>
                                 </label>
                             </div>
                         </div>
