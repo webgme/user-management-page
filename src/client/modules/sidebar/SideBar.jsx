@@ -27,7 +27,7 @@ export default class SideBar extends React.Component {
                     </div>
                 </form>
 
-                <SideBarMenu />
+                <SideBarMenu location={this.props.location}/>
 
             </section>
         </aside>;
