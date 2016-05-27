@@ -17,6 +17,8 @@ export default class ProjectsDataTable extends React.Component {
         {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
+        this.handleNextPagination = this.handleNextPagination.bind(this);
+        this.handlePreviousPagination = this.handlePreviousPagination.bind(this);
     }
 
     componentDidMount() {
@@ -36,6 +38,20 @@ export default class ProjectsDataTable extends React.Component {
     handlePagination(event) {
         this.setState({
             pageNumber: parseInt(event.target.innerHTML.trim(), 10)
+        });
+    }
+
+    // Restrictions are applied to allowing clicks so no need to account in the event handler
+    handlePreviousPagination() {
+        this.setState({
+            pageNumber: this.state.pageNumber - 1
+        });
+    }
+
+    // Restrictions are applied to allowing clicks so no need to account in the event handler
+    handleNextPagination() {
+        this.setState({
+            pageNumber: this.state.pageNumber + 1
         });
     }
 
@@ -74,15 +90,28 @@ export default class ProjectsDataTable extends React.Component {
 
         // Formatting table entries
         let formattedEntries = [];
-        for(let i = displayNumStart; i < displayNumEnd; i++) {
+        for(let i = displayNumStart - 1; i < displayNumEnd; i++) {
             formattedEntries.push(<DataTableEntry key={i} {...Object.assign({}, projectList[i])} />);
         }
 
-
-        //Formatting selections (can make more efficient later)
+        // Formatting selections (can make more efficient later)
+        let formattedSelectOptions = [];
         let selectOptions = [10, 25, 50 , 100];
+        selectOptions.forEach(function(opt, index) {
+            formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>)
+        });
 
-        
+        // Formatting pagination buttons
+        let formattedPaginationButtons = [],
+            numPages = 6;
+        for(let i = 1; i <= numPages; i++) {
+            formattedPaginationButtons.push(
+            <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
+                <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx={i} tabIndex="0">{i}</a>
+            </li>);
+        }
+
+
         return <div className="box">
             <div className="box-header">
                 <h3 className="box-title">Data Table With Full Features</h3>
@@ -99,11 +128,10 @@ export default class ProjectsDataTable extends React.Component {
                                             aria-controls="example1"
                                             className="form-control input-sm"
                                             onChange={this.handleSelect}>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select> entries
+
+                                        {formattedSelectOptions}
+
+                                    </select> projects
                                 </label>
                             </div>
                         </div>
@@ -144,39 +172,28 @@ export default class ProjectsDataTable extends React.Component {
 
                     <div className="row">
                         <div className="col-sm-5">
-                            <div className="dataTables_info"
-                                 id="example1_info"
-                                 role="status"
-                                 aria-live="polite">{showString}
+                            <div className="dataTables_info" id="example1_info" role="status" aria-live="polite">
+
+                                {showString}
+
                             </div>
                         </div>
 
                         <div className="col-sm-7">
                             <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                                 <ul className="pagination">
-                                    <li className="paginate_button previous disabled" id="example1_previous">
-                                        <a href="#" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
+                                    <li id="example1_previous"
+                                        className={this.state.pageNumber === 1 ? "paginate_button previous disabled" : "paginate_button previous"}
+                                        onClick={this.state.pageNumber === 1 ? ()=>{} : this.handlePreviousPagination}>
+                                        <a href="javascript:;" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
                                     </li>
-                                    <li className={this.state.pageNumber === 1 ? "paginate_button active" : "paginate_button "}>
-                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="1" tabIndex="0">1</a>
-                                    </li>
-                                    <li className={this.state.pageNumber === 2 ? "paginate_button active" : "paginate_button "}>
-                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="2" tabIndex="0">2</a>
-                                    </li>
-                                    <li className={this.state.pageNumber === 3 ? "paginate_button active" : "paginate_button "}>
-                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="3" tabIndex="0">3</a>
-                                    </li>
-                                    <li className={this.state.pageNumber === 4 ? "paginate_button active" : "paginate_button "}>
-                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="4" tabIndex="0">4</a>
-                                    </li>
-                                    <li className={this.state.pageNumber === 5 ? "paginate_button active" : "paginate_button "}>
-                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="5" tabIndex="0">5</a>
-                                    </li>
-                                    <li className={this.state.pageNumber === 6 ? "paginate_button active" : "paginate_button "}>
-                                        <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx="6" tabIndex="0">6</a>
-                                    </li>
-                                    <li className="paginate_button next" id="example1_next">
-                                        <a href="#" aria-controls="example1" data-dt-idx="7" tabIndex="0">Next</a>
+
+                                    {formattedPaginationButtons}
+
+                                    <li id="example1_next"
+                                        className={this.state.pageNumber === numPages ? "paginate_button next disabled" : "paginate_button next"}
+                                        onClick={this.state.pageNumber === numPages ? ()=>{} : this.handleNextPagination}>
+                                        <a href="javascript:;" aria-controls="example1" data-dt-idx="7" tabIndex="0">Next</a>
                                     </li>
                                 </ul>
                             </div>
