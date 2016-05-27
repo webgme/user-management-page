@@ -58,11 +58,9 @@ export default class ProjectsDataTable extends React.Component {
     }
 
     handleSearch(event) {
-        console.log('Old search state: ', this.state.searchText);
         this.setState({
             searchText: event.target.value
         });
-        console.log('New search state: ', this.state.searchText);
     }
 
     render() {
