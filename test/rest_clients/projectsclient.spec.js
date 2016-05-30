@@ -72,9 +72,10 @@ describe('Projects Rest Client', function() {
 
     it('should list last commit date', function(done) {
         logger.debug(rest.projects);
-        rest.projects.getLastModified('guest', 'guest+PROJECT1')
+        rest.projects.getLastModified('guest', 'PROJECT1')
             .then(function(date) {
-                logger.debug(date);
+                logger.debug('Date is: ', date);
+                expect(date instanceof Date).to.deep.equal(true);
                 done();
             })
             .catch(done);

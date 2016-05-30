@@ -24,7 +24,7 @@ class UsersClient extends BaseClient {
     }
 
     /**
-     * Adds a user
+     * Adds a user (Requires user.siteAdmin)
      * @param {string} username - username of user to be created
      * @param {object} userObj - contains info of the new user
      * @return {Promise} //TODO: How to document the resolved value.
@@ -43,7 +43,7 @@ class UsersClient extends BaseClient {
     }
 
     /**
-     * Deletes the user specified
+     * Deletes the user specified (requires is current user or user.siteAdmin)
      * @param {string} username - username of user to be deleted
      * @return {Promise} //TODO: How to document the resolved value.
      */
@@ -57,7 +57,7 @@ class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getUserData(username) {
-        return super.get('users', (username + '/data'));
+        return super.get('users/' + username + '/data');
     }
 
     /**
