@@ -8,19 +8,13 @@ export default class DataTableEntry extends React.Component {
         let buildLink = '/projects/' + this.props.owner + '/' + this.props.name;
 
         return <tr role="row" className="odd">
-
             <td className="sorting_1">
                 <Link to={buildLink}>{this.props.name}</Link>
             </td>
-
             <td>{this.props.owner}</td>
-
             <td>-</td>
-
             <td>{this.props.info.viewedAt}</td>
-
             <td>{this.props.info.modifiedAt}</td>
-            
         </tr>;
     }
 }

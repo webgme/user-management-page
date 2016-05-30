@@ -1,5 +1,6 @@
 import React from 'react';
 import RestClient from '../../../rest_client/restClient.js';
+import CollaboratorDataTable from './datatable/CollaboratorDataTable.jsx';
 
 export default class ProjectPage extends React.Component {
 
@@ -13,12 +14,14 @@ export default class ProjectPage extends React.Component {
         return (
 
         <section className="content">
-            <h2>Singular project page Content</h2>
-            <h3>Owner: {this.props.params.ownerId}</h3>
-            <h4>Project Name: {this.props.params.projectName}</h4>
+            <h3> {this.props.params.projectName} by {this.props.params.ownerId} </h3>
 
-            <h1> table </h1>
-            {/* <CommitDataTable restClient={this.restClient}/> */}
+            <CollaboratorDataTable ownerId={this.props.params.ownerId}
+                                   projectName={this.props.params.projectName}
+                                   restClient={this.restClient}/>
+
+            <h3>Authorization options go here</h3>
+            
         </section>
     );
     }

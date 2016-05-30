@@ -1,20 +1,21 @@
 import React from 'react';
-import DataTableEntry from './DataTableEntry.jsx';
+import CollaboratorTableEntry from './CollaboratorTableEntry.jsx';
 import DataTableCategory from './DataTableCategory.jsx';
-import DataTablePagination from './DataTablePagination.jsx';
-import RestClient from '../../../../rest_client/restClient.js';
 
-export default class ProjectsDataTable extends React.Component {
+export default class CollaboratorDataTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient('', true);
+        this.restClient = this.props.restClient;
         this.state = {
-            projects: [],
+            collaborators: [],
             selectValue: 10,
             pageNumber: 1,
             searchText: ''
         };
+        this.projectName = this.props.projectName;
+        this.ownerId =  this.props.ownerId;
+
         {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
@@ -24,11 +25,79 @@ export default class ProjectsDataTable extends React.Component {
     }
 
     componentDidMount() {
-        var self = this;
-        this.restClient.projects.getAllProjects()
-            .then(function(data) {
-                self.setState({projects: data});
+        let self = this;
+        let projectWithOwnerId = self.ownerId + '+' + self.projectName;
+        // First checking through list of all users and seeing if each has access to the project
+        this.restClient.users.getAllUsers()
+            .then(function(users) {
+                users.forEach(function(userData) {
+                    if (userData['_id'] === self.ownerId) {
+                    }
+                    if (userData['projects'].hasOwnProperty( projectWithOwnerId )) {
+                        self.setState({
+                            collaborators: (self.state.collaborators.concat( {
+                                name: userData['_id'],
+                                read: userData.projects[projectWithOwnerId].read,
+                                write: userData.projects[projectWithOwnerId].write,
+                                delete: userData.projects[projectWithOwnerId].delete
+                            }))
+                        });
+                    }
+                });
+            })
+            .then(function() {
+                return self.restClient.organizations.getAllOrganizations();
+            })
+            // Then checking all organizations and seeing if each has access to the project
+            .then(function(allOrganizations) {
+                allOrganizations.forEach(function(singleOrganization) {
+                    if (singleOrganization.projects.hasOwnProperty( projectWithOwnerId )) {
+                        let orgRights = {
+                            read: singleOrganization.projects[projectWithOwnerId].read,
+                            write: singleOrganization.projects[projectWithOwnerId].write,
+                            delete: singleOrganization.projects[projectWithOwnerId].delete
+                        };
+                        self.restClient.organizations.getOrganizationData(singleOrganization['_id'])
+                            .then(function(orgData) {
+                                orgData.users.forEach(function(username) {
+                                    // Checking if name is already in collaborators list
+                                    for(let i = 0; i < self.state.collaborators.length; i++) {
+                                        if (self.state.collaborators[i].name !== username) {
+                                            self.setState({
+                                                collaborators: self.state.collaborators.concat( {
+                                                    name: username,
+                                                    read: orgRights.read,
+                                                    write: orgRights.write,
+                                                    delete: orgRights.delete
+                                                })
+                                            });
+                                        } else {
+                                            let oldRights = {
+                                                read: self.state.collaborators[i].read,
+                                                write: self.state.collaborators[i].write,
+                                                delete: self.state.collaborators[i].delete
+                                            };
+                                            //copy state without that person
+                                            let collaboratorsWithoutDuplicate = self.state.collaborators.filter( each => {
+                                                return each.name !== self.state.collaborators[i].name;
+                                            });
+                                            self.setState({
+                                                collaborators: collaboratorsWithoutDuplicate.concat( {
+                                                    name: username,
+                                                    read: oldRights.read || orgRights.read,
+                                                    write: oldRights.write || orgRights.write,
+                                                    delete: oldRights.delete || orgRights.delete
+                                                })
+                                            });
+                                        }
+                                    }
+
+                                });
+                            });
+                    }
+                });
             });
+
     }
 
     handleSelect(event) {
@@ -68,11 +137,9 @@ export default class ProjectsDataTable extends React.Component {
         // Formatting table categories
         let formattedCategories = [];
         let categories = [
-            {id: 1, name: 'Project Name:'},
-            {id: 2, name: 'Owner'},
-            {id: 3, name: 'Organization:'},
-            {id: 4, name: 'Last Viewed:'},
-            {id: 5, name: 'Last Changed:'}
+            {id: 1, name: 'UserID:'},
+            {id: 2, name: 'Rights (RWD)'}
+            // TODO: add icon indicating whether rights are from an organization or self
         ];
         categories.forEach(function(category) {
             formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
@@ -81,30 +148,35 @@ export default class ProjectsDataTable extends React.Component {
 
         // Setting up bounds
         let self = this;
-        let projectList = this.state.projects.filter( oneProject => {
-            let filterRegex = new RegExp(self.state.searchText);
-            return filterRegex.test(oneProject.name.toLowerCase());
-        }),
+        let collaboratorList = this.state.collaborators.filter( oneCollaborator => {
+                let filterRegex = new RegExp(self.state.searchText);
+                return filterRegex.test(oneCollaborator.name.toLowerCase()); //TODO: add back case-insensitive search
+            }),
             startIndexInProjects = ( this.state.pageNumber - 1 ) * this.state.selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd;
 
         // Putting together "show string"
-        if (projectList.length > (startIndexInProjects + this.state.selectValue)) {
+        if (collaboratorList.length > (startIndexInProjects + this.state.selectValue)) {
             displayNumEnd = (startIndexInProjects + this.state.selectValue);
         } else {
-            displayNumEnd = projectList.length;
+            displayNumEnd = collaboratorList.length;
         }
         let showString = 'Showing ' + displayNumStart + ' to ' + displayNumEnd;
-        if (displayNumStart > projectList.length) {
+        if (displayNumStart > collaboratorList.length) {
             showString = 'Nothing to show.';
         }
 
         // Formatting table entries
         let formattedEntries = [];
         for(let i = displayNumStart - 1; i < displayNumEnd; i++) {
-            formattedEntries.push(<DataTableEntry key={i} {...Object.assign({}, projectList[i])} />);
+            formattedEntries.push(<CollaboratorTableEntry key={i}
+                                                          name={collaboratorList[i].name}
+                                                          read={collaboratorList[i].read}
+                                                          write={collaboratorList[i].write}
+                                                          delete={collaboratorList[i].delete}/>);
         }
+
 
         // Formatting selections (can make more efficient later)
         let formattedSelectOptions = [];
@@ -118,15 +190,15 @@ export default class ProjectsDataTable extends React.Component {
             numPages = 6;
         for(let i = 1; i <= numPages; i++) {
             formattedPaginationButtons.push(
-            <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
-                <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx={i} tabIndex="0">{i}</a>
-            </li>);
+                <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
+                    <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx={i} tabIndex="0">{i}</a>
+                </li>);
         }
 
 
         return <div className="box">
             <div className="box-header">
-                <h3 className="box-title">Data Table With Full Features</h3>
+                <h3 className="box-title">Collaborators</h3>
             </div>
             <div className="box-body">
                 <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
@@ -143,7 +215,7 @@ export default class ProjectsDataTable extends React.Component {
 
                                         {formattedSelectOptions}
 
-                                    </select> projects
+                                    </select> collaborators
                                 </label>
                             </div>
                         </div>
@@ -154,7 +226,7 @@ export default class ProjectsDataTable extends React.Component {
                                 <label>Search:
                                     <input type="text"
                                            className="form-control input-sm"
-                                           placeholder="Filter by project name"
+                                           placeholder="Filter by collaborator name"
                                            value={this.state.searchText}
                                            aria-controls="example1"
                                            onChange={this.handleSearch}/>
