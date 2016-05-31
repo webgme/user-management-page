@@ -1,34 +1,23 @@
 import React from 'react';
-import DataTableEntry from './DataTableEntry.jsx';
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';
-import RestClient from '../../../../rest_client/restClient.js';
+import DataTableEntry from './DataTableEntry.jsx';
 
-export default class ProjectsDataTable extends React.Component {
+export default class DataTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient('', true);
+        this.restClient = this.props.restClient;
         this.state = {
-            projects: [],
             selectValue: 10,
             pageNumber: 1,
             searchText: ''
         };
+
         {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
-        this.handleNextPagination = this.handleNextPagination.bind(this);
-        this.handlePreviousPagination = this.handlePreviousPagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-    }
-
-    componentDidMount() {
-        var self = this;
-        this.restClient.projects.getAllProjects()
-            .then(function(data) {
-                self.setState({projects: data});
-            });
     }
 
     handleSelect(event) {
@@ -38,22 +27,17 @@ export default class ProjectsDataTable extends React.Component {
     }
 
     handlePagination(event) {
-        this.setState({
-            pageNumber: parseInt(event.target.innerHTML.trim(), 10)
-        });
-    }
+        let newPageNum;
+        if (event.target.innerHTML.trim() === 'Next') {
+            newPageNum = this.state.pageNumber + 1;
+        } else if (event.target.innerHTML.trim() === 'Previous') {
+            newPageNum = this.state.pageNumber - 1;
+        } else {
+            newPageNum = parseInt(event.target.innerHTML.trim(), 10);
+        }
 
-    // Restrictions are applied to allowing clicks so no need to account in the event handler
-    handlePreviousPagination() {
         this.setState({
-            pageNumber: this.state.pageNumber - 1
-        });
-    }
-
-    // Restrictions are applied to allowing clicks so no need to account in the event handler
-    handleNextPagination() {
-        this.setState({
-            pageNumber: this.state.pageNumber + 1
+            pageNumber: newPageNum
         });
     }
 
@@ -64,47 +48,43 @@ export default class ProjectsDataTable extends React.Component {
     }
 
     render() {
-
+        
         // Formatting table categories
         let formattedCategories = [];
-        let categories = [
-            {id: 1, name: 'Project Name:'},
-            {id: 2, name: 'Owner'},
-            {id: 3, name: 'Organization:'},
-            {id: 4, name: 'Last Viewed:'},
-            {id: 5, name: 'Last Changed:'}
-        ];
-        categories.forEach(function(category) {
+        
+        this.props.categories.forEach(function(category) {
             formattedCategories.push(<DataTableCategory key={category.id} name={category.name}/>);
         });
 
-
         // Setting up bounds
         let self = this;
-        let projectList = this.state.projects.filter( oneProject => {
-            let filterRegex = new RegExp(self.state.searchText);
-            return filterRegex.test(oneProject.name.toLowerCase());
-        }),
+        let entriesList = this.props.entries.filter( oneEntry => {
+                let filterRegex = new RegExp(self.state.searchText);
+                return filterRegex.test(oneEntry.name.toLowerCase());
+            }),
             startIndexInProjects = ( this.state.pageNumber - 1 ) * this.state.selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd;
 
         // Putting together "show string"
-        if (projectList.length > (startIndexInProjects + this.state.selectValue)) {
+        if (entriesList.length > (startIndexInProjects + this.state.selectValue)) {
             displayNumEnd = (startIndexInProjects + this.state.selectValue);
         } else {
-            displayNumEnd = projectList.length;
+            displayNumEnd = entriesList.length;
         }
         let showString = 'Showing ' + displayNumStart + ' to ' + displayNumEnd;
-        if (displayNumStart > projectList.length) {
+        if (displayNumStart > entriesList.length) {
             showString = 'Nothing to show.';
         }
 
         // Formatting table entries
         let formattedEntries = [];
         for(let i = displayNumStart - 1; i < displayNumEnd; i++) {
-            formattedEntries.push(<DataTableEntry key={i} {...Object.assign({}, projectList[i])} />);
+            formattedEntries.push(<DataTableEntry key={i}
+                                                  {...Object.assign({}, entriesList[i])}
+                                                  whichTable={this.props.whichTable}/>);
         }
+
 
         // Formatting selections (can make more efficient later)
         let formattedSelectOptions = [];
@@ -118,15 +98,15 @@ export default class ProjectsDataTable extends React.Component {
             numPages = 6;
         for(let i = 1; i <= numPages; i++) {
             formattedPaginationButtons.push(
-            <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
-                <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx={i} tabIndex="0">{i}</a>
-            </li>);
+                <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
+                    <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx={i} tabIndex="0">{i}</a>
+                </li>);
         }
 
 
         return <div className="box">
             <div className="box-header">
-                <h3 className="box-title">Data Table With Full Features</h3>
+                <h3 className="box-title">{this.props.tableName}</h3>
             </div>
             <div className="box-body">
                 <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
@@ -143,7 +123,7 @@ export default class ProjectsDataTable extends React.Component {
 
                                         {formattedSelectOptions}
 
-                                    </select> projects
+                                    </select> {(this.props.tableName.toLowerCase())}
                                 </label>
                             </div>
                         </div>
@@ -154,7 +134,7 @@ export default class ProjectsDataTable extends React.Component {
                                 <label>Search:
                                     <input type="text"
                                            className="form-control input-sm"
-                                           placeholder="Filter by project name"
+                                           placeholder={"Filter by " + this.props.tableName + "name"}
                                            value={this.state.searchText}
                                            aria-controls="example1"
                                            onChange={this.handleSearch}/>
@@ -185,33 +165,20 @@ export default class ProjectsDataTable extends React.Component {
                     </div>
 
                     <div className="row">
+
                         <div className="col-sm-5">
                             <div className="dataTables_info" id="example1_info" role="status" aria-live="polite">
-
-                                {showString}
-
+                                <div>
+                                    {showString}
+                                </div>
                             </div>
                         </div>
 
-                        <div className="col-sm-7">
-                            <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                <ul className="pagination">
-                                    <li id="example1_previous"
-                                        className={this.state.pageNumber === 1 ? "paginate_button previous disabled" : "paginate_button previous"}
-                                        onClick={this.state.pageNumber === 1 ? ()=>{} : this.handlePreviousPagination}>
-                                        <a href="javascript:;" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
-                                    </li>
 
-                                    {formattedPaginationButtons}
-
-                                    <li id="example1_next"
-                                        className={this.state.pageNumber === numPages ? "paginate_button next disabled" : "paginate_button next"}
-                                        onClick={this.state.pageNumber === numPages ? ()=>{} : this.handleNextPagination}>
-                                        <a href="javascript:;" aria-controls="example1" data-dt-idx="7" tabIndex="0">Next</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <DataTablePagination pageNumber={this.state.pageNumber}
+                                             clickHandler={this.handlePagination}
+                                             formattedPaginationButtons={formattedPaginationButtons}
+                                             numPages={numPages}/>
 
                     </div>
 

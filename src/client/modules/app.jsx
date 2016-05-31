@@ -4,7 +4,6 @@ import Header from './header/Header.jsx';
 import SideBar from './sidebar/SideBar.jsx';
 import Footer from './footer/Footer.jsx';
 import RestClient from '../rest_client/restClient.js';
-import {Route} from 'react-router';
 
 /**
  * This is the main layout of the web-page.
@@ -29,10 +28,16 @@ export default class App extends React.Component {
      */
     render() {
 
+        // Passing props through the route
+        let ContentWrapperWithRestClient = React.Children.map(this.props.children,
+            (child) => React.cloneElement(child, {
+                restClient: this.restClient
+            }));
+
         return <div className="wrapper skin-blue">
             <Header/>
             <SideBar restClient={this.restClient} location={this.props.location}/>
-            {this.props.children} {/*<-- This is the ContentWrapper*/}
+            {ContentWrapperWithRestClient}
             <Footer/>
         </div>;
     }
