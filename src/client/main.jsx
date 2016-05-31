@@ -14,6 +14,7 @@ require('font-awesome-webpack');
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
 require('admin-lte/dist/js/app');
+require('react-select/examples/src/example.less');
 
 render((
 

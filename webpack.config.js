@@ -23,6 +23,9 @@ module.exports = {
             // bootstrap-webpack has access to the jQuery object
             {test: /bootstrap\/js\//, loader: 'imports-loader?jQuery=jquery'},
 
+            // Loader for react-select's less stylesheet
+            {test: /\.less$/, loader: 'style!css!less'},
+
             // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
             // loads bootstrap's css.
 
