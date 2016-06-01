@@ -331,32 +331,6 @@ class ProjectsClient extends BaseClient {
         return super.delete('projects/' + ownerId + '/' + projectName + '/tags/' + tagId);
     }
 
-    /**
-     * Gets the date a specific project was last modified. Requires read access-implicit because calls getLatestCommits
-     * @param {string} ownerId - owner's id
-     * @param {string} projectName - name of project
-     * @return {Promise} resolves into a string which is the date last modified
-     */
-    getLastModified(ownerId, projectName) {
-        return this.getProject(ownerId, projectName)
-            .then(function(data) {
-                return data.modifiedAt;
-            });
-    }
-
-    /**
-     * Gets the date a specific project was last modified. Requires read access-implicit because calls getLatestCommits
-     * @param {string} ownerId - owner's id
-     * @param {string} projectName - name of project
-     * @return {Promise} resolves into a string which is the date last viewed
-     */
-    getLastViewed(ownerId, projectName) {
-        return this.getProject(ownerId, projectName)
-            .then(function(data) {
-                return data.viewedAt;
-            });
-    }
-
 }
 
 module.exports = ProjectsClient;
