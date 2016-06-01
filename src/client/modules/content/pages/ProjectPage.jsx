@@ -73,9 +73,6 @@ export default class ProjectPage extends React.Component {
                 multiselectFormat(allUsers),
                 multiselectFormat(allOrganizations)
             ]).then(function([formattedUsers, formattedOrganizations]) {
-                console.log('Formatted users: ', formattedUsers);
-                console.log('Formatted organizations: ', formattedOrganizations);
-
                 self.setState({
                     users: formattedUsers,
                     organizations: formattedOrganizations
