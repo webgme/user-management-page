@@ -53,7 +53,8 @@ export default class ProjectPage extends React.Component {
                         name: keyName,
                         read: allUsersWithAccess[keyName].read,
                         write: allUsersWithAccess[keyName].write,
-                        delete: allUsersWithAccess[keyName].delete
+                        delete: allUsersWithAccess[keyName].delete,
+                        orgNum: allUsersWithAccess[keyName].orgNum
                     });
                 }
 
@@ -130,7 +131,8 @@ function getUsersWithAccess(allUsers, projectWithOwnerId) {
             userMap[oneUser['_id']] = {
                 read: oneUser.projects[projectWithOwnerId].read,
                 write: oneUser.projects[projectWithOwnerId].write,
-                delete: oneUser.projects[projectWithOwnerId].delete
+                delete: oneUser.projects[projectWithOwnerId].delete,
+                orgNum: 0
             };
         }
     });
@@ -168,10 +170,12 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
                         userInOrganizationMap[oneUser] = {
                             read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData['_id']].read,
                             write: userInOrganizationMap[oneUser].write || organizationMap[oneOrganizationsData['_id']].write,
-                            delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData['_id']].delete
+                            delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData['_id']].delete,
+                            orgNum: userInOrganizationMap[oneUser].orgNum + 1
                         }
                     } else {
                         userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData['_id']];
+                        userInOrganizationMap[oneUser].orgNum = 1;
                     }
                 });
             });
