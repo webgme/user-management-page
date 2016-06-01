@@ -19,7 +19,8 @@ describe('Users Rest Client', function() {
             .then(function() {
                 return Q.allDone([
                     gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
-                    gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true})
+                    gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true, siteAdmin: true}),
+                    gmeAuth.addUser('guest', 'guest@example.com', 'pass', true, {overwrite: true, siteAdmin:true})
                 ]);
             })
             .then(function() {
@@ -103,7 +104,7 @@ describe('Users Rest Client', function() {
         rest.users.getUser('guest')
             .then(function(guestUser) {
                 logger.debug('Before: ', guestUser);
-                expect(guestUser.email).to.deep.equal('guest@example.com');
+                expect(guestUser.email).to.equal('guest@example.com');
                 return rest.users.updateUser('guest', newUserObj);
             })
             .then(function() {
@@ -111,18 +112,17 @@ describe('Users Rest Client', function() {
             })
             .then(function(guestUser) {
                 logger.debug('After: ', guestUser);
-                expect(guestUser.email).to.deep.equal('newPatchedEmail@test.com');
+                expect(guestUser.email).to.equal(newUserObj.email);
                 done();
             })
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to delete users
     it('should delete a user', function(done) {
         rest.users.getAllUsers()
             .then(function(allUsers) {
                 logger.debug('Before: ', allUsers);
-                expect(allUsers.length).to.deep.equal(4);
+                expect(allUsers.length).to.equal(4);
             })
             .then(function() {
                 return rest.users.deleteUser('test');
@@ -132,31 +132,50 @@ describe('Users Rest Client', function() {
             })
             .then(function(allUsers) {
                 logger.debug('After: ', allUsers);
-                expect(allUsers.length).to.deep.equal(3);
+                expect(allUsers.length).to.equal(3);
                 done();
             })
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to add new users
     it('should add a new user', function(done) {
+
+        let justAddedBody = {
+            password: 'pass',
+            email: 'justAdded@example.com',
+            canCreate: true
+        }
+
         rest.users.getAllUsers()
             .then(function(usersList) {
                 logger.debug('Initial: ', usersList);
             })
             .then(function() {
-                return rest.users.addUser('justAdded', {_id: 'justAdded', email: 'just@added.com'});
+                return rest.users.addUser('justAdded', justAddedBody);
             })
             .then(function() {
-                return rest.users.getUserData('justAdded');
+                return rest.users.getUser('justAdded');
             })
-            .then(function(userData) {
-                logger.debug('User data:', userData);
-                expect(userData).email.to.deep.equal('just@added.com');
+            .then(function(user) {
+                logger.debug('User data:', user);
+                expect(user.email).to.equal(justAddedBody.email);
                 return rest.users.getAllUsers();
             })
             .then(function(usersList) {
                 logger.debug('After: ', usersList);
+                done();
+            })
+            .catch(done);
+    });
+
+    // TODO: authenticate guest (current) to be able to set user data
+    it('should get a user\'s data', function(done) {
+
+        // Test was deleted, can't use
+        rest.users.getUserData('admin')
+            .then(function(userData) {
+                logger.debug('Before: (should be {})', userData);
+                expect(userData).to.deep.equal({});
                 done();
             })
             .catch(done);
@@ -168,13 +187,14 @@ describe('Users Rest Client', function() {
             customData: 'myData'
         };
 
-        rest.users.getUserData('test')
+        logger.debug('getting user admin\'s data');
+        rest.users.getUserData('admin')
             .then(function(userData) {
                 logger.debug('Before: (should be {})', userData);
-                return rest.users.setUserData('test', newData);
+                return rest.users.setUserData('admin', newData);
             })
             .then(function() {
-                return rest.users.getUserData('test');
+                return rest.users.getUserData('admin');
             })
             .then(function(userData) {
                 logger.debug('After: ', userData);
@@ -187,19 +207,19 @@ describe('Users Rest Client', function() {
     // TODO: authenticate guest (current) to be able to update user data
     it('should update a user\'s data', function(done) {
         // Line to show in coverage, real test is below
-        rest.users.updateUserData('test', {fake: "test"});
+        rest.users.updateUserData('admin', {fake: "admin"});
 
         var oldData = {customData: 'myData'};
         var updatedData = {customData: 'myUpdatedData'};
 
-        rest.users.setUserData('test', oldData)
+        rest.users.setUserData('admin', oldData)
             .then(function(userData) {
                 logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
-                return rest.users.updateUserData('test', updatedData);
+                return rest.users.updateUserData('admin', updatedData);
             })
             .then(function() {
-                return rest.user.getUserData('test');
+                return rest.users.getUserData('admin');
             })
             .then(function(userData) {
                 logger.debug('After: ', userData);
@@ -212,21 +232,21 @@ describe('Users Rest Client', function() {
     // TODO: authenticate guest (current) to be able to delete user data
     it('should delete a user\'s data', function(done) {
         // Line to show in coverage, real test is below
-        rest.users.deleteUserData('test');
+        rest.users.deleteUserData('admin');
 
         var oldData = {customData: 'myUpdatedData'};
 
-        rest.users.setUserData('test', oldData)
+        rest.users.setUserData('admin', oldData)
             .then(function() {
-                rest.users.getUserData('test');
+                return rest.users.getUserData('admin');
             })
             .then(function(userData) {
                 logger.debug('Before: ', userData);
                 expect(userData).to.deep.equal(oldData);
-                return rest.users.deleteUserData('test');
+                return rest.users.deleteUserData('admin');
             })
             .then(function() {
-                return rest.users.getUserData('test');
+                return rest.users.getUserData('admin');
             })
             .then(function(userData) {
                 logger.debug('After: ', userData);

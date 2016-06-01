@@ -1,7 +1,5 @@
 /* global window */
 import React from 'react';
-import {Router, Route, hashHistory, browserHistory} from 'react-router';
-import ProjectsPage from './pages/ProjectsPage.jsx';
 
 export default class ContentWrapper extends React.Component {
 
@@ -10,7 +8,10 @@ export default class ContentWrapper extends React.Component {
     }
 
     render() {
-        
+
+        let PageWithRestClient = React.cloneElement(this.props.children, {
+            restClient: this.props.restClient
+        });
 
         return <div className="content-wrapper">
 
@@ -28,7 +29,7 @@ export default class ContentWrapper extends React.Component {
                 </ol>
             </section>
 
-            {this.props.children || <ProjectsPage/>}
+            {PageWithRestClient}
 
         </div>;
     }

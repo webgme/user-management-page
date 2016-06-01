@@ -152,10 +152,9 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getLatestCommits(ownerId, projectName, numCommits) {
-        var query;
         numCommits = numCommits || 100;
-        query = '?n=' + numCommits;
-        return super.get('projects/' + ownerId + '/' + projectName, query);
+        var query = '?n=' + numCommits;
+        return super.get('projects/' + ownerId + '/' + projectName + '/commits', query);
     }
 
     /**
@@ -330,19 +329,6 @@ class ProjectsClient extends BaseClient {
      */
     deleteTag(ownerId, projectName, tagId) {
         return super.delete('projects/' + ownerId + '/' + projectName + '/tags/' + tagId);
-    }
-
-    /**
-     * Gets the date a specific project was last modified. Requires read access-implicit because calls getLatestCommits
-     * @param {string} ownerId - owner's id
-     * @param {string} projectName - name of project
-     * @return {Date} date last modified
-     */
-    getLastModified(ownerId, projectName) {
-        return this.getLatestCommits(ownerId, projectName, 1)
-            .then(function(data) {
-                return new Date(data[0].time);
-            });
     }
 
 }

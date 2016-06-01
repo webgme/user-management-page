@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "start:dev": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
     "test_cover": "node ./node_modules/babel-istanbul/lib/cli.js --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec --timeout 10000 --recursive test",
     "webpack": "node ./node_modules/webpack/bin/webpack.js"
@@ -41,6 +40,7 @@
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-router": "^2.4.1",
+    "react-select": "^1.0.0-beta13",
     "style-loader": "^0.13.1",
     "superagent": "^1.8.3",
     "url-loader": "^0.5.7",

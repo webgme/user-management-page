@@ -13,6 +13,7 @@ describe('Projects Rest Client', function() {
         PROJECT2 = 'PROJECT2',
         storage,
         gmeAuth;
+    this.timeout(5000);
 
     before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
@@ -70,11 +71,11 @@ describe('Projects Rest Client', function() {
             .catch(done);
     });
 
-    it('should list last commit date', function(done) {
-        logger.debug(rest.projects);
-        rest.projects.getLastModified('guest', 'guest+PROJECT1')
-            .then(function(date) {
-                logger.debug(date);
+    it('should list last modified date', function(done) {
+        rest.projects.getProject('guest', 'PROJECT1')
+            .then(function(projectData) {
+                console.log('Data: ', projectData);
+                expect(typeof projectData.info.modifiedAt).to.equal('string');
                 done();
             })
             .catch(done);

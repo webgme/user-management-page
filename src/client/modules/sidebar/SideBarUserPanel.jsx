@@ -5,13 +5,12 @@ export default class SideBarUserPanel extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = props.restClient;
         this.state = {userData: {_id: 'loading'}};
     }
 
     componentDidMount() {
         var self = this;
-        this.restClient.user.getCurrentUser()
+        this.props.restClient.user.getCurrentUser()
             .then(function(data) {
                 self.setState({userData: data});
             });
@@ -20,17 +19,17 @@ export default class SideBarUserPanel extends React.Component {
     render() {
 
         let welcomeStyle = {
-            "font-size": "16px",
+            "fontSize": "13px",
             "color": "#BAB8B8",
-            "line-height": "40px",
-            "padding-left": "35px"
+            "lineHeight": "30px",
+            "paddingLeft": "35px"
         };
 
         let nameStyle = {
             "color": "#ECF0F1",
-            "font-weight": "light",
-            "padding-left": "40px",
-            "font-size": "20px"
+            "fontWeight": "light",
+            "paddingLeft": "40px",
+            "fontSize": "16px"
         };
 
         let panelStyle = {
@@ -47,8 +46,8 @@ export default class SideBarUserPanel extends React.Component {
                      alt="User Image" style={imageStyle}/>
             </div>
             <div className="pull-left info">
-                <p>{this.state.userData._id}</p>
-                <a href="#"><i className="fa fa-circle text-success"/> Online</a>
+                <p style={nameStyle}>{this.state.userData._id}</p>
+                <a href="#" style={welcomeStyle}><i className="fa fa-circle text-success"/> Online</a>
             </div>
         </div>;
     }
