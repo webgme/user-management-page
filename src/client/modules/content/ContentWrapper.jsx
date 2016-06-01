@@ -14,7 +14,6 @@ export default class ContentWrapper extends React.Component {
             restClient: this.restClient
         });
 
-
         return <div className="content-wrapper">
 
             <section className="content-header">

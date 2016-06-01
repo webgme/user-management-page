@@ -1,28 +1,24 @@
 import React from 'react';
 import Select from 'react-select';
 
+export default class MultiSelectField extends React.Component{
 
-var MultiSelectField = React.createClass({
-    displayName: 'MultiSelectField',
-    propTypes: {
-        label: React.PropTypes.string
-    },
-    getInitialState () {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             disabled: false,
             crazy: false,
             options: [],
             value: []
         };
-    },
-    handleSelectChange (value) {
-        this.setState({ value });
-    },
-    toggleDisabled (e) {
-        this.setState({ disabled: e.target.checked });
-    },
+        this.handleSelectChange = this.handleSelectChange.bind(this);
+    }
 
-    render () {
+    handleSelectChange(value) {
+        this.setState({ value });
+    }
+
+    render() {
         return (
             <div className="section">
                 <h3 className="section-heading">{this.props.label}</h3>
@@ -36,6 +32,5 @@ var MultiSelectField = React.createClass({
             </div>
         );
     }
-});
 
-module.exports = MultiSelectField;
+}

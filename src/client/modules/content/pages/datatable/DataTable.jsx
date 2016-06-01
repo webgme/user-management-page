@@ -48,7 +48,7 @@ export default class DataTable extends React.Component {
     }
 
     render() {
-        
+
         // Formatting table categories
         let formattedCategories = [];
         
