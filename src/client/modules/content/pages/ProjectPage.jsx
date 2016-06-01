@@ -164,7 +164,15 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
         .then(function(arrayOfDataForOrganizationsWithAccess) {
             arrayOfDataForOrganizationsWithAccess.forEach(function(oneOrganizationsData) {
                 oneOrganizationsData.users.forEach(function(oneUser) {
-                    userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData['_id']];
+                    if (userInOrganizationMap[oneUser]) { //If in multiple organizations
+                        userInOrganizationMap[oneUser] = {
+                            read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData['_id']].read,
+                            write: userInOrganizationMap[oneUser].write || organizationMap[oneOrganizationsData['_id']].write,
+                            delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData['_id']].delete
+                        }
+                    } else {
+                        userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData['_id']];
+                    }
                 });
             });
             return userInOrganizationMap;
