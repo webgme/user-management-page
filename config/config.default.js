@@ -1,6 +1,6 @@
 /*jshint node: true*/
 /**
- * @author kecso / https://github.com/kecso
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 var config = require('webgme/config/config.default'),

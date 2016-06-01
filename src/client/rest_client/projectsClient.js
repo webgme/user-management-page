@@ -152,10 +152,9 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getLatestCommits(ownerId, projectName, numCommits) {
-        var query;
         numCommits = numCommits || 100;
-        query = 'commits?n=' + numCommits;
-        return super.get('projects/' + ownerId + '/' + projectName, query);
+        var query = '?n=' + numCommits;
+        return super.get('projects/' + ownerId + '/' + projectName + '/commits', query);
     }
 
     /**
@@ -336,14 +335,12 @@ class ProjectsClient extends BaseClient {
      * Gets the date a specific project was last modified. Requires read access-implicit because calls getLatestCommits
      * @param {string} ownerId - owner's id
      * @param {string} projectName - name of project
-     * @return {Date} date last modified
+     * @return {Promise} resolves into a string which is the date last modified
      */
     getLastModified(ownerId, projectName) {
-        return this.getLatestCommits(ownerId, projectName, 1)
+        return this.getProject(ownerId, projectName)
             .then(function(data) {
-                console.log('Data received: ', data);
-                console.log('Data[0] is: ', data[0]);
-                return new Date(data[0].time);
+                return data.modifiedAt;
             });
     }
 
@@ -351,14 +348,12 @@ class ProjectsClient extends BaseClient {
      * Gets the date a specific project was last modified. Requires read access-implicit because calls getLatestCommits
      * @param {string} ownerId - owner's id
      * @param {string} projectName - name of project
-     * @return {Date} date last modified
+     * @return {Promise} resolves into a string which is the date last viewed
      */
     getLastViewed(ownerId, projectName) {
-        return this.getLatestCommits(ownerId, projectName, 1)
+        return this.getProject(ownerId, projectName)
             .then(function(data) {
-                console.log('Data received: ', data);
-                console.log('Data[0] is: ', data[0]);
-                return new Date(data[0].time);
+                return data.viewedAt;
             });
     }
 

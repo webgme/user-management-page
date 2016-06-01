@@ -5,7 +5,6 @@ export default class ProjectsPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = this.props.restClient;
         this.state = {
             projects: []
         }
@@ -13,7 +12,7 @@ export default class ProjectsPage extends React.Component {
 
     componentDidMount() {
         var self = this;
-        this.restClient.projects.getAllProjects()
+        this.props.restClient.projects.getAllProjects()
             .then(function(data) {
                 self.setState({
                     projects: data

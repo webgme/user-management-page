@@ -6,7 +6,6 @@ export default class SideBar extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = props.restClient;
     }
 
     render() {
@@ -14,7 +13,7 @@ export default class SideBar extends React.Component {
 
             <section className="sidebar">
 
-                <SideBarUserPanel restClient={this.restClient}/>
+                <SideBarUserPanel restClient={this.props.restClient}/>
 
                 <form action="#" method="get" className="sidebar-form">
                     <div className="input-group">

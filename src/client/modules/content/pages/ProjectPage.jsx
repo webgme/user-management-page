@@ -6,7 +6,6 @@ export default class ProjectPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = this.props.restClient;
         this.state = {
             users: [],
             organizations: [],
@@ -20,15 +19,15 @@ export default class ProjectPage extends React.Component {
             projectWithOwnerId = this.props.params.ownerId + '+' + this.props.params.projectName;
 
         Promise.all([
-            self.restClient.users.getAllUsers(),
-            self.restClient.organizations.getAllOrganizations()
+            self.props.restClient.users.getAllUsers(),
+            self.props.restClient.organizations.getAllOrganizations()
         ]).then(function([allUsers, allOrganizations]) {
 
             Promise.all([
                 getUsersWithAccess(allUsers, projectWithOwnerId),
                 getOrganizationsWithAccess(allOrganizations, projectWithOwnerId)
                     .then(function(organizationMap) {
-                        return getUsersInOrganizationsWithAccess(organizationMap, self.restClient.organizations);
+                        return getUsersInOrganizationsWithAccess(organizationMap, self.props.restClient.organizations);
                     })
             ]).then(function([allUsersWithAccess, allUsersInOrganizationsWithAccess]) {
 
@@ -66,8 +65,8 @@ export default class ProjectPage extends React.Component {
 
         // User doesn't click dropdown immediately, so can load these after
         Promise.all([
-            self.restClient.users.getAllUsers(),
-            self.restClient.organizations.getAllOrganizations()
+            self.props.restClient.users.getAllUsers(),
+            self.props.restClient.organizations.getAllOrganizations()
         ]).then(function([allUsers, allOrganizations]) {
             Promise.all([
                 multiselectFormat(allUsers),
@@ -96,7 +95,7 @@ export default class ProjectPage extends React.Component {
 
                 <DataTable ownerId={this.props.params.ownerId}
                            projectName={this.props.params.projectName}
-                           restClient={this.restClient}
+                           restClient={this.props.restClient}
                            categories={categories}
                            whichTable="project"
                            tableName="Collaborators"

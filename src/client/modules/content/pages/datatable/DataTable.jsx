@@ -7,7 +7,6 @@ export default class DataTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = this.props.restClient;
         this.state = {
             selectValue: 10,
             pageNumber: 1,

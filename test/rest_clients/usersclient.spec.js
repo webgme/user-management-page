@@ -104,7 +104,7 @@ describe('Users Rest Client', function() {
         rest.users.getUser('guest')
             .then(function(guestUser) {
                 logger.debug('Before: ', guestUser);
-                expect(guestUser.email).to.deep.equal('guest@example.com');
+                expect(guestUser.email).to.equal('guest@example.com');
                 return rest.users.updateUser('guest', newUserObj);
             })
             .then(function() {
@@ -112,7 +112,7 @@ describe('Users Rest Client', function() {
             })
             .then(function(guestUser) {
                 logger.debug('After: ', guestUser);
-                expect(guestUser.email).to.deep.equal('newPatchedEmail@test.com');
+                expect(guestUser.email).to.equal(newUserObj.email);
                 done();
             })
             .catch(done);
@@ -122,7 +122,7 @@ describe('Users Rest Client', function() {
         rest.users.getAllUsers()
             .then(function(allUsers) {
                 logger.debug('Before: ', allUsers);
-                expect(allUsers.length).to.deep.equal(4);
+                expect(allUsers.length).to.equal(4);
             })
             .then(function() {
                 return rest.users.deleteUser('test');
@@ -132,7 +132,7 @@ describe('Users Rest Client', function() {
             })
             .then(function(allUsers) {
                 logger.debug('After: ', allUsers);
-                expect(allUsers.length).to.deep.equal(3);
+                expect(allUsers.length).to.equal(3);
                 done();
             })
             .catch(done);
@@ -158,7 +158,7 @@ describe('Users Rest Client', function() {
             })
             .then(function(user) {
                 logger.debug('User data:', user);
-                expect(user.email).to.deep.equal('justAdded@example.com');
+                expect(user.email).to.equal(justAddedBody.email);
                 return rest.users.getAllUsers();
             })
             .then(function(usersList) {
