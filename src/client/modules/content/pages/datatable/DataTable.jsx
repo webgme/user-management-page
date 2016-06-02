@@ -54,7 +54,8 @@ export default class DataTable extends React.Component {
         this.props.categories.forEach( category =>
             formattedCategories.push(<DataTableCategory key={category.id}
                                                         name={category.name}
-                                                        orderEntries={self.props.orderEntries}/>));
+                                                        orderEntries={self.props.orderEntries}
+                                                        numTimesClicked={self.props.numTimesClicked}/>));
 
         // Setting up bounds
         let entriesList = this.props.entries.filter( oneEntry => {

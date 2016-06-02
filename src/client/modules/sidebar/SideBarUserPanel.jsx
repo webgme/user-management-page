@@ -21,15 +21,16 @@ export default class SideBarUserPanel extends React.Component {
         let welcomeStyle = {
             "fontSize": "13px",
             "color": "#BAB8B8",
-            "lineHeight": "30px",
-            "paddingLeft": "35px"
+            "lineHeight": "15px",
+            "paddingLeft": "30px"
         };
 
         let nameStyle = {
             "color": "#ECF0F1",
             "fontWeight": "light",
-            "paddingLeft": "40px",
-            "fontSize": "16px"
+            "paddingLeft": "35px",
+            "fontSize": "16px",
+            "paddingTop": "15px"
         };
 
         let panelStyle = {

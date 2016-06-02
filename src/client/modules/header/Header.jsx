@@ -30,7 +30,7 @@ export default class Header extends React.Component {
                         <MessageMenu />
                         <NotificationsMenu />
                         <TasksMenu />
-                        <UserMenu />
+                        <UserMenu restClient={this.props.restClient}/>
                         <SettingsMenu />
                     </ul>
                 </div>

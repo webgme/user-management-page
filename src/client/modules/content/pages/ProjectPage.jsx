@@ -1,6 +1,8 @@
 import React from 'react';
 import DataTable from './datatable/DataTable.jsx';
 import Multiselect from './Multiselect.jsx';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 export default class ProjectPage extends React.Component {
 
@@ -11,9 +13,20 @@ export default class ProjectPage extends React.Component {
             organizations: [],
             collaborators: [],
             numTimesClicked: 0,
-            authorizedToAdd: false
+            authorizedToAdd: false,
+            authorizeUsersButtonGroup: {
+                read: false,
+                write: false,
+                delete: false
+            },
+            authorizeOrganizationsButtonGroup: {
+                read: false,
+                write: false,
+                delete: false
+            }
         };
         this.orderEntries = this.orderEntries.bind(this);
+        this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
     }
 
     componentDidMount() {
@@ -109,11 +122,33 @@ export default class ProjectPage extends React.Component {
         });
     }
 
-    orderEntries(){
+    orderEntries() {
         this.setState({
             collaborators: this.state.numTimesClicked % 2 === 1 ? this.state.collaborators.sort(sortByUserId).reverse() : this.state.collaborators.sort(sortByUserId),
             numTimesClicked: this.state.numTimesClicked + 1
         });
+    }
+
+    handleAuthorizationChange(event) {
+        //have to copy whole object and reset the state
+        let newButtonGroupState;
+
+        console.log(typeof event.target.id);
+        if (event.target.id.indexOf('u') !== -1) {
+            newButtonGroupState = this.state.authorizeUsersButtonGroup;
+            newButtonGroupState[event.target.innerHTML.toLowerCase()] = !this.state.authorizeUsersButtonGroup[event.target.innerHTML.toLowerCase()];
+
+            this.setState({
+                authorizeUsersButtonGroup: newButtonGroupState
+            });
+        } else {
+            newButtonGroupState = this.state.authorizeOrganizationsButtonGroup;
+            newButtonGroupState[event.target.innerHTML.toLowerCase()] = !this.state.authorizeOrganizationsButtonGroup[event.target.innerHTML.toLowerCase()];
+
+            this.setState({
+                authorizeOrganizationsButtonGroup: newButtonGroupState
+            });
+        }
     }
 
     render() {
@@ -135,11 +170,25 @@ export default class ProjectPage extends React.Component {
                            whichTable="project"
                            tableName="Collaborators"
                            entries={this.state.collaborators}
-                           orderEntries={this.orderEntries}/>
+                           orderEntries={this.orderEntries}
+                           numTimesClicked={this.state.numTimesClicked}/>
 
                 {this.state.authorizedToAdd ?
                     (<div>
                         <div className="row">
+
+                            <ButtonGroup>
+                                <Button bsStyle={this.state.authorizeUsersButtonGroup.read ? "primary" : null}
+                                        onClick={this.handleAuthorizationChange}
+                                        id="ur">Read</Button>
+                                <Button bsStyle={this.state.authorizeUsersButtonGroup.write ? "primary" : null}
+                                        onClick={this.handleAuthorizationChange}
+                                        id="uw">Write</Button>
+                                <Button bsStyle={this.state.authorizeUsersButtonGroup.delete ? "primary" : null}
+                                        onClick={this.handleAuthorizationChange}
+                                        id="ud">Delete</Button>
+                            </ButtonGroup>
+
                             <div className="col-sm-5">
                                 <Multiselect label="Authorize Users"
                                              placeholder="Select one or more users"
@@ -151,7 +200,21 @@ export default class ProjectPage extends React.Component {
                             </div>
                         </div>
 
+
                         <div className="row">
+
+                            <ButtonGroup>
+                                <Button bsStyle={this.state.authorizeOrganizationsButtonGroup.read ? "primary" : null}
+                                        onClick={this.handleAuthorizationChange}
+                                        id="or">Read</Button>
+                                <Button bsStyle={this.state.authorizeOrganizationsButtonGroup.write ? "primary" : null}
+                                        onClick={this.handleAuthorizationChange}
+                                        id="ow">Write</Button>
+                                <Button bsStyle={this.state.authorizeOrganizationsButtonGroup.delete ? "primary" : null}
+                                        onClick={this.handleAuthorizationChange}
+                                        id="od">Delete</Button>
+                            </ButtonGroup>
+
                             <div className="col-sm-5">
                                 <Multiselect label="Authorize organizations"
                                              placeholder="Select one or more organizations"
