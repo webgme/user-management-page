@@ -167,8 +167,7 @@ describe('Users Rest Client', function() {
             })
             .catch(done);
     });
-
-    // TODO: authenticate guest (current) to be able to set user data
+    
     it('should get a user\'s data', function(done) {
 
         // Test was deleted, can't use
@@ -181,7 +180,6 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to set user data
     it('should set a user\'s data', function(done) {
         var newData = {
             customData: 'myData'
@@ -204,7 +202,6 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to update user data
     it('should update a user\'s data', function(done) {
         var oldData = {customData: 'myData'};
         var updatedData = {customData: 'myUpdatedData'};

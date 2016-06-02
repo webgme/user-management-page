@@ -10,7 +10,8 @@ export default class ProjectPage extends React.Component {
             users: [],
             organizations: [],
             collaborators: [],
-            numTimesClicked: 0
+            numTimesClicked: 0,
+            authorizedToAdd: false
         };
         this.orderEntries = this.orderEntries.bind(this);
     }
@@ -23,15 +24,15 @@ export default class ProjectPage extends React.Component {
         Promise.all([
             self.props.restClient.users.getAllUsers(),
             self.props.restClient.organizations.getAllOrganizations()
-        ]).then(function ([allUsers, allOrganizations]) {
+        ]).then( ([allUsers, allOrganizations]) => {
 
             Promise.all([
                 getUsersWithAccess(allUsers, projectWithOwnerId),
                 getOrganizationsWithAccess(allOrganizations, projectWithOwnerId)
-                    .then(function (organizationMap) {
+                    .then( organizationMap => {
                         return getUsersInOrganizationsWithAccess(organizationMap, self.props.restClient.organizations);
                     })
-            ]).then(function ([allUsersWithAccess, allUsersInOrganizationsWithAccess]) {
+            ]).then( ([allUsersWithAccess, allUsersInOrganizationsWithAccess]) => {
 
                 // Case for when project is not owned by any organizations
                 if (!allUsersInOrganizationsWithAccess) {
@@ -66,6 +67,31 @@ export default class ProjectPage extends React.Component {
             });
         });
 
+        // If owner is a single user and matches current user
+        self.props.restClient.user.getCurrentUser()
+            .then( currentUser => {
+                if (currentUser['_id'] === self.props.params.ownerId) {
+                    self.setState({
+                        authorizedToAdd: true
+                    });
+                } else { // Check if owner is an organization and current user is an admin
+                    let findAdminPromiseArray = [];
+                    currentUser['orgs'].forEach( orgName =>
+                        findAdminPromiseArray.push(self.props.restClient.organizations.getOrganizationData(orgName))
+                    );
+                    Promise.all(findAdminPromiseArray)
+                        .then(adminsOfOrganizationsUserIsIn => {
+                            adminsOfOrganizationsUserIsIn.forEach( organizationData => {
+                                if (self.props.params.ownerId === organizationData['_id'] && organizationData['admins'].indexOf(currentUser['_id']) !== -1) {
+                                    self.setState({
+                                        authorizedToAdd: true
+                                    });
+                                }
+                            });
+                        });
+                }
+            });
+
         // User doesn't click dropdown immediately, so can load these after
         Promise.all([
             self.props.restClient.users.getAllUsers(),
@@ -74,7 +100,7 @@ export default class ProjectPage extends React.Component {
             Promise.all([
                 multiselectFormat(allUsers),
                 multiselectFormat(allOrganizations)
-            ]).then(function ([formattedUsers, formattedOrganizations]) {
+            ]).then( ([formattedUsers, formattedOrganizations]) => {
                 self.setState({
                     users: formattedUsers,
                     organizations: formattedOrganizations
@@ -85,7 +111,7 @@ export default class ProjectPage extends React.Component {
 
     orderEntries(){
         this.setState({
-            collaborators: this.state.numTimesClicked %2 === 1 ? this.state.collaborators.sort(sortByUserId).reverse() : this.state.collaborators.sort(sortByUserId),
+            collaborators: this.state.numTimesClicked % 2 === 1 ? this.state.collaborators.sort(sortByUserId).reverse() : this.state.collaborators.sort(sortByUserId),
             numTimesClicked: this.state.numTimesClicked + 1
         });
     }
@@ -111,29 +137,32 @@ export default class ProjectPage extends React.Component {
                            entries={this.state.collaborators}
                            orderEntries={this.orderEntries}/>
 
-                <div className="row">
-                    <div className="col-sm-5">
-                        <Multiselect label="Authorize Users"
-                                     placeholder="Select one or more users"
-                                     options={this.state.users}/>
-                    </div>
+                {this.state.authorizedToAdd ?
+                    (<div>
+                        <div className="row">
+                            <div className="col-sm-5">
+                                <Multiselect label="Authorize Users"
+                                             placeholder="Select one or more users"
+                                             options={this.state.users}/>
+                            </div>
 
-                    <div className="col-sm-7">
-                        <button name="authorizeUsers">Authorize users</button>
-                    </div>
-                </div>
+                            <div className="col-sm-7">
+                                <button name="authorizeUsers">Authorize users</button>
+                            </div>
+                        </div>
 
-                <div className="row">
-                    <div className="col-sm-5">
-                        <Multiselect label="Authorize organizations"
-                                     placeholder="Select one or more organizations"
-                                     options={this.state.organizations}/>
-                    </div>
+                        <div className="row">
+                            <div className="col-sm-5">
+                                <Multiselect label="Authorize organizations"
+                                             placeholder="Select one or more organizations"
+                                             options={this.state.organizations}/>
+                            </div>
 
-                    <div className="col-sm-7">
-                        <button name="authorizeUsers">Authorize organizations</button>
-                    </div>
-                </div>
+                            <div className="col-sm-7">
+                                <button name="authorizeUsers">Authorize organizations</button>
+                            </div>
+                        </div>
+                    </div>) : null }
 
             </section>
         );
@@ -143,7 +172,7 @@ export default class ProjectPage extends React.Component {
 
 function getUsersWithAccess(allUsers, projectWithOwnerId) {
     let userMap = {};
-    allUsers.forEach(function (oneUser) {
+    allUsers.forEach( oneUser => {
         if (oneUser.projects.hasOwnProperty(projectWithOwnerId)) {
             userMap[oneUser['_id']] = {
                 read: oneUser.projects[projectWithOwnerId].read,
@@ -159,7 +188,7 @@ function getUsersWithAccess(allUsers, projectWithOwnerId) {
 function getOrganizationsWithAccess(allOrganizations, projectWithOwnerId) {
     let organizationMap = {};
 
-    allOrganizations.forEach(function (oneOrganization) {
+    allOrganizations.forEach( oneOrganization => {
         if (oneOrganization.projects.hasOwnProperty(projectWithOwnerId)) {
             organizationMap[oneOrganization['_id']] = oneOrganization.projects[projectWithOwnerId];
         }
@@ -176,9 +205,9 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
     }
 
     return Promise.all(promiseArray)
-        .then(function (arrayOfDataForOrganizationsWithAccess) {
-            arrayOfDataForOrganizationsWithAccess.forEach(function (oneOrganizationsData) {
-                oneOrganizationsData.users.forEach(function (oneUser) {
+        .then( arrayOfDataForOrganizationsWithAccess => {
+            arrayOfDataForOrganizationsWithAccess.forEach( oneOrganizationsData => {
+                oneOrganizationsData.users.forEach( oneUser => {
                     if (userInOrganizationMap[oneUser]) { //If in multiple organizations
                         userInOrganizationMap[oneUser] = {
                             read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData['_id']].read,
@@ -197,7 +226,7 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
 }
 
 function multiselectFormat(allOfOneThing) {
-    return allOfOneThing.map(function (oneThing) {
+    return allOfOneThing.map( oneThing => {
         return Object.assign({}, {
             label: oneThing['_id'],
             value: oneThing['_id']
@@ -206,7 +235,5 @@ function multiselectFormat(allOfOneThing) {
 }
 
 function sortByUserId(a, b) {
-    var textA = a.name;
-    var textB = b.name;
-    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
 }
