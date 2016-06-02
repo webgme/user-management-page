@@ -206,9 +206,6 @@ describe('Users Rest Client', function() {
 
     // TODO: authenticate guest (current) to be able to update user data
     it('should update a user\'s data', function(done) {
-        // Line to show in coverage, real test is below
-        rest.users.updateUserData('admin', {fake: "admin"});
-
         var oldData = {customData: 'myData'};
         var updatedData = {customData: 'myUpdatedData'};
 
@@ -229,11 +226,7 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to delete user data
     it('should delete a user\'s data', function(done) {
-        // Line to show in coverage, real test is below
-        rest.users.deleteUserData('admin');
-
         var oldData = {customData: 'myUpdatedData'};
 
         rest.users.setUserData('admin', oldData)

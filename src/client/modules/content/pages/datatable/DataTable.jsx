@@ -13,8 +13,7 @@ export default class DataTable extends React.Component {
             searchText: ''
         };
 
-        {/* This is required for nonReact functions to use this the functions context*/
-        }
+        {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -47,23 +46,18 @@ export default class DataTable extends React.Component {
         });
     }
 
-    // handleSearch = event => this.setState({searchText: event.target.value.toLowerCase()});
-
     render() {
-
         let self = this;
+
         // Formatting table categories
         let formattedCategories = [];
-
-        this.props.categories.forEach(function (category) {
+        this.props.categories.forEach( category =>
             formattedCategories.push(<DataTableCategory key={category.id}
                                                         name={category.name}
-                                                        orderEntries={self.props.orderEntries}/>);
-        });
+                                                        orderEntries={self.props.orderEntries}/>));
 
         // Setting up bounds
-
-        let entriesList = this.props.entries.filter(oneEntry => {
+        let entriesList = this.props.entries.filter( oneEntry => {
                 let filterRegex = new RegExp(self.state.searchText);
                 return filterRegex.test(oneEntry.name.toLowerCase());
             }),
@@ -90,13 +84,11 @@ export default class DataTable extends React.Component {
                                                   whichTable={this.props.whichTable}/>);
         }
 
-
         // Formatting selections (can make more efficient later)
         let formattedSelectOptions = [];
         let selectOptions = [10, 25, 50, 100];
-        selectOptions.forEach(function (opt, index) {
-            formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>)
-        });
+        selectOptions.forEach( (opt, index) =>
+            formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>));
 
         // Formatting pagination buttons
         let formattedPaginationButtons = [],
