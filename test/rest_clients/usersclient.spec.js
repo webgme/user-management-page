@@ -140,11 +140,11 @@ describe('Users Rest Client', function() {
 
     it('should add a new user', function(done) {
 
-        let justAddedBody = {
+        var justAddedBody = {
             password: 'pass',
             email: 'justAdded@example.com',
             canCreate: true
-        }
+        };
 
         rest.users.getAllUsers()
             .then(function(usersList) {
