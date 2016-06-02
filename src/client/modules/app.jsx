@@ -12,7 +12,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient('', true);
+        this.restClient = new RestClient('');
     }
 
     /**

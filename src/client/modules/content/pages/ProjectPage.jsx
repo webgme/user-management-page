@@ -9,8 +9,10 @@ export default class ProjectPage extends React.Component {
         this.state = {
             users: [],
             organizations: [],
-            collaborators: []
+            collaborators: [],
+            numTimesClicked: 0
         };
+        this.orderEntries = this.orderEntries.bind(this);
     }
 
     componentDidMount() {
@@ -21,21 +23,21 @@ export default class ProjectPage extends React.Component {
         Promise.all([
             self.props.restClient.users.getAllUsers(),
             self.props.restClient.organizations.getAllOrganizations()
-        ]).then(function([allUsers, allOrganizations]) {
+        ]).then(function ([allUsers, allOrganizations]) {
 
             Promise.all([
                 getUsersWithAccess(allUsers, projectWithOwnerId),
                 getOrganizationsWithAccess(allOrganizations, projectWithOwnerId)
-                    .then(function(organizationMap) {
+                    .then(function (organizationMap) {
                         return getUsersInOrganizationsWithAccess(organizationMap, self.props.restClient.organizations);
                     })
-            ]).then(function([allUsersWithAccess, allUsersInOrganizationsWithAccess]) {
+            ]).then(function ([allUsersWithAccess, allUsersInOrganizationsWithAccess]) {
 
                 // Case for when project is not owned by any organizations
                 if (!allUsersInOrganizationsWithAccess) {
                     return allUsersWithAccess; // Always have self
                 } else {
-                    for(let key in allUsersInOrganizationsWithAccess) {
+                    for (let key in allUsersInOrganizationsWithAccess) {
                         if (!allUsersWithAccess[key]) { // If it doesn't exist then assign
                             allUsersWithAccess[key] = allUsersInOrganizationsWithAccess[key];
                         } else {
@@ -48,13 +50,13 @@ export default class ProjectPage extends React.Component {
 
                 // Convert hashmap into array for data table entries:
                 let collaboratorsArrayForm = [];
-                for(let keyName in allUsersWithAccess) {
+                for (let keyName in allUsersWithAccess) {
                     collaboratorsArrayForm.push({
                         name: keyName,
                         read: allUsersWithAccess[keyName].read,
                         write: allUsersWithAccess[keyName].write,
                         delete: allUsersWithAccess[keyName].delete,
-                        orgNum: allUsersWithAccess[keyName].orgNum
+                        inOrg: allUsersWithAccess[keyName].inOrg
                     });
                 }
 
@@ -68,11 +70,11 @@ export default class ProjectPage extends React.Component {
         Promise.all([
             self.props.restClient.users.getAllUsers(),
             self.props.restClient.organizations.getAllOrganizations()
-        ]).then(function([allUsers, allOrganizations]) {
+        ]).then(function ([allUsers, allOrganizations]) {
             Promise.all([
                 multiselectFormat(allUsers),
                 multiselectFormat(allOrganizations)
-            ]).then(function([formattedUsers, formattedOrganizations]) {
+            ]).then(function ([formattedUsers, formattedOrganizations]) {
                 self.setState({
                     users: formattedUsers,
                     organizations: formattedOrganizations
@@ -81,12 +83,18 @@ export default class ProjectPage extends React.Component {
         });
     }
 
+    orderEntries(){
+        this.setState({
+            collaborators: this.state.numTimesClicked %2 === 1 ? this.state.collaborators.sort(sortByUserId).reverse() : this.state.collaborators.sort(sortByUserId),
+            numTimesClicked: this.state.numTimesClicked + 1
+        });
+    }
+
     render() {
 
         let categories = [
             {id: 1, name: 'UserID:'},
             {id: 2, name: 'Rights (RWD)'}
-            // TODO: add icon indicating whether rights are from an organization or self
         ];
 
         return (
@@ -100,22 +108,31 @@ export default class ProjectPage extends React.Component {
                            categories={categories}
                            whichTable="project"
                            tableName="Collaborators"
-                           entries={this.state.collaborators}/>
+                           entries={this.state.collaborators}
+                           orderEntries={this.orderEntries}/>
 
-                <div>
-                    <Multiselect label="Authorize Users"
-                                 placeholder="Select one or more users"
-                                 options={this.state.users}
-                                 style={{display: "inline-block"}}
-                    />
-                    <button name="authorizeUsers" style={{display: "inline-block"}}>Authorize users</button>
+                <div className="row">
+                    <div className="col-sm-5">
+                        <Multiselect label="Authorize Users"
+                                     placeholder="Select one or more users"
+                                     options={this.state.users}/>
+                    </div>
+
+                    <div className="col-sm-7">
+                        <button name="authorizeUsers">Authorize users</button>
+                    </div>
                 </div>
 
-                <div>
-                    <Multiselect label="Authorize Organizations"
-                                 placeholder="Select one or more organizations"
-                                 options={this.state.organizations}/>
-                    <button name="authorizeUsers">Authorize organizations</button>
+                <div className="row">
+                    <div className="col-sm-5">
+                        <Multiselect label="Authorize organizations"
+                                     placeholder="Select one or more organizations"
+                                     options={this.state.organizations}/>
+                    </div>
+
+                    <div className="col-sm-7">
+                        <button name="authorizeUsers">Authorize organizations</button>
+                    </div>
                 </div>
 
             </section>
@@ -126,13 +143,13 @@ export default class ProjectPage extends React.Component {
 
 function getUsersWithAccess(allUsers, projectWithOwnerId) {
     let userMap = {};
-    allUsers.forEach(function(oneUser) {
-        if (oneUser.projects.hasOwnProperty( projectWithOwnerId )) {
+    allUsers.forEach(function (oneUser) {
+        if (oneUser.projects.hasOwnProperty(projectWithOwnerId)) {
             userMap[oneUser['_id']] = {
                 read: oneUser.projects[projectWithOwnerId].read,
                 write: oneUser.projects[projectWithOwnerId].write,
                 delete: oneUser.projects[projectWithOwnerId].delete,
-                orgNum: 0
+                inOrg: false
             };
         }
     });
@@ -142,13 +159,9 @@ function getUsersWithAccess(allUsers, projectWithOwnerId) {
 function getOrganizationsWithAccess(allOrganizations, projectWithOwnerId) {
     let organizationMap = {};
 
-    allOrganizations.forEach(function(oneOrganization) {
-        if (oneOrganization.projects.hasOwnProperty( projectWithOwnerId )) {
-            organizationMap[oneOrganization['_id']] = {
-                read: oneOrganization.projects[projectWithOwnerId].read,
-                write: oneOrganization.projects[projectWithOwnerId].write,
-                delete: oneOrganization.projects[projectWithOwnerId].delete
-            };
+    allOrganizations.forEach(function (oneOrganization) {
+        if (oneOrganization.projects.hasOwnProperty(projectWithOwnerId)) {
+            organizationMap[oneOrganization['_id']] = oneOrganization.projects[projectWithOwnerId];
         }
     });
     return Promise.resolve(organizationMap);
@@ -158,24 +171,24 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
     let userInOrganizationMap = {},
         promiseArray = [];
 
-    for(let organizationId in organizationMap) {
-        promiseArray.push(organizationsRestClient.getOrganizationData(organizationId) );
+    for (let organizationId in organizationMap) {
+        promiseArray.push(organizationsRestClient.getOrganizationData(organizationId));
     }
 
     return Promise.all(promiseArray)
-        .then(function(arrayOfDataForOrganizationsWithAccess) {
-            arrayOfDataForOrganizationsWithAccess.forEach(function(oneOrganizationsData) {
-                oneOrganizationsData.users.forEach(function(oneUser) {
+        .then(function (arrayOfDataForOrganizationsWithAccess) {
+            arrayOfDataForOrganizationsWithAccess.forEach(function (oneOrganizationsData) {
+                oneOrganizationsData.users.forEach(function (oneUser) {
                     if (userInOrganizationMap[oneUser]) { //If in multiple organizations
                         userInOrganizationMap[oneUser] = {
                             read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData['_id']].read,
                             write: userInOrganizationMap[oneUser].write || organizationMap[oneOrganizationsData['_id']].write,
                             delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData['_id']].delete,
-                            orgNum: userInOrganizationMap[oneUser].orgNum + 1
+                            inOrg: true
                         }
                     } else {
                         userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData['_id']];
-                        userInOrganizationMap[oneUser].orgNum = 1;
+                        userInOrganizationMap[oneUser].inOrg = true;
                     }
                 });
             });
@@ -184,10 +197,16 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
 }
 
 function multiselectFormat(allOfOneThing) {
-    return allOfOneThing.map(function(oneThing) {
+    return allOfOneThing.map(function (oneThing) {
         return Object.assign({}, {
             label: oneThing['_id'],
             value: oneThing['_id']
         });
     });
+}
+
+function sortByUserId(a, b) {
+    var textA = a.name;
+    var textB = b.name;
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 }

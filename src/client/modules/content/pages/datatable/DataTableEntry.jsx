@@ -25,7 +25,7 @@ export default class DataTableEntry extends React.Component {
             return (
                 <tr role="row" className="odd">
                     <td>
-                        {this.props.orgNum > 0 ? <i className="fa fa-user-plus"/> : <i className="fa fa-user"/> }
+                        {this.props.inOrg ? <i className="fa fa-user-plus"/> : <i className="fa fa-user"/> }
                         {'  ' + this.props.name}
                     </td>
                     <td>{rights}</td>
