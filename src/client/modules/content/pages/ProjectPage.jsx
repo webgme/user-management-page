@@ -33,7 +33,6 @@ export default class ProjectPage extends React.Component {
     }
 
     retrieveData() {
-
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
             valuesInUsersMultiselect: [],
@@ -47,10 +46,7 @@ export default class ProjectPage extends React.Component {
 
         Promise.all([
             self.props.restClient.users.getUsersWithAccessToProject(projectId),
-            self.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
-                .then(organizationMap => {
-                    return self.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(organizationMap);
-                })
+            self.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId)
         ]).then(([usersWithAccess, usersInOrganizationsWithAccess]) => {
 
             // Union of rights if in organization
@@ -81,7 +77,6 @@ export default class ProjectPage extends React.Component {
                     });
                 }
             }
-
             self.setState({
                 collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
             });
@@ -89,29 +84,11 @@ export default class ProjectPage extends React.Component {
 
         // Setting authorization (To set the dropdowns/buttons visibility)
         // If owner is a single user and matches current user
-        self.props.restClient.user.getCurrentUser()
-            .then(currentUser => {
-                if (currentUser._id === self.props.params.ownerId) {
-                    self.setState({
-                        authorizedToAdd: true
-                    });
-                } else { // Check if owner is an organization and current user is an admin
-                    let findAdminPromiseArray = [];
-                    currentUser.orgs.forEach(orgName =>
-                        findAdminPromiseArray.push(self.props.restClient.organizations.getOrganizationData(orgName))
-                    );
-                    Promise.all(findAdminPromiseArray)
-                        .then(adminsOfOrganizationsUserIsIn => {
-                            adminsOfOrganizationsUserIsIn.forEach(organizationData => {
-                                if (self.props.params.ownerId === organizationData._id &&
-                                    organizationData.admins.indexOf(currentUser._id) !== -1) {
-                                    self.setState({
-                                        authorizedToAdd: true
-                                    });
-                                }
-                            });
-                        });
-                }
+        self.props.restClient.getAuthorizationToAdd(self.props.params.ownerId)
+            .then(authorization => {
+                self.setState({
+                    authorizedToAdd: authorization
+                });
             });
 
         // User doesn't click dropdown immediately, so can load these after

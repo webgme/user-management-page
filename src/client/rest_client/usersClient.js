@@ -89,27 +89,7 @@ export default class UsersClient extends BaseClient {
         return super.delete('users/' + username + '/data');
     }
 
-    // Non-async methods:
-    // /**
-    //  * Maps usernames of users with access to a specified project to their respective rights
-    //  * @param {Array} allUsers - array of all users
-    //  * @param {string} projectId - Id of project
-    //  * @return {map} map of users to their rights to a specified projects
-    //  */
-    // getUsersWithAccessToProject(allUsers, projectId) {
-    //     let userMap = {};
-    //     allUsers.forEach(oneUser => {
-    //         if (oneUser.projects.hasOwnProperty(projectId)) {
-    //             userMap[oneUser._id] = {
-    //                 read: oneUser.projects[projectId].read,
-    //                 write: oneUser.projects[projectId].write,
-    //                 delete: oneUser.projects[projectId].delete,
-    //                 inOrg: false
-    //             };
-    //         }
-    //     });
-    //     return userMap;
-    // }
+    // Non REST native Helper methods:
     /**
      * Maps usernames of users with access to a specified project to their respective rights
      * @param {string} projectId - Id of project
