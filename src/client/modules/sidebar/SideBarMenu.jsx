@@ -1,5 +1,14 @@
-import React from 'react';
-import {Link} from 'react-router';
+// Libraries
+import React from '../../../../node_modules/react/lib/React';
+import Link from '../../../../node_modules/react-router/lib/Link';
+
+const STYLING = {
+    sidebarCategoryStyle: {
+        lineHeight: "30px",
+        fontFamily: `"Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif`,
+        color: "#E7E7E7"
+    }
+};
 
 export default class SideBarMenu extends React.Component {
 
@@ -9,15 +18,9 @@ export default class SideBarMenu extends React.Component {
 
     render() {
 
-        let sidebarCategoryStyle = {
-            "lineHeight": "30px",
-            "fontFamily": "\"Helvetica Neue\", Roboto, Arial, \"Droid Sans\", sans-serif",
-            "color": "#E7E7E7"
-        };
-
         return (
 
-        <ul className="sidebar-menu" style={sidebarCategoryStyle}>
+        <ul className="sidebar-menu" style={STYLING.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
 

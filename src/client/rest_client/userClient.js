@@ -14,7 +14,7 @@ export default class UserClient extends BaseClient {
     getCurrentUser() {
         var promise;
         if (this.debugMode) {
-            promise = new Promise(function(resolve, reject) {
+            promise = new Promise(function(resolve /* , reject */) { // add back reject
                 resolve({
                     _id: "johnDoe",
                     email: "john@Doe.com",

@@ -1,4 +1,6 @@
-import React from 'react';
+// Libraries
+import React from '../../../../../node_modules/react/lib/React';
+// Self defined
 import DataTable from './datatable/DataTable.jsx';
 
 export default class ProjectsPage extends React.Component {
@@ -7,7 +9,7 @@ export default class ProjectsPage extends React.Component {
         super(props);
         this.state = {
             projects: []
-        }
+        };
     }
 
     componentDidMount() {

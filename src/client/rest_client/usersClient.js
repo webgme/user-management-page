@@ -1,6 +1,6 @@
 import BaseClient from './baseClient';
 
-class UsersClient extends BaseClient {
+export default class UsersClient extends BaseClient {
 
     constructor(baseUrl) {
         super(baseUrl);
@@ -90,5 +90,3 @@ class UsersClient extends BaseClient {
     }
 
 }
-
-module.exports = UsersClient;

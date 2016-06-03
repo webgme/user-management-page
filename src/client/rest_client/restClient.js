@@ -6,8 +6,9 @@ import OrganizationsClient from './organizationsClient';
 /**
  * Single rest clients that contains user, users, projects, and orgs clients
  * @param {string} baseUrl - the base url
+ * @param {boolean} debugMode - whether or not in debugMode(mocking data)
  */
-function RestClient(baseUrl, debugMode) {
+export default function RestClient(baseUrl, debugMode) {
     baseUrl = baseUrl || '/api/';
 
     this.user = new UserClient(baseUrl, debugMode);
@@ -16,5 +17,3 @@ function RestClient(baseUrl, debugMode) {
     this.organizations = new OrganizationsClient(baseUrl);
 
 }
-
-module.exports = RestClient;

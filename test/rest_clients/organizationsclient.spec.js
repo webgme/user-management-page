@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* global require */
 var testFixture = require('../globals');
 
 describe('Organizations Rest Client', function() {

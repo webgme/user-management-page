@@ -1,6 +1,6 @@
 import BaseClient from './baseClient';
 
-class ProjectsClient extends BaseClient {
+export default class ProjectsClient extends BaseClient {
 
     constructor(baseUrl, debugMode) {
         super(baseUrl);
@@ -14,7 +14,7 @@ class ProjectsClient extends BaseClient {
     getAllProjects() {
         var promise;
         if (this.debugMode) {
-            promise = new Promise(function(resolve, reject) {
+            promise = new Promise(function(resolve /* , reject(remove mock data later */) {
                 resolve([
                     {
                         _id: "johnDoe+Test_Project",
@@ -332,5 +332,3 @@ class ProjectsClient extends BaseClient {
     }
 
 }
-
-module.exports = ProjectsClient;

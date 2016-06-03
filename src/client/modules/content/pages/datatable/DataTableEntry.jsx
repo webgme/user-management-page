@@ -1,10 +1,11 @@
-import React from 'react';
-import {Link} from 'react-router';
+// Libraries
+import React from '../../../../../../node_modules/react/lib/React';
+import {Link} from 'react-router/lib';
 
 export default class DataTableEntry extends React.Component {
 
     render() {
-        
+
         if (this.props.whichTable === 'projects') {
             let buildLink = '/projects/' + this.props.owner + '/' + this.props.name;
 
@@ -17,10 +18,10 @@ export default class DataTableEntry extends React.Component {
                 <td>{this.props.info.viewedAt}</td>
                 <td>{this.props.info.modifiedAt}</td>
             </tr>;
-        } else {
+        } else { // eslint-disable-line no-else-return
             let rights = this.props.read ? 'Read  ' : '';
-                rights += this.props.write? 'Write  ' : '';
-                rights += this.props.delete? 'Delete' : '';
+            rights += this.props.write ? 'Write  ' : '';
+            rights += this.props.delete ? 'Delete' : '';
 
             return (
                 <tr role="row" className="odd">

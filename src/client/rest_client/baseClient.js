@@ -1,7 +1,7 @@
 /* eslint-env node, browser */
 import superagent from 'superagent';
 
-class BaseClient {
+export default class BaseClient {
 
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
@@ -45,7 +45,7 @@ class BaseClient {
                 .send(value)
                 .end(function(err, res) {
                     if (err) {
-                        console.log(err);
+                        console.log(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);
@@ -70,7 +70,7 @@ class BaseClient {
                 .send(value)
                 .end(function(err, res) {
                     if (err) {
-                        console.log(err);
+                        console.log(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);
@@ -92,6 +92,7 @@ class BaseClient {
                 .delete(url)
                 .end(function(err, res) {
                     if (err || !res.ok) {
+                        console.log(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);
@@ -101,5 +102,3 @@ class BaseClient {
     }
 
 }
-
-module.exports = BaseClient;

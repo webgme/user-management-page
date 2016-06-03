@@ -1,5 +1,4 @@
-/* global window */
-import React from 'react';
+import React from '../../../../node_modules/react/lib/React';
 
 export default class ContentWrapper extends React.Component {
 

@@ -1,5 +1,6 @@
-/* global window */
-import React from 'react';
+// Libraries
+import React from '../../../node_modules/react/lib/React';
+// Self-defined components
 import Header from './header/Header.jsx';
 import SideBar from './sidebar/SideBar.jsx';
 import Footer from './footer/Footer.jsx';
@@ -30,7 +31,7 @@ export default class App extends React.Component {
 
         // Passing props through the route
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
-            (child) => React.cloneElement(child, {
+            child => React.cloneElement(child, {
                 restClient: this.restClient
             }));
 

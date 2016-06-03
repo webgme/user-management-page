@@ -17,7 +17,7 @@ module.exports = {
         loaders: [
             {test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader'},
             {test: /\.css$/, loader: 'style-loader!css-loader'},
-            {test: /\.jpg$/, loader: 'file-loader'},
+            {test: /\.(jpg|png)$/, loader: 'file-loader'},
 
             // **IMPORTANT** This is needed so that each bootstrap js file required by
             // bootstrap-webpack has access to the jQuery object
@@ -36,8 +36,8 @@ module.exports = {
     },
     plugins: [
         new webpack.ProvidePlugin({
-            "$":        "jquery",
-            "jQuery":   "jquery"
+            $: "jquery",
+            jQuery: "jquery"
         })
     ]
 };

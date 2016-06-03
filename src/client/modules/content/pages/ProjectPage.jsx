@@ -1,8 +1,10 @@
-import React from 'react';
+// Libraries
+import React from '../../../../../node_modules/react/lib/React';
+import Button from '../../../../../node_modules/react-bootstrap/lib/Button';
+import ButtonGroup from '../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
+// Self defined
 import DataTable from './datatable/DataTable.jsx';
 import Multiselect from './Multiselect.jsx';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 export default class ProjectPage extends React.Component {
 
@@ -229,6 +231,7 @@ export default class ProjectPage extends React.Component {
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
+                // Have to update the list after authorization rights change
                 this.retrieveData();
             })
             .catch(() => {
@@ -247,14 +250,13 @@ export default class ProjectPage extends React.Component {
         let usersNoRightsSelected = true,
             organizationsNoRightsSelected = true;
 
-
         for(let accessType in this.state.authorizeUsersButtonGroup) {
-            if (this.state.authorizeUsersButtonGroup[accessType]) {
+            if (this.state.authorizeUsersButtonGroup.hasOwnProperty(accessType) && this.state.authorizeUsersButtonGroup[accessType]) {
                 usersNoRightsSelected = false;
             }
         }
         for(let accessType in this.state.authorizeOrganizationsButtonGroup) {
-            if (this.state.authorizeOrganizationsButtonGroup[accessType]) {
+            if (this.state.authorizeOrganizationsButtonGroup.hasOwnProperty(accessType) && this.state.authorizeOrganizationsButtonGroup[accessType]) {
                 organizationsNoRightsSelected = false;
             }
         }

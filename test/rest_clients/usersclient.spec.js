@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-env node */
 var testFixture = require('../globals');
 
 describe('Users Rest Client', function() {
@@ -20,7 +21,7 @@ describe('Users Rest Client', function() {
                 return Q.allDone([
                     gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true, siteAdmin: true}),
-                    gmeAuth.addUser('guest', 'guest@example.com', 'pass', true, {overwrite: true, siteAdmin:true})
+                    gmeAuth.addUser('guest', 'guest@example.com', 'pass', true, {overwrite: true, siteAdmin: true})
                 ]);
             })
             .then(function() {
@@ -167,7 +168,7 @@ describe('Users Rest Client', function() {
             })
             .catch(done);
     });
-    
+
     it('should get a user\'s data', function(done) {
 
         // Test was deleted, can't use
