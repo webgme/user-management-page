@@ -13,7 +13,6 @@ export default class DataTable extends React.Component {
             searchText: ''
         };
 
-        {/* This is required for nonReact functions to use this the functions context*/}
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -21,7 +20,7 @@ export default class DataTable extends React.Component {
 
     handleSelect(event) {
         this.setState({
-            selectValue: parseInt(event.target.value.trim())
+            selectValue: parseInt(event.target.value.trim(), 10)
         });
     }
 
@@ -51,18 +50,18 @@ export default class DataTable extends React.Component {
 
         // Formatting table categories
         let formattedCategories = [];
-        this.props.categories.forEach( category =>
+        this.props.categories.forEach(category =>
             formattedCategories.push(<DataTableCategory key={category.id}
                                                         name={category.name}
                                                         orderEntries={self.props.orderEntries}
                                                         numTimesClicked={self.props.numTimesClicked}/>));
 
         // Setting up bounds
-        let entriesList = this.props.entries.filter( oneEntry => {
+        let entriesList = this.props.entries.filter(oneEntry => {
                 let filterRegex = new RegExp(self.state.searchText);
                 return filterRegex.test(oneEntry.name.toLowerCase());
             }),
-            startIndexInProjects = ( this.state.pageNumber - 1 ) * this.state.selectValue,
+            startIndexInProjects = (this.state.pageNumber - 1) * this.state.selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd;
 
@@ -88,7 +87,7 @@ export default class DataTable extends React.Component {
         // Formatting selections (can make more efficient later)
         let formattedSelectOptions = [];
         let selectOptions = [10, 25, 50, 100];
-        selectOptions.forEach( (opt, index) =>
+        selectOptions.forEach((opt, index) =>
             formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>));
 
         // Formatting pagination buttons

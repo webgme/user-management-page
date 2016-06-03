@@ -82,4 +82,75 @@ export default class OrganizationsClient extends BaseClient {
         return super.delete('orgs/' + organizationName + '/admins/' + username);
     }
 
+    // Non-async methods:
+    // /**
+    //  * Hashes the names of all organizations with access to their respective rights
+    //  * @param {Array} allOrganizations - array of all organizations
+    //  * @param {string} projectId - id of project
+    //  * @return {Promise.<{map}>} (Had to resolve the map to use it in parallel with another async function)
+    //  */
+    // getOrganizationsWithAccessToProject(allOrganizations, projectId) {
+    //     let organizationMap = {};
+    //
+    //     allOrganizations.forEach(oneOrganization => {
+    //         if (oneOrganization.projects.hasOwnProperty(projectId)) {
+    //             organizationMap[oneOrganization._id] = oneOrganization.projects[projectId];
+    //         }
+    //     });
+    //     return Promise.resolve(organizationMap);
+    // }
+    /**
+     * Hashes the names of all organizations with access to their respective rights
+     * @param {string} projectId - id of project
+     * @return {Promise.<{map}>} (Had to resolve the map to use it in parallel with another async function)
+     */
+    getOrganizationsWithAccessToProject(projectId) {
+        let organizationMap = {};
+
+        return this.getAllOrganizations()
+            .then(allOrganizations => {
+                allOrganizations.forEach(oneOrganization => {
+                    if (oneOrganization.projects.hasOwnProperty(projectId)) {
+                        organizationMap[oneOrganization._id] = oneOrganization.projects[projectId];
+                    }
+                });
+                return Promise.resolve(organizationMap);
+            });
+    }
+
+    /**
+     * Hashes the names of users in specified list of organizations to their respective rights
+     * @param {Object} organizationMap - organizations mapped to their rights to a project
+     * @return {Promise.<map>} returns map of the users in the specified list of organizations (names to rights)
+     */
+    getUsersInOrganizationsWithAccessToProject(organizationMap) {
+        let userInOrganizationMap = {},
+            promiseArray = [];
+
+        for (let organizationId in organizationMap) {
+            if (organizationMap.hasOwnProperty(organizationId)) {
+                promiseArray.push(this.getOrganizationData(organizationId));
+            }
+        }
+
+        return Promise.all(promiseArray)
+            .then(arrayOfDataForOrganizationsWithAccess => {
+                arrayOfDataForOrganizationsWithAccess.forEach(oneOrganizationsData => {
+                    oneOrganizationsData.users.forEach(oneUser => {
+                        if (userInOrganizationMap[oneUser]) { // If in multiple organizations
+                            userInOrganizationMap[oneUser] = {
+                                read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData._id].read, // eslint-disable-line max-len
+                                write: userInOrganizationMap[oneUser].write || organizationMap[oneOrganizationsData._id].write, // eslint-disable-line max-len
+                                delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData._id].delete, // eslint-disable-line max-len
+                                inOrg: true
+                            };
+                        } else {
+                            userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData._id];
+                            userInOrganizationMap[oneUser].inOrg = true;
+                        }
+                    });
+                });
+                return userInOrganizationMap;
+            });
+    }
 }

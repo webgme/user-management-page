@@ -21,7 +21,7 @@
     "max-len": ["error", 120],
     "no-mixed-requires": 1,
     "no-useless-constructor": 0,
-    "one-var": 1,
+    "one-var": 0,
     "padded-blocks": 0,
     "react/prop-types": 0
   }

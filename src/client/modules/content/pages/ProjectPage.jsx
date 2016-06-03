@@ -16,16 +16,8 @@ export default class ProjectPage extends React.Component {
             collaborators: [],
             numTimesClicked: 0,
             authorizedToAdd: false,
-            authorizeUsersButtonGroup: {
-                read: false,
-                write: false,
-                delete: false
-            },
-            authorizeOrganizationsButtonGroup: {
-                read: false,
-                write: false,
-                delete: false
-            },
+            authorizeUsersButtonGroup:         {read: false, write: false, delete: false}, // eslint-disable-line key-spacing, max-len
+            authorizeOrganizationsButtonGroup: {read: false, write: false, delete: false},
             valuesInUsersMultiselect: [],
             valuesInOrganizationsMultiselect: []
         };
@@ -42,68 +34,56 @@ export default class ProjectPage extends React.Component {
 
     retrieveData() {
 
-        // Send setState request first because user may have just clicked it
+        // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
             valuesInUsersMultiselect: [],
             valuesInOrganizationsMultiselect: [],
-            authorizeUsersButtonGroup: {
-                read: false,
-                write: false,
-                delete: false
-            },
-            authorizeOrganizationsButtonGroup: {
-                read: false,
-                write: false,
-                delete: false
-            }
+            authorizeUsersButtonGroup:         {read: false, write: false, delete: false}, // eslint-disable-line key-spacing, max-len
+            authorizeOrganizationsButtonGroup: {read: false, write: false, delete: false}
         });
 
         let self = this,
-            projectWithOwnerId = this.props.params.ownerId + '+' + this.props.params.projectName;
+            projectId = this.props.params.ownerId + '+' + this.props.params.projectName;
 
         Promise.all([
-            self.props.restClient.users.getAllUsers(),
-            self.props.restClient.organizations.getAllOrganizations()
-        ]).then(([allUsers, allOrganizations]) => {
+            self.props.restClient.users.getUsersWithAccessToProject(projectId),
+            self.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
+                .then(organizationMap => {
+                    return self.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(organizationMap);
+                })
+        ]).then(([usersWithAccess, usersInOrganizationsWithAccess]) => {
 
-            Promise.all([
-                getUsersWithAccess(allUsers, projectWithOwnerId),
-                getOrganizationsWithAccess(allOrganizations, projectWithOwnerId)
-                    .then(organizationMap => {
-                        return getUsersInOrganizationsWithAccess(organizationMap, self.props.restClient.organizations);
-                    })
-            ]).then(([allUsersWithAccess, allUsersInOrganizationsWithAccess]) => {
-
-                // Case for when project is not owned by any organizations
-                if (!allUsersInOrganizationsWithAccess) {
-                    return allUsersWithAccess; // Always have self
-                } else {
-                    for (let key in allUsersInOrganizationsWithAccess) {
-                        if (!allUsersWithAccess[key]) { // If it doesn't exist then assign
-                            allUsersWithAccess[key] = allUsersInOrganizationsWithAccess[key];
-                        } else {
-                            allUsersWithAccess[key].read = allUsersWithAccess[key].read || allUsersInOrganizationsWithAccess[key].read;
-                            allUsersWithAccess[key].write = allUsersWithAccess[key].write || allUsersInOrganizationsWithAccess[key].write;
-                            allUsersWithAccess[key].delete = allUsersWithAccess[key].delete || allUsersInOrganizationsWithAccess[key].delete;
-                        }
+            // Union of rights if in organization
+            if (usersInOrganizationsWithAccess) {
+                for (let key in usersInOrganizationsWithAccess) {
+                    if (usersWithAccess[key]) {
+                        usersWithAccess[key].read = usersWithAccess[key].read || usersInOrganizationsWithAccess[key].read; // eslint-disable-line max-len
+                        usersWithAccess[key].write = usersWithAccess[key].write || usersInOrganizationsWithAccess[key].write; // eslint-disable-line max-len
+                        usersWithAccess[key].delete = usersWithAccess[key].delete || usersInOrganizationsWithAccess[key].delete; // eslint-disable-line max-len
+                    } else {// If it doesn't exist then simply assign
+                        usersWithAccess[key] = usersInOrganizationsWithAccess[key];
                     }
                 }
+            } else { // Case for when project is not owned by any organizations
+                return usersWithAccess; // Always have self
+            }
 
-                // Convert hashmap into array for data table entries:
-                let collaboratorsArrayForm = [];
-                for (let keyName in allUsersWithAccess) {
+            // Convert hashmap into array for data table entries:
+            let collaboratorsArrayForm = [];
+            for (let keyName in usersWithAccess) {
+                if (usersWithAccess.hasOwnProperty(keyName)) {
                     collaboratorsArrayForm.push({
                         name: keyName,
-                        read: allUsersWithAccess[keyName].read,
-                        write: allUsersWithAccess[keyName].write,
-                        delete: allUsersWithAccess[keyName].delete,
-                        inOrg: allUsersWithAccess[keyName].inOrg
+                        read: usersWithAccess[keyName].read,
+                        write: usersWithAccess[keyName].write,
+                        delete: usersWithAccess[keyName].delete,
+                        inOrg: usersWithAccess[keyName].inOrg
                     });
                 }
+            }
 
-                self.setState({
-                    collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
-                });
+            self.setState({
+                collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
             });
         });
 
@@ -111,19 +91,20 @@ export default class ProjectPage extends React.Component {
         // If owner is a single user and matches current user
         self.props.restClient.user.getCurrentUser()
             .then(currentUser => {
-                if (currentUser['_id'] === self.props.params.ownerId) {
+                if (currentUser._id === self.props.params.ownerId) {
                     self.setState({
                         authorizedToAdd: true
                     });
                 } else { // Check if owner is an organization and current user is an admin
                     let findAdminPromiseArray = [];
-                    currentUser['orgs'].forEach(orgName =>
+                    currentUser.orgs.forEach(orgName =>
                         findAdminPromiseArray.push(self.props.restClient.organizations.getOrganizationData(orgName))
                     );
                     Promise.all(findAdminPromiseArray)
                         .then(adminsOfOrganizationsUserIsIn => {
                             adminsOfOrganizationsUserIsIn.forEach(organizationData => {
-                                if (self.props.params.ownerId === organizationData['_id'] && organizationData['admins'].indexOf(currentUser['_id']) !== -1) {
+                                if (self.props.params.ownerId === organizationData._id &&
+                                    organizationData.admins.indexOf(currentUser._id) !== -1) {
                                     self.setState({
                                         authorizedToAdd: true
                                     });
@@ -137,44 +118,48 @@ export default class ProjectPage extends React.Component {
         Promise.all([
             self.props.restClient.users.getAllUsers(),
             self.props.restClient.organizations.getAllOrganizations()
-        ]).then(function ([allUsers, allOrganizations]) {
+        ]).then(function([allUsers, allOrganizations]) {
 
             Promise.all([
-                multiselectFormat( (allUsers.sort(sortObjectArrayByField('_id'))) ),
-                multiselectFormat( (allOrganizations.sort(sortObjectArrayByField('_id'))) )
+                multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
+                multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
             ]).then(([formattedUsers, formattedOrganizations]) => {
                 self.setState({
                     users: formattedUsers,
                     organizations: formattedOrganizations
                 });
-            })
+            });
         });
     }
 
     orderEntries() {
         this.setState({
-            collaborators: this.state.numTimesClicked % 2 === 0 ? this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() : this.state.collaborators.sort(sortObjectArrayByField('name')),
+            collaborators: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
+                this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() :
+                this.state.collaborators.sort(sortObjectArrayByField('name')),
             numTimesClicked: this.state.numTimesClicked + 1
         });
     }
 
     handleAuthorizationChange(event) {
-        //have to copy whole object and reset the state
-        let newButtonGroupState;
+        // have to copy whole object and reset the state
+        let newButtonGroupState,
+            lowerCaseInnerHTML = event.target.innerHTML.toLowerCase();
 
-        if (event.target.id.indexOf('u') !== -1) {
-            newButtonGroupState = this.state.authorizeUsersButtonGroup;
-            newButtonGroupState[event.target.innerHTML.toLowerCase()] = !this.state.authorizeUsersButtonGroup[event.target.innerHTML.toLowerCase()];
-
-            this.setState({
-                authorizeUsersButtonGroup: newButtonGroupState
-            });
-        } else {
+        if (event.target.id.indexOf('u') === -1) { // The ids of the buttons with user rights have u in them
             newButtonGroupState = this.state.authorizeOrganizationsButtonGroup;
-            newButtonGroupState[event.target.innerHTML.toLowerCase()] = !this.state.authorizeOrganizationsButtonGroup[event.target.innerHTML.toLowerCase()];
+            newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeOrganizationsButtonGroup[lowerCaseInnerHTML];
 
             this.setState({
                 authorizeOrganizationsButtonGroup: newButtonGroupState
+            });
+        } else {
+
+            newButtonGroupState = this.state.authorizeUsersButtonGroup;
+            newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeUsersButtonGroup[lowerCaseInnerHTML];
+
+            this.setState({
+                authorizeUsersButtonGroup: newButtonGroupState
             });
         }
     }
@@ -198,33 +183,33 @@ export default class ProjectPage extends React.Component {
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
-        if (/user/.test(targetId) ) {
+        if (/user/.test(targetId)) {
             usersOrOrganizations = this.state.valuesInUsersMultiselect;
-            this.state.authorizeUsersButtonGroup.read ? projectRights += 'r' : null;
-            this.state.authorizeUsersButtonGroup.write ? projectRights += 'w': null;
-            this.state.authorizeUsersButtonGroup.delete ? projectRights += 'd': null;
-        } else if (/organization/.test(targetId) ) {
+            this.state.authorizeUsersButtonGroup.read ? projectRights += 'r' : null; // eslint-disable-line no-unused-expressions, max-len
+            this.state.authorizeUsersButtonGroup.write ? projectRights += 'w' : null; // eslint-disable-line no-unused-expressions, max-len
+            this.state.authorizeUsersButtonGroup.delete ? projectRights += 'd' : null; // eslint-disable-line no-unused-expressions, max-len
+        } else if (/organization/.test(targetId)) {
             usersOrOrganizations = this.state.valuesInOrganizationsMultiselect;
-            this.state.authorizeOrganizationsButtonGroup.read ? projectRights += 'r' : null;
-            this.state.authorizeOrganizationsButtonGroup.write ? projectRights += 'w' : null;
-            this.state.authorizeOrganizationsButtonGroup.delete ? projectRights += 'd' : null;
+            this.state.authorizeOrganizationsButtonGroup.read ? projectRights += 'r' : null; // eslint-disable-line no-unused-expressions, max-len
+            this.state.authorizeOrganizationsButtonGroup.write ? projectRights += 'w' : null; // eslint-disable-line no-unused-expressions, max-len
+            this.state.authorizeOrganizationsButtonGroup.delete ? projectRights += 'd' : null; // eslint-disable-line no-unused-expressions, max-len
         }
 
         let promiseArrayToGrant = [];
 
-        usersOrOrganizations.split(',').forEach( userOrOrgName => {
-            if (projectRights !== '') {
-                promiseArrayToGrant.push(
-                    this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
-                                                                        this.props.params.projectName,
-                                                                        userOrOrgName,
-                                                                        projectRights)
-                );
-            } else { // have to remove rights if none are selected
+        usersOrOrganizations.split(',').forEach(userOrOrgName => {
+            if (projectRights === '') { // have to remove rights if none are selected
                 promiseArrayToGrant.push(
                     this.props.restClient.projects.removeRightsToProject(this.props.params.ownerId,
-                                                                         this.props.params.projectName,
-                                                                         userOrOrgName)
+                        this.props.params.projectName,
+                        userOrOrgName)
+                );
+            } else {
+                promiseArrayToGrant.push(
+                    this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
+                        this.props.params.projectName,
+                        userOrOrgName,
+                        projectRights)
                 );
             }
         });
@@ -235,7 +220,7 @@ export default class ProjectPage extends React.Component {
                 this.retrieveData();
             })
             .catch(() => {
-                console.log('Authorization denied.');
+                console.log('Authorization denied.'); // eslint-disable-line no-console
             });
 
     }
@@ -250,17 +235,18 @@ export default class ProjectPage extends React.Component {
         let usersNoRightsSelected = true,
             organizationsNoRightsSelected = true;
 
-        for(let accessType in this.state.authorizeUsersButtonGroup) {
-            if (this.state.authorizeUsersButtonGroup.hasOwnProperty(accessType) && this.state.authorizeUsersButtonGroup[accessType]) {
+        for (let accessType in this.state.authorizeUsersButtonGroup) {
+            if (this.state.authorizeUsersButtonGroup.hasOwnProperty(accessType) &&
+                this.state.authorizeUsersButtonGroup[accessType]) {
                 usersNoRightsSelected = false;
             }
         }
-        for(let accessType in this.state.authorizeOrganizationsButtonGroup) {
-            if (this.state.authorizeOrganizationsButtonGroup.hasOwnProperty(accessType) && this.state.authorizeOrganizationsButtonGroup[accessType]) {
+        for (let accessType in this.state.authorizeOrganizationsButtonGroup) {
+            if (this.state.authorizeOrganizationsButtonGroup.hasOwnProperty(accessType) &&
+                this.state.authorizeOrganizationsButtonGroup[accessType]) {
                 organizationsNoRightsSelected = false;
             }
         }
-
 
         return (
 
@@ -277,7 +263,7 @@ export default class ProjectPage extends React.Component {
                            orderEntries={this.orderEntries}
                            numTimesClicked={this.state.numTimesClicked}/>
 
-                {/*Loaded only if user is an owner/(admin of org who is the owner))*/}
+                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
                 {this.state.authorizedToAdd ?
                     (<div>
                         <div className="row">
@@ -315,7 +301,6 @@ export default class ProjectPage extends React.Component {
 
                         </div>
 
-
                         <div className="row">
 
                             <ButtonGroup>
@@ -343,7 +328,8 @@ export default class ProjectPage extends React.Component {
                                     <Button bsStyle="success"
                                             id="submitOrganization"
                                             onClick={this.handleSubmitAuthorization}>
-                                        {organizationsNoRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'}
+                                        {organizationsNoRightsSelected ? 'Remove organizations rights' :
+                                            'Authorize organizations'}
                                     </Button>
                                 </ButtonGroup>
                             </div>
@@ -358,76 +344,28 @@ export default class ProjectPage extends React.Component {
 
 }
 
-function getUsersWithAccess(allUsers, projectWithOwnerId) {
-    let userMap = {};
-    allUsers.forEach(oneUser => {
-        if (oneUser.projects.hasOwnProperty(projectWithOwnerId)) {
-            userMap[oneUser['_id']] = {
-                read: oneUser.projects[projectWithOwnerId].read,
-                write: oneUser.projects[projectWithOwnerId].write,
-                delete: oneUser.projects[projectWithOwnerId].delete,
-                inOrg: false
-            };
-        }
-    });
-    return userMap;
-}
-
-function getOrganizationsWithAccess(allOrganizations, projectWithOwnerId) {
-    let organizationMap = {};
-
-    allOrganizations.forEach(oneOrganization => {
-        if (oneOrganization.projects.hasOwnProperty(projectWithOwnerId)) {
-            organizationMap[oneOrganization['_id']] = oneOrganization.projects[projectWithOwnerId];
-        }
-    });
-    return Promise.resolve(organizationMap);
-}
-
-function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestClient) {
-    let userInOrganizationMap = {},
-        promiseArray = [];
-
-    for (let organizationId in organizationMap) {
-        promiseArray.push(organizationsRestClient.getOrganizationData(organizationId));
-    }
-
-    return Promise.all(promiseArray)
-        .then(arrayOfDataForOrganizationsWithAccess => {
-            arrayOfDataForOrganizationsWithAccess.forEach(oneOrganizationsData => {
-                oneOrganizationsData.users.forEach(oneUser => {
-                    if (userInOrganizationMap[oneUser]) { //If in multiple organizations
-                        userInOrganizationMap[oneUser] = {
-                            read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData['_id']].read,
-                            write: userInOrganizationMap[oneUser].write || organizationMap[oneOrganizationsData['_id']].write,
-                            delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData['_id']].delete,
-                            inOrg: true
-                        }
-                    } else {
-                        userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData['_id']];
-                        userInOrganizationMap[oneUser].inOrg = true;
-                    }
-                });
-            });
-            return userInOrganizationMap;
-        });
-}
-
+/**
+ * Formats an array of objects to be sent to the multiselect drop-down list
+ * @param {Array} allOfOneThing - array of one kind of objects(users/organizations)
+ * @return {Object|*|Array} - Formatted array for use with react-select
+ */
 function multiselectFormat(allOfOneThing) {
     return allOfOneThing.map(oneThing => {
         return Object.assign({}, {
-            label: oneThing['_id'],
-            value: oneThing['_id']
+            label: oneThing._id,
+            value: oneThing._id
         });
     });
 }
 
+/**
+ * Custom sort method to sort objects by a chosen field
+ * @param {string} field - field of object to be sorted by
+ * @return {Function} - to be used as callback for javascript's native sort method
+ */
 function sortObjectArrayByField(field) {
-    let paramField = field;
-
-    // If the dot notation is replaced with brackets why does that matter???
-    // TODO: figure that out... it has happened in other places too?
     return function(a, b) {
-        return (a[paramField].toLowerCase() < b[paramField].toLowerCase()) ? -1 : (a[paramField].toLowerCase() > b[paramField].toLowerCase()) ? 1 : 0;
-    }
+        return (a[field].toLowerCase() < b[field].toLowerCase()) ? -1 :
+            (a[field].toLowerCase() > b[field].toLowerCase()) ? 1 : 0;
+    };
 }
