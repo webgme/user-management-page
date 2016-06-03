@@ -34,7 +34,8 @@ export default class App extends React.Component {
                 restClient: this.restClient
             }));
 
-        return <div className="wrapper skin-blue">
+        // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
+        return <div className="wrapper skin-purple">
             <Header restClient={this.restClient}/>
             <SideBar restClient={this.restClient} location={this.props.location}/>
             {ContentWrapperWithRestClient}

@@ -23,13 +23,38 @@ export default class ProjectPage extends React.Component {
                 read: false,
                 write: false,
                 delete: false
-            }
+            },
+            valuesInUsersMultiselect: [],
+            valuesInOrganizationsMultiselect: []
         };
         this.orderEntries = this.orderEntries.bind(this);
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
+        this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
+        this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
+        this.retrieveData = this.retrieveData.bind(this);
     }
 
     componentDidMount() {
+        this.retrieveData();
+    }
+
+    retrieveData() {
+
+        // Send setState request first because user may have just clicked it
+        this.setState({
+            valuesInUsersMultiselect: [],
+            valuesInOrganizationsMultiselect: [],
+            authorizeUsersButtonGroup: {
+                read: false,
+                write: false,
+                delete: false
+            },
+            authorizeOrganizationsButtonGroup: {
+                read: false,
+                write: false,
+                delete: false
+            }
+        });
 
         let self = this,
             projectWithOwnerId = this.props.params.ownerId + '+' + this.props.params.projectName;
@@ -37,15 +62,15 @@ export default class ProjectPage extends React.Component {
         Promise.all([
             self.props.restClient.users.getAllUsers(),
             self.props.restClient.organizations.getAllOrganizations()
-        ]).then( ([allUsers, allOrganizations]) => {
+        ]).then(([allUsers, allOrganizations]) => {
 
             Promise.all([
                 getUsersWithAccess(allUsers, projectWithOwnerId),
                 getOrganizationsWithAccess(allOrganizations, projectWithOwnerId)
-                    .then( organizationMap => {
+                    .then(organizationMap => {
                         return getUsersInOrganizationsWithAccess(organizationMap, self.props.restClient.organizations);
                     })
-            ]).then( ([allUsersWithAccess, allUsersInOrganizationsWithAccess]) => {
+            ]).then(([allUsersWithAccess, allUsersInOrganizationsWithAccess]) => {
 
                 // Case for when project is not owned by any organizations
                 if (!allUsersInOrganizationsWithAccess) {
@@ -75,26 +100,27 @@ export default class ProjectPage extends React.Component {
                 }
 
                 self.setState({
-                    collaborators: collaboratorsArrayForm
+                    collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
                 });
             });
         });
 
+        // Setting authorization (To set the dropdowns/buttons visibility)
         // If owner is a single user and matches current user
         self.props.restClient.user.getCurrentUser()
-            .then( currentUser => {
+            .then(currentUser => {
                 if (currentUser['_id'] === self.props.params.ownerId) {
                     self.setState({
                         authorizedToAdd: true
                     });
                 } else { // Check if owner is an organization and current user is an admin
                     let findAdminPromiseArray = [];
-                    currentUser['orgs'].forEach( orgName =>
+                    currentUser['orgs'].forEach(orgName =>
                         findAdminPromiseArray.push(self.props.restClient.organizations.getOrganizationData(orgName))
                     );
                     Promise.all(findAdminPromiseArray)
                         .then(adminsOfOrganizationsUserIsIn => {
-                            adminsOfOrganizationsUserIsIn.forEach( organizationData => {
+                            adminsOfOrganizationsUserIsIn.forEach(organizationData => {
                                 if (self.props.params.ownerId === organizationData['_id'] && organizationData['admins'].indexOf(currentUser['_id']) !== -1) {
                                     self.setState({
                                         authorizedToAdd: true
@@ -110,10 +136,11 @@ export default class ProjectPage extends React.Component {
             self.props.restClient.users.getAllUsers(),
             self.props.restClient.organizations.getAllOrganizations()
         ]).then(function ([allUsers, allOrganizations]) {
+
             Promise.all([
-                multiselectFormat(allUsers),
-                multiselectFormat(allOrganizations)
-            ]).then( ([formattedUsers, formattedOrganizations]) => {
+                multiselectFormat( (allUsers.sort(sortObjectArrayByField('_id'))) ),
+                multiselectFormat( (allOrganizations.sort(sortObjectArrayByField('_id'))) )
+            ]).then(([formattedUsers, formattedOrganizations]) => {
                 self.setState({
                     users: formattedUsers,
                     organizations: formattedOrganizations
@@ -124,7 +151,7 @@ export default class ProjectPage extends React.Component {
 
     orderEntries() {
         this.setState({
-            collaborators: this.state.numTimesClicked % 2 === 1 ? this.state.collaborators.sort(sortByUserId).reverse() : this.state.collaborators.sort(sortByUserId),
+            collaborators: this.state.numTimesClicked % 2 === 0 ? this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() : this.state.collaborators.sort(sortObjectArrayByField('name')),
             numTimesClicked: this.state.numTimesClicked + 1
         });
     }
@@ -133,7 +160,6 @@ export default class ProjectPage extends React.Component {
         //have to copy whole object and reset the state
         let newButtonGroupState;
 
-        console.log(typeof event.target.id);
         if (event.target.id.indexOf('u') !== -1) {
             newButtonGroupState = this.state.authorizeUsersButtonGroup;
             newButtonGroupState[event.target.innerHTML.toLowerCase()] = !this.state.authorizeUsersButtonGroup[event.target.innerHTML.toLowerCase()];
@@ -151,12 +177,88 @@ export default class ProjectPage extends React.Component {
         }
     }
 
+    handleMultiselectChange(multiselectId, value) {
+
+        if (multiselectId === 'user') {
+            this.setState({
+                valuesInUsersMultiselect: value
+            });
+        } else if (multiselectId === 'organization') {
+            this.setState({
+                valuesInOrganizationsMultiselect: value
+            });
+        }
+    }
+
+    handleSubmitAuthorization(event) {
+        let targetId = event.target.id.toLowerCase();
+        let usersOrOrganizations;
+
+        // Check if the user chose to authorize users or organizations
+        let projectRights = '';
+        if (/user/.test(targetId) ) {
+            usersOrOrganizations = this.state.valuesInUsersMultiselect;
+            this.state.authorizeUsersButtonGroup.read ? projectRights += 'r' : null;
+            this.state.authorizeUsersButtonGroup.write ? projectRights += 'w': null;
+            this.state.authorizeUsersButtonGroup.delete ? projectRights += 'd': null;
+        } else if (/organization/.test(targetId) ) {
+            usersOrOrganizations = this.state.valuesInOrganizationsMultiselect;
+            this.state.authorizeOrganizationsButtonGroup.read ? projectRights += 'r' : null;
+            this.state.authorizeOrganizationsButtonGroup.write ? projectRights += 'w' : null;
+            this.state.authorizeOrganizationsButtonGroup.delete ? projectRights += 'd' : null;
+        }
+
+        let promiseArrayToGrant = [];
+
+        usersOrOrganizations.split(',').forEach( userOrOrgName => {
+            if (projectRights !== '') {
+                promiseArrayToGrant.push(
+                    this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
+                                                                        this.props.params.projectName,
+                                                                        userOrOrgName,
+                                                                        projectRights)
+                );
+            } else { // have to remove rights if none are selected
+                promiseArrayToGrant.push(
+                    this.props.restClient.projects.removeRightsToProject(this.props.params.ownerId,
+                                                                         this.props.params.projectName,
+                                                                         userOrOrgName)
+                );
+            }
+        });
+
+        Promise.all(promiseArrayToGrant)
+            .then(() => {
+                this.retrieveData();
+            })
+            .catch(() => {
+                console.log('Authorization denied.');
+            });
+
+    }
+
     render() {
 
         let categories = [
             {id: 1, name: 'UserID:'},
             {id: 2, name: 'Rights (RWD)'}
         ];
+
+        let usersNoRightsSelected = true,
+            organizationsNoRightsSelected = true;
+
+
+        for(let accessType in this.state.authorizeUsersButtonGroup) {
+            if (this.state.authorizeUsersButtonGroup[accessType]) {
+                usersNoRightsSelected = false;
+            }
+        }
+        for(let accessType in this.state.authorizeOrganizationsButtonGroup) {
+            if (this.state.authorizeOrganizationsButtonGroup[accessType]) {
+                organizationsNoRightsSelected = false;
+            }
+        }
+
 
         return (
 
@@ -173,6 +275,7 @@ export default class ProjectPage extends React.Component {
                            orderEntries={this.orderEntries}
                            numTimesClicked={this.state.numTimesClicked}/>
 
+                {/*Loaded only if user is an owner/(admin of org who is the owner))*/}
                 {this.state.authorizedToAdd ?
                     (<div>
                         <div className="row">
@@ -190,14 +293,24 @@ export default class ProjectPage extends React.Component {
                             </ButtonGroup>
 
                             <div className="col-sm-5">
-                                <Multiselect label="Authorize Users"
-                                             placeholder="Select one or more users"
-                                             options={this.state.users}/>
+                                <Multiselect label="Authorize/Deauthorize Users"
+                                             placeholder="Select one or more users (type to search)"
+                                             options={this.state.users}
+                                             multiselectId="user"
+                                             onChange={this.handleMultiselectChange}
+                                             valuesInMultiselect={this.state.valuesInUsersMultiselect}/>
                             </div>
 
-                            <div className="col-sm-7">
-                                <button name="authorizeUsers">Authorize users</button>
+                            <div>
+                                <ButtonGroup>
+                                    <Button bsStyle="success"
+                                            id="submitUser"
+                                            onClick={this.handleSubmitAuthorization}>
+                                        {usersNoRightsSelected ? 'Remove users rights' : 'Authorize users'}
+                                    </Button>
+                                </ButtonGroup>
                             </div>
+
                         </div>
 
 
@@ -216,16 +329,26 @@ export default class ProjectPage extends React.Component {
                             </ButtonGroup>
 
                             <div className="col-sm-5">
-                                <Multiselect label="Authorize organizations"
-                                             placeholder="Select one or more organizations"
-                                             options={this.state.organizations}/>
+                                <Multiselect label="Authorize/Deauthorize Organizations"
+                                             placeholder="Select one or more organizations (type to search)"
+                                             options={this.state.organizations}
+                                             multiselectId="organization"
+                                             onChange={this.handleMultiselectChange}
+                                             valuesInMultiselect={this.state.valuesInOrganizationsMultiselect}/>
+                            </div>
+                            <div>
+                                <ButtonGroup>
+                                    <Button bsStyle="success"
+                                            id="submitOrganization"
+                                            onClick={this.handleSubmitAuthorization}>
+                                        {organizationsNoRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'}
+                                    </Button>
+                                </ButtonGroup>
                             </div>
 
-                            <div className="col-sm-7">
-                                <button name="authorizeUsers">Authorize organizations</button>
-                            </div>
                         </div>
-                    </div>) : null }
+                    </div>) : null
+                }
 
             </section>
         );
@@ -235,7 +358,7 @@ export default class ProjectPage extends React.Component {
 
 function getUsersWithAccess(allUsers, projectWithOwnerId) {
     let userMap = {};
-    allUsers.forEach( oneUser => {
+    allUsers.forEach(oneUser => {
         if (oneUser.projects.hasOwnProperty(projectWithOwnerId)) {
             userMap[oneUser['_id']] = {
                 read: oneUser.projects[projectWithOwnerId].read,
@@ -251,7 +374,7 @@ function getUsersWithAccess(allUsers, projectWithOwnerId) {
 function getOrganizationsWithAccess(allOrganizations, projectWithOwnerId) {
     let organizationMap = {};
 
-    allOrganizations.forEach( oneOrganization => {
+    allOrganizations.forEach(oneOrganization => {
         if (oneOrganization.projects.hasOwnProperty(projectWithOwnerId)) {
             organizationMap[oneOrganization['_id']] = oneOrganization.projects[projectWithOwnerId];
         }
@@ -268,9 +391,9 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
     }
 
     return Promise.all(promiseArray)
-        .then( arrayOfDataForOrganizationsWithAccess => {
-            arrayOfDataForOrganizationsWithAccess.forEach( oneOrganizationsData => {
-                oneOrganizationsData.users.forEach( oneUser => {
+        .then(arrayOfDataForOrganizationsWithAccess => {
+            arrayOfDataForOrganizationsWithAccess.forEach(oneOrganizationsData => {
+                oneOrganizationsData.users.forEach(oneUser => {
                     if (userInOrganizationMap[oneUser]) { //If in multiple organizations
                         userInOrganizationMap[oneUser] = {
                             read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData['_id']].read,
@@ -289,7 +412,7 @@ function getUsersInOrganizationsWithAccess(organizationMap, organizationsRestCli
 }
 
 function multiselectFormat(allOfOneThing) {
-    return allOfOneThing.map( oneThing => {
+    return allOfOneThing.map(oneThing => {
         return Object.assign({}, {
             label: oneThing['_id'],
             value: oneThing['_id']
@@ -297,6 +420,12 @@ function multiselectFormat(allOfOneThing) {
     });
 }
 
-function sortByUserId(a, b) {
-    return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+function sortObjectArrayByField(field) {
+    let paramField = field;
+
+    // If the dot notation is replaced with brackets why does that matter???
+    // TODO: figure that out... it has happened in other places too?
+    return function(a, b) {
+        return (a[paramField].toLowerCase() < b[paramField].toLowerCase()) ? -1 : (a[paramField].toLowerCase() > b[paramField].toLowerCase()) ? 1 : 0;
+    }
 }

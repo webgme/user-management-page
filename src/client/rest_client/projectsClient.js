@@ -127,7 +127,7 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     removeRightsToProject(ownerId, projectName, userOrOrgId) {
-        return super.delete('projects/' + ownerId + '/' + projectName + '/' + userOrOrgId);
+        return super.delete('projects/' + ownerId + '/' + projectName + '/authorize/' + userOrOrgId);
     }
 
     /**
@@ -140,7 +140,7 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     grantRightsToProject(ownerId, projectName, userOrOrgId, rights) {
-        return super.put('projects/' + ownerId + '/' + projectName + '/' + userOrOrgId, rights);
+        return super.put('projects/' + ownerId + '/' + projectName + '/authorize/' + userOrOrgId + '/' + rights);
     }
 
     /**
