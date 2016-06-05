@@ -28,6 +28,7 @@ class ProjectPage extends React.Component {
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
         this.retrieveData = this.retrieveData.bind(this);
+        this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
 
     componentDidMount() {
@@ -218,6 +219,12 @@ class ProjectPage extends React.Component {
 
     }
 
+    handleTableSwitch(event) {
+        this.setState({
+            display: event.target.innerHTML === 'Users' ? 1 : 2
+        });
+    }
+
     render() {
 
         let categories = [
@@ -254,7 +261,9 @@ class ProjectPage extends React.Component {
                            tableName="Collaborators"
                            entries={this.state.collaborators}
                            orderEntries={this.orderEntries}
-                           numTimesClicked={this.state.numTimesClicked}/>
+                           numTimesClicked={this.state.numTimesClicked}
+                           display={this.state.display}
+                           handleTableSwitch={this.handleTableSwitch}/>
 
                 {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
                 {this.state.authorizedToAdd ?
@@ -274,8 +283,8 @@ class ProjectPage extends React.Component {
                             </ButtonGroup>
 
                             <div className="col-sm-5">
-                                <Multiselect label="Authorize/Deauthorize Users"
-                                             placeholder="Select one or more users (type to search)"
+                                <Multiselect label={this.state.display === 1 ? "Authorize/Deauthorize Users" : "Authorize/Deauthorize Organizations"}
+                                             placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line no-useless-concat
                                              options={this.state.users}
                                              multiselectId="user"
                                              onChange={this.handleMultiselectChange}
@@ -287,47 +296,12 @@ class ProjectPage extends React.Component {
                                     <Button bsStyle="success"
                                             id="submitUser"
                                             onClick={this.handleSubmitAuthorization}>
-                                        {usersNoRightsSelected ? 'Remove users rights' : 'Authorize users'}
+                                        {this.state.display === 1 ? usersNoRightsSelected ? 'Remove users rights' : 'Authorize users' : organizationsNoRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'}
                                     </Button>
                                 </ButtonGroup>
                             </div>
-
                         </div>
 
-                        <div className="row">
-
-                            <ButtonGroup>
-                                <Button bsStyle={this.state.authorizeOrganizationsButtonGroup.read ? "primary" : null}
-                                        onClick={this.handleAuthorizationChange}
-                                        id="or">Read</Button>
-                                <Button bsStyle={this.state.authorizeOrganizationsButtonGroup.write ? "primary" : null}
-                                        onClick={this.handleAuthorizationChange}
-                                        id="ow">Write</Button>
-                                <Button bsStyle={this.state.authorizeOrganizationsButtonGroup.delete ? "primary" : null}
-                                        onClick={this.handleAuthorizationChange}
-                                        id="od">Delete</Button>
-                            </ButtonGroup>
-
-                            <div className="col-sm-5">
-                                <Multiselect label="Authorize/Deauthorize Organizations"
-                                             placeholder="Select one or more organizations (type to search)"
-                                             options={this.state.organizations}
-                                             multiselectId="organization"
-                                             onChange={this.handleMultiselectChange}
-                                             valuesInMultiselect={this.state.valuesInOrganizationsMultiselect}/>
-                            </div>
-                            <div>
-                                <ButtonGroup>
-                                    <Button bsStyle="success"
-                                            id="submitOrganization"
-                                            onClick={this.handleSubmitAuthorization}>
-                                        {organizationsNoRightsSelected ? 'Remove organizations rights' :
-                                            'Authorize organizations'}
-                                    </Button>
-                                </ButtonGroup>
-                            </div>
-
-                        </div>
                     </div>) : null
                 }
 

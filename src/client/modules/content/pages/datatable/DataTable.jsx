@@ -1,4 +1,8 @@
-import React from 'react';
+// Libraries
+import React from '../../../../../../node_modules/react/lib/React';
+import Button from '../../../../../../node_modules/react-bootstrap/lib/Button';
+import ButtonGroup from '../../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
+// Self-defined
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';
 import DataTableEntry from './DataTableEntry.jsx';
@@ -105,7 +109,15 @@ export default class DataTable extends React.Component {
 
                 <div className="box">
                     <div className="box-header">
-                        <h3 className="box-title">{this.props.tableName}</h3>
+                            <h3 className="box-title">{this.props.tableName}</h3>
+                            <ButtonGroup style={{float: "right"}}>
+                                <Button bsStyle={this.props.display === 1 ? "primary" : null}
+                                        onClick={this.props.handleTableSwitch}
+                                        id="or">Users</Button>
+                                <Button bsStyle={this.props.display === 2 ? "primary" : null}
+                                        onClick={this.props.handleTableSwitch}
+                                        id="ow">Organizations</Button>
+                            </ButtonGroup>
                     </div>
                     <div className="box-body">
                         <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
