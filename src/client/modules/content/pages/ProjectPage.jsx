@@ -11,9 +11,9 @@ class ProjectPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            users: [],
-            organizations: [],
+        this.state = { // TODO: alphabetize later
+            formattedUsers: [],
+            formattedOrganizations: [],
             collaborators: [],
             numTimesClicked: 0,
             authorizedToAdd: false,
@@ -53,8 +53,9 @@ class ProjectPage extends React.Component {
 
         Promise.all([
             self.props.restClient.users.getUsersWithAccessToProject(projectId),
-            self.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId)
-        ]).then(([usersWithAccess, usersInOrganizationsWithAccess]) => {
+            self.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId),
+            self.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
+        ]).then(([usersWithAccess, usersInOrganizationsWithAccess, organizationsWithAccess]) => {
 
             // Union of rights if in organization
             if (!isEmpty(usersInOrganizationsWithAccess)) {
@@ -72,6 +73,11 @@ class ProjectPage extends React.Component {
                 this.props.router.replace('/projects/');
             } else {
                 // Do nothing because then usersWithAccess is just self and does not need to be modified
+            }
+
+            // Check if entries just needs to be the organizations
+            if (this.state.display === 2) {
+                usersWithAccess = organizationsWithAccess; // this is the one to be converted to entries (using name usersWithAccess so don't have to reallocate)
             }
 
             if (!didUserRemoveSelfWhenOnlyCollaborator) {
@@ -118,8 +124,8 @@ class ProjectPage extends React.Component {
             ]).then(([formattedUsers, formattedOrganizations]) => {
                 if (!didUserRemoveSelfWhenOnlyCollaborator) {
                     self.setState({
-                        users: formattedUsers,
-                        organizations: formattedOrganizations
+                        formattedUsers: formattedUsers,
+                        formattedOrganizations: formattedOrganizations
                     });
                 }
 
@@ -220,17 +226,32 @@ class ProjectPage extends React.Component {
     }
 
     handleTableSwitch(event) {
+        let holdOldDisplayNum = this.state.display;
+        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
+
         this.setState({
-            display: event.target.innerHTML === 'Users' ? 1 : 2
+            display: newDisplayNum
         });
+
+        // If the table changed, then have to retrieve data again
+        if (holdOldDisplayNum !== newDisplayNum) {
+            this.retrieveData();
+        }
+
     }
 
     render() {
 
-        let categories = [
-            {id: 1, name: 'UserID:'},
-            {id: 2, name: 'Rights (RWD)'}
-        ];
+        let categories = {
+            users: [
+                {id: 1, name: 'UserID:'},
+                {id: 2, name: 'Rights (RWD)'}
+            ],
+            organizations: [
+                {id: 1, name: 'OrganizationID:'},
+                {id: 2, name: 'Rights(RWD)'}
+            ]
+        };
 
         let usersNoRightsSelected = true,
             organizationsNoRightsSelected = true;
@@ -256,8 +277,8 @@ class ProjectPage extends React.Component {
                 <DataTable ownerId={this.props.params.ownerId}
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}
-                           categories={categories}
-                           whichTable="project"
+                           categories={this.state.display === 1 ? categories.users : categories.organizations}
+                           whichTable="collaborators"
                            tableName="Collaborators"
                            entries={this.state.collaborators}
                            orderEntries={this.orderEntries}
