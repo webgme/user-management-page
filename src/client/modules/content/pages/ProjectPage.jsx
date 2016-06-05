@@ -17,8 +17,7 @@ class ProjectPage extends React.Component {
             collaborators: [],
             numTimesClicked: 0,
             authorizedToAdd: false,
-            authorizeUsersButtonGroup:         {read: false, write: false, delete: false}, // eslint-disable-line key-spacing, max-len
-            authorizeOrganizationsButtonGroup: {read: false, write: false, delete: false},
+            authorizeButtonGroup: {read: false, write: false, delete: false},
             valuesInUsersMultiselect: [],
             valuesInOrganizationsMultiselect: [],
             display: 1 // 1 indicates displaying the user table, 2 indicates the organizations
@@ -44,8 +43,7 @@ class ProjectPage extends React.Component {
         this.setState({
             valuesInUsersMultiselect: [],
             valuesInOrganizationsMultiselect: [],
-            authorizeUsersButtonGroup:         {read: false, write: false, delete: false}, // eslint-disable-line key-spacing, max-len
-            authorizeOrganizationsButtonGroup: {read: false, write: false, delete: false}
+            authorizeButtonGroup: {read: false, write: false, delete: false}
         });
 
         let self = this,
@@ -77,7 +75,8 @@ class ProjectPage extends React.Component {
 
             // Check if entries just needs to be the organizations
             if (this.state.display === 2) {
-                usersWithAccess = organizationsWithAccess; // this is the one to be converted to entries (using name usersWithAccess so don't have to reallocate)
+                // One to be converted to entries (using name usersWithAccess so don't have to reallocate)
+                usersWithAccess = organizationsWithAccess;
             }
 
             if (!didUserRemoveSelfWhenOnlyCollaborator) {
@@ -144,25 +143,14 @@ class ProjectPage extends React.Component {
 
     handleAuthorizationChange(event) {
         // have to copy whole object and reset the state
-        let newButtonGroupState,
-            lowerCaseInnerHTML = event.target.innerHTML.toLowerCase();
+        let lowerCaseInnerHTML = event.target.innerHTML.toLowerCase();
+        let newButtonGroupState = this.state.authorizeButtonGroup;
 
-        if (event.target.id.indexOf('u') === -1) { // The ids of the buttons with user rights have u in them
-            newButtonGroupState = this.state.authorizeOrganizationsButtonGroup;
-            newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeOrganizationsButtonGroup[lowerCaseInnerHTML];
+        newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeButtonGroup[lowerCaseInnerHTML];
 
-            this.setState({
-                authorizeOrganizationsButtonGroup: newButtonGroupState
-            });
-        } else {
-
-            newButtonGroupState = this.state.authorizeUsersButtonGroup;
-            newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeUsersButtonGroup[lowerCaseInnerHTML];
-
-            this.setState({
-                authorizeUsersButtonGroup: newButtonGroupState
-            });
-        }
+        this.setState({
+            authorizeButtonGroup: newButtonGroupState
+        });
     }
 
     handleMultiselectChange(multiselectId, value) {
@@ -253,19 +241,12 @@ class ProjectPage extends React.Component {
             ]
         };
 
-        let usersNoRightsSelected = true,
-            organizationsNoRightsSelected = true;
+        let noRightsSelected = true;
 
-        for (let accessType in this.state.authorizeUsersButtonGroup) {
-            if (this.state.authorizeUsersButtonGroup.hasOwnProperty(accessType) &&
-                this.state.authorizeUsersButtonGroup[accessType]) {
-                usersNoRightsSelected = false;
-            }
-        }
-        for (let accessType in this.state.authorizeOrganizationsButtonGroup) {
-            if (this.state.authorizeOrganizationsButtonGroup.hasOwnProperty(accessType) &&
-                this.state.authorizeOrganizationsButtonGroup[accessType]) {
-                organizationsNoRightsSelected = false;
+        for (let accessType in this.state.authorizeButtonGroup) {
+            if (this.state.authorizeButtonGroup.hasOwnProperty(accessType) &&
+                this.state.authorizeButtonGroup[accessType]) {
+                noRightsSelected = false;
             }
         }
 
@@ -292,13 +273,13 @@ class ProjectPage extends React.Component {
                         <div className="row">
 
                             <ButtonGroup>
-                                <Button bsStyle={this.state.authorizeUsersButtonGroup.read ? "primary" : null}
+                                <Button bsStyle={this.state.authorizeButtonGroup.read ? "primary" : null}
                                         onClick={this.handleAuthorizationChange}
                                         id="ur">Read</Button>
-                                <Button bsStyle={this.state.authorizeUsersButtonGroup.write ? "primary" : null}
+                                <Button bsStyle={this.state.authorizeButtonGroup.write ? "primary" : null}
                                         onClick={this.handleAuthorizationChange}
                                         id="uw">Write</Button>
-                                <Button bsStyle={this.state.authorizeUsersButtonGroup.delete ? "primary" : null}
+                                <Button bsStyle={this.state.authorizeButtonGroup.delete ? "primary" : null}
                                         onClick={this.handleAuthorizationChange}
                                         id="ud">Delete</Button>
                             </ButtonGroup>
@@ -317,7 +298,7 @@ class ProjectPage extends React.Component {
                                     <Button bsStyle="success"
                                             id="submitUser"
                                             onClick={this.handleSubmitAuthorization}>
-                                        {this.state.display === 1 ? usersNoRightsSelected ? 'Remove users rights' : 'Authorize users' : organizationsNoRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'}
+                                        {this.state.display === 1 ? noRightsSelected ? 'Remove users rights' : 'Authorize users' : noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'} {/* Need this nest or needs to move out of return */}
                                     </Button>
                                 </ButtonGroup>
                             </div>
