@@ -101,7 +101,6 @@ export default class DataTable extends React.Component {
                 </li>);
         }
 
-
         return (
 
                 <div className="box">

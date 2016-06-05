@@ -2,11 +2,12 @@
 import React from '../../../../../node_modules/react/lib/React';
 import Button from '../../../../../node_modules/react-bootstrap/lib/Button';
 import ButtonGroup from '../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
+import {withRouter} from 'react-router';
 // Self defined
 import DataTable from './datatable/DataTable.jsx';
 import Multiselect from './Multiselect.jsx';
 
-export default class ProjectPage extends React.Component {
+class ProjectPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +20,8 @@ export default class ProjectPage extends React.Component {
             authorizeUsersButtonGroup:         {read: false, write: false, delete: false}, // eslint-disable-line key-spacing, max-len
             authorizeOrganizationsButtonGroup: {read: false, write: false, delete: false},
             valuesInUsersMultiselect: [],
-            valuesInOrganizationsMultiselect: []
+            valuesInOrganizationsMultiselect: [],
+            display: 1 // 1 indicates displaying the user table, 2 indicates the organizations
         };
         this.orderEntries = this.orderEntries.bind(this);
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
@@ -33,6 +35,10 @@ export default class ProjectPage extends React.Component {
     }
 
     retrieveData() {
+
+        // Keep track of user removing self when he/she is only collaborator
+        // Have to use this to not setState of unmounted components
+        let didUserRemoveSelfWhenOnlyCollaborator = false;
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
             valuesInUsersMultiselect: [],
@@ -50,7 +56,7 @@ export default class ProjectPage extends React.Component {
         ]).then(([usersWithAccess, usersInOrganizationsWithAccess]) => {
 
             // Union of rights if in organization
-            if (usersInOrganizationsWithAccess) {
+            if (!isEmpty(usersInOrganizationsWithAccess)) {
                 for (let key in usersInOrganizationsWithAccess) {
                     if (usersWithAccess[key]) {
                         usersWithAccess[key].read = usersWithAccess[key].read || usersInOrganizationsWithAccess[key].read; // eslint-disable-line max-len
@@ -60,35 +66,43 @@ export default class ProjectPage extends React.Component {
                         usersWithAccess[key] = usersInOrganizationsWithAccess[key];
                     }
                 }
-            } else { // Case for when project is not owned by any organizations
-                return usersWithAccess; // Always have self
+            } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
+                didUserRemoveSelfWhenOnlyCollaborator = true;
+                this.props.router.replace('/projects/');
+            } else {
+                // Do nothing because then usersWithAccess is just self and does not need to be modified
             }
 
-            // Convert hashmap into array for data table entries:
-            let collaboratorsArrayForm = [];
-            for (let keyName in usersWithAccess) {
-                if (usersWithAccess.hasOwnProperty(keyName)) {
-                    collaboratorsArrayForm.push({
-                        name: keyName,
-                        read: usersWithAccess[keyName].read,
-                        write: usersWithAccess[keyName].write,
-                        delete: usersWithAccess[keyName].delete,
-                        inOrg: usersWithAccess[keyName].inOrg
-                    });
+            if (!didUserRemoveSelfWhenOnlyCollaborator) {
+                // Convert hashmap into array for data table entries:
+                let collaboratorsArrayForm = [];
+                for (let keyName in usersWithAccess) {
+                    if (usersWithAccess.hasOwnProperty(keyName)) {
+                        collaboratorsArrayForm.push({
+                            name: keyName,
+                            read: usersWithAccess[keyName].read,
+                            write: usersWithAccess[keyName].write,
+                            delete: usersWithAccess[keyName].delete,
+                            inOrg: usersWithAccess[keyName].inOrg
+                        });
+                    }
                 }
+                self.setState({
+                    collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
+                });
             }
-            self.setState({
-                collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
-            });
         });
 
         // Setting authorization (To set the dropdowns/buttons visibility)
         // If owner is a single user and matches current user
         self.props.restClient.getAuthorizationToAdd(self.props.params.ownerId)
             .then(authorization => {
-                self.setState({
-                    authorizedToAdd: authorization
-                });
+                if (!didUserRemoveSelfWhenOnlyCollaborator) {
+                    self.setState({
+                        authorizedToAdd: authorization
+                    });
+                }
+
             });
 
         // User doesn't click dropdown immediately, so can load these after
@@ -101,10 +115,13 @@ export default class ProjectPage extends React.Component {
                 multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
                 multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
             ]).then(([formattedUsers, formattedOrganizations]) => {
-                self.setState({
-                    users: formattedUsers,
-                    organizations: formattedOrganizations
-                });
+                if (!didUserRemoveSelfWhenOnlyCollaborator) {
+                    self.setState({
+                        users: formattedUsers,
+                        organizations: formattedOrganizations
+                    });
+                }
+
             });
         });
     }
@@ -142,7 +159,6 @@ export default class ProjectPage extends React.Component {
     }
 
     handleMultiselectChange(multiselectId, value) {
-
         if (multiselectId === 'user') {
             this.setState({
                 valuesInUsersMultiselect: value
@@ -346,3 +362,29 @@ function sortObjectArrayByField(field) {
             (a[field].toLowerCase() > b[field].toLowerCase()) ? 1 : 0;
     };
 }
+
+/**
+ * Check if an object is empty
+ * @param {Object} object - object to be checked
+ * @return {boolean} - returns whether or not the object is "empty"
+ */
+function isEmpty(object) {
+
+    if (object === null) {
+        return true;
+    } else if (object.length > 0) {
+        return false;
+    } else if (object.length === 0) {
+        return true;
+    }
+
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Needs withRouter for component's context (router is contained in there)
+export default withRouter(ProjectPage);
