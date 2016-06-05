@@ -110,6 +110,8 @@ export default class DataTable extends React.Component {
                 <div className="box">
                     <div className="box-header">
                             <h3 className="box-title">{this.props.tableName}</h3>
+                        {/* Only display on the collaborators page */}
+                        {this.props.tableName === 'Collaborators' ?
                             <ButtonGroup style={{float: "right"}}>
                                 <Button bsStyle={this.props.display === 1 ? "primary" : null}
                                         onClick={this.props.handleTableSwitch}
@@ -118,6 +120,7 @@ export default class DataTable extends React.Component {
                                         onClick={this.props.handleTableSwitch}
                                         id="ow">Organizations</Button>
                             </ButtonGroup>
+                                : null}
                     </div>
                     <div className="box-body">
                         <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
