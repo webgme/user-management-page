@@ -99,7 +99,6 @@ export default class UsersClient extends BaseClient {
         let userMap = {};
         return this.getAllUsers()
             .then(arrayOfAllUsers => {
-                console.log('Array of all users:', arrayOfAllUsers);
                 arrayOfAllUsers.forEach(oneUser => {
                     if (oneUser.projects.hasOwnProperty(projectId)) {
                         userMap[oneUser._id] = {
