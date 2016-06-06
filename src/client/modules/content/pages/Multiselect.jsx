@@ -2,7 +2,7 @@
 import React from '../../../../../node_modules/react/lib/React';
 import Select from '../../../../../node_modules/react-select/lib/Select';
 
-export default class MultiSelectField extends React.Component{
+export default class MultiSelectField extends React.Component {
 
     constructor(props) {
         super(props);
@@ -14,12 +14,7 @@ export default class MultiSelectField extends React.Component{
     }
 
     handleSelectChange(value) {
-
-        this.setState({
-            value: value
-        });
-
-        this.props.onChange(this.props.multiselectId, value);
+        this.props.onChange(value);
     }
 
     render() {

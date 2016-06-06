@@ -11,23 +11,23 @@ class ProjectPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { // TODO: alphabetize later
-            formattedUsers: [],
-            formattedOrganizations: [],
-            collaborators: [],
-            numTimesClicked: 0,
+        this.state = {
             authorizedToAdd: false,
             authorizeButtonGroup: {read: false, write: false, delete: false},
+            collaborators: [],
+            display: 1, // 1 indicates displaying the user table, 2 indicates the organizations
+            formattedUsers: [],
+            formattedOrganizations: [],
+            numTimesClicked: 0,
             valuesInUsersMultiselect: [],
-            valuesInOrganizationsMultiselect: [],
-            display: 1 // 1 indicates displaying the user table, 2 indicates the organizations
+            valuesInOrganizationsMultiselect: []
         };
-        this.orderEntries = this.orderEntries.bind(this);
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
-        this.retrieveData = this.retrieveData.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
+        this.orderEntries = this.orderEntries.bind(this);
+        this.retrieveData = this.retrieveData.bind(this);
     }
 
     componentDidMount() {
@@ -37,7 +37,7 @@ class ProjectPage extends React.Component {
     retrieveData() {
 
         // Keep track of user removing self when he/she is only collaborator
-        // Have to use this to not setState of unmounted components
+        // Have to use this to NOT setState of unmounted components
         let didUserRemoveSelfWhenOnlyCollaborator = false;
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
@@ -101,35 +101,25 @@ class ProjectPage extends React.Component {
 
         // Setting authorization (To set the dropdowns/buttons visibility)
         // If owner is a single user and matches current user
-        self.props.restClient.getAuthorizationToAdd(self.props.params.ownerId)
-            .then(authorization => {
-                if (!didUserRemoveSelfWhenOnlyCollaborator) {
+        if (!didUserRemoveSelfWhenOnlyCollaborator) {
+            self.props.restClient.getAuthorizationToAdd(self.props.params.ownerId)
+                .then(authorization => {
                     self.setState({
                         authorizedToAdd: authorization
                     });
-                }
+                });
 
-            });
-
-        // User doesn't click dropdown immediately, so can load these after
-        Promise.all([
-            self.props.restClient.users.getAllUsers(),
-            self.props.restClient.organizations.getAllOrganizations()
-        ]).then(function([allUsers, allOrganizations]) {
-
+            // User doesn't click dropdown immediately, so can load these after
             Promise.all([
-                multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
-                multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
-            ]).then(([formattedUsers, formattedOrganizations]) => {
-                if (!didUserRemoveSelfWhenOnlyCollaborator) {
-                    self.setState({
-                        formattedUsers: formattedUsers,
-                        formattedOrganizations: formattedOrganizations
-                    });
-                }
-
+                self.props.restClient.users.getAllUsers(),
+                self.props.restClient.organizations.getAllOrganizations()
+            ]).then(function([allUsers, allOrganizations]) {
+                self.setState({
+                    formattedUsers: multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
+                    formattedOrganizations: multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
+                });
             });
-        });
+        }
     }
 
     orderEntries() {
@@ -153,35 +143,18 @@ class ProjectPage extends React.Component {
         });
     }
 
-    handleMultiselectChange(multiselectId, value) {
-        if (multiselectId === 'user') {
-            this.setState({
-                valuesInUsersMultiselect: value
-            });
-        } else if (multiselectId === 'organization') {
-            this.setState({
-                valuesInOrganizationsMultiselect: value
-            });
-        }
+    handleMultiselectChange(value) {
+        this.state.display === 1 ? this.setState({valuesInUsersMultiselect: value}) : this.setState({valuesInOrganizationsMultiselect : value});
     }
 
-    handleSubmitAuthorization(event) {
-        let targetId = event.target.id.toLowerCase();
-        let usersOrOrganizations;
+    handleSubmitAuthorization() {
+        let usersOrOrganizations = this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect;
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
-        if (/user/.test(targetId)) {
-            usersOrOrganizations = this.state.valuesInUsersMultiselect;
-            this.state.authorizeUsersButtonGroup.read ? projectRights += 'r' : null; // eslint-disable-line no-unused-expressions, max-len
-            this.state.authorizeUsersButtonGroup.write ? projectRights += 'w' : null; // eslint-disable-line no-unused-expressions, max-len
-            this.state.authorizeUsersButtonGroup.delete ? projectRights += 'd' : null; // eslint-disable-line no-unused-expressions, max-len
-        } else if (/organization/.test(targetId)) {
-            usersOrOrganizations = this.state.valuesInOrganizationsMultiselect;
-            this.state.authorizeOrganizationsButtonGroup.read ? projectRights += 'r' : null; // eslint-disable-line no-unused-expressions, max-len
-            this.state.authorizeOrganizationsButtonGroup.write ? projectRights += 'w' : null; // eslint-disable-line no-unused-expressions, max-len
-            this.state.authorizeOrganizationsButtonGroup.delete ? projectRights += 'd' : null; // eslint-disable-line no-unused-expressions, max-len
-        }
+        projectRights += this.state.authorizeButtonGroup.read ? 'r' : null;
+        projectRights += this.state.authorizeButtonGroup.write ? 'w' : null;
+        projectRights += this.state.authorizeButtonGroup.delete ? 'd' : null;
 
         let promiseArrayToGrant = [];
 
@@ -189,15 +162,15 @@ class ProjectPage extends React.Component {
             if (projectRights === '') { // have to remove rights if none are selected
                 promiseArrayToGrant.push(
                     this.props.restClient.projects.removeRightsToProject(this.props.params.ownerId,
-                        this.props.params.projectName,
-                        userOrOrgName)
+                                                                         this.props.params.projectName,
+                                                                         userOrOrgName)
                 );
             } else {
                 promiseArrayToGrant.push(
                     this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
-                        this.props.params.projectName,
-                        userOrOrgName,
-                        projectRights)
+                                                                        this.props.params.projectName,
+                                                                        userOrOrgName,
+                                                                        projectRights)
                 );
             }
         });
@@ -287,10 +260,9 @@ class ProjectPage extends React.Component {
                             <div className="col-sm-5">
                                 <Multiselect label={this.state.display === 1 ? "Authorize/Deauthorize Users" : "Authorize/Deauthorize Organizations"}
                                              placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line no-useless-concat
-                                             options={this.state.users}
-                                             multiselectId="user"
+                                             options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations}
                                              onChange={this.handleMultiselectChange}
-                                             valuesInMultiselect={this.state.valuesInUsersMultiselect}/>
+                                             valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect}/>
                             </div>
 
                             <div>
