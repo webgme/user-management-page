@@ -6,6 +6,7 @@ import {withRouter} from 'react-router';
 // Self defined
 import DataTable from './datatable/DataTable.jsx';
 import Multiselect from './Multiselect.jsx';
+import ProjectDataTableEntry from './datatable/ProjectDataTableEntry.jsx';
 
 class ProjectPage extends React.Component {
 
@@ -246,7 +247,10 @@ class ProjectPage extends React.Component {
                            orderEntries={this.orderEntries}
                            numTimesClicked={this.state.numTimesClicked}
                            display={this.state.display}
-                           handleTableSwitch={this.handleTableSwitch}/>
+                           handleTableSwitch={this.handleTableSwitch}
+                           sortable={true}>
+                    <ProjectDataTableEntry/>
+                </DataTable>
 
                 {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
                 {this.state.authorizedToAdd ?

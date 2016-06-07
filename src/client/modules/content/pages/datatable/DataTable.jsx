@@ -58,7 +58,8 @@ export default class DataTable extends React.Component {
             formattedCategories.push(<DataTableCategory key={category.id}
                                                         name={category.name}
                                                         orderEntries={self.props.orderEntries}
-                                                        numTimesClicked={self.props.numTimesClicked}/>));
+                                                        numTimesClicked={self.props.numTimesClicked}
+                                                        sortable={self.props.sortable}/>));
 
         // Setting up bounds
         let entriesList = this.props.entries.filter(oneEntry => {
@@ -83,9 +84,12 @@ export default class DataTable extends React.Component {
         // Formatting table entries
         let formattedEntries = [];
         for (let i = displayNumStart - 1; i < displayNumEnd; i++) {
-            formattedEntries.push(<DataTableEntry key={i}
-                {...Object.assign({}, entriesList[i])}
-                                                  whichTable={this.props.whichTable}/>);
+            let properties = {};
+            for (let prop in entriesList[i]) {
+                properties[prop] = entriesList[i][prop];
+                properties.key = i;
+            }
+            formattedEntries.push(React.cloneElement(this.props.children, properties));
         }
 
         // Formatting selections (can make more efficient later)
