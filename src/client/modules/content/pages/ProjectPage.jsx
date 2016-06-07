@@ -1,12 +1,11 @@
 // Libraries
 import React from '../../../../../node_modules/react/lib/React';
-import Button from '../../../../../node_modules/react-bootstrap/lib/Button';
-import ButtonGroup from '../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
 import {withRouter} from 'react-router';
 // Self defined
 import DataTable from './datatable/DataTable.jsx';
-import Multiselect from './Multiselect.jsx';
 import ProjectDataTableEntry from './datatable/ProjectDataTableEntry.jsx';
+import AuthorizationWidget from './authorizationwidget/AuthorizationWidget.jsx';
+import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
 
 class ProjectPage extends React.Component {
 
@@ -255,96 +254,24 @@ class ProjectPage extends React.Component {
 
                 {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
                 {this.state.authorizedToAdd ?
-                    (<div>
-                        <div className="row">
-
-                            <ButtonGroup>
-                                <Button bsStyle={this.state.authorizeButtonGroup.read ? "primary" : null}
-                                        onClick={this.handleAuthorizationChange}
-                                        id="ur">Read</Button>
-                                <Button bsStyle={this.state.authorizeButtonGroup.write ? "primary" : null}
-                                        onClick={this.handleAuthorizationChange}
-                                        id="uw">Write</Button>
-                                <Button bsStyle={this.state.authorizeButtonGroup.delete ? "primary" : null}
-                                        onClick={this.handleAuthorizationChange}
-                                        id="ud">Delete</Button>
-                            </ButtonGroup>
-
-                            <div className="col-sm-5">
-                                <Multiselect label={this.state.display === 1 ? "Authorize/Deauthorize Users" : "Authorize/Deauthorize Organizations"}
-                                             placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line no-useless-concat
-                                             options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations}
-                                             onChange={this.handleMultiselectChange}
-                                             valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect}/>
-                            </div>
-
-                            <div>
-                                <ButtonGroup>
-                                    <Button bsStyle="success"
-                                            id="submitUser"
-                                            onClick={this.handleSubmitAuthorization}>
-                                        {this.state.display === 1 ? noRightsSelected ? 'Remove users rights' : 'Authorize users' : noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'} {/* Need this nest or needs to move out of return */}
-                                    </Button>
-                                </ButtonGroup>
-                            </div>
-                        </div>
-
-                    </div>) : null
-                }
+                <AuthorizationWidget selectableButtons={{read: this.state.authorizeButtonGroup.read,
+                                                         write: this.state.authorizeButtonGroup.write,
+                                                         delete: this.state.authorizeButtonGroup.delete}}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     label={this.state.display === 1 ? "Authorize/Deauthorize Users" : "Authorize/Deauthorize Organizations"} // eslint-disable-line max-len
+                                     placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
+                                     options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
+                                     submitButtonState={noRightsSelected}
+                                     handleSubmitAuthorization={this.handleSubmitAuthorization}
+                                     submitButtonText={this.state.display === 1 ? noRightsSelected ? 'Remove users rights' : 'Authorize users' : noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'}>
+                </AuthorizationWidget> : null}
 
             </section>
         );
     }
 
-}
-
-/**
- * Formats an array of objects to be sent to the multiselect drop-down list
- * @param {Array} allOfOneThing - array of one kind of objects(users/organizations)
- * @return {Object|*|Array} - Formatted array for use with react-select
- */
-function multiselectFormat(allOfOneThing) {
-    return allOfOneThing.map(oneThing => {
-        return Object.assign({}, {
-            label: oneThing._id,
-            value: oneThing._id
-        });
-    });
-}
-
-/**
- * Custom sort method to sort objects by a chosen field
- * @param {string} field - field of object to be sorted by
- * @return {Function} - to be used as callback for javascript's native sort method
- */
-function sortObjectArrayByField(field) {
-    return function(a, b) {
-        return (a[field].toLowerCase() < b[field].toLowerCase()) ? -1 :
-            (a[field].toLowerCase() > b[field].toLowerCase()) ? 1 : 0;
-    };
-}
-
-/**
- * Check if an object is empty
- * @param {Object} object - object to be checked
- * @return {boolean} - returns whether or not the object is "empty"
- */
-function isEmpty(object) {
-
-    if (object === null) {
-        return true;
-    } else if (object.length > 0) {
-        return false;
-    } else if (object.length === 0) {
-        return true;
-    }
-
-    for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-            return false;
-        }
-    }
-    return true;
 }
 
 // Needs withRouter for component's context (router is contained in there)
