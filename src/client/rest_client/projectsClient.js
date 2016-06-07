@@ -1,6 +1,6 @@
 import BaseClient from './baseClient';
 
-class ProjectsClient extends BaseClient {
+export default class ProjectsClient extends BaseClient {
 
     constructor(baseUrl, debugMode) {
         super(baseUrl);
@@ -14,7 +14,7 @@ class ProjectsClient extends BaseClient {
     getAllProjects() {
         var promise;
         if (this.debugMode) {
-            promise = new Promise(function(resolve, reject) {
+            promise = new Promise(function(resolve /* , reject(remove mock data later */) {
                 resolve([
                     {
                         _id: "johnDoe+Test_Project",
@@ -127,7 +127,7 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     removeRightsToProject(ownerId, projectName, userOrOrgId) {
-        return super.delete('projects/' + ownerId + '/' + projectName + '/' + userOrOrgId);
+        return super.delete('projects/' + ownerId + '/' + projectName + '/authorize/' + userOrOrgId);
     }
 
     /**
@@ -140,7 +140,7 @@ class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     grantRightsToProject(ownerId, projectName, userOrOrgId, rights) {
-        return super.put('projects/' + ownerId + '/' + projectName + '/' + userOrOrgId, rights);
+        return super.put('projects/' + ownerId + '/' + projectName + '/authorize/' + userOrOrgId + '/' + rights);
     }
 
     /**
@@ -332,5 +332,3 @@ class ProjectsClient extends BaseClient {
     }
 
 }
-
-module.exports = ProjectsClient;

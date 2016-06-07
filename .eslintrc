@@ -1,24 +1,27 @@
 {
+  "extends": [
+    "eslint:recommended",
+    "google",
+    "plugin:react/recommended"
+  ],
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
   },
   "plugins": [
     "react"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "google"
   ],
   "rules": {
     "indent": ["error", 4],
     "linebreak-style": 0,
     "max-len": ["error", 120],
+    "no-mixed-requires": 1,
     "no-useless-constructor": 0,
-    "padded-blocks": 0
+    "one-var": 0,
+    "padded-blocks": 0,
+    "react/prop-types": 0
   }
 }

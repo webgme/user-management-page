@@ -1,4 +1,5 @@
-import React from 'react';
+// Libraries
+import React from '../../../../../node_modules/react/lib/React';
 
 export default class OrganizationsPage extends React.Component {
 

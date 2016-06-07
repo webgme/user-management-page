@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env mocha, node */
 var testFixture = require('../globals');
 
 describe('Projects Rest Client', function() {
@@ -74,7 +74,6 @@ describe('Projects Rest Client', function() {
     it('should list last modified date', function(done) {
         rest.projects.getProject('guest', 'PROJECT1')
             .then(function(projectData) {
-                console.log('Data: ', projectData);
                 expect(typeof projectData.info.modifiedAt).to.equal('string');
                 done();
             })

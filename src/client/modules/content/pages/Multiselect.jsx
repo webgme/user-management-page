@@ -1,13 +1,12 @@
-import React from 'react';
-import Select from 'react-select';
+// Libraries
+import React from '../../../../../node_modules/react/lib/React';
+import Select from '../../../../../node_modules/react-select/lib/Select';
 
-export default class MultiSelectField extends React.Component{
+export default class MultiSelectField extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            disabled: false,
-            crazy: false,
             options: [],
             value: []
         };
@@ -15,17 +14,17 @@ export default class MultiSelectField extends React.Component{
     }
 
     handleSelectChange(value) {
-        this.setState({ value });
+        this.props.onChange(value);
     }
 
     render() {
+
         return (
             <div className="section">
                 <h3 className="section-heading">{this.props.label}</h3>
                 <Select multi
                         simpleValue
-                        disabled={this.state.disabled}
-                        value={this.state.value}
+                        value={this.props.valuesInMultiselect}
                         placeholder={this.props.placeholder}
                         options={this.props.options}
                         onChange={this.handleSelectChange} />

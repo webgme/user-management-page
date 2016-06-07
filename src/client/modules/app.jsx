@@ -1,5 +1,6 @@
-/* global window */
-import React from 'react';
+// Libraries
+import React from '../../../node_modules/react/lib/React';
+// Self-defined components
 import Header from './header/Header.jsx';
 import SideBar from './sidebar/SideBar.jsx';
 import Footer from './footer/Footer.jsx';
@@ -12,7 +13,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient('', true);
+        this.restClient = new RestClient('');
     }
 
     /**
@@ -30,12 +31,13 @@ export default class App extends React.Component {
 
         // Passing props through the route
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
-            (child) => React.cloneElement(child, {
+            child => React.cloneElement(child, {
                 restClient: this.restClient
             }));
 
-        return <div className="wrapper skin-blue">
-            <Header/>
+        // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
+        return <div className="wrapper skin-purple">
+            <Header restClient={this.restClient}/>
             <SideBar restClient={this.restClient} location={this.props.location}/>
             {ContentWrapperWithRestClient}
             <Footer/>

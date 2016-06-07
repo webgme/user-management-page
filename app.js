@@ -1,4 +1,4 @@
-/*jshint node:true*/
+/* jshint node:true*/
 /**
  * @author kecso / https://github.com/kecso
  */
@@ -11,7 +11,6 @@ webgme.addToRequireJsPaths(gmeConfig);
 
 myServer = new webgme.standaloneServer(gmeConfig);
 
-
-myServer.start(function () {
+myServer.start(function() {
     console.log('server started');
 });

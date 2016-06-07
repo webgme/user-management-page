@@ -1,4 +1,6 @@
-import React from 'react';
+// Libraries
+import React from '../../../../node_modules/react/lib/React';
+// Self-defined components
 import SideBarUserPanel from './SideBarUserPanel.jsx';
 import SideBarMenu from './SideBarMenu.jsx';
 

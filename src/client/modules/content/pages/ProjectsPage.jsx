@@ -1,5 +1,8 @@
-import React from 'react';
+// Libraries
+import React from '../../../../../node_modules/react/lib/React';
+// Self defined
 import DataTable from './datatable/DataTable.jsx';
+import ProjectsDataTableEntry from './datatable/ProjectsDataTableEntry.jsx';
 
 export default class ProjectsPage extends React.Component {
 
@@ -7,7 +10,7 @@ export default class ProjectsPage extends React.Component {
         super(props);
         this.state = {
             projects: []
-        }
+        };
     }
 
     componentDidMount() {
@@ -25,9 +28,8 @@ export default class ProjectsPage extends React.Component {
         let categories = [
             {id: 1, name: 'Project Name:'},
             {id: 2, name: 'Owner'},
-            {id: 3, name: 'Organization:'},
-            {id: 4, name: 'Last Viewed:'},
-            {id: 5, name: 'Last Changed:'}
+            {id: 3, name: 'Last Viewed:'},
+            {id: 4, name: 'Last Changed:'}
         ];
 
         return <section className="content">
@@ -36,9 +38,11 @@ export default class ProjectsPage extends React.Component {
             <DataTable restClient={this.restClient}
                        categories={categories}
                        whichTable="projects"
-                       tableName="Projects Table"
-                       entries={this.state.projects}
-                       />
+                       tableName="Projects"
+                       entries={this.state.projects}>
+                <ProjectsDataTableEntry/>
+            </DataTable>
+
         </section>;
     }
 

@@ -1,8 +1,14 @@
-/* global document */
-import React from 'react';
+/* global document, require */
+
+// Libraries
+import React from '../../node_modules/react/lib/React';
 import {render} from 'react-dom';
+import Router from '../../node_modules/react-router/lib/Router';
+import Route from '../../node_modules/react-router/lib/Route';
+import hashHistory from '../../node_modules/react-router/lib/hashHistory';
+import IndexRedirect from '../../node_modules/react-router/lib/IndexRedirect';
+// Our components
 import App from './modules/app.jsx';
-import {Router, Route, hashHistory, IndexRedirect} from 'react-router';
 import UserProfilePage from './modules/content/pages/UserProfilePage.jsx';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage.jsx';
 import ContentWrapper from './modules/content/ContentWrapper.jsx';
@@ -20,20 +26,20 @@ render((
 
     <Router history={hashHistory}>
 
-        <Route path='/' component={App}>
+        <Route path="/" component={App}>
 
             <IndexRedirect to="/projects"/>
 
             <Route component={ContentWrapper}>
 
-                <Route path='/projects' component={ProjectsPage}/>
+                <Route path="/projects" component={ProjectsPage}/>
 
-                {/*Singular project needs same space so not a subcomponent*/}
+                {/* Singular project needs same space so not a sub-component*/}
                 <Route path="/projects/:ownerId/:projectName" component={ProjectPage}/>
 
-                <Route path='/profile' component={UserProfilePage}/>
+                <Route path="/profile" component={UserProfilePage}/>
 
-                <Route path='/organizations' component={OrganizationsPage}/>
+                <Route path="/organizations" component={OrganizationsPage}/>
 
             </Route>
 

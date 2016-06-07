@@ -1,4 +1,6 @@
-import React from 'react';
+// Libraries
+import React from '../../../../node_modules/react/lib/React';
+// Self defined
 import MessageMenu from './navigationbar/MessageMenu.jsx';
 import NotificationsMenu from './navigationbar/NotificationsMenu.jsx';
 import TasksMenu from './navigationbar/TasksMenu.jsx';
@@ -30,7 +32,7 @@ export default class Header extends React.Component {
                         <MessageMenu />
                         <NotificationsMenu />
                         <TasksMenu />
-                        <UserMenu />
+                        <UserMenu restClient={this.props.restClient}/>
                         <SettingsMenu />
                     </ul>
                 </div>

@@ -38,6 +38,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "react": "^15.0.2",
+    "react-bootstrap": "^0.29.4",
     "react-dom": "^15.0.2",
     "react-router": "^2.4.1",
     "react-select": "^1.0.0-beta13",

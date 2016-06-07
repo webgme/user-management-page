@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-env node */
 var testFixture = require('../globals');
 
 describe('Users Rest Client', function() {
@@ -20,7 +21,7 @@ describe('Users Rest Client', function() {
                 return Q.allDone([
                     gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addUser('test', 'test@example.com', 'pass', true, {overwrite: true, siteAdmin: true}),
-                    gmeAuth.addUser('guest', 'guest@example.com', 'pass', true, {overwrite: true, siteAdmin:true})
+                    gmeAuth.addUser('guest', 'guest@example.com', 'pass', true, {overwrite: true, siteAdmin: true})
                 ]);
             })
             .then(function() {
@@ -140,11 +141,11 @@ describe('Users Rest Client', function() {
 
     it('should add a new user', function(done) {
 
-        let justAddedBody = {
+        var justAddedBody = {
             password: 'pass',
             email: 'justAdded@example.com',
             canCreate: true
-        }
+        };
 
         rest.users.getAllUsers()
             .then(function(usersList) {
@@ -168,7 +169,6 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to set user data
     it('should get a user\'s data', function(done) {
 
         // Test was deleted, can't use
@@ -181,7 +181,6 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to set user data
     it('should set a user\'s data', function(done) {
         var newData = {
             customData: 'myData'
@@ -204,11 +203,7 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to update user data
     it('should update a user\'s data', function(done) {
-        // Line to show in coverage, real test is below
-        rest.users.updateUserData('admin', {fake: "admin"});
-
         var oldData = {customData: 'myData'};
         var updatedData = {customData: 'myUpdatedData'};
 
@@ -229,11 +224,7 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    // TODO: authenticate guest (current) to be able to delete user data
     it('should delete a user\'s data', function(done) {
-        // Line to show in coverage, real test is below
-        rest.users.deleteUserData('admin');
-
         var oldData = {customData: 'myUpdatedData'};
 
         rest.users.setUserData('admin', oldData)

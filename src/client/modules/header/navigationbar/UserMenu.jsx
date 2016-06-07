@@ -1,23 +1,35 @@
-import React from 'react';
+/* global require */
+import React from '../../../../../node_modules/react/lib/React';
 
 export default class UserMenu extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            userData: {_id: 'loading'}
+        };
+    }
+
+    componentDidMount() {
+        var self = this;
+        this.props.restClient.user.getCurrentUser()
+            .then(function(data) {
+                self.setState({userData: data});
+            });
     }
 
     render() {
 
         return <li className="dropdown user user-menu">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                <img src="https://webgme.org/images/webgme-header-logo.png" className="user-image" alt="User Image"/>
-                <span className="hidden-xs">First Last</span>
+                <img src={require('webgme/src/client/img/gme-logo.png')} className="user-image" alt="User Image"/>
+                <span className="hidden-xs">{this.state.userData._id}</span>
             </a>
             <ul className="dropdown-menu">
                 <li className="user-header">
-                    <img src="https://webgme.org/images/webgme-header-logo.png" className="img-circle" alt="User Image"/>
+                    <img src={require('webgme/src/client/img/gme-logo.png')} className="img-circle" alt="User Image"/>
                     <p>
-                        Alexander Pierce - Web Developer
+                        {this.state.userData._id}
                         <small>Member since Nov. 2012</small>
                     </p>
                 </li>

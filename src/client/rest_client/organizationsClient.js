@@ -82,4 +82,55 @@ export default class OrganizationsClient extends BaseClient {
         return super.delete('orgs/' + organizationName + '/admins/' + username);
     }
 
+    // Non REST native Helper methods:
+    /**
+     * Hashes the names of all organizations with access to their respective rights
+     * @param {string} projectId - id of project
+     * @return {Promise.<{map}>} (Had to resolve the map to use it in parallel with another async function)
+     */
+    getOrganizationsWithAccessToProject(projectId) {
+        let organizationMap = {};
+
+        return this.getAllOrganizations()
+            .then(allOrganizations => {
+                allOrganizations.forEach(oneOrganization => {
+                    if (oneOrganization.projects.hasOwnProperty(projectId)) {
+                        organizationMap[oneOrganization._id] = oneOrganization.projects[projectId];
+                    }
+                });
+                return Promise.resolve(organizationMap);
+            });
+    }
+
+    /**
+     * Hashes the names of users in specified list of organizations to their respective rights
+     * @param {string} projectId - id of project
+     * @return {Promise.<map>} returns map of the users in the specified list of organizations (names to rights)
+     */
+    getUsersInOrganizationsWithAccessToProject(projectId) {
+        let userInOrganizationMap = {};
+
+        return this.getAllOrganizations()
+            .then(allOrganizations => {
+                allOrganizations.forEach(oneOrganization => {
+                    if (oneOrganization.projects.hasOwnProperty(projectId)) {
+                        oneOrganization.users.forEach(oneUser => {
+                            if (userInOrganizationMap[oneUser]) { // If in multiple organizations
+                                userInOrganizationMap[oneUser] = {
+                                    read: userInOrganizationMap[oneUser].read || oneOrganization[projectId].read,
+                                    write: userInOrganizationMap[oneUser].write || oneOrganization[projectId].write,
+                                    delete: userInOrganizationMap[oneUser].delete || oneOrganization[projectId].delete,
+                                    inOrg: true
+                                };
+                            } else {
+                                userInOrganizationMap[oneUser] = oneOrganization.projects[projectId];
+                                userInOrganizationMap[oneUser].inOrg = true;
+                            }
+                        });
+                    }
+                });
+                return userInOrganizationMap;
+            });
+    }
+
 }
