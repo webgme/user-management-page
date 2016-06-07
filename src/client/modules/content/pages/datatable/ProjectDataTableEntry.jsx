@@ -1,6 +1,5 @@
 // Libraries
 import React from '../../../../../../node_modules/react/lib/React';
-import {Link} from 'react-router/lib';
 import DataTableEntry from './DataTableEntry.jsx';
 
 export default class ProjectDataTableEntry extends React.Component {
@@ -18,6 +17,5 @@ export default class ProjectDataTableEntry extends React.Component {
             </td>
             <td>{rights}</td>
         </DataTableEntry>;
-
     }
 }

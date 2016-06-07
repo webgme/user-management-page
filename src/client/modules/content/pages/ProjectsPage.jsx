@@ -1,9 +1,8 @@
 // Libraries
 import React from '../../../../../node_modules/react/lib/React';
-import {Link} from 'react-router/lib';
 // Self defined
 import DataTable from './datatable/DataTable.jsx';
-import ProjectsDataTable from './datatable/ProjectsDataTableEntry.jsx';
+import ProjectsDataTableEntry from './datatable/ProjectsDataTableEntry.jsx';
 
 export default class ProjectsPage extends React.Component {
 
@@ -33,16 +32,6 @@ export default class ProjectsPage extends React.Component {
             {id: 4, name: 'Last Changed:'}
         ];
 
-        let tableEntries = [];
-
-        this.state.projects.forEach((project, index) => {
-            tableEntries[index] = [];
-            tableEntries[index].push(<Link to={`/projects/${project.owner}/${project.name}`}>{project.name}</Link>);
-            tableEntries[index].push(project.owner);
-            tableEntries[index].push(project.info.viewedAt);
-            tableEntries[index].push(project.info.modifiedAt);
-        });
-
         return <section className="content">
             <h2> Projects </h2>
 
@@ -50,9 +39,8 @@ export default class ProjectsPage extends React.Component {
                        categories={categories}
                        whichTable="projects"
                        tableName="Projects"
-                       entries={this.state.projects}
-                       tableEntries={tableEntries}>
-                <ProjectsDataTable/>
+                       entries={this.state.projects}>
+                <ProjectsDataTableEntry/>
             </DataTable>
 
         </section>;

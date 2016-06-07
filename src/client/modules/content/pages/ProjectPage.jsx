@@ -148,7 +148,8 @@ class ProjectPage extends React.Component {
     }
 
     handleSubmitAuthorization() {
-        let usersOrOrganizations = this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect;
+        let usersOrOrganizations = this.state.display === 1 ? this.state.valuesInUsersMultiselect :
+                                                              this.state.valuesInOrganizationsMultiselect;
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
