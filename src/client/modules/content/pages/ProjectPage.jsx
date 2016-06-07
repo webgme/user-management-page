@@ -41,9 +41,9 @@ class ProjectPage extends React.Component {
         let didUserRemoveSelfWhenOnlyCollaborator = false;
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
+            authorizeButtonGroup: {read: false, write: false, delete: false},
             valuesInUsersMultiselect: [],
-            valuesInOrganizationsMultiselect: [],
-            authorizeButtonGroup: {read: false, write: false, delete: false}
+            valuesInOrganizationsMultiselect: []
         });
 
         let self = this,
@@ -122,15 +122,6 @@ class ProjectPage extends React.Component {
         }
     }
 
-    orderEntries() {
-        this.setState({
-            collaborators: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
-                this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() :
-                this.state.collaborators.sort(sortObjectArrayByField('name')),
-            numTimesClicked: this.state.numTimesClicked + 1
-        });
-    }
-
     handleAuthorizationChange(event) {
         // have to copy whole object and reset the state
         let lowerCaseInnerHTML = event.target.innerHTML.toLowerCase();
@@ -144,7 +135,15 @@ class ProjectPage extends React.Component {
     }
 
     handleMultiselectChange(value) {
-        this.state.display === 1 ? this.setState({valuesInUsersMultiselect: value}) : this.setState({valuesInOrganizationsMultiselect : value});
+        if (this.state.display === 1) {
+            this.setState({
+                valuesInUsersMultiselect: value
+            });
+        } else if (this.state.display === 2) {
+            this.setState({
+                valuesInOrganizationsMultiselect: value
+            });
+        }
     }
 
     handleSubmitAuthorization() {
@@ -199,6 +198,15 @@ class ProjectPage extends React.Component {
             this.retrieveData();
         }
 
+    }
+
+    orderEntries() {
+        this.setState({
+            collaborators: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
+                this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() :
+                this.state.collaborators.sort(sortObjectArrayByField('name')),
+            numTimesClicked: this.state.numTimesClicked + 1
+        });
     }
 
     render() {

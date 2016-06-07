@@ -108,36 +108,28 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise.<map>} returns map of the users in the specified list of organizations (names to rights)
      */
     getUsersInOrganizationsWithAccessToProject(projectId) {
-        let userInOrganizationMap = {},
-            promiseArray = [];
+        let userInOrganizationMap = {};
 
-        return this.getOrganizationsWithAccessToProject(projectId)
-            .then(organizationMap => {
-                for (let organizationId in organizationMap) {
-                    if (organizationMap.hasOwnProperty(organizationId)) {
-                        promiseArray.push(this.getOrganizationData(organizationId));
-                    }
-                }
-
-                return Promise.all(promiseArray)
-                    .then(arrayOfDataForOrganizationsWithAccess => {
-                        arrayOfDataForOrganizationsWithAccess.forEach(oneOrganizationsData => {
-                            oneOrganizationsData.users.forEach(oneUser => {
-                                if (userInOrganizationMap[oneUser]) { // If in multiple organizations
-                                    userInOrganizationMap[oneUser] = {
-                                        read: userInOrganizationMap[oneUser].read || organizationMap[oneOrganizationsData._id].read, // eslint-disable-line max-len
-                                        write: userInOrganizationMap[oneUser].write || organizationMap[oneOrganizationsData._id].write, // eslint-disable-line max-len
-                                        delete: userInOrganizationMap[oneUser].delete || organizationMap[oneOrganizationsData._id].delete, // eslint-disable-line max-len
-                                        inOrg: true
-                                    };
-                                } else {
-                                    userInOrganizationMap[oneUser] = organizationMap[oneOrganizationsData._id];
-                                    userInOrganizationMap[oneUser].inOrg = true;
-                                }
-                            });
+        return this.getAllOrganizations()
+            .then(allOrganizations => {
+                allOrganizations.forEach(oneOrganization => {
+                    if (oneOrganization.projects.hasOwnProperty(projectId)) {
+                        oneOrganization.users.forEach(oneUser => {
+                            if (userInOrganizationMap[oneUser]) { // If in multiple organizations
+                                userInOrganizationMap[oneUser] = {
+                                    read: userInOrganizationMap[oneUser].read || oneOrganization[projectId].read,
+                                    write: userInOrganizationMap[oneUser].write || oneOrganization[projectId].write,
+                                    delete: userInOrganizationMap[oneUser].delete || oneOrganization[projectId].delete,
+                                    inOrg: true
+                                };
+                            } else {
+                                userInOrganizationMap[oneUser] = oneOrganization.projects[projectId];
+                                userInOrganizationMap[oneUser].inOrg = true;
+                            }
                         });
-                        return userInOrganizationMap;
-                    });
+                    }
+                });
+                return userInOrganizationMap;
             });
     }
 
