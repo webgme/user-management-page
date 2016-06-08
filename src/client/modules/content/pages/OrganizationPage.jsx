@@ -19,8 +19,8 @@ class OrganizationPage extends React.Component {
             formattedMembers: [],
             members: [],
             numTimesClicked: 0,
-            valuesInMembersMultiselect: [],
-            valuesInAdminsMultiselect: []
+            valuesInMembersMultiselect: '',
+            valuesInAdminsMultiselect: ''
         };
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
@@ -43,8 +43,8 @@ class OrganizationPage extends React.Component {
         if (!didUserRemoveSelfWhenOnlyMember) {
             this.setState({
                 authorizeButtonGroup: {add: false},
-                valuesInMembersMultiselect: [],
-                valuesInAdminsMultiselect: []
+                valuesInMembersMultiselect: '',
+                valuesInAdminsMultiselect: ''
             });
         }
 
@@ -131,7 +131,7 @@ class OrganizationPage extends React.Component {
         let promiseArrayToGrant = [];
 
         // Only accounts for users right now
-        if (this.state.display === 1) {
+        if (this.state.display === 1 && this.state.valuesInMembersMultiselect !== '') {
             this.state.valuesInMembersMultiselect.split(',').forEach(username => {
                 if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
                     promiseArrayToGrant.push(
@@ -145,7 +145,7 @@ class OrganizationPage extends React.Component {
                     );
                 }
             });
-        } else if (this.state.display === 2) {
+        } else if (this.state.display === 2 && this.state.valuesInAdminsMultiselect !== '') {
             this.state.valuesInAdminsMultiselect.split(',').forEach(username => {
                 if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
                     promiseArrayToGrant.push(

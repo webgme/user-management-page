@@ -19,8 +19,8 @@ class ProjectPage extends React.Component {
             formattedUsers: [],
             formattedOrganizations: [],
             numTimesClicked: 0,
-            valuesInUsersMultiselect: [],
-            valuesInOrganizationsMultiselect: []
+            valuesInUsersMultiselect: '',
+            valuesInOrganizationsMultiselect: ''
         };
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
@@ -42,8 +42,8 @@ class ProjectPage extends React.Component {
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
             authorizeButtonGroup: {read: false, write: false, delete: false},
-            valuesInUsersMultiselect: [],
-            valuesInOrganizationsMultiselect: []
+            valuesInUsersMultiselect: '',
+            valuesInOrganizationsMultiselect: ''
         });
 
         let self = this,
@@ -158,22 +158,24 @@ class ProjectPage extends React.Component {
 
         let promiseArrayToGrant = [];
 
-        usersOrOrganizations.split(',').forEach(userOrOrgName => {
-            if (projectRights === '') { // have to remove rights if none are selected
-                promiseArrayToGrant.push(
-                    this.props.restClient.projects.removeRightsToProject(this.props.params.ownerId,
-                                                                         this.props.params.projectName,
-                                                                         userOrOrgName)
-                );
-            } else {
-                promiseArrayToGrant.push(
-                    this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
-                                                                        this.props.params.projectName,
-                                                                        userOrOrgName,
-                                                                        projectRights)
-                );
-            }
-        });
+        if (usersOrOrganizations !== '') {
+            usersOrOrganizations.split(',').forEach(userOrOrgName => {
+                if (projectRights === '') { // have to remove rights if none are selected
+                    promiseArrayToGrant.push(
+                        this.props.restClient.projects.removeRightsToProject(this.props.params.ownerId,
+                            this.props.params.projectName,
+                            userOrOrgName)
+                    );
+                } else {
+                    promiseArrayToGrant.push(
+                        this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
+                            this.props.params.projectName,
+                            userOrOrgName,
+                            projectRights)
+                    );
+                }
+            });
+        }
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
