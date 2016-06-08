@@ -14,7 +14,6 @@ class OrganizationPage extends React.Component {
         this.state = {
             admins: [],
             authorizedToAdd: false,
-            authorizeButtonGroup: {add: false},
             display: 1, // 1 indicates display members, 2 indicates display admins
             formattedMembers: [],
             members: [],
@@ -22,7 +21,6 @@ class OrganizationPage extends React.Component {
             valuesInMembersMultiselect: '',
             valuesInAdminsMultiselect: ''
         };
-        this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
@@ -42,7 +40,6 @@ class OrganizationPage extends React.Component {
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         if (!didUserRemoveSelfWhenOnlyMember) {
             this.setState({
-                authorizeButtonGroup: {add: false},
                 valuesInMembersMultiselect: '',
                 valuesInAdminsMultiselect: ''
             });
@@ -102,18 +99,6 @@ class OrganizationPage extends React.Component {
 
     }
 
-    handleAuthorizationChange(event) {
-        // have to copy whole object and reset the state
-        let lowerCaseInnerHTML = event.target.innerHTML.toLowerCase();
-        let newButtonGroupState = this.state.authorizeButtonGroup;
-
-        newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeButtonGroup[lowerCaseInnerHTML];
-
-        this.setState({
-            authorizeButtonGroup: newButtonGroupState
-        });
-    }
-
     handleMultiselectChange(value) {
         if (this.state.display === 1) {
             this.setState({
@@ -126,19 +111,19 @@ class OrganizationPage extends React.Component {
         }
     }
 
-    handleSubmitAuthorization() {
+    handleSubmitAuthorization(event) {
 
         let promiseArrayToGrant = [];
 
         // Only accounts for users right now
         if (this.state.display === 1 && this.state.valuesInMembersMultiselect !== '') {
             this.state.valuesInMembersMultiselect.split(',').forEach(username => {
-                if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
+                if (/Add/.test(event.target.innerHTML)) { // have to remove rights if none are selected
                     promiseArrayToGrant.push(
                         this.props.restClient.organizations.addUserToOrganization(this.props.params.organizationId,
                             username)
                     );
-                } else {
+                } else if (/Remove/.test(event.target.innerHTML)) {
                     promiseArrayToGrant.push(
                         this.props.restClient.organizations.deleteUserFromOrganization(this.props.params.organizationId,
                             username)
@@ -147,12 +132,12 @@ class OrganizationPage extends React.Component {
             });
         } else if (this.state.display === 2 && this.state.valuesInAdminsMultiselect !== '') {
             this.state.valuesInAdminsMultiselect.split(',').forEach(username => {
-                if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
+                if (/Add/.test(event.target.innerHTML)) { // have to remove rights if none are selected
                     promiseArrayToGrant.push(
                         this.props.restClient.organizations.makeAdminOfOrganization(this.props.params.organizationId,
                             username)
                     );
-                } else {
+                } else if (/Remove/.test(event.target.innerHTML)) {
                     promiseArrayToGrant.push(
                         this.props.restClient.organizations.removeAdminOfOrganization(this.props.params.organizationId,
                             username)
@@ -207,16 +192,20 @@ class OrganizationPage extends React.Component {
             ]
         };
 
-        let noneSelected = true;
-
-        for (let accessType in this.state.authorizeButtonGroup) {
-            if (this.state.authorizeButtonGroup.hasOwnProperty(accessType) &&
-                this.state.authorizeButtonGroup[accessType]) {
-                noneSelected = false;
-            }
-        }
-
         let dualTable = {show: true, options: ['Members', 'Admins']};
+
+        let submitButtons = [
+            {
+                submitButtonHandler: this.handleSubmitAuthorization,
+                submitButtonText: this.state.display === 1 ? 'Add members' : 'Add admins',
+                submitButtonState: false
+            },
+            {
+                submitButtonHandler: this.handleSubmitAuthorization,
+                submitButtonText: this.state.display === 1 ? 'Remove members' : 'Remove admins',
+                submitButtonState: true
+            }
+        ];
 
         return (
 
@@ -240,17 +229,14 @@ class OrganizationPage extends React.Component {
 
                 {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
                 {this.state.authorizedToAdd ?
-                    <AuthorizationWidget selectableButtons={{add: this.state.authorizeButtonGroup.add}}
+                    <AuthorizationWidget selectableButtons={{}}
                                          selectableButtonsChange={this.handleAuthorizationChange}
                                          label={this.state.display === 1 ? "Add/Remove Members" : "Add/Remove Admins"}
                                          placeholder="Select one or more users (type to search)"
                                          options={this.state.formattedMembers}
                                          handleMultiselectChange={this.handleMultiselectChange}
                                          valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect} // eslint-disable-line max-len
-                                         submitButtonState={noneSelected}
-                                         handleSubmitAuthorization={this.handleSubmitAuthorization}
-                                         submitButtonText={this.state.display === 1 ? noneSelected ? 'Remove members' : 'Add members' : noneSelected ? 'Remove admins' : 'Add admins'} // eslint-disable-line max-len, no-nested-ternary
-                    >
+                                         submitButtons={submitButtons}>
                     </AuthorizationWidget> : null}
 
             </section>

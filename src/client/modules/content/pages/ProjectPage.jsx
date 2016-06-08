@@ -235,6 +235,14 @@ class ProjectPage extends React.Component {
 
         let dualTable = {show: true, options: ['Users', 'Organizations']};
 
+        let submitButtons = [
+            {
+                submitButtonHandler: this.handleSubmitAuthorization,
+                submitButtonText: this.state.display === 1 ? noRightsSelected ? 'Remove users rights' : 'Authorize users' : noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations',
+                submitButtonState: noRightsSelected
+            }
+        ];
+
         return (
 
             <section className="content">
@@ -265,10 +273,8 @@ class ProjectPage extends React.Component {
                                      placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
                                      options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
                                      handleMultiselectChange={this.handleMultiselectChange}
-                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
-                                     submitButtonState={noRightsSelected}
-                                     handleSubmitAuthorization={this.handleSubmitAuthorization}
-                                     submitButtonText={this.state.display === 1 ? noRightsSelected ? 'Remove users rights' : 'Authorize users' : noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations'}>
+                                     submitButtons={submitButtons}
+                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect}> // eslint-disable-line max-len
                 </AuthorizationWidget> : null}
 
             </section>

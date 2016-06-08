@@ -19,12 +19,22 @@ export default class AuthorizationWidget extends React.Component {
                 selectableButtons.push(
                     <Button bsStyle={this.props.selectableButtons[key] ? "primary" : null}
                             onClick={this.props.selectableButtonsChange}
-                            key={index}>{key[0].toUpperCase() + key.substring(1)}
+                            key={index++}>{key[0].toUpperCase() + key.substring(1)}
                     </Button>
                 );
-                index++;
             }
         }
+
+        let submitButtons = [];
+        this.props.submitButtons.forEach((oneSubmitButton, index) => {
+            submitButtons.push(
+                <Button bsStyle={oneSubmitButton.submitButtonState ? "danger" : "success"}
+                        onClick={oneSubmitButton.submitButtonHandler}
+                        key={index}>
+                    {oneSubmitButton.submitButtonText}
+                </Button>
+            );
+        });
 
         return (
             <div className="row">
@@ -42,12 +52,9 @@ export default class AuthorizationWidget extends React.Component {
                         valuesInMultiselect={this.props.valuesInMultiselect}/>
                 </div>
 
-                <div>
+                <div className="row">
                     <ButtonGroup>
-                        <Button bsStyle={this.props.submitButtonState ? "danger" : "success"}
-                                onClick={this.props.handleSubmitAuthorization}>
-                            {this.props.submitButtonText}
-                        </Button>
+                        {submitButtons}
                     </ButtonGroup>
                 </div>
             </div>
