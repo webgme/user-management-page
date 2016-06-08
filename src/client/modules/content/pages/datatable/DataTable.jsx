@@ -113,15 +113,14 @@ export default class DataTable extends React.Component {
                 <div className="box">
                     <div className="box-header">
                             <h3 className="box-title">{this.props.tableName}</h3>
-                        {/* Only display on the collaborators page */}
-                        {this.props.tableName === 'Collaborators' ?
+                        { (this.props.dualTable && this.props.dualTable.show) ?
                             <ButtonGroup style={{float: "right"}}>
                                 <Button bsStyle={this.props.display === 1 ? "primary" : null}
                                         onClick={this.props.handleTableSwitch}
-                                        id="or">Users</Button>
+                                        id="or">{this.props.dualTable.options[0]}</Button>
                                 <Button bsStyle={this.props.display === 2 ? "primary" : null}
                                         onClick={this.props.handleTableSwitch}
-                                        id="ow">Organizations</Button>
+                                        id="ow">{this.props.dualTable.options[1]}</Button>
                             </ButtonGroup>
                                 : null}
                     </div>

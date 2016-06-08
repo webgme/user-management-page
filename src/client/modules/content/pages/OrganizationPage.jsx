@@ -12,16 +12,20 @@ class OrganizationPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            admins: [],
             authorizedToAdd: false,
             authorizeButtonGroup: {add: false},
+            display: 1, // 1 indicates display members, 2 indicates display admins
             formattedMembers: [],
             members: [],
             numTimesClicked: 0,
-            valuesInMultiselect: []
+            valuesInMembersMultiselect: [],
+            valuesInAdminsMultiselect: []
         };
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
+        this.handleTableSwitch = this.handleTableSwitch.bind(this);
         this.orderEntries = this.orderEntries.bind(this);
         this.retrieveData = this.retrieveData.bind(this);
     }
@@ -39,7 +43,8 @@ class OrganizationPage extends React.Component {
         if (!didUserRemoveSelfWhenOnlyMember) {
             this.setState({
                 authorizeButtonGroup: {add: false},
-                valuesInMultiselect: []
+                valuesInMembersMultiselect: [],
+                valuesInAdminsMultiselect: []
             });
         }
 
@@ -57,6 +62,11 @@ class OrganizationPage extends React.Component {
                             return {
                                 name: oneUser,
                                 admin: organizationData.admins.indexOf(oneUser) !== -1
+                            };
+                        }),
+                        admins: organizationData.admins.map(oneAdmin => {
+                            return {
+                                name: oneAdmin
                             };
                         })
                     });
@@ -105,9 +115,15 @@ class OrganizationPage extends React.Component {
     }
 
     handleMultiselectChange(value) {
-        this.setState({
-            valuesInMultiselect: value
-        });
+        if (this.state.display === 1) {
+            this.setState({
+                valuesInMembersMultiselect: value
+            });
+        } else if (this.state.display === 2) {
+            this.setState({
+                valuesInAdminsMultiselect: value
+            });
+        }
     }
 
     handleSubmitAuthorization() {
@@ -115,19 +131,35 @@ class OrganizationPage extends React.Component {
         let promiseArrayToGrant = [];
 
         // Only accounts for users right now
-        this.state.valuesInMultiselect.split(',').forEach(username => {
-            if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
-                promiseArrayToGrant.push(
-                    this.props.restClient.organizations.addUserToOrganization(this.props.params.organizationId,
-                                                                              username)
-                );
-            } else {
-                promiseArrayToGrant.push(
-                    this.props.restClient.organizations.deleteUserFromOrganization(this.props.params.organizationId,
-                                                                                   username)
-                );
-            }
-        });
+        if (this.state.display === 1) {
+            this.state.valuesInMembersMultiselect.split(',').forEach(username => {
+                if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
+                    promiseArrayToGrant.push(
+                        this.props.restClient.organizations.addUserToOrganization(this.props.params.organizationId,
+                            username)
+                    );
+                } else {
+                    promiseArrayToGrant.push(
+                        this.props.restClient.organizations.deleteUserFromOrganization(this.props.params.organizationId,
+                            username)
+                    );
+                }
+            });
+        } else if (this.state.display === 2) {
+            this.state.valuesInAdminsMultiselect.split(',').forEach(username => {
+                if (this.state.authorizeButtonGroup.add) { // have to remove rights if none are selected
+                    promiseArrayToGrant.push(
+                        this.props.restClient.organizations.makeAdminOfOrganization(this.props.params.organizationId,
+                            username)
+                    );
+                } else {
+                    promiseArrayToGrant.push(
+                        this.props.restClient.organizations.removeAdminOfOrganization(this.props.params.organizationId,
+                            username)
+                    );
+                }
+            });
+        }
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
@@ -138,6 +170,20 @@ class OrganizationPage extends React.Component {
                 console.log('Authorization denied.'); // eslint-disable-line no-console
             });
 
+    }
+
+    handleTableSwitch(event) {
+        let holdOldDisplayNum = this.state.display;
+        let newDisplayNum = event.target.innerHTML === 'Members' ? 1 : 2;
+
+        this.setState({
+            display: newDisplayNum
+        });
+
+        // If the table changed, then have to retrieve data again
+        if (holdOldDisplayNum !== newDisplayNum) {
+            this.retrieveData();
+        }
     }
 
     orderEntries() {
@@ -151,10 +197,15 @@ class OrganizationPage extends React.Component {
 
     render() {
 
-        let categories = [
-            {id: 1, name: 'Member Name:'},
-            {id: 2, name: 'Admin'}
-        ];
+        let categories = {
+            members: [
+                {id: 1, name: 'Member Name:'},
+                {id: 2, name: 'Admin:'}
+            ],
+            admins: [
+                {id: 1, name: 'Admin Name:'}
+            ]
+        };
 
         let noneSelected = true;
 
@@ -165,6 +216,8 @@ class OrganizationPage extends React.Component {
             }
         }
 
+        let dualTable = {show: true, options: ['Members', 'Admins']};
+
         return (
 
             <section className="content">
@@ -173,14 +226,15 @@ class OrganizationPage extends React.Component {
                 <DataTable ownerId={this.props.params.ownerId}
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}
-                           categories={categories}
-                           tableName="Members"
-                           entries={this.state.members}
+                           categories={this.state.display === 1 ? categories.members : categories.admins}
+                           tableName={this.state.display === 1 ? "Members" : "Admins"}
+                           entries={this.state.display === 1 ? this.state.members : this.state.admins}
                            orderEntries={this.orderEntries}
                            numTimesClicked={this.state.numTimesClicked}
                            display={this.state.display}
                            handleTableSwitch={this.handleTableSwitch}
-                           sortable={true}>
+                           sortable={true}
+                           dualTable={dualTable}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
@@ -188,14 +242,15 @@ class OrganizationPage extends React.Component {
                 {this.state.authorizedToAdd ?
                     <AuthorizationWidget selectableButtons={{add: this.state.authorizeButtonGroup.add}}
                                          selectableButtonsChange={this.handleAuthorizationChange}
-                                         label="Add/Remove Members"
+                                         label={this.state.display === 1 ? "Add/Remove Members" : "Add/Remove Admins"}
                                          placeholder="Select one or more users (type to search)"
                                          options={this.state.formattedMembers}
                                          handleMultiselectChange={this.handleMultiselectChange}
-                                         valuesInMultiselect={this.state.valuesInMultiselect}
+                                         valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect} // eslint-disable-line max-len
                                          submitButtonState={noneSelected}
                                          handleSubmitAuthorization={this.handleSubmitAuthorization}
-                                         submitButtonText={noneSelected ? 'Remove user' : 'Add users'}>
+                                         submitButtonText={this.state.display === 1 ? noneSelected ? 'Remove members' : 'Add members' : noneSelected ? 'Remove admins' : 'Add admins'} // eslint-disable-line max-len, no-nested-ternary
+                    >
                     </AuthorizationWidget> : null}
 
             </section>
@@ -206,3 +261,9 @@ class OrganizationPage extends React.Component {
 
 // Needs withRouter for component's context (router is contained in there)
 export default withRouter(OrganizationPage);
+
+OrganizationPage.propTypes = {
+    params: React.PropTypes.shape({
+        organizationId: React.PropTypes.string.isRequired
+    })
+};

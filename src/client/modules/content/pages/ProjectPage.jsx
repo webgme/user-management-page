@@ -198,7 +198,6 @@ class ProjectPage extends React.Component {
         if (holdOldDisplayNum !== newDisplayNum) {
             this.retrieveData();
         }
-
     }
 
     orderEntries() {
@@ -232,6 +231,8 @@ class ProjectPage extends React.Component {
             }
         }
 
+        let dualTable = {show: true, options: ['Users', 'Organizations']};
+
         return (
 
             <section className="content">
@@ -241,14 +242,14 @@ class ProjectPage extends React.Component {
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}
                            categories={this.state.display === 1 ? categories.users : categories.organizations}
-                           whichTable="collaborators"
                            tableName="Collaborators"
                            entries={this.state.collaborators}
                            orderEntries={this.orderEntries}
                            numTimesClicked={this.state.numTimesClicked}
                            display={this.state.display}
                            handleTableSwitch={this.handleTableSwitch}
-                           sortable={true}>
+                           sortable={true}
+                           dualTable={dualTable}>
                     <ProjectDataTableEntry/>
                 </DataTable>
 
