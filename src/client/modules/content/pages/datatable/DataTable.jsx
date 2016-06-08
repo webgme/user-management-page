@@ -5,7 +5,6 @@ import ButtonGroup from '../../../../../../node_modules/react-bootstrap/lib/Butt
 // Self-defined
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';
-import DataTableEntry from './DataTableEntry.jsx';
 
 export default class DataTable extends React.Component {
 

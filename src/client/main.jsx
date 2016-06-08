@@ -11,6 +11,7 @@ import IndexRedirect from '../../node_modules/react-router/lib/IndexRedirect';
 import App from './modules/app.jsx';
 import UserProfilePage from './modules/content/pages/UserProfilePage.jsx';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage.jsx';
+import OrganizationPage from './modules/content/pages/OrganizationPage.jsx';
 import ContentWrapper from './modules/content/ContentWrapper.jsx';
 import ProjectPage from './modules/content/pages/ProjectPage.jsx';
 import ProjectsPage from './modules/content/pages/ProjectsPage.jsx';
@@ -40,6 +41,8 @@ render((
                 <Route path="/profile" component={UserProfilePage}/>
 
                 <Route path="/organizations" component={OrganizationsPage}/>
+
+                <Route path="/organizations/:organizationId" component={OrganizationPage}/>
 
             </Route>
 
