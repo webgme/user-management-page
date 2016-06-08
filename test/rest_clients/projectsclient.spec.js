@@ -24,7 +24,8 @@ describe('Projects Rest Client', function() {
             })
             .then(function() {
                 return Q.allDone([
-                    gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true})
+                    gmeAuth.addUser('user', 'user@example.com', 'pass', true, {overwrite: true}),
+                    gmeAuth.addUser('guest', 'guest@example.com', 'pass', true, {overwrite: true, siteAdmin: true})
                 ]);
             })
             .then(function() {
@@ -107,4 +108,58 @@ describe('Projects Rest Client', function() {
             })
             .catch(done);
     });
+
+    it('should delete a new project', function(done) {
+        var newProj = {type: 'file', seedName: 'EmptyProject', ownerId: 'guest'};
+
+        rest.projects.getAllProjects()
+            .then(function(projectsData) {
+                logger.debug('Before Project data: ', projectsData);
+                expect(projectsData.length).to.deep.equal(2);
+                return rest.projects.addProject('guest', 'myProject', newProj);
+            })
+            .then(function() {
+                return rest.projects.getAllProjects();
+            })
+            .then(function(projectData) {
+                logger.debug('After project data: ', projectData);
+                expect(projectData.length).to.equal(3);
+                return rest.projects.deleteProject('guest', 'myProject');
+            })
+            .then(function() {
+                return rest.projects.getAllProjects();
+            })
+            .then(function(projectData) {
+                logger.debug('After project deleted: ', projectData);
+                expect(projectData.length).to.equal(2);
+                done();
+            })
+            .catch(done);
+    });
+
+    it('should update a project', function(done) {
+        var newProj = {type: 'file', seedName: 'EmptyProject', ownerId: 'guest'};
+        var newData = {modifiedAt: "2016-06-07T22:24:08.713Z"};
+        var holdOldData;
+
+        rest.projects.addProject('guest', 'myProject', newProj)
+            .then(function() {
+                return rest.projects.getProject('guest', 'myProject');
+            })
+            .then(function(projectData) {
+                console.log('project data: ', projectData);
+                holdOldData = projectData;
+                return rest.projects.updateProject('guest', 'myProject', newData);
+            })
+            .then(function() {
+                return rest.projects.getProject('guest', 'myProject');
+            })
+            .then(function(projectData) {
+                console.log('After project deleted: ', projectData);
+                expect(projectData.length).to.not.deep.equal(holdOldData);
+                done();
+            })
+            .catch(done);
+    });
+
 });
