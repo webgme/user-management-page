@@ -216,4 +216,114 @@ describe('Projects Rest Client', function() {
             });
     });
 
+    it('should get all branches', function(done) {
+        rest.projects.getAllBranches('guest', 'PROJECT1')
+            .then(function(allBranches) {
+                logger.debug('All branches:' ,allBranches);
+                expect(allBranches.hasOwnProperty('master')).to.equal(true); // always master
+                done();
+            });
+    });
+
+    it('should get all branches', function(done) {
+        rest.projects.getAllBranches('guest', 'PROJECT1')
+            .then(function(allBranches) {
+                logger.debug('All branches:' ,allBranches);
+                expect(allBranches.hasOwnProperty('master')).to.equal(true); // always master
+                done();
+            });
+    });
+
+    it('should get branch by branchId', function(done) {
+        rest.projects.getBranch('guest', 'PROJECT1', 'master')
+            .then(function(masterBranch) {
+                logger.debug('master branch', masterBranch);
+                expect(masterBranch.branchName).to.equal('master');
+                done();
+            });
+    });
+
+    // TODO: add this back after making a commit
+    it.skip('should add and delete a branch', function(done) {
+        var holdOldBranches;
+
+        rest.projects.addBranch('guest', 'PROJECT1', 'newBranch', {"hash": "#f2a624d9cfbf883c927b04dd45800ba55537dff5"})
+            .then(function() {
+                return rest.projects.getAllBranches('guest', 'PROJECT1');
+            })
+            .then(function(allBranches) {
+                holdOldBranches = allBranches;
+                logger.debug('All branches: ', allBranches);
+                return rest.projects.deleteBranch('guest', 'PROJECT1', 'newBranch');
+            })
+            .then(function() {
+                return rest.projects.getAllBranches('guest', 'PROJECT1');
+            })
+            .then(function(allBranches) {
+                expect(allBranches).to.not.deep.equal(holdOldBranches);
+                done();
+            });
+    });
+
+    // TODO: add this back after making a commit
+    it.skip('should update a branch', function(done) {
+        var holdOldBranch;
+
+        rest.projects.getBranch('guest', 'PROJECT1', 'master')
+            .then(function(masterBranch) {
+                logger.debug('master branch', masterBranch);
+                holdOldBranch = masterBranch;
+                expect(masterBranch.branchName).to.equal('master');
+                return rest.projects.updateBranch('guest', 'PROJECT1', 'master', {"oldHash": "#actualOldHash","newHash": "#actualNewHash"});
+            })
+            .then(function() {
+                return rest.projects.getBranch('guest', 'PROJECT1', 'master');
+            })
+            .then(function(masterBranch) {
+                expect(masterBranch).to.not.equal(holdOldBranch);
+                done();
+            });
+    });
+
+    it('should get latest commits by branch (query of 50)', function(done) {
+        logger.debug('yo');
+        rest.projects.getLatestCommitsByBranch('guest', 'PROJECT1', 'master', 50)
+            .then(function(latestCommitsToMaster) {
+                logger.debug('rest call worked?');
+                logger.debug('latest commits to master: ', latestCommitsToMaster);
+                expect(latestCommitsToMaster).to.have.length.below(51);
+                done();
+            });
+    });
+
+    it('should get latest commits by branch (default 100)', function(done) {
+        rest.projects.getLatestCommitsByBranch('guest', 'PROJECT1', 'master')
+            .then(function(latestCommitsToMaster) {
+                logger.debug('latest commits to master: ', latestCommitsToMaster);
+                expect(latestCommitsToMaster).to.have.length.below(101);
+                done();
+            });
+    });
+
+    it('should get all project tags', function(done) {
+        rest.projects.getProjectTags('guest', 'PROJECT1')
+            .then(function(projectTags) {
+                logger.debug('project tags: ', projectTags);
+                expect(typeof projectTags).to.equal('object');
+                done();
+            });
+    });
+
+    // TODO: add this back after commit (needs commit to assign a tag)
+    it.skip('should add tag to project', function(done) {
+        rest.projects.addTag('guest', 'PROJECT1', 'justAddedTag', {"hash": "#myMadeUpHash"})
+            .then(function() {
+                return rest.projects.getTag('guest', 'PROJECT1', 'justAddedTag');
+            })
+            .then(function(tagData) {
+                logger.debug('tag data: ', tagData);
+                done();
+            });
+    });
+
 });

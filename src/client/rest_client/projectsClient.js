@@ -153,7 +153,7 @@ export default class ProjectsClient extends BaseClient {
      * @param {string} projectName = name of project
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getBranches(ownerId, projectName) {
+    getAllBranches(ownerId, projectName) {
         return super.get('projects/' + ownerId + '/' + projectName, 'branches');
     }
 
@@ -212,7 +212,9 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getLatestCommitsByBranch(ownerId, projectName, branchId, numCommits) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/branches/' + branchId, numCommits);
+        numCommits = numCommits || 100;
+        var query = '?n=' + numCommits;
+        return super.get('projects/' + ownerId + '/' + projectName + '/branches/' + branchId + '/commits', query);
     }
 
     /**
