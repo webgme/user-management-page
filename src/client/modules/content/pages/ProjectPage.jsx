@@ -152,9 +152,9 @@ class ProjectPage extends React.Component {
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
-        projectRights += this.state.authorizeButtonGroup.read ? 'r' : null;
-        projectRights += this.state.authorizeButtonGroup.write ? 'w' : null;
-        projectRights += this.state.authorizeButtonGroup.delete ? 'd' : null;
+        projectRights += this.state.authorizeButtonGroup.read ? 'r' : '';
+        projectRights += this.state.authorizeButtonGroup.write ? 'w' : '';
+        projectRights += this.state.authorizeButtonGroup.delete ? 'd' : '';
 
         let promiseArrayToGrant = [];
 

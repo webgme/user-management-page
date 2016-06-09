@@ -147,7 +147,7 @@ describe('Projects Rest Client', function() {
                 return rest.projects.getProject('guest', 'myProject');
             })
             .then(function(projectData) {
-                console.log('project data: ', projectData);
+                logger.debug('project data: ', projectData);
                 holdOldData = projectData;
                 return rest.projects.updateProject('guest', 'myProject', newData);
             })
@@ -155,11 +155,65 @@ describe('Projects Rest Client', function() {
                 return rest.projects.getProject('guest', 'myProject');
             })
             .then(function(projectData) {
-                console.log('After project deleted: ', projectData);
+                logger.debug('After project deleted: ', projectData);
                 expect(projectData.length).to.not.deep.equal(holdOldData);
                 done();
             })
             .catch(done);
+    });
+
+    it('should remove/grant rights to a project', function(done) {
+
+        var holdOldProjects;
+        rest.users.getUser('user')
+            .then(function(userData) {
+                logger.debug('User data: ', userData);
+                holdOldProjects = userData.projects;
+                return rest.projects.grantRightsToProject('guest', 'PROJECT1', 'user', 'rwd');
+            })
+            .then(function() {
+                return rest.users.getUser('user');
+            })
+            .then(function(userData) {
+                logger.debug('New user data!: ', userData);
+                expect(holdOldProjects).to.not.deep.equal(userData.projects);
+                return rest.projects.removeRightsToProject('guest', 'PROJECT1', 'user');
+            })
+            .then(function() {
+                logger.debug('I removed his rights');
+                return rest.users.getUser('user');
+            })
+            .then(function(userData) {
+                logger.debug('After removing: ', userData);
+                done();
+            });
+    });
+
+    it('should get latest commits, query of 50', function(done) {
+        rest.projects.getLatestCommits('guest', 'PROJECT1', 50)
+            .then(function(latestCommits) {
+                logger.debug('50 or less latest commits: ', latestCommits);
+                expect(latestCommits).to.have.length.below(51);
+                done();
+            });
+    });
+
+    it('should get latest commits, use default 100', function(done) {
+        rest.projects.getLatestCommits('guest', 'PROJECT1')
+            .then(function(latestCommits) {
+                logger.debug('100 or less latest commits: ', latestCommits);
+                expect(latestCommits).to.have.length.below(101);
+                done();
+            });
+    });
+
+    it('should get commit by id', function(done) {
+        rest.projects.getCommitById('guest', 'PROJECT1', '#8a170dca622573eb0f3f31e8dbe1f81cf3dd3218')
+            .then(function(commitData) {
+                logger.debug('Commit data: ', commitData);
+                expect(commitData).to.not.equal({});
+                done();
+            });
     });
 
 });
