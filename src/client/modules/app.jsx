@@ -14,6 +14,24 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.restClient = new RestClient('');
+        this.state = {
+            headerColor: 'purple'
+        };
+        this.handleColorSwitch = this.handleColorSwitch.bind(this);
+    }
+
+    handleColorSwitch(event) {
+        let finalColor;
+        if (event.target.outerHTML.length > 20) {
+            finalColor = event.target.outerHTML
+                .match(/background-color: \w+/)[0]
+                .replace('background-color: ', '');
+        } else {
+            finalColor = event.target.innerHTML.toLowerCase();
+        }
+        this.setState({
+            headerColor: finalColor
+        });
     }
 
     /**
@@ -36,8 +54,10 @@ export default class App extends React.Component {
             }));
 
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
-        return <div className="wrapper skin-purple">
-            <Header restClient={this.restClient}/>
+        return <div className={"wrapper skin-" + this.state.headerColor}>
+            <Header restClient={this.restClient}
+                    headerColor={this.state.headerColor}
+                    handleColorSwitch={this.handleColorSwitch}/>
             <SideBar restClient={this.restClient} location={this.props.location}/>
             {ContentWrapperWithRestClient}
             <Footer/>

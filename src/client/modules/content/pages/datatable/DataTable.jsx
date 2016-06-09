@@ -121,8 +121,7 @@ export default class DataTable extends React.Component {
                                 <Button bsStyle={this.props.display === 2 ? "primary" : null}
                                         onClick={this.props.handleTableSwitch}
                                         id="ow">{this.props.dualTable.options[1]}</Button>
-                            </ButtonGroup>
-                                : null}
+                            </ButtonGroup> : null}
                     </div>
                     <div className="box-body">
                         <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">

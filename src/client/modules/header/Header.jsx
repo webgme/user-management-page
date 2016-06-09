@@ -1,11 +1,12 @@
 // Libraries
 import React from '../../../../node_modules/react/lib/React';
 // Self defined
+import ColorMenu from './navigationbar/ColorMenu.jsx';
 import MessageMenu from './navigationbar/MessageMenu.jsx';
 import NotificationsMenu from './navigationbar/NotificationsMenu.jsx';
+import SettingsMenu from './navigationbar/SettingsMenu.jsx';
 import TasksMenu from './navigationbar/TasksMenu.jsx';
 import UserMenu from './navigationbar/UserMenu.jsx';
-import SettingsMenu from './navigationbar/SettingsMenu.jsx';
 
 export default class Header extends React.Component {
 
@@ -29,11 +30,12 @@ export default class Header extends React.Component {
 
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
-                        <MessageMenu />
-                        <NotificationsMenu />
-                        <TasksMenu />
+                        <ColorMenu handleColorSwitch={this.props.handleColorSwitch}/>
+                        <MessageMenu/>
+                        <NotificationsMenu/>
+                        <TasksMenu/>
                         <UserMenu restClient={this.props.restClient}/>
-                        <SettingsMenu />
+                        <SettingsMenu/>
                     </ul>
                 </div>
             </nav>
