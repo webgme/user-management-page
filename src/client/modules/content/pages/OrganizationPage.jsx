@@ -60,12 +60,12 @@ class OrganizationPage extends React.Component {
                                 name: oneUser,
                                 admin: organizationData.admins.indexOf(oneUser) !== -1
                             };
-                        }),
+                        }).sort(sortObjectArrayByField('name')),
                         admins: organizationData.admins.map(oneAdmin => {
                             return {
                                 name: oneAdmin
                             };
-                        })
+                        }).sort(sortObjectArrayByField('name'))
                     });
                 }
             });
@@ -172,12 +172,21 @@ class OrganizationPage extends React.Component {
     }
 
     orderEntries() {
-        this.setState({
-            members: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
-                this.state.members.sort(sortObjectArrayByField('name')).reverse() :
-                this.state.members.sort(sortObjectArrayByField('name')),
-            numTimesClicked: this.state.numTimesClicked + 1
-        });
+        if (this.state.display === 1) {
+            this.setState({
+                members: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
+                    this.state.members.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.members.sort(sortObjectArrayByField('name')),
+                numTimesClicked: this.state.numTimesClicked + 1
+            });
+        } else if (this.state.display === 2) {
+            this.setState({
+                admins: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
+                    this.state.admins.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.admins.sort(sortObjectArrayByField('name')),
+                numTimesClicked: this.state.numTimesClicked + 1
+            });
+        }
     }
 
     render() {
