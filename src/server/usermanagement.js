@@ -42,12 +42,15 @@ function initialize(middlewareOpts) {
         next();
     });
 
-    router.get('/', function(req, res) {
-        serveFile('index.html', res);
+    // Detecting if its a file name
+    router.get(/\./, function(req, res) {
+        var onlyFileExtension = req.originalUrl.match(/[^\/]+$/)[0]; // this is the file name
+        serveFile(onlyFileExtension, res);
     });
 
-    router.get('/:name', function(req, res) {
-        serveFile(req.params.name, res);
+    const ROUTES = ['/', '/projects', '/profile', '/organizations', /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
+    router.get(ROUTES, function(req, res) {
+        serveFile('index.html', res);
     });
 
     logger.debug('ready');

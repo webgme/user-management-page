@@ -225,15 +225,6 @@ describe('Projects Rest Client', function() {
             });
     });
 
-    it('should get all branches', function(done) {
-        rest.projects.getAllBranches('guest', 'PROJECT1')
-            .then(function(allBranches) {
-                logger.debug('All branches:' ,allBranches);
-                expect(allBranches.hasOwnProperty('master')).to.equal(true); // always master
-                done();
-            });
-    });
-
     it('should get branch by branchId', function(done) {
         rest.projects.getBranch('guest', 'PROJECT1', 'master')
             .then(function(masterBranch) {
@@ -286,10 +277,8 @@ describe('Projects Rest Client', function() {
     });
 
     it('should get latest commits by branch (query of 50)', function(done) {
-        logger.debug('yo');
         rest.projects.getLatestCommitsByBranch('guest', 'PROJECT1', 'master', 50)
             .then(function(latestCommitsToMaster) {
-                logger.debug('rest call worked?');
                 logger.debug('latest commits to master: ', latestCommitsToMaster);
                 expect(latestCommitsToMaster).to.have.length.below(51);
                 done();

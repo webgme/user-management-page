@@ -68,7 +68,7 @@ class ProjectPage extends React.Component {
                 }
             } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
                 didUserRemoveSelfWhenOnlyCollaborator = true;
-                this.props.router.replace('/projects/');
+                this.props.router.replace('/rest/external/usermanagement/projects');
             } else {
                 // Do nothing because then usersWithAccess is just self and does not need to be modified
             }

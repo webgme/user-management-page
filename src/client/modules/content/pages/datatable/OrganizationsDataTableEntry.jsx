@@ -7,7 +7,7 @@ export default class OrganizationsDataTableEntry extends React.Component {
 
     render() {
 
-        let buildLink = '/organizations/' + this.props.name;
+        let buildLink = '/rest/external/usermanagement/organizations/' + this.props.name;
 
         return <DataTableEntry>
             <td className="sorting_1">
