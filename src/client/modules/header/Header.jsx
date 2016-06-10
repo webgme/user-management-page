@@ -31,9 +31,9 @@ export default class Header extends React.Component {
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
                         <ColorMenu handleColorSwitch={this.props.handleColorSwitch}/>
-                        <MessageMenu/>
-                        <NotificationsMenu/>
-                        <TasksMenu/>
+                        {/*<MessageMenu/>*/}
+                        {/*<NotificationsMenu/>*/}
+                        {/*<TasksMenu/>*/}
                         <UserMenu restClient={this.props.restClient}/>
                         <SettingsMenu/>
                     </ul>
