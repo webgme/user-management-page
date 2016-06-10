@@ -4,6 +4,12 @@ import Multiselect from './Multiselect.jsx';
 import Button from '../../../../../../node_modules/react-bootstrap/lib/Button';
 import ButtonGroup from '../../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
 
+const STYLING = {
+    submitButtonGroup: {
+        lineHeight: 3.6
+    }
+};
+
 export default class AuthorizationWidget extends React.Component {
 
     constructor(props) {
@@ -52,7 +58,7 @@ export default class AuthorizationWidget extends React.Component {
                         valuesInMultiselect={this.props.valuesInMultiselect}/>
                 </div>
 
-                <div className="row">
+                <div className="row" style={STYLING.submitButtonGroup}>
                     <ButtonGroup>
                         {submitButtons}
                     </ButtonGroup>
