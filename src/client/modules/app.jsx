@@ -57,8 +57,11 @@ export default class App extends React.Component {
         return <div className={"wrapper skin-" + this.state.headerColor}>
             <Header restClient={this.restClient}
                     headerColor={this.state.headerColor}
-                    handleColorSwitch={this.handleColorSwitch}/>
-            <SideBar restClient={this.restClient} location={this.props.location}/>
+                    handleColorSwitch={this.handleColorSwitch}
+                    basePath={this.props.route.basePath}/>
+            <SideBar restClient={this.restClient}
+                     location={this.props.location}
+                     basePath={this.props.route.basePath}/>
             {ContentWrapperWithRestClient}
             <Footer/>
         </div>;

@@ -61,7 +61,8 @@ export default class OrganizationsPage extends React.Component {
             <DataTable restClient={this.restClient}
                        categories={categories}
                        tableName="Organizations"
-                       entries={this.state.organizations}>
+                       entries={this.state.organizations}
+                       basePath={this.props.routes[0].basePath}>
                 <OrganizationsDataTableEntry/>
             </DataTable>
 

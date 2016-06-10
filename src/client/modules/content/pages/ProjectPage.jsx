@@ -68,7 +68,7 @@ class ProjectPage extends React.Component {
                 }
             } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
                 didUserRemoveSelfWhenOnlyCollaborator = true;
-                this.props.router.replace('/rest/external/usermanagement/projects');
+                this.props.router.replace(`${this.props.routes[0].basePath}projects`);
             } else {
                 // Do nothing because then usersWithAccess is just self and does not need to be modified
             }
@@ -238,7 +238,9 @@ class ProjectPage extends React.Component {
         let submitButtons = [
             {
                 submitButtonHandler: this.handleSubmitAuthorization,
-                submitButtonText: this.state.display === 1 ? noRightsSelected ? 'Remove users rights' : 'Authorize users' : noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations',
+                submitButtonText: this.state.display === 1 ?
+                    noRightsSelected ? 'Remove users rights' : 'Authorize users' :
+                    noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations',
                 submitButtonState: noRightsSelected
             }
         ];
@@ -274,8 +276,8 @@ class ProjectPage extends React.Component {
                                      options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
                                      handleMultiselectChange={this.handleMultiselectChange}
                                      submitButtons={submitButtons}
-                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect}> // eslint-disable-line max-len
-                </AuthorizationWidget> : null}
+                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
+                /> : null}
 
             </section>
         );

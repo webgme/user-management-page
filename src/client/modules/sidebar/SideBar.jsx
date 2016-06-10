@@ -15,7 +15,8 @@ export default class SideBar extends React.Component {
 
             <section className="sidebar">
 
-                <SideBarUserPanel restClient={this.props.restClient}/>
+                <SideBarUserPanel restClient={this.props.restClient}
+                                  basePath={this.props.basePath}/>
 
                 <form action="#" method="get" className="sidebar-form">
                     <div className="input-group">
@@ -28,7 +29,8 @@ export default class SideBar extends React.Component {
                     </div>
                 </form>
 
-                <SideBarMenu location={this.props.location}/>
+                <SideBarMenu location={this.props.location}
+                             basePath={this.props.basePath}/>
 
             </section>
         </aside>;

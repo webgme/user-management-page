@@ -40,9 +40,11 @@ export default class SideBarUserPanel extends React.Component {
     }
 
     render() {
+
+
         return <div className="user-panel" style={STYLING.panelStyle}>
             <div className="pull-left image">
-                <img src={'/rest/external/usermanagement/' + require('webgme/src/client/img/gme-logo.png')} className="img-circle"
+                <img src={`${this.props.basePath}${require('webgme/src/client/img/gme-logo.png')}`} className="img-circle"
                      alt="User Image" style={STYLING.imageStyle}/>
             </div>
             <div className="pull-left info">

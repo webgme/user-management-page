@@ -6,8 +6,7 @@ import DataTableEntry from './DataTableEntry.jsx';
 export default class ProjectDataTableEntry extends React.Component {
 
     render() {
-
-        let buildLink = '/rest/external/usermanagement/projects/' + this.props.owner + '/' + this.props.name;
+        let buildLink = `${this.props.basePath}projects/${this.props.owner}/${this.props.name}`;
 
         return <DataTableEntry>
             <td className="sorting_1">

@@ -39,7 +39,8 @@ export default class ProjectsPage extends React.Component {
                        categories={categories}
                        whichTable="projects"
                        tableName="Projects"
-                       entries={this.state.projects}>
+                       entries={this.state.projects}
+                       basePath={this.props.routes[0].basePath}>
                 <ProjectsDataTableEntry/>
             </DataTable>
 

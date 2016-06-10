@@ -29,7 +29,7 @@ render((
 
     <Router history={browserHistory}>
 
-        <Route path={basePath} component={App}>
+        <Route path={basePath} component={App} basePath={basePath}>
 
             <IndexRedirect to="projects"/>
 

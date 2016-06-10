@@ -52,7 +52,7 @@ class OrganizationPage extends React.Component {
                 // When user removed self...
                 if (isEmpty(organizationData.users)) {
                     didUserRemoveSelfWhenOnlyMember = true;
-                    this.props.router.replace('/rest/external/usermanagement/organizations');
+                    this.props.router.replace(`${this.props.routes[0].basePath}organizations`);
                 } else {
                     this.setState({
                         members: organizationData.users.map(oneUser => {

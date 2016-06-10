@@ -40,7 +40,7 @@ export default class UserProfilePage extends React.Component {
             <div className="box box-primary">
                 <div className="box-body box-profile">
                     <img className="profile-user-img img-responsive img-circle"
-                         src={'/rest/external/usermanagement/' + require('webgme/src/client/img/gme-logo.png')}
+                         src={`${this.props.routes[0].basePath}${require('webgme/src/client/img/gme-logo.png')}`}
                          alt="User profile picture"/>
 
                         <h3 className="profile-username text-center">{this.state.name}</h3>

@@ -17,7 +17,6 @@ export default class SideBarMenu extends React.Component {
     }
 
     render() {
-
         return (
 
         <ul className="sidebar-menu" style={STYLING.sidebarCategoryStyle}>
@@ -25,19 +24,19 @@ export default class SideBarMenu extends React.Component {
             <li className="header">Site Navigation</li>
 
             <li className={/profile/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to="/rest/external/usermanagement/profile">
+                <Link to={`${this.props.basePath}profile`}>
                     <i className="fa fa-user"/> <span>My Profile</span>
                 </Link>
             </li>
 
             <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to="/rest/external/usermanagement/projects">
+                <Link to={`${this.props.basePath}projects`}>
                     <i className="fa fa-cubes"/> <span>My Projects</span>
                 </Link>
             </li>
 
             <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to="/rest/external/usermanagement/organizations">
+                <Link to={`${this.props.basePath}organizations`}>
                     <i className="fa fa-university"/> <span>My Organizations</span>
                 </Link>
             </li>
