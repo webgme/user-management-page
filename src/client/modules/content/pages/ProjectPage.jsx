@@ -2,9 +2,9 @@
 import React from '../../../../../node_modules/react/lib/React';
 import {withRouter} from 'react-router';
 // Self defined
+import AuthorizationWidget from './authorizationwidget/AuthorizationWidget.jsx';
 import DataTable from './datatable/DataTable.jsx';
 import ProjectDataTableEntry from './datatable/ProjectDataTableEntry.jsx';
-import AuthorizationWidget from './authorizationwidget/AuthorizationWidget.jsx';
 import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
 
 class ProjectPage extends React.Component {

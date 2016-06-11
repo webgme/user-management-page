@@ -4,6 +4,9 @@ const STYLING = {
     profileBox: {
         paddingLeft: "35%",
         paddingRight: "35%"
+    },
+    profileBoxBorder: {
+        padding: "10px 10px"
     }
 };
 
@@ -37,7 +40,7 @@ export default class UserProfilePage extends React.Component {
     render() {
         return <section className="content" style={STYLING.profileBox}>
 
-            <div className="box box-primary">
+            <div className="box box-primary" style={STYLING.profileBoxBorder}>
                 <div className="box-body box-profile">
                     <img className="profile-user-img img-responsive img-circle"
                          src={`${this.props.routes[0].basePath}${require('webgme/src/client/img/gme-logo.png')}`}

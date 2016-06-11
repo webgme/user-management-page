@@ -1,4 +1,48 @@
 /**
+ * Convert hex and opacity into a RGBA value
+ * @param hex - hex value
+ * @param opacity - percent opacity (scale of 1 to 100)
+ * @returns {string} - returns the rgba ex. rgba(r,g,b,0.a)
+ */
+export function convertHexToRGBA(hex, opacity) {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    return `rgba(${r},${g},${b},${opacity / 100})`;
+}
+
+/**
+ * Returns an array of the past 7 days of the week
+ * @return {Array} - Array of the names of the past 7 days of the week
+ */
+export function getPastWeeksDays() {
+    const DAYS = [
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+    ];
+    let result = [];
+    for (let i = 0; i < 7; i++) {
+        result.push(DAYS[(i + (new Date().getDay())) % 7]);
+    }
+    return result;
+}
+
+/**
+ * Gets the hex of a random color
+ * @return {string} - hex value for a random color in the format #XXXXXX
+ */
+export function getRandomColorHex() {
+    let possibleInHex = 'D1A2B3C'.split(''),
+        result = '#';
+
+    for (let i = 0; i < 6; i++) {
+        result += possibleInHex[Math.floor(Math.random() * possibleInHex.length)];
+    }
+    return result;
+}
+
+/**
  * Check if an object is empty
  * @param {Object} object - object to be checked
  * @return {boolean} - returns whether or not the object is "empty"
@@ -29,6 +73,33 @@ export function multiselectFormat(allOfOneThing) {
             value: oneThing._id
         });
     });
+}
+
+/**
+ * Lightens or darkens a color by a specified percentage
+ * @param {string} color - hex value of color to be changed - ex. #XXXXXX
+ * @param {number} percent - from -100 to 100
+ * @return {string} - new hex value
+ */
+export function shadeColor(color, percent) {
+
+    var R = parseInt(color.substring(1, 3), 16);
+    var G = parseInt(color.substring(3, 5), 16);
+    var B = parseInt(color.substring(5, 7), 16);
+
+    R = parseInt(R * (100 + percent) / 100, 10);
+    G = parseInt(G * (100 + percent) / 100, 10);
+    B = parseInt(B * (100 + percent) / 100, 10);
+
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
+
+    var RR = ((R.toString(16).length === 1) ? "0" + R.toString(16) : R.toString(16));
+    var GG = ((G.toString(16).length === 1) ? "0" + G.toString(16) : G.toString(16));
+    var BB = ((B.toString(16).length === 1) ? "0" + B.toString(16) : B.toString(16));
+
+    return "#" + RR + GG + BB;
 }
 
 /**

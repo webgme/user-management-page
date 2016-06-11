@@ -1,11 +1,10 @@
 // Libraries
 import React from '../../../node_modules/react/lib/React';
 // Self-defined components
-import Header from './header/Header.jsx';
-import SideBar from './sidebar/SideBar.jsx';
 import Footer from './footer/Footer.jsx';
+import Header from './header/Header.jsx';
 import RestClient from '../rest_client/restClient.js';
-
+import SideBar from './sidebar/SideBar.jsx';
 /**
  * This is the main layout of the web-page.
  */
@@ -54,16 +53,21 @@ export default class App extends React.Component {
             }));
 
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
-        return <div className={"wrapper skin-" + this.state.headerColor}>
+        return <div className={`wrapper skin-${this.state.headerColor}`}>
+
             <Header restClient={this.restClient}
                     headerColor={this.state.headerColor}
                     handleColorSwitch={this.handleColorSwitch}
                     basePath={this.props.route.basePath}/>
+
             <SideBar restClient={this.restClient}
                      location={this.props.location}
                      basePath={this.props.route.basePath}/>
+
             {ContentWrapperWithRestClient}
+
             <Footer/>
+
         </div>;
     }
 

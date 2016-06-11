@@ -1,6 +1,6 @@
 // Libraries
-import React from '../../../../node_modules/react/lib/React';
 import Link from '../../../../node_modules/react-router/lib/Link';
+import React from '../../../../node_modules/react/lib/React';
 
 const STYLING = {
     sidebarCategoryStyle: {

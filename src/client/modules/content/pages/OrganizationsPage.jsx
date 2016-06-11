@@ -56,7 +56,6 @@ export default class OrganizationsPage extends React.Component {
         ];
 
         return <section className="content">
-            <h2> Organizations </h2>
 
             <DataTable restClient={this.restClient}
                        categories={categories}

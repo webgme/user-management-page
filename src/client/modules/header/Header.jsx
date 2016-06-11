@@ -1,12 +1,12 @@
 // Libraries
-import React from '../../../../node_modules/react/lib/React';
 import Link from '../../../../node_modules/react-router/lib/Link';
+import React from '../../../../node_modules/react/lib/React';
 // Self defined
 import ColorMenu from './navigationbar/ColorMenu.jsx';
-import MessageMenu from './navigationbar/MessageMenu.jsx';
-import NotificationsMenu from './navigationbar/NotificationsMenu.jsx';
+// import MessageMenu from './navigationbar/MessageMenu.jsx';
+// import NotificationsMenu from './navigationbar/NotificationsMenu.jsx';
 import SettingsMenu from './navigationbar/SettingsMenu.jsx';
-import TasksMenu from './navigationbar/TasksMenu.jsx';
+// import TasksMenu from './navigationbar/TasksMenu.jsx';
 import UserMenu from './navigationbar/UserMenu.jsx';
 
 export default class Header extends React.Component {
@@ -18,7 +18,7 @@ export default class Header extends React.Component {
     render() {
         return <header className="main-header">
 
-            <Link to={this.props.basePath} className="logo">
+            <Link to={`${this.props.basePath}`} className="logo">
                 <span className="logo-mini"><b>GME</b></span>
                 <span className="logo-lg"><b>GME</b>Profile</span>
             </Link>
