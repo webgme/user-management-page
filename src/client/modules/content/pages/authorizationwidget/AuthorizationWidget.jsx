@@ -49,7 +49,7 @@ export default class AuthorizationWidget extends React.Component {
                     {selectableButtons}
                 </ButtonGroup>
 
-                <div className="col-sm-5">
+                <div className="col-sm-6">
                     <Multiselect
                         label={this.props.label}
                         placeholder={this.props.placeholder}

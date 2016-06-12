@@ -265,19 +265,28 @@ class ProjectPage extends React.Component {
                     <ProjectDataTableEntry/>
                 </DataTable>
 
-                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
-                {this.state.authorizedToAdd ?
-                <AuthorizationWidget selectableButtons={{read: this.state.authorizeButtonGroup.read,
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="box box-primary">
+                            <div className="box-header with-border">
+
+                                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
+                                {this.state.authorizedToAdd ?
+                                    <AuthorizationWidget selectableButtons={{read: this.state.authorizeButtonGroup.read,
                                                          write: this.state.authorizeButtonGroup.write,
                                                          delete: this.state.authorizeButtonGroup.delete}}
-                                     selectableButtonsChange={this.handleAuthorizationChange}
-                                     label={this.state.display === 1 ? "Authorize/Deauthorize Users" : "Authorize/Deauthorize Organizations"} // eslint-disable-line max-len
-                                     placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
-                                     options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
-                                     handleMultiselectChange={this.handleMultiselectChange}
-                                     submitButtons={submitButtons}
-                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
-                /> : null}
+                                                         selectableButtonsChange={this.handleAuthorizationChange}
+                                                         label={this.state.display === 1 ? "Authorize or Deauthorize Users" : "Authorize or Deauthorize Organizations"} // eslint-disable-line max-len
+                                                         placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
+                                                         options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
+                                                         handleMultiselectChange={this.handleMultiselectChange}
+                                                         submitButtons={submitButtons}
+                                                         valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
+                                    /> : null}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </section>
         );

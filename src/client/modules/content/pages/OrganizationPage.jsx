@@ -236,17 +236,26 @@ class OrganizationPage extends React.Component {
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
-                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
-                {this.state.authorizedToAdd ?
-                    <AuthorizationWidget selectableButtons={{}}
-                                         selectableButtonsChange={this.handleAuthorizationChange}
-                                         label={this.state.display === 1 ? "Add/Remove Members" : "Add/Remove Admins"}
-                                         placeholder="Select one or more users (type to search)"
-                                         options={this.state.formattedMembers}
-                                         handleMultiselectChange={this.handleMultiselectChange}
-                                         valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect} // eslint-disable-line max-len
-                                         submitButtons={submitButtons}>
-                    </AuthorizationWidget> : null}
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="box box-primary">
+                            <div className="box-header with-border">
+
+                                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
+                                {this.state.authorizedToAdd ?
+                                    <AuthorizationWidget selectableButtons={{}}
+                                                         selectableButtonsChange={this.handleAuthorizationChange}
+                                                         label={this.state.display === 1 ? "Add or Remove Members" : "Add or Remove Admins"}
+                                                         placeholder="Select one or more users (type to search)"
+                                                         options={this.state.formattedMembers}
+                                                         handleMultiselectChange={this.handleMultiselectChange}
+                                                         valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect} // eslint-disable-line max-len
+                                                         submitButtons={submitButtons}>
+                                    </AuthorizationWidget> : null}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </section>
         );
