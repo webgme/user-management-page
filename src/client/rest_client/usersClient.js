@@ -96,7 +96,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise<{map}>} map of users to their rights to a specified projects
      */
     getUsersWithAccessToProject(projectId) {
-        var userMap = {};
+        let userMap = {};
         return this.getAllUsers()
             .then(arrayOfAllUsers => {
                 arrayOfAllUsers.forEach(oneUser => {

@@ -11,7 +11,7 @@ export default class DataTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectValue: 5,
+            selectValue: 10,
             pageNumber: 1,
             searchText: ''
         };
@@ -93,8 +93,7 @@ export default class DataTable extends React.Component {
 
         // Formatting selections (can make more efficient later)
         let formattedSelectOptions = [];
-        let selectOptions = [5, 10, 15, 20];
-        // let selectOptions = [10, 25, 50, 100];
+        let selectOptions = [10, 25, 50, 100];
         selectOptions.forEach((opt, index) =>
             formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>));
 
