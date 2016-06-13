@@ -1,11 +1,13 @@
+/* global window, $ */
 // Libraries
+import BarChart from '../../../../../node_modules/react-chartjs/lib/bar';
 import React from '../../../../../node_modules/react/lib/React';
 import {withRouter} from 'react-router';
 // Self defined
 import AuthorizationWidget from './authorizationwidget/AuthorizationWidget.jsx';
 import DataTable from './datatable/DataTable.jsx';
 import ProjectDataTableEntry from './datatable/ProjectDataTableEntry.jsx';
-import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
+import {convertHexToRGBA, getRandomColorHex, isEmpty, multiselectFormat, shadeColor, sortObjectArrayByField} from '../../../utils/utils.js';
 
 class ProjectPage extends React.Component {
 
@@ -14,8 +16,12 @@ class ProjectPage extends React.Component {
         this.state = {
             authorizedToAdd: false,
             authorizeButtonGroup: {read: false, write: false, delete: false},
+            barChartData: {
+                labels: [],
+                datasets: []
+            },
             collaborators: [],
-            display: 1, // 1 indicates displaying the user table, 2 indicates the organizations
+            displayTable: 1, // 1 indicates displaying the user table, 2 indicates the organizations
             formattedUsers: [],
             formattedOrganizations: [],
             numTimesClicked: 0,
@@ -46,13 +52,12 @@ class ProjectPage extends React.Component {
             valuesInOrganizationsMultiselect: ''
         });
 
-        let self = this,
-            projectId = this.props.params.ownerId + '+' + this.props.params.projectName;
+        let projectId = this.props.params.ownerId + '+' + this.props.params.projectName;
 
         Promise.all([
-            self.props.restClient.users.getUsersWithAccessToProject(projectId),
-            self.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId),
-            self.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
+            this.props.restClient.users.getUsersWithAccessToProject(projectId),
+            this.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId),
+            this.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
         ]).then(([usersWithAccess, usersInOrganizationsWithAccess, organizationsWithAccess]) => {
 
             // Union of rights if in organization
@@ -74,47 +79,93 @@ class ProjectPage extends React.Component {
             }
 
             // Check if entries just needs to be the organizations
-            if (this.state.display === 2) {
+            if (this.state.displayTable === 2) {
                 // One to be converted to entries (using name usersWithAccess so don't have to reallocate)
                 usersWithAccess = organizationsWithAccess;
             }
 
             if (!didUserRemoveSelfWhenOnlyCollaborator) {
-                // Convert hashmap into array for data table entries:
-                let collaboratorsArrayForm = [];
-                for (let keyName in usersWithAccess) {
-                    if (usersWithAccess.hasOwnProperty(keyName)) {
-                        collaboratorsArrayForm.push({
-                            name: keyName,
-                            read: usersWithAccess[keyName].read,
-                            write: usersWithAccess[keyName].write,
-                            delete: usersWithAccess[keyName].delete,
-                            inOrg: usersWithAccess[keyName].inOrg
+                // First assign number of commits to each person in the dictionary
+                this.props.restClient.projects.getLatestCommits(this.props.params.ownerId, this.props.params.projectName) // eslint-disable-line max-len
+                    .then(arrayOfCommits => {
+                        arrayOfCommits.forEach(oneCommit => {
+                            // temporary to correctly display orgs
+                            if (!usersWithAccess[oneCommit.updater[0]]) {
+                                return; // TODO: again, fix for the organizations
+                            }
+
+                            if (usersWithAccess[oneCommit.updater[0]].numCommits) {
+                                usersWithAccess[oneCommit.updater[0]].numCommits += 1;
+                            } else {
+                                usersWithAccess[oneCommit.updater[0]].numCommits = 1;
+                            }
                         });
-                    }
-                }
-                self.setState({
-                    collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
-                });
+                    })
+                    .then(() => {
+                        // Convert hashmap into array for data table entries:
+                        let collaboratorsArrayForm = [];
+                        for (let keyName in usersWithAccess) {
+                            collaboratorsArrayForm.push({
+                                name: keyName,
+                                read: usersWithAccess[keyName].read,
+                                write: usersWithAccess[keyName].write,
+                                delete: usersWithAccess[keyName].delete,
+                                inOrg: usersWithAccess[keyName].inOrg,
+                                numCommits: usersWithAccess[keyName].numCommits ? usersWithAccess[keyName].numCommits : 0 // eslint-disable-line max-len
+                            });
+                        }
+
+                        // Users with access here is still the hashmap of username to read/write/delete/inOrg
+                        // Now going to add a commit count to each person in the map
+                        this.setState({
+                            collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
+                        });
+
+                        // Formatting bar chart (has to be sequential after sorting collaborators because it needs that info)
+                        let randomColor = getRandomColorHex();
+                        this.setState({
+                            barChartData: {
+                                labels: collaboratorsArrayForm.map(oneUserObject => {
+                                    return oneUserObject.name;
+                                }),
+                                datasets: [
+                                    {
+                                        fillColor: convertHexToRGBA(randomColor, 20),
+                                        strokeColor: convertHexToRGBA(randomColor, 100),
+                                        pointColor: convertHexToRGBA(randomColor, 100),
+                                        pointStrokeColor: shadeColor(randomColor, 50), // Lightened because its the shading
+                                        pointHighlightFill: shadeColor(randomColor, 50), // Lightened because its the shading
+                                        pointHighlightStroke: convertHexToRGBA(randomColor, 100),
+                                        data: collaboratorsArrayForm.map(oneUserObject => {
+                                            return oneUserObject.numCommits;
+                                        })
+                                    }
+                                ]
+                            }}
+                        );
+                    });
+
+
+
             }
         });
 
         // Setting authorization (To set the dropdowns/buttons visibility)
         // If owner is a single user and matches current user
         if (!didUserRemoveSelfWhenOnlyCollaborator) {
-            self.props.restClient.getAuthorizationToAdd(self.props.params.ownerId)
+            this.props.restClient.getAuthorizationToAdd(this.props.params.ownerId)
                 .then(authorization => {
-                    self.setState({
+                    this.setState({
                         authorizedToAdd: authorization
                     });
                 });
 
             // User doesn't click dropdown immediately, so can load these after
             Promise.all([
-                self.props.restClient.users.getAllUsers(),
-                self.props.restClient.organizations.getAllOrganizations()
-            ]).then(function([allUsers, allOrganizations]) {
-                self.setState({
+                this.props.restClient.users.getAllUsers(),
+                this.props.restClient.organizations.getAllOrganizations()
+            ]).then(([allUsers, allOrganizations]) => {
+                this.setState({
                     formattedUsers: multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
                     formattedOrganizations: multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
                 });
@@ -135,11 +186,11 @@ class ProjectPage extends React.Component {
     }
 
     handleMultiselectChange(value) {
-        if (this.state.display === 1) {
+        if (this.state.displayTable === 1) {
             this.setState({
                 valuesInUsersMultiselect: value
             });
-        } else if (this.state.display === 2) {
+        } else if (this.state.displayTable === 2) {
             this.setState({
                 valuesInOrganizationsMultiselect: value
             });
@@ -147,7 +198,7 @@ class ProjectPage extends React.Component {
     }
 
     handleSubmitAuthorization() {
-        let usersOrOrganizations = this.state.display === 1 ? this.state.valuesInUsersMultiselect :
+        let usersOrOrganizations = this.state.displayTable === 1 ? this.state.valuesInUsersMultiselect :
                                                               this.state.valuesInOrganizationsMultiselect;
 
         // Check if the user chose to authorize users or organizations
@@ -189,11 +240,11 @@ class ProjectPage extends React.Component {
     }
 
     handleTableSwitch(event) {
-        let holdOldDisplayNum = this.state.display;
+        let holdOldDisplayNum = this.state.displayTable;
         let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
 
         this.setState({
-            display: newDisplayNum
+            displayTable: newDisplayNum
         });
 
         // If the table changed, then have to retrieve data again
@@ -238,53 +289,107 @@ class ProjectPage extends React.Component {
         let submitButtons = [
             {
                 submitButtonHandler: this.handleSubmitAuthorization,
-                submitButtonText: this.state.display === 1 ?
+                submitButtonText: this.state.displayTable === 1 ?
                     noRightsSelected ? 'Remove users rights' : 'Authorize users' :
                     noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations',
                 submitButtonState: noRightsSelected
             }
         ];
 
+        let barChartMockData = {
+            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [35, 80, 70, 63, 42, 92, 88]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    // data: rand(32, 100, 7)
+                    data: [35, 80, 70, 63, 42, 92, 88]
+                }
+            ]
+        };
+
         return (
 
             <section className="content">
                 <h3> {this.props.params.projectName} by {this.props.params.ownerId} </h3>
 
-                <DataTable ownerId={this.props.params.ownerId}
-                           projectName={this.props.params.projectName}
-                           restClient={this.props.restClient}
-                           categories={this.state.display === 1 ? categories.users : categories.organizations}
-                           tableName="Collaborators"
-                           entries={this.state.collaborators}
-                           orderEntries={this.orderEntries}
-                           numTimesClicked={this.state.numTimesClicked}
-                           display={this.state.display}
-                           handleTableSwitch={this.handleTableSwitch}
-                           sortable={true}
-                           dualTable={dualTable}>
-                    <ProjectDataTableEntry/>
-                </DataTable>
-
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="box box-primary">
-                            <div className="box-header with-border">
 
-                                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
-                                {this.state.authorizedToAdd ?
-                                    <AuthorizationWidget selectableButtons={{read: this.state.authorizeButtonGroup.read,
+                        <DataTable ownerId={this.props.params.ownerId}
+                                   projectName={this.props.params.projectName}
+                                   restClient={this.props.restClient}
+                                   categories={this.state.displayTable === 1 ? categories.users : categories.organizations}
+                                   tableName="Collaborators"
+                                   entries={this.state.collaborators}
+                                   orderEntries={this.orderEntries}
+                                   numTimesClicked={this.state.numTimesClicked}
+                                   display={this.state.displayTable}
+                                   handleTableSwitch={this.handleTableSwitch}
+                                   sortable={true}
+                                   dualTable={dualTable}>
+                            <ProjectDataTableEntry/>
+                        </DataTable>
+
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="box box-primary">
+                                    <div className="box-header with-border">
+
+                                        {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
+                                        {this.state.authorizedToAdd ?
+                                            <AuthorizationWidget selectableButtons={{read: this.state.authorizeButtonGroup.read,
                                                          write: this.state.authorizeButtonGroup.write,
                                                          delete: this.state.authorizeButtonGroup.delete}}
-                                                         selectableButtonsChange={this.handleAuthorizationChange}
-                                                         label={this.state.display === 1 ? "Authorize or Deauthorize Users" : "Authorize or Deauthorize Organizations"} // eslint-disable-line max-len
-                                                         placeholder={this.state.display === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
-                                                         options={this.state.display === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
-                                                         handleMultiselectChange={this.handleMultiselectChange}
-                                                         submitButtons={submitButtons}
-                                                         valuesInMultiselect={this.state.display === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
-                                    /> : null}
+                                                                 selectableButtonsChange={this.handleAuthorizationChange}
+                                                                 label={this.state.displayTable === 1 ? "Authorize or Deauthorize Users" : "Authorize or Deauthorize Organizations"} // eslint-disable-line max-len
+                                                                 placeholder={this.state.displayTable === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
+                                                                 options={this.state.displayTable === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
+                                                                 handleMultiselectChange={this.handleMultiselectChange}
+                                                                 submitButtons={submitButtons}
+                                                                 valuesInMultiselect={this.state.displayTable === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
+                                            /> : null}
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="col-md-6">
+                        <div className="box box-info">
+                            <div className="box-header with-border">
+                                <h3 className="box-title">Commits by Collaborator</h3>
+
+                                <div className="box-tools pull-right">
+                                    <button type="button" className="btn btn-box-tool" data-widget="collapse">
+                                        <i className="fa fa-minus"/>
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="box-body">
+                                <BarChart data={this.state.barChartData}
+                                          options={{}}
+                                          width={$(window).width() / 2.34}
+                                          height={$(window).height() / 1.8}
+                                          redraw/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

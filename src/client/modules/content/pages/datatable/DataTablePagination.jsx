@@ -7,7 +7,7 @@ export default class DataTableEntry extends React.Component {
 
         return <div className="col-sm-7">
             <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                <ul className="pagination" style={{float: "right"}}>
+                <ul className="pagination" style={{float: "right", paddingLeft: "0px"}}>
                     <li id="example1_previous"
                         className={this.props.pageNumber === 1 ? "paginate_button previous disabled" : "paginate_button previous"}
                         onClick={this.props.pageNumber === 1 ? () => {} : this.props.clickHandler}>

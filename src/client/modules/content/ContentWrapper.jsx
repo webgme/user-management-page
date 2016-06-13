@@ -15,9 +15,9 @@ export default class ContentWrapper extends React.Component {
         return <div className="content-wrapper">
 
             <section className="content-header">
-                <h2>
-                    WebGME Management:
-                    <small> ...(optional)... </small>
+                <h2 style={{fontFamily: "Garamond", fontWeight: 680}}>
+                    WebGME Management
+                    {/*<small> ...(optional)... </small>*/}
                 </h2>
                 <ol className="breadcrumb">
                     <li>

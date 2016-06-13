@@ -185,7 +185,7 @@ export default class DataTable extends React.Component {
                                 <div className="col-sm-5">
                                     <div className="dataTables_info" id="example1_info" role="status"
                                          aria-live="polite">
-                                        <div style={{lineHeight: 6}}>
+                                        <div style={{lineHeight: 6, paddingRight: "0px"}}>
                                             {showString}
                                         </div>
                                     </div>
