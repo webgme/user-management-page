@@ -1,8 +1,8 @@
 // Libraries
 import React from '../../../../node_modules/react/lib/React';
 // Self-defined components
-import SideBarUserPanel from './SideBarUserPanel.jsx';
 import SideBarMenu from './SideBarMenu.jsx';
+import SideBarUserPanel from './SideBarUserPanel.jsx';
 
 export default class SideBar extends React.Component {
 
@@ -15,9 +15,11 @@ export default class SideBar extends React.Component {
 
             <section className="sidebar">
 
-                <SideBarUserPanel restClient={this.props.restClient}/>
+                <SideBarUserPanel restClient={this.props.restClient}
+                                  basePath={this.props.basePath}/>
 
-                <form action="#" method="get" className="sidebar-form">
+                {/* Removing sidebar for now */}
+                {/*<form action="#" method="get" className="sidebar-form">
                     <div className="input-group">
                         <input type="text" name="q" className="form-control" placeholder="Search..."/>
                     <span className="input-group-btn">
@@ -26,9 +28,10 @@ export default class SideBar extends React.Component {
                         </button>
                     </span>
                     </div>
-                </form>
+                </form>*/}
 
-                <SideBarMenu location={this.props.location}/>
+                <SideBarMenu location={this.props.location}
+                             basePath={this.props.basePath}/>
 
             </section>
         </aside>;

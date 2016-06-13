@@ -12,55 +12,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllProjects() {
-        var promise;
-        if (this.debugMode) {
-            promise = new Promise(function(resolve /* , reject(remove mock data later */) {
-                resolve([
-                    {
-                        _id: "johnDoe+Test_Project",
-                        owner: "johnDoe",
-                        name: "Test_Project",
-                        info: {
-                            createdAt: "2016-05-25T15:44:55.026Z",
-                            viewedAt: "2016-05-25T15:45:06.985Z",
-                            modifiedAt: "2016-05-25T15:44:55.295Z",
-                            creator: "johnDoe",
-                            viewer: "johnDoe",
-                            modifier: "johnDoe"
-                        }
-                    },
-                    {
-                        _id: "johnDoe+Some_Project",
-                        owner: "johnDoe",
-                        name: "Some_Project",
-                        info: {
-                            createdAt: "2016-05-25T15:45:06.723Z",
-                            viewedAt: "2016-05-25T15:51:11.066Z",
-                            modifiedAt: "2016-05-25T15:45:06.947Z",
-                            creator: "johnDoe",
-                            viewer: "johnDoe",
-                            modifier: "johnDoe"
-                        }
-                    },
-                    {
-                        _id: "johnDoe+Third_Project",
-                        owner: "johnDoe",
-                        name: "Third_Project",
-                        info: {
-                            createdAt: "2016-05-25T15:51:36.271Z",
-                            viewedAt: "2016-05-25T15:51:36.664Z",
-                            modifiedAt: "2016-05-25T15:51:36.626Z",
-                            creator: "johnDoe",
-                            viewer: "johnDoe",
-                            modifier: "johnDoe"
-                        }
-                    }
-                ]);
-            });
-        } else {
-            promise = super.get('projects');
-        }
-        return promise;
+        return super.get('projects');
     }
 
     /**
@@ -201,7 +153,7 @@ export default class ProjectsClient extends BaseClient {
      * @param {string} projectName = name of project
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getBranches(ownerId, projectName) {
+    getAllBranches(ownerId, projectName) {
         return super.get('projects/' + ownerId + '/' + projectName, 'branches');
     }
 
@@ -260,7 +212,9 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getLatestCommitsByBranch(ownerId, projectName, branchId, numCommits) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/branches/' + branchId, numCommits);
+        numCommits = numCommits || 100;
+        var query = '?n=' + numCommits;
+        return super.get('projects/' + ownerId + '/' + projectName + '/branches/' + branchId + '/commits', query);
     }
 
     /**

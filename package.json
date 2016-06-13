@@ -7,7 +7,8 @@
     "start": "node app.js",
     "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
     "test_cover": "node ./node_modules/babel-istanbul/lib/cli.js --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec --timeout 10000 --recursive test",
-    "webpack": "node ./node_modules/webpack/bin/webpack.js"
+    "webpack": "node ./node_modules/webpack/bin/webpack.js",
+    "webpack_dev_server": "webpack-dev-server --inline --content-base ."
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "babel-preset-react": "^6.5.0",
     "bootstrap": "^3.3.6",
     "bootstrap-webpack": "0.0.5",
+    "chart.js": "^1.1.1",
     "css-loader": "^0.23.1",
     "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -39,6 +41,7 @@
     "less-loader": "^2.2.3",
     "react": "^15.0.2",
     "react-bootstrap": "^0.29.4",
+    "react-chartjs": "^0.7.3",
     "react-dom": "^15.0.2",
     "react-router": "^2.4.1",
     "react-select": "^1.0.0-beta13",

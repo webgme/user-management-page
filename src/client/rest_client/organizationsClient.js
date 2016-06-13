@@ -19,7 +19,7 @@ export default class OrganizationsClient extends BaseClient {
      * @param {string} organizationName - name of organization
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getOrganizationData(organizationName) {
+    getOrganization(organizationName) {
         return super.get('orgs', organizationName);
     }
 

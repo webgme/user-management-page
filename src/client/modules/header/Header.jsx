@@ -1,11 +1,13 @@
 // Libraries
+import Link from '../../../../node_modules/react-router/lib/Link';
 import React from '../../../../node_modules/react/lib/React';
 // Self defined
-import MessageMenu from './navigationbar/MessageMenu.jsx';
-import NotificationsMenu from './navigationbar/NotificationsMenu.jsx';
-import TasksMenu from './navigationbar/TasksMenu.jsx';
-import UserMenu from './navigationbar/UserMenu.jsx';
+import ColorMenu from './navigationbar/ColorMenu.jsx';
+// import MessageMenu from './navigationbar/MessageMenu.jsx';
+// import NotificationsMenu from './navigationbar/NotificationsMenu.jsx';
 import SettingsMenu from './navigationbar/SettingsMenu.jsx';
+// import TasksMenu from './navigationbar/TasksMenu.jsx';
+import UserMenu from './navigationbar/UserMenu.jsx';
 
 export default class Header extends React.Component {
 
@@ -16,10 +18,10 @@ export default class Header extends React.Component {
     render() {
         return <header className="main-header">
 
-            <a href="" className="logo">
+            <Link to={`${this.props.basePath}`} className="logo">
                 <span className="logo-mini"><b>GME</b></span>
                 <span className="logo-lg"><b>GME</b>Profile</span>
-            </a>
+            </Link>
 
             <nav className="navbar navbar-static-top" role="navigation">
 
@@ -29,11 +31,13 @@ export default class Header extends React.Component {
 
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
-                        <MessageMenu />
-                        <NotificationsMenu />
-                        <TasksMenu />
-                        <UserMenu restClient={this.props.restClient}/>
-                        <SettingsMenu />
+                        <ColorMenu handleColorSwitch={this.props.handleColorSwitch}/>
+                        {/*<MessageMenu/>*/}
+                        {/*<NotificationsMenu/>*/}
+                        {/*<TasksMenu/>*/}
+                        <UserMenu restClient={this.props.restClient}
+                                  basePath={this.props.basePath}/>
+                        <SettingsMenu/>
                     </ul>
                 </div>
             </nav>

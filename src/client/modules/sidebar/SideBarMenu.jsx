@@ -1,6 +1,6 @@
 // Libraries
-import React from '../../../../node_modules/react/lib/React';
 import Link from '../../../../node_modules/react-router/lib/Link';
+import React from '../../../../node_modules/react/lib/React';
 
 const STYLING = {
     sidebarCategoryStyle: {
@@ -17,23 +17,28 @@ export default class SideBarMenu extends React.Component {
     }
 
     render() {
-
         return (
 
         <ul className="sidebar-menu" style={STYLING.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
 
-            <li className={this.props.location.pathname === '/profile' ? 'active' : ''}>
-                <Link to="/profile"><i className="fa fa-user"/> <span>My Profile</span> </Link>
+            <li className={/profile/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}profile`}>
+                    <i className="fa fa-user"/> <span>My Profile</span>
+                </Link>
             </li>
 
-            <li className={this.props.location.pathname === '/projects' ? 'active' : ''}>
-                <Link to="/projects"><i className="fa fa-cubes"/> <span>My Projects</span> </Link>
+            <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}projects`}>
+                    <i className="fa fa-cubes"/> <span>My Projects</span>
+                </Link>
             </li>
 
-            <li className={this.props.location.pathname === '/organizations' ? 'active' : ''}>
-                <Link to="/organizations"><i className="fa fa-university"/> <span>My Organizations</span> </Link>
+            <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}organizations`}>
+                    <i className="fa fa-university"/> <span>My Organizations</span>
+                </Link>
             </li>
 
             <li className="treeview">

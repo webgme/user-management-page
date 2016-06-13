@@ -1,6 +1,6 @@
 // Libraries
-import React from '../../../../../node_modules/react/lib/React';
-import Select from '../../../../../node_modules/react-select/lib/Select';
+import React from '../../../../../../node_modules/react/lib/React';
+import Select from '../../../../../../node_modules/react-select/lib/Select';
 
 export default class MultiSelectField extends React.Component {
 

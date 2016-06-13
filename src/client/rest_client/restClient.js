@@ -32,7 +32,7 @@ function RestClient(baseUrl, debugMode) {
                 } else { // Check if owner is an organization and current user is an admin
                     let findAdminPromiseArray = [];
                     currentUser.orgs.forEach(orgName =>
-                        findAdminPromiseArray.push(self.organizations.getOrganizationData(orgName))
+                        findAdminPromiseArray.push(self.organizations.getOrganization(orgName))
                     );
                     return Promise.all(findAdminPromiseArray)
                         .then(adminsOfOrganizationsUserIsIn => {

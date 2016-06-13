@@ -5,7 +5,6 @@ import ButtonGroup from '../../../../../../node_modules/react-bootstrap/lib/Butt
 // Self-defined
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';
-import DataTableEntry from './DataTableEntry.jsx';
 
 export default class DataTable extends React.Component {
 
@@ -50,20 +49,19 @@ export default class DataTable extends React.Component {
     }
 
     render() {
-        let self = this;
 
         // Formatting table categories
         let formattedCategories = [];
         this.props.categories.forEach(category =>
             formattedCategories.push(<DataTableCategory key={category.id}
                                                         name={category.name}
-                                                        orderEntries={self.props.orderEntries}
-                                                        numTimesClicked={self.props.numTimesClicked}
-                                                        sortable={self.props.sortable}/>));
+                                                        orderEntries={this.props.orderEntries}
+                                                        numTimesClicked={this.props.numTimesClicked}
+                                                        sortable={this.props.sortable}/>));
 
         // Setting up bounds
         let entriesList = this.props.entries.filter(oneEntry => {
-                let filterRegex = new RegExp(self.state.searchText);
+                let filterRegex = new RegExp(this.state.searchText);
                 return filterRegex.test(oneEntry.name.toLowerCase());
             }),
             startIndexInProjects = (this.state.pageNumber - 1) * this.state.selectValue,
@@ -87,6 +85,7 @@ export default class DataTable extends React.Component {
             let properties = {};
             for (let prop in entriesList[i]) {
                 properties[prop] = entriesList[i][prop];
+                properties.basePath = this.props.basePath;
                 properties.key = i;
             }
             formattedEntries.push(React.cloneElement(this.props.children, properties));
@@ -100,11 +99,11 @@ export default class DataTable extends React.Component {
 
         // Formatting pagination buttons
         let formattedPaginationButtons = [],
-            numPages = 6;
+            numPages = Math.floor(entriesList.length / this.state.selectValue) + 1;
         for (let i = 1; i <= numPages; i++) {
             formattedPaginationButtons.push(
                 <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
-                    <a onClick={this.handlePagination} href="javascript:;" aria-controls="example1" data-dt-idx={i}
+                    <a onClick={this.handlePagination} href="#" aria-controls="example1" data-dt-idx={i}
                        tabIndex="0">{i}</a>
                 </li>);
         }
@@ -114,17 +113,15 @@ export default class DataTable extends React.Component {
                 <div className="box">
                     <div className="box-header">
                             <h3 className="box-title">{this.props.tableName}</h3>
-                        {/* Only display on the collaborators page */}
-                        {this.props.tableName === 'Collaborators' ?
+                        { (this.props.dualTable && this.props.dualTable.show) ?
                             <ButtonGroup style={{float: "right"}}>
                                 <Button bsStyle={this.props.display === 1 ? "primary" : null}
                                         onClick={this.props.handleTableSwitch}
-                                        id="or">Users</Button>
+                                        id="or">{this.props.dualTable.options[0]}</Button>
                                 <Button bsStyle={this.props.display === 2 ? "primary" : null}
                                         onClick={this.props.handleTableSwitch}
-                                        id="ow">Organizations</Button>
-                            </ButtonGroup>
-                                : null}
+                                        id="ow">{this.props.dualTable.options[1]}</Button>
+                            </ButtonGroup> : null}
                     </div>
                     <div className="box-body">
                         <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
@@ -187,16 +184,17 @@ export default class DataTable extends React.Component {
                                 <div className="col-sm-5">
                                     <div className="dataTables_info" id="example1_info" role="status"
                                          aria-live="polite">
-                                        <div style={{lineHeight: 6}}>
+                                        <div style={{lineHeight: 6, paddingRight: "0px"}}>
                                             {showString}
                                         </div>
                                     </div>
                                 </div>
 
+                                {entriesList.length > this.state.selectValue ?
                                 <DataTablePagination pageNumber={this.state.pageNumber}
                                                      clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
-                                                     numPages={numPages}/>
+                                                     numPages={numPages}/> : null }
 
                             </div>
                         </div>
