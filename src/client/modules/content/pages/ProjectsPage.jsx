@@ -71,7 +71,7 @@ export default class ProjectsPage extends React.Component {
                         // Format the chart data
                         let randomColor = getRandomColorHex();
                         doughnutChartData.push({
-                            value: filteredCommits.length,
+                            value: filteredCommits.length || 0,
                             color: randomColor,
                             highlight: shadeColor(randomColor, 20),
                             label: arrayOfProjectNames[index]
@@ -235,6 +235,7 @@ export default class ProjectsPage extends React.Component {
                                 </ButtonGroup>
                             </div>
                         </div>
+
                         <div className="box-body">
                             <div className="chart">
                                 <DoughnutChart data={this.state.doughnutChartData} options={{}} redraw/>

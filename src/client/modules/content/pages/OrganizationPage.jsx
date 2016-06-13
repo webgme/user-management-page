@@ -236,13 +236,14 @@ class OrganizationPage extends React.Component {
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
+                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
+                {this.state.authorizedToAdd ?
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-8">
                         <div className="box box-primary">
                             <div className="box-header with-border">
 
-                                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
-                                {this.state.authorizedToAdd ?
+
                                     <AuthorizationWidget selectableButtons={{}}
                                                          selectableButtonsChange={this.handleAuthorizationChange}
                                                          label={this.state.display === 1 ? "Add or Remove Members" : "Add or Remove Admins"}
@@ -251,11 +252,11 @@ class OrganizationPage extends React.Component {
                                                          handleMultiselectChange={this.handleMultiselectChange}
                                                          valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect} // eslint-disable-line max-len
                                                          submitButtons={submitButtons}>
-                                    </AuthorizationWidget> : null}
+                                    </AuthorizationWidget>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> : null}
 
             </section>
         );

@@ -7,7 +7,8 @@ import {withRouter} from 'react-router';
 import AuthorizationWidget from './authorizationwidget/AuthorizationWidget.jsx';
 import DataTable from './datatable/DataTable.jsx';
 import ProjectDataTableEntry from './datatable/ProjectDataTableEntry.jsx';
-import {convertHexToRGBA, getRandomColorHex, isEmpty, multiselectFormat, shadeColor, sortObjectArrayByField} from '../../../utils/utils.js';
+import {convertHexToRGBA, getRandomColorHex, shadeColor,
+    isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
 
 class ProjectPage extends React.Component {
 
@@ -42,9 +43,6 @@ class ProjectPage extends React.Component {
 
     retrieveData() {
 
-        // Keep track of user removing self when he/she is only collaborator
-        // Have to use this to NOT setState of unmounted components
-        let didUserRemoveSelfWhenOnlyCollaborator = false;
         // reset through setState first because user may have just clicked it (needs immediate feedback)
         this.setState({
             authorizeButtonGroup: {read: false, write: false, delete: false},
@@ -52,6 +50,7 @@ class ProjectPage extends React.Component {
             valuesInOrganizationsMultiselect: ''
         });
 
+        let didUserRemoveSelfWhenOnlyCollaborator = false;
         let projectId = this.props.params.ownerId + '+' + this.props.params.projectName;
 
         Promise.all([
@@ -68,7 +67,7 @@ class ProjectPage extends React.Component {
                         usersWithAccess[key].write = usersWithAccess[key].write || usersInOrganizationsWithAccess[key].write; // eslint-disable-line max-len
                         usersWithAccess[key].delete = usersWithAccess[key].delete || usersInOrganizationsWithAccess[key].delete; // eslint-disable-line max-len
                     } else {// If it doesn't exist then simply assign
-                        usersWithAccess[key] = usersInOrganizationsWithAccess[key];
+                        usersWithAccess[key] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[key]));
                     }
                 }
             } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
@@ -88,6 +87,7 @@ class ProjectPage extends React.Component {
                 // First assign number of commits to each person in the dictionary
                 this.props.restClient.projects.getLatestCommits(this.props.params.ownerId, this.props.params.projectName) // eslint-disable-line max-len
                     .then(arrayOfCommits => {
+
                         arrayOfCommits.forEach(oneCommit => {
                             // temporary to correctly display orgs
                             if (!usersWithAccess[oneCommit.updater[0]]) {
@@ -100,8 +100,6 @@ class ProjectPage extends React.Component {
                                 usersWithAccess[oneCommit.updater[0]].numCommits = 1;
                             }
                         });
-                    })
-                    .then(() => {
                         // Convert hashmap into array for data table entries:
                         let collaboratorsArrayForm = [];
                         for (let keyName in usersWithAccess) {
@@ -111,7 +109,7 @@ class ProjectPage extends React.Component {
                                 write: usersWithAccess[keyName].write,
                                 delete: usersWithAccess[keyName].delete,
                                 inOrg: usersWithAccess[keyName].inOrg,
-                                numCommits: usersWithAccess[keyName].numCommits ? usersWithAccess[keyName].numCommits : 0 // eslint-disable-line max-len
+                                numCommits: usersWithAccess[keyName].numCommits
                             });
                         }
 
@@ -123,6 +121,7 @@ class ProjectPage extends React.Component {
 
                         // Formatting bar chart (has to be sequential after sorting collaborators because it needs that info)
                         let randomColor = getRandomColorHex();
+
                         this.setState({
                             barChartData: {
                                 labels: collaboratorsArrayForm.map(oneUserObject => {
@@ -133,8 +132,8 @@ class ProjectPage extends React.Component {
                                         fillColor: convertHexToRGBA(randomColor, 20),
                                         strokeColor: convertHexToRGBA(randomColor, 100),
                                         pointColor: convertHexToRGBA(randomColor, 100),
-                                        pointStrokeColor: shadeColor(randomColor, 50), // Lightened because its the shading
-                                        pointHighlightFill: shadeColor(randomColor, 50), // Lightened because its the shading
+                                        pointStrokeColor: shadeColor(randomColor, 50),
+                                        pointHighlightFill: shadeColor(randomColor, 50),
                                         pointHighlightStroke: convertHexToRGBA(randomColor, 100),
                                         data: collaboratorsArrayForm.map(oneUserObject => {
                                             return oneUserObject.numCommits;
@@ -144,8 +143,6 @@ class ProjectPage extends React.Component {
                             }}
                         );
                     });
-
-
 
             }
         });
@@ -174,14 +171,35 @@ class ProjectPage extends React.Component {
     }
 
     handleAuthorizationChange(event) {
-        // have to copy whole object and reset the state
-        let lowerCaseInnerHTML = event.target.innerHTML.toLowerCase();
-        let newButtonGroupState = this.state.authorizeButtonGroup;
 
-        newButtonGroupState[lowerCaseInnerHTML] = !this.state.authorizeButtonGroup[lowerCaseInnerHTML];
+        let buttonClicked = event.target.innerHTML.toLowerCase(),
+            holdButtonGroup = this.state.authorizeButtonGroup;
+
+        // Handling selection
+        if (this.state.authorizeButtonGroup[buttonClicked] === false) {
+            for (let button in holdButtonGroup) {
+                if (button === buttonClicked) {
+                    holdButtonGroup[buttonClicked] = true;
+                    break;
+                } else {
+                    holdButtonGroup[button] = true;
+                }
+            }
+        // Handling deselection
+        } else if (this.state.authorizeButtonGroup[buttonClicked] === true) {
+            let passedCurrentButton = false;
+            for (let button in holdButtonGroup) {
+                if (button === buttonClicked) {
+                    holdButtonGroup[buttonClicked] = false;
+                    passedCurrentButton = true;
+                } else if (passedCurrentButton) {
+                    holdButtonGroup[button] = false;
+                }
+            }
+        }
 
         this.setState({
-            authorizeButtonGroup: newButtonGroupState
+            authorizeButtonGroup: holdButtonGroup
         });
     }
 
@@ -296,33 +314,6 @@ class ProjectPage extends React.Component {
             }
         ];
 
-        let barChartMockData = {
-            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [35, 80, 70, 63, 42, 92, 88]
-                },
-                {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    // data: rand(32, 100, 7)
-                    data: [35, 80, 70, 63, 42, 92, 88]
-                }
-            ]
-        };
-
         return (
 
             <section className="content">
@@ -334,7 +325,8 @@ class ProjectPage extends React.Component {
                         <DataTable ownerId={this.props.params.ownerId}
                                    projectName={this.props.params.projectName}
                                    restClient={this.props.restClient}
-                                   categories={this.state.displayTable === 1 ? categories.users : categories.organizations}
+                                   categories={this.state.displayTable === 1 ? categories.users :
+                                                                               categories.organizations}
                                    tableName="Collaborators"
                                    entries={this.state.collaborators}
                                    orderEntries={this.orderEntries}
@@ -346,14 +338,15 @@ class ProjectPage extends React.Component {
                             <ProjectDataTableEntry/>
                         </DataTable>
 
+                        {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
+                        {this.state.authorizedToAdd ?
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="box box-primary">
                                     <div className="box-header with-border">
 
-                                        {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
-                                        {this.state.authorizedToAdd ?
-                                            <AuthorizationWidget selectableButtons={{read: this.state.authorizeButtonGroup.read,
+                                            <AuthorizationWidget selectableButtons={
+                                                        {read: this.state.authorizeButtonGroup.read,
                                                          write: this.state.authorizeButtonGroup.write,
                                                          delete: this.state.authorizeButtonGroup.delete}}
                                                                  selectableButtonsChange={this.handleAuthorizationChange}
@@ -363,11 +356,12 @@ class ProjectPage extends React.Component {
                                                                  handleMultiselectChange={this.handleMultiselectChange}
                                                                  submitButtons={submitButtons}
                                                                  valuesInMultiselect={this.state.displayTable === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
-                                            /> : null}
+                                            />
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> : null}
+
                     </div>
 
                     <div className="col-md-6">
@@ -389,8 +383,8 @@ class ProjectPage extends React.Component {
                                           redraw/>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
 
             </section>
