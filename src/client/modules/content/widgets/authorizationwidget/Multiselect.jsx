@@ -1,6 +1,11 @@
+/**
+ * Custom multiselect dropdown (typing enabled) widget
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../../node_modules/react/lib/React';
-import Select from '../../../../../../node_modules/react-select/lib/Select';
+import React from 'react/lib/React';
+import Select from 'react-select/lib/Select';
 
 export default class MultiSelectField extends React.Component {
 

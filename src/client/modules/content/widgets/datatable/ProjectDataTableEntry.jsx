@@ -1,5 +1,11 @@
+/**
+ * Custom entries for the project data table
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
+// Self-defined
 import DataTableEntry from './DataTableEntry.jsx';
 
 export default class ProjectDataTableEntry extends React.Component {

@@ -1,4 +1,9 @@
-import React from '../../../../../node_modules/react/lib/React';
+/**
+ * Individual user profile page
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+import React from 'react/lib/React';
 
 const STYLING = {
     profileBox: {

@@ -1,3 +1,8 @@
+/**
+ * Organizations client - all rest calls for api/orgs
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 import BaseClient from './baseClient';
 
 export default class OrganizationsClient extends BaseClient {

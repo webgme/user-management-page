@@ -1,4 +1,9 @@
-import React from '../../../../node_modules/react/lib/React';
+/**
+ * Footer component (copyright, version#)
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+import React from 'react/lib/React';
 
 export default class Footer extends React.Component {
 

@@ -1,7 +1,12 @@
+/**
+ * Reusable data table widget
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../../node_modules/react/lib/React';
-import Button from '../../../../../../node_modules/react-bootstrap/lib/Button';
-import ButtonGroup from '../../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
+import React from 'react/lib/React';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 // Self-defined
 import DataTableCategory from './DataTableCategory.jsx';
 import DataTablePagination from './DataTablePagination.jsx';

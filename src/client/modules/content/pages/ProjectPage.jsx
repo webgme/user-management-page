@@ -1,7 +1,12 @@
+/**
+ * Individual project page
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 /* global window, $ */
 // Libraries
-import React from '../../../../../node_modules/react/lib/React';
-import {withRouter} from 'react-router';
+import React from 'react/lib/React';
+import withRouter from 'react-router/lib/withRouter';
 // Self defined
 import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget.jsx';
 import CollaboratorsCommitBarGraph from '../widgets/CollaboratorsCommitBarGraph.jsx';

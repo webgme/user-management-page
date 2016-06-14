@@ -1,6 +1,11 @@
+/**
+ * Individual organization page
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../node_modules/react/lib/React';
-import {withRouter} from 'react-router';
+import React from 'react/lib/React';
+import withRouter from 'react-router/lib/withRouter';
 // Self defined
 import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget.jsx';
 import DataTable from '../widgets/datatable/DataTable.jsx';

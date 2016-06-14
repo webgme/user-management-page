@@ -1,8 +1,14 @@
+/**
+ * Authorization widget
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+// Self-defined
 import Multiselect from './Multiselect.jsx';
-import Button from '../../../../../../node_modules/react-bootstrap/lib/Button';
-import ButtonGroup from '../../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
 
 const STYLING = {
     submitButtonGroup: {

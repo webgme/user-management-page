@@ -1,3 +1,8 @@
+/**
+ * Single client - holds all clients & other methods
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 import UserClient from './userClient';
 import UsersClient from './usersClient';
 import ProjectsClient from './projectsClient';

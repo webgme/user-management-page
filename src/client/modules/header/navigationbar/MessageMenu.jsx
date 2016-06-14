@@ -1,4 +1,9 @@
-import React from '../../../../../node_modules/react/lib/React';
+/**
+ * Message menu of the header component
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+import React from 'react/lib/React';
 
 export default class MessageMenu extends React.Component {
 

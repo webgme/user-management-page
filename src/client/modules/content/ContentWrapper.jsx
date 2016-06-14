@@ -1,4 +1,9 @@
-import React from '../../../../node_modules/react/lib/React';
+/**
+ * Content Wrapper - holds all the individual pages
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+import React from 'react/lib/React';
 
 export default class ContentWrapper extends React.Component {
 

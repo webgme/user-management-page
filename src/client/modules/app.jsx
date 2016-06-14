@@ -1,5 +1,10 @@
+/**
+ * Main app for SPA (Single Page Application)
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
 // Self-defined components
 import Footer from './footer/Footer.jsx';
 import Header from './header/Header.jsx';

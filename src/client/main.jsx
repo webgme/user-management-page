@@ -1,12 +1,16 @@
+/**
+ * Entry point for webpack, contains all client-side routing
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
 /* global document, require */
 
 // Libraries
-import browserHistory from '../../node_modules/react-router/lib/browserHistory';
-import IndexRedirect from '../../node_modules/react-router/lib/IndexRedirect';
-import React from '../../node_modules/react/lib/React';
-import {render} from 'react-dom';
-import Route from '../../node_modules/react-router/lib/Route';
-import Router from '../../node_modules/react-router/lib/Router';
+import browserHistory from 'react-router/lib/browserHistory';
+import IndexRedirect from 'react-router/lib/IndexRedirect';
+import React from 'react/lib/React';
+import {render} from 'react/lib/ReactMount';
+import Route from 'react-router/lib/Route';
+import Router from 'react-router/lib/Router';
 // Our components
 import App from './modules/app.jsx';
 import ContentWrapper from './modules/content/ContentWrapper.jsx';

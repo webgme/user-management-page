@@ -1,4 +1,9 @@
-import React from '../../../../../node_modules/react/lib/React';
+/**
+ * Color selection dropdown of the header component
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+import React from 'react/lib/React';
 
 const STYLING = {
     dropdownMenu: {
@@ -31,14 +36,14 @@ export default class ColorMenu extends React.Component {
             };
             formattedColors.push(
                 <li key={index}>
-                    <a href="javascript:;" style={{padding: "6px 10px"}} onClick={this.props.handleColorSwitch}>
+                    <a href="#" style={{padding: "6px 10px"}} onClick={this.props.handleColorSwitch}>
                         <div className="pull-left">
                             <div className="color-box" style={colorBoxStyle}></div>
                         </div>
                         <h4>
                             {color.slice(0, 1).toUpperCase() + color.substring(1)}
                         </h4>
-                        {/*<p>Customize your GMEProfile!</p>*/}
+                        {/* <p>Customize your GMEProfile!</p>*/}
                     </a>
                 </li>
             );

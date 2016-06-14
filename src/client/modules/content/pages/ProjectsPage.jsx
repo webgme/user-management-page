@@ -1,9 +1,14 @@
+/**
+ * Projects page
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import Button from '../../../../../node_modules/react-bootstrap/lib/Button';
-import ButtonGroup from '../../../../../node_modules/react-bootstrap/lib/ButtonGroup';
-import DoughnutChart from '../../../../../node_modules/react-chartjs/lib/doughnut';
-import LineChart from '../../../../../node_modules/react-chartjs/lib/line';
-import React from '../../../../../node_modules/react/lib/React';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import DoughnutChart from 'react-chartjs/lib/doughnut';
+import LineChart from 'react-chartjs/lib/line';
+import React from 'react/lib/React';
 // Self defined
 import DataTable from '../widgets/datatable/DataTable.jsx';
 import ProjectsDataTableEntry from '../widgets/datatable/ProjectsDataTableEntry.jsx';

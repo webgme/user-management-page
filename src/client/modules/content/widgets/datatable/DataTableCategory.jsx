@@ -1,5 +1,10 @@
+/**
+ * Formatting for data table widget's headers
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
 
 export default class DataTableCategories extends React.Component {
 

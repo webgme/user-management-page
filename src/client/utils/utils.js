@@ -1,8 +1,13 @@
 /**
+ * Utility functions
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+/**
  * Convert hex and opacity into a RGBA value
- * @param hex - hex value
- * @param opacity - percent opacity (scale of 1 to 100)
- * @returns {string} - returns the rgba ex. rgba(r,g,b,0.a)
+ * @param {string} hex - hex value
+ * @param {Number} opacity - percent opacity (scale of 1 to 100)
+ * @return {string} - returns the rgba ex. rgba(r,g,b,0.a)
  */
 export function convertHexToRGBA(hex, opacity) {
     hex = hex.replace('#', '');

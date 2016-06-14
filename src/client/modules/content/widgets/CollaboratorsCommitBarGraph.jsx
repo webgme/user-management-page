@@ -1,6 +1,11 @@
+/**
+ * BarGraph for 'commits by collaborators' widget
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries:
-import React from '../../../../../node_modules/react/lib/React';
-import BarChart from '../../../../../node_modules/react-chartjs/lib/bar';
+import React from 'react/lib/React';
+import BarChart from 'react-chartjs/lib/bar';
 // Self defined:
 import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../utils/utils.js';
 
