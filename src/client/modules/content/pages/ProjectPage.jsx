@@ -1,14 +1,13 @@
 /* global window, $ */
 // Libraries
-import BarChart from '../../../../../node_modules/react-chartjs/lib/bar';
 import React from '../../../../../node_modules/react/lib/React';
 import {withRouter} from 'react-router';
 // Self defined
-import AuthorizationWidget from './authorizationwidget/AuthorizationWidget.jsx';
-import DataTable from './datatable/DataTable.jsx';
-import ProjectDataTableEntry from './datatable/ProjectDataTableEntry.jsx';
-import {convertHexToRGBA, getRandomColorHex, shadeColor,
-    isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
+import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget.jsx';
+import CollaboratorsCommitBarGraph from '../widgets/CollaboratorsCommitBarGraph.jsx';
+import DataTable from '../widgets/datatable/DataTable.jsx';
+import ProjectDataTableEntry from '../widgets/datatable/ProjectDataTableEntry.jsx';
+import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
 
 class ProjectPage extends React.Component {
 
@@ -17,41 +16,45 @@ class ProjectPage extends React.Component {
         this.state = {
             authorizedToAdd: false,
             authorizeButtonGroup: {read: false, write: false, delete: false},
-            barChartData: {
-                labels: [],
-                datasets: []
-            },
             collaborators: [],
-            displayTable: 1, // 1 indicates displaying the user table, 2 indicates the organizations
+            displayTable: 1, // 1 indicates displaying the users table, 2 indicates the organizations table
             formattedUsers: [],
             formattedOrganizations: [],
             numTimesClicked: 0,
             valuesInUsersMultiselect: '',
             valuesInOrganizationsMultiselect: ''
         };
+        // Event Handlers
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
-        this.orderEntries = this.orderEntries.bind(this);
-        this.retrieveData = this.retrieveData.bind(this);
+        this.handleOrderEntries = this.handleOrderEntries.bind(this);
+        // Data retrieval
+        this.retrieveAuthorizationToAdd = this.retrieveAuthorizationToAdd.bind(this);
+        this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
+        this.retrieveMultiselect = this.retrieveMultiselect.bind(this);
     }
 
     componentDidMount() {
-        this.retrieveData();
+        this.retrieveAuthorizationToAdd();
+        this.retrieveCollaborators();
+        this.retrieveMultiselect();
     }
 
-    retrieveData() {
+    retrieveAuthorizationToAdd() {
+        this.props.restClient.getAuthorizationToAdd(this.props.params.ownerId)
+            .then(authorization => {
+                this.setState({
+                    authorizedToAdd: authorization
+                });
+            });
+    }
 
-        // reset through setState first because user may have just clicked it (needs immediate feedback)
-        this.setState({
-            authorizeButtonGroup: {read: false, write: false, delete: false},
-            valuesInUsersMultiselect: '',
-            valuesInOrganizationsMultiselect: ''
-        });
+    retrieveCollaborators() {
 
         let didUserRemoveSelfWhenOnlyCollaborator = false;
-        let projectId = this.props.params.ownerId + '+' + this.props.params.projectName;
+        let projectId = `${this.props.params.ownerId}+${this.props.params.projectName}`;
 
         Promise.all([
             this.props.restClient.users.getUsersWithAccessToProject(projectId),
@@ -61,15 +64,15 @@ class ProjectPage extends React.Component {
 
             // Union of rights if in organization
             if (!isEmpty(usersInOrganizationsWithAccess)) {
-                for (let key in usersInOrganizationsWithAccess) {
-                    if (usersWithAccess[key]) {
-                        usersWithAccess[key].read = usersWithAccess[key].read || usersInOrganizationsWithAccess[key].read; // eslint-disable-line max-len
-                        usersWithAccess[key].write = usersWithAccess[key].write || usersInOrganizationsWithAccess[key].write; // eslint-disable-line max-len
-                        usersWithAccess[key].delete = usersWithAccess[key].delete || usersInOrganizationsWithAccess[key].delete; // eslint-disable-line max-len
-                    } else {// If it doesn't exist then simply assign
-                        usersWithAccess[key] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[key]));
+                Object.keys(usersInOrganizationsWithAccess).forEach(oneUser => {
+                    if (usersWithAccess[oneUser]) {
+                        usersWithAccess[oneUser].read = usersWithAccess[oneUser].read || usersInOrganizationsWithAccess[oneUser].read; // eslint-disable-line max-len
+                        usersWithAccess[oneUser].write = usersWithAccess[oneUser].write || usersInOrganizationsWithAccess[oneUser].write; // eslint-disable-line max-len
+                        usersWithAccess[oneUser].delete = usersWithAccess[oneUser].delete || usersInOrganizationsWithAccess[oneUser].delete; // eslint-disable-line max-len
+                    } else {
+                        usersWithAccess[oneUser] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[oneUser]));
                     }
-                }
+                });
             } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
                 didUserRemoveSelfWhenOnlyCollaborator = true;
                 this.props.router.replace(`${this.props.routes[0].basePath}projects`);
@@ -84,90 +87,35 @@ class ProjectPage extends React.Component {
             }
 
             if (!didUserRemoveSelfWhenOnlyCollaborator) {
-                // First assign number of commits to each person in the dictionary
-                this.props.restClient.projects.getLatestCommits(this.props.params.ownerId, this.props.params.projectName) // eslint-disable-line max-len
-                    .then(arrayOfCommits => {
-
-                        arrayOfCommits.forEach(oneCommit => {
-                            // temporary to correctly display orgs
-                            if (!usersWithAccess[oneCommit.updater[0]]) {
-                                return; // TODO: again, fix for the organizations
-                            }
-
-                            if (usersWithAccess[oneCommit.updater[0]].numCommits) {
-                                usersWithAccess[oneCommit.updater[0]].numCommits += 1;
-                            } else {
-                                usersWithAccess[oneCommit.updater[0]].numCommits = 1;
-                            }
-                        });
-                        // Convert hashmap into array for data table entries:
-                        let collaboratorsArrayForm = [];
-                        for (let keyName in usersWithAccess) {
-                            collaboratorsArrayForm.push({
-                                name: keyName,
-                                read: usersWithAccess[keyName].read,
-                                write: usersWithAccess[keyName].write,
-                                delete: usersWithAccess[keyName].delete,
-                                inOrg: usersWithAccess[keyName].inOrg,
-                                numCommits: usersWithAccess[keyName].numCommits
-                            });
-                        }
-
-                        // Users with access here is still the hashmap of username to read/write/delete/inOrg
-                        // Now going to add a commit count to each person in the map
-                        this.setState({
-                            collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
-                        });
-
-                        // Formatting bar chart (has to be sequential after sorting collaborators because it needs that info)
-                        let randomColor = getRandomColorHex();
-
-                        this.setState({
-                            barChartData: {
-                                labels: collaboratorsArrayForm.map(oneUserObject => {
-                                    return oneUserObject.name;
-                                }),
-                                datasets: [
-                                    {
-                                        fillColor: convertHexToRGBA(randomColor, 20),
-                                        strokeColor: convertHexToRGBA(randomColor, 100),
-                                        pointColor: convertHexToRGBA(randomColor, 100),
-                                        pointStrokeColor: shadeColor(randomColor, 50),
-                                        pointHighlightFill: shadeColor(randomColor, 50),
-                                        pointHighlightStroke: convertHexToRGBA(randomColor, 100),
-                                        data: collaboratorsArrayForm.map(oneUserObject => {
-                                            return oneUserObject.numCommits;
-                                        })
-                                    }
-                                ]
-                            }}
-                        );
-                    });
-
-            }
-        });
-
-        // Setting authorization (To set the dropdowns/buttons visibility)
-        // If owner is a single user and matches current user
-        if (!didUserRemoveSelfWhenOnlyCollaborator) {
-            this.props.restClient.getAuthorizationToAdd(this.props.params.ownerId)
-                .then(authorization => {
-                    this.setState({
-                        authorizedToAdd: authorization
+                let collaboratorsArrayForm = [];
+                Object.keys(usersWithAccess).forEach(key => {
+                    collaboratorsArrayForm.push({
+                        name: key,
+                        read: usersWithAccess[key].read,
+                        write: usersWithAccess[key].write,
+                        delete: usersWithAccess[key].delete,
+                        inOrg: usersWithAccess[key].inOrg
                     });
                 });
 
-            // User doesn't click dropdown immediately, so can load these after
-            Promise.all([
-                this.props.restClient.users.getAllUsers(),
-                this.props.restClient.organizations.getAllOrganizations()
-            ]).then(([allUsers, allOrganizations]) => {
                 this.setState({
-                    formattedUsers: multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
-                    formattedOrganizations: multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
+                    collaborators: collaboratorsArrayForm.sort(sortObjectArrayByField('name'))
                 });
+            }
+
+        });
+    }
+
+    retrieveMultiselect() {
+        Promise.all([
+            this.props.restClient.users.getAllUsers(),
+            this.props.restClient.organizations.getAllOrganizations()
+        ]).then(([allUsers, allOrganizations]) => {
+            this.setState({
+                formattedUsers: multiselectFormat(allUsers.sort(sortObjectArrayByField('_id'))),
+                formattedOrganizations: multiselectFormat(allOrganizations.sort(sortObjectArrayByField('_id')))
             });
-        }
+        });
     }
 
     handleAuthorizationChange(event) {
@@ -232,16 +180,14 @@ class ProjectPage extends React.Component {
                 if (projectRights === '') { // have to remove rights if none are selected
                     promiseArrayToGrant.push(
                         this.props.restClient.projects.removeRightsToProject(this.props.params.ownerId,
-                            this.props.params.projectName,
-                            userOrOrgName)
-                    );
+                                                                             this.props.params.projectName,
+                                                                             userOrOrgName));
                 } else {
                     promiseArrayToGrant.push(
                         this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
-                            this.props.params.projectName,
-                            userOrOrgName,
-                            projectRights)
-                    );
+                                                                            this.props.params.projectName,
+                                                                            userOrOrgName,
+                                                                            projectRights));
                 }
             });
         }
@@ -249,11 +195,18 @@ class ProjectPage extends React.Component {
         Promise.all(promiseArrayToGrant)
             .then(() => {
                 // Have to update the list after authorization rights change
-                this.retrieveData();
+                this.retrieveCollaborators();
             })
             .catch(() => {
                 console.log('Authorization denied.'); // eslint-disable-line no-console
             });
+
+        // Reset fields after submitting
+        this.setState({
+            authorizeButtonGroup: {read: false, write: false, delete: false},
+            valuesInUsersMultiselect: '',
+            valuesInOrganizationsMultiselect: ''
+        });
 
     }
 
@@ -267,11 +220,11 @@ class ProjectPage extends React.Component {
 
         // If the table changed, then have to retrieve data again
         if (holdOldDisplayNum !== newDisplayNum) {
-            this.retrieveData();
+            this.retrieveCollaborators();
         }
     }
 
-    orderEntries() {
+    handleOrderEntries() {
         this.setState({
             collaborators: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
                 this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() :
@@ -292,22 +245,23 @@ class ProjectPage extends React.Component {
                 {id: 2, name: 'Rights(RWD)'}
             ]
         };
+        let dualTable = {
+            show: true,
+            options: ['Users', 'Organizations']
+        };
 
         let noRightsSelected = true;
 
-        for (let accessType in this.state.authorizeButtonGroup) {
-            if (this.state.authorizeButtonGroup.hasOwnProperty(accessType) &&
-                this.state.authorizeButtonGroup[accessType]) {
+        Object.keys(this.state.authorizeButtonGroup).forEach(accessType => {
+            if (this.state.authorizeButtonGroup[accessType]) {
                 noRightsSelected = false;
             }
-        }
-
-        let dualTable = {show: true, options: ['Users', 'Organizations']};
+        });
 
         let submitButtons = [
             {
                 submitButtonHandler: this.handleSubmitAuthorization,
-                submitButtonText: this.state.displayTable === 1 ?
+                submitButtonText: this.state.displayTable === 1 ? // eslint-disable-line no-nested-ternary
                     noRightsSelected ? 'Remove users rights' : 'Authorize users' :
                     noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations',
                 submitButtonState: noRightsSelected
@@ -329,7 +283,7 @@ class ProjectPage extends React.Component {
                                                                                categories.organizations}
                                    tableName="Collaborators"
                                    entries={this.state.collaborators}
-                                   orderEntries={this.orderEntries}
+                                   orderEntries={this.handleOrderEntries}
                                    numTimesClicked={this.state.numTimesClicked}
                                    display={this.state.displayTable}
                                    handleTableSwitch={this.handleTableSwitch}
@@ -349,7 +303,7 @@ class ProjectPage extends React.Component {
                                                         {read: this.state.authorizeButtonGroup.read,
                                                          write: this.state.authorizeButtonGroup.write,
                                                          delete: this.state.authorizeButtonGroup.delete}}
-                                                                 selectableButtonsChange={this.handleAuthorizationChange}
+                                                                 selectableButtonsChange={this.handleAuthorizationChange} // eslint-disable-line max-len
                                                                  label={this.state.displayTable === 1 ? "Authorize or Deauthorize Users" : "Authorize or Deauthorize Organizations"} // eslint-disable-line max-len
                                                                  placeholder={this.state.displayTable === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
                                                                  options={this.state.displayTable === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
@@ -364,26 +318,13 @@ class ProjectPage extends React.Component {
 
                     </div>
 
-                    <div className="col-md-6">
-                        <div className="box box-info">
-                            <div className="box-header with-border">
-                                <h3 className="box-title">Commits by Collaborator</h3>
-
-                                <div className="box-tools pull-right">
-                                    <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                        <i className="fa fa-minus"/>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="box-body">
-                                <BarChart data={this.state.barChartData}
-                                          options={{}}
-                                          width={$(window).width() / 2.34}
-                                          height={$(window).height() / 1.8}
-                                          redraw/>
-                            </div>
-                        </div>
-                    </div>
+                    <CollaboratorsCommitBarGraph height={$(window).height() / 1.8}
+                                                 options={{}}
+                                                 ownerId={this.props.params.ownerId}
+                                                 projectName={this.props.params.projectName}
+                                                 restClient={this.props.restClient}
+                                                 title="Commits By Collaborator"
+                                                 width={$(window).width() / 2.36}/>
 
                 </div>
 

@@ -15,7 +15,6 @@ export default class DataTable extends React.Component {
             pageNumber: 1,
             searchText: ''
         };
-
         this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);

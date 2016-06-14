@@ -5,8 +5,8 @@ import DoughnutChart from '../../../../../node_modules/react-chartjs/lib/doughnu
 import LineChart from '../../../../../node_modules/react-chartjs/lib/line';
 import React from '../../../../../node_modules/react/lib/React';
 // Self defined
-import DataTable from './datatable/DataTable.jsx';
-import ProjectsDataTableEntry from './datatable/ProjectsDataTableEntry.jsx';
+import DataTable from '../widgets/datatable/DataTable.jsx';
+import ProjectsDataTableEntry from '../widgets/datatable/ProjectsDataTableEntry.jsx';
 import {convertHexToRGBA, getPastWeeksDays, getRandomColorHex, shadeColor} from '../../../utils/utils.js';
 
 export default class ProjectsPage extends React.Component {
@@ -170,8 +170,8 @@ export default class ProjectsPage extends React.Component {
     render() {
 
         let categories = [
-            {id: 1, name: 'Project Name:'},
-            {id: 2, name: 'Owner'},
+            {id: 1, name: 'Owner:'},
+            {id: 2, name: 'Project Name:'},
             {id: 3, name: 'Last Viewed:'},
             {id: 4, name: 'Last Changed:'}
         ];
