@@ -20,6 +20,14 @@ export default class DataTable extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.display !== this.props.display) {
+            this.setState({
+                searchText: ''
+            });
+        }
+    }
+
     handleSelect(event) {
         this.setState({
             selectValue: parseInt(event.target.value.trim(), 10)

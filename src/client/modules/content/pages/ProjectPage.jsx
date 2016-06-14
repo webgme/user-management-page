@@ -24,16 +24,16 @@ class ProjectPage extends React.Component {
             valuesInUsersMultiselect: '',
             valuesInOrganizationsMultiselect: ''
         };
-        // Event Handlers
-        this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
-        this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
-        this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
-        this.handleTableSwitch = this.handleTableSwitch.bind(this);
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
         // Data retrieval
         this.retrieveAuthorizationToAdd = this.retrieveAuthorizationToAdd.bind(this);
         this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         this.retrieveMultiselect = this.retrieveMultiselect.bind(this);
+        // Event Handlers
+        this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
+        this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
+        this.handleOrderEntries = this.handleOrderEntries.bind(this);
+        this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
+        this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
 
     componentDidMount() {
@@ -163,6 +163,15 @@ class ProjectPage extends React.Component {
         }
     }
 
+    handleOrderEntries() {
+        this.setState({
+            collaborators: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
+                this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() :
+                this.state.collaborators.sort(sortObjectArrayByField('name')),
+            numTimesClicked: this.state.numTimesClicked + 1
+        });
+    }
+
     handleSubmitAuthorization() {
         let usersOrOrganizations = this.state.displayTable === 1 ? this.state.valuesInUsersMultiselect :
                                                               this.state.valuesInOrganizationsMultiselect;
@@ -224,97 +233,79 @@ class ProjectPage extends React.Component {
         }
     }
 
-    handleOrderEntries() {
-        this.setState({
-            collaborators: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
-                this.state.collaborators.sort(sortObjectArrayByField('name')).reverse() :
-                this.state.collaborators.sort(sortObjectArrayByField('name')),
-            numTimesClicked: this.state.numTimesClicked + 1
-        });
-    }
-
     render() {
 
-        let categories = {
-            users: [
-                {id: 1, name: 'UserID:'},
-                {id: 2, name: 'Rights (RWD)'}
-            ],
-            organizations: [
-                {id: 1, name: 'OrganizationID:'},
-                {id: 2, name: 'Rights(RWD)'}
-            ]
-        };
-        let dualTable = {
-            show: true,
-            options: ['Users', 'Organizations']
-        };
-
-        let noRightsSelected = true;
-
-        Object.keys(this.state.authorizeButtonGroup).forEach(accessType => {
-            if (this.state.authorizeButtonGroup[accessType]) {
-                noRightsSelected = false;
+        let dataTableData = {
+            categories: {
+                users: [
+                    {id: 1, name: 'UserID:'},
+                    {id: 2, name: 'Rights (RWD)'}
+                ],
+                organizations: [
+                    {id: 1, name: 'OrganizationID:'},
+                    {id: 2, name: 'Rights(RWD)'}
+                ]
+            },
+            dualTable: {
+                show: true,
+                options: ['Users', 'Organizations']
             }
-        });
+        };
+        let authorizationWidgetData = {
 
-        let submitButtons = [
+            noRightsSelected: !(this.state.authorizeButtonGroup.read ||
+                                this.state.authorizeButtonGroup.write ||
+                                this.state.authorizeButtonGroup.delete)
+        };
+        authorizationWidgetData.submitButtons = [
             {
                 submitButtonHandler: this.handleSubmitAuthorization,
                 submitButtonText: this.state.displayTable === 1 ? // eslint-disable-line no-nested-ternary
-                    noRightsSelected ? 'Remove users rights' : 'Authorize users' :
-                    noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations',
-                submitButtonState: noRightsSelected
+                    authorizationWidgetData.noRightsSelected ? 'Remove users rights' : 'Authorize users' :
+                    authorizationWidgetData.noRightsSelected ? 'Remove organizations rights' : 'Authorize organizations', // eslint-disable-line max-len
+                submitButtonState: authorizationWidgetData.noRightsSelected
             }
         ];
 
         return (
 
             <section className="content">
-                <h3> {this.props.params.projectName} by {this.props.params.ownerId} </h3>
+                <h2> {this.props.params.projectName} by {this.props.params.ownerId} </h2>
 
                 <div className="row">
                     <div className="col-md-6">
 
-                        <DataTable ownerId={this.props.params.ownerId}
+                        <DataTable categories={this.state.displayTable === 1 ? dataTableData.categories.users :
+                                                                               dataTableData.categories.organizations}
+                                   display={this.state.displayTable}
+                                   dualTable={dataTableData.dualTable}
+                                   entries={this.state.collaborators}
+                                   handleTableSwitch={this.handleTableSwitch}
+                                   numTimesClicked={this.state.numTimesClicked}
+                                   orderEntries={this.handleOrderEntries}
+                                   ownerId={this.props.params.ownerId}
                                    projectName={this.props.params.projectName}
                                    restClient={this.props.restClient}
-                                   categories={this.state.displayTable === 1 ? categories.users :
-                                                                               categories.organizations}
-                                   tableName="Collaborators"
-                                   entries={this.state.collaborators}
-                                   orderEntries={this.handleOrderEntries}
-                                   numTimesClicked={this.state.numTimesClicked}
-                                   display={this.state.displayTable}
-                                   handleTableSwitch={this.handleTableSwitch}
                                    sortable={true}
-                                   dualTable={dualTable}>
+                                   tableName="Collaborators">
                             <ProjectDataTableEntry/>
                         </DataTable>
 
                         {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
                         {this.state.authorizedToAdd ?
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="box box-primary">
-                                    <div className="box-header with-border">
-
-                                            <AuthorizationWidget selectableButtons={
+                            <AuthorizationWidget boxSize="12"
+                                                 handleMultiselectChange={this.handleMultiselectChange}
+                                                 label={this.state.displayTable === 1 ? "Authorize or Deauthorize Users" : "Authorize or Deauthorize Organizations"} // eslint-disable-line max-len
+                                                 options={this.state.displayTable === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
+                                                 placeholder={this.state.displayTable === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
+                                                 selectableButtons={
                                                         {read: this.state.authorizeButtonGroup.read,
                                                          write: this.state.authorizeButtonGroup.write,
                                                          delete: this.state.authorizeButtonGroup.delete}}
-                                                                 selectableButtonsChange={this.handleAuthorizationChange} // eslint-disable-line max-len
-                                                                 label={this.state.displayTable === 1 ? "Authorize or Deauthorize Users" : "Authorize or Deauthorize Organizations"} // eslint-disable-line max-len
-                                                                 placeholder={this.state.displayTable === 1 ? "Select one or more users (type to search)" : "Select one or more organizations (type to search)"} // eslint-disable-line max-len
-                                                                 options={this.state.displayTable === 1 ? this.state.formattedUsers : this.state.formattedOrganizations} // eslint-disable-line max-len
-                                                                 handleMultiselectChange={this.handleMultiselectChange}
-                                                                 submitButtons={submitButtons}
-                                                                 valuesInMultiselect={this.state.displayTable === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
-                                            />
-                                    </div>
-                                </div>
-                            </div>
-                        </div> : null}
+                                                 selectableButtonsChange={this.handleAuthorizationChange}
+                                                 submitButtons={authorizationWidgetData.submitButtons}
+                                                 valuesInMultiselect={this.state.displayTable === 1 ? this.state.valuesInUsersMultiselect : this.state.valuesInOrganizationsMultiselect} // eslint-disable-line max-len
+                            /> : null}
 
                     </div>
 

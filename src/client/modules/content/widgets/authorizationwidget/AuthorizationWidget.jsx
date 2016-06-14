@@ -44,28 +44,36 @@ export default class AuthorizationWidget extends React.Component {
 
         return (
             <div className="row">
+                <div className={`col-md-${this.props.boxSize}`}>
+                    <div className="box box-primary">
+                        <div className="box-header with-border">
+                            <div className="row">
 
-                <ButtonGroup>
-                    {selectableButtons}
-                </ButtonGroup>
+                                <ButtonGroup>
+                                    {selectableButtons}
+                                </ButtonGroup>
 
-                <div className="col-sm-6">
-                    <Multiselect
-                        label={this.props.label}
-                        placeholder={this.props.placeholder}
-                        options={this.props.options}
-                        onChange={this.props.handleMultiselectChange}
-                        valuesInMultiselect={this.props.valuesInMultiselect}/>
-                </div>
+                                <div className="col-sm-6">
+                                    <Multiselect
+                                        label={this.props.label}
+                                        placeholder={this.props.placeholder}
+                                        options={this.props.options}
+                                        onChange={this.props.handleMultiselectChange}
+                                        valuesInMultiselect={this.props.valuesInMultiselect}/>
+                                </div>
 
-                <div className="row" style={STYLING.submitButtonGroup}>
-                    <ButtonGroup>
-                        {submitButtons}
-                    </ButtonGroup>
+                                <div className="row" style={STYLING.submitButtonGroup}>
+                                    <ButtonGroup>
+                                        {submitButtons}
+                                    </ButtonGroup>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
-
     }
 
 }
