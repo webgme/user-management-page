@@ -39,5 +39,13 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery"
         })
+        // Will minimize & remove all warnings/errors. Add for production
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         'NODE_ENV': JSON.stringify('production')
+        //     }
+        // }),
+        // Adding this reduces bundle size by over 50% but increases webpack build time
+        // new webpack.optimize.UglifyJsPlugin({minimize: true})
     ]
 };

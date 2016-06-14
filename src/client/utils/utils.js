@@ -4,6 +4,21 @@
  */
 
 /**
+ * Capitalizes the first letter of a word (formatting help)
+ * @param {string} word - word to be altered
+ * @return {string} - formatted word
+ */
+export function capitalizeFirstLetter(word) {
+    if (word.length === 0) {
+        return '';
+    }
+    if (word.length === 1) {
+        return word.substring(0, 1).toUpperCase();
+    }
+    return word.substring(0, 1).toUpperCase() + word.substring(1);
+}
+
+/**
  * Convert hex and opacity into a RGBA value
  * @param {string} hex - hex value
  * @param {Number} opacity - percent opacity (scale of 1 to 100)
