@@ -5,13 +5,15 @@
 'use strict';
 
 var express = require('express'),
+    path = require('path'),
     router = express.Router(),
     bodyParser = require('body-parser'),
+    DIST_DIR = path.join(__dirname, '..', '..', 'dist'),
     logger;
 
 function serveFile(fileName, res) {
     var options = {
-        root: './dist/',
+        root: DIST_DIR,
         dotfiles: 'deny',
         headers: {
             'x-timestamp': Date.now(),
