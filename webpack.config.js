@@ -19,7 +19,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.(js|jsx)$/, exclude: path.join(__dirname, 'node_modules'), loader: 'babel-loader'},
+            {test: /^((?!config).)*\.(js|jsx)$/, exclude: path.join(__dirname, 'node_modules'), loader: 'babel-loader'},
             {test: /\.css$/, loader: 'style-loader!css-loader'},
             {test: /\.(jpg|png)$/, loader: 'file-loader'},
 
