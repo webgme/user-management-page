@@ -6,6 +6,8 @@
 
 var express = require('express'),
     path = require('path'),
+    ejs = require('ejs'),
+    fs = require('fs'),
     router = express.Router(),
     bodyParser = require('body-parser'),
     DIST_DIR = path.join(__dirname, '..', '..', 'dist'),
@@ -51,8 +53,20 @@ function initialize(middlewareOpts) {
     });
 
     const ROUTES = ['/', '/projects', '/profile', '/organizations', /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
+
     router.get(ROUTES, function(req, res) {
-        serveFile('index.html', res);
+
+        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function(err, indexTemplate) {
+            if (err) {
+                logger.error(err);
+                res.send(404);
+            } else {
+                res.contentType('text/html');
+                res.send(ejs.render(indexTemplate, {
+                    baseUrl: req.baseUrl
+                }));
+            }
+        });
     });
 
     logger.debug('ready');

@@ -29,7 +29,7 @@ require('react-select/examples/src/example.less');
 require('chart.js');
 require('react-chartjs');
 
-const basePath = '/rest/external/usermanagement/';
+var basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 
 render((
 
