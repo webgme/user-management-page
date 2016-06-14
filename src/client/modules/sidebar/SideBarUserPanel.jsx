@@ -47,8 +47,7 @@ export default class SideBarUserPanel extends React.Component {
 
         return <div className="user-panel" style={STYLING.panelStyle}>
             <div className="pull-left image">
-                <img src={`${this.props.basePath}${require('webgme/src/client/img/gme-logo.png')}`} className="img-circle" // eslint-disable-line max-len
-                     alt="User Image" style={STYLING.imageStyle}/>
+                <img src="/img/gme-logo.png" className="img-circle" alt="User Image" style={STYLING.imageStyle}/>
             </div>
             <div className="pull-left info">
                 <p style={STYLING.nameStyle}>{this.state.userData._id}</p>
