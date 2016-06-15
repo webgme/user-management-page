@@ -9,7 +9,7 @@ import React from 'react/lib/React';
 import withRouter from 'react-router/lib/withRouter';
 // Self defined
 import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget.jsx';
-import CollaboratorsCommitBarGraph from '../widgets/CollaboratorsCommitBarGraph.jsx';
+import CollaboratorsCommitsBarChart from '../widgets/CollaboratorsCommitsBarChart.jsx';
 import DataTable from '../widgets/datatable/DataTable.jsx';
 import ProjectDataTableEntry from '../widgets/datatable/ProjectDataTableEntry.jsx';
 import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
@@ -314,7 +314,7 @@ class ProjectPage extends React.Component {
 
                     </div>
 
-                    <CollaboratorsCommitBarGraph height={$(window).height() / 1.8}
+                    <CollaboratorsCommitsBarChart height={$(window).height() / 1.8}
                                                  options={{}}
                                                  ownerId={this.props.params.ownerId}
                                                  projectName={this.props.params.projectName}

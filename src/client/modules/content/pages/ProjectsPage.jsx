@@ -10,6 +10,7 @@ import DoughnutChart from 'react-chartjs/lib/doughnut';
 import LineChart from 'react-chartjs/lib/line';
 import React from 'react/lib/React';
 // Self defined
+import CommitsDoughnutChart from '../widgets/CommitsDoughnutChart.jsx';
 import DataTable from '../widgets/datatable/DataTable.jsx';
 import ProjectsDataTableEntry from '../widgets/datatable/ProjectsDataTableEntry.jsx';
 import {convertHexToRGBA, getPastWeeksDays, getRandomColorHex, shadeColor} from '../../../utils/utils.js';
@@ -196,7 +197,7 @@ export default class ProjectsPage extends React.Component {
                 <div className="col-md-6">
                     <div className="box box-primary">
                         <div className="box-header with-border">
-                            <h3 className="box-title">Timeline of Latest Commits (Sorted by Project)</h3>
+                            <h3 className="box-title">Timeline of Latest Commits</h3>
 
                             <div className="box-tools pull-right">
                                 <button type="button" className="btn btn-box-tool" data-widget="collapse">
@@ -212,43 +213,18 @@ export default class ProjectsPage extends React.Component {
                                 </ButtonGroup>
                             </div>
                         </div>
+
                         <div className="box-body">
                             <div className="chart">
                                 <LineChart data={this.state.lineChartData} options={{}} redraw/>
                             </div>
-
                         </div>
+
                     </div>
-
                 </div>
-                <div className="col-md-6">
-                    <div className="box box-info">
-                        <div className="box-header with-border">
-                            <h3 className="box-title">All Latest Commits By Project</h3>
 
-                            <div className="box-tools pull-right">
-                                <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                    <i className="fa fa-minus"/>
-                                </button>
-                                <ButtonGroup>
-                                    <Button bsStyle={this.state.displayDoughnut === 1 ? "primary" : null}
-                                            onClick={this.toggleCommitViewDoughnut}>Total Commits
-                                    </Button>
-                                    <Button bsStyle={this.state.displayDoughnut === 2 ? "primary" : null}
-                                            onClick={this.toggleCommitViewDoughnut}>Only My Commits
-                                    </Button>
-                                </ButtonGroup>
-                            </div>
-                        </div>
+                <CommitsDoughnutChart restClient={this.props.restClient}/>
 
-                        <div className="box-body">
-                            <div className="chart">
-                                <DoughnutChart data={this.state.doughnutChartData} options={{}} redraw/>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
 
         </section>;
