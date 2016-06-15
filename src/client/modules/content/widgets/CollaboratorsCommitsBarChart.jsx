@@ -9,7 +9,7 @@ import BarChart from 'react-chartjs/lib/bar';
 // Self defined:
 import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../utils/utils.js';
 
-export default class CollaboratorsCommitBarGraph extends React.Component {
+export default class CollaboratorsCommitsBarGraph extends React.Component {
 
     constructor(props) {
         super(props);
