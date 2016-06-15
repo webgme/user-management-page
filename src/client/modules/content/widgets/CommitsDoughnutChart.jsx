@@ -9,14 +9,14 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import DoughnutChart from 'react-chartjs/lib/doughnut';
 import React from 'react/lib/React';
 // Self-defined
-import {getRandomColorHex, shadeColor} from '../../../utils/utils.js';
+import {getRandomColorHex, isEmpty, shadeColor} from '../../../utils/utils.js';
 
 export default class CommitsDoughnutChart extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            commits: this.props.commits || [],
+            commits: this.props.commits || {}, // Map of projectName to commitArray
             data: [],
             display: 1, // 1 indicates total commits, 2 indicates only user's commits
             userId: ''
@@ -31,7 +31,7 @@ export default class CommitsDoughnutChart extends React.Component {
     }
 
     componentWillMount() {
-        if (this.state.commits.length === 0) { // Parent did not pass down commits
+        if (isEmpty(this.state.commits)) { // Parent did not pass down commits
             this.retrieveAllData();
         } else {
             this.retrieveUserId()
@@ -51,9 +51,9 @@ export default class CommitsDoughnutChart extends React.Component {
     processCommits(userId) {
 
         let data = [];
-        Object.keys(this.state.commits).forEach(projectKey => {
+        Object.keys(this.state.commits).forEach(projectName => {
 
-            let filteredCommits = this.state.commits[projectKey];
+            let filteredCommits = this.state.commits[projectName];
             if (this.state.display === 2) {
                 filteredCommits = filteredCommits.filter(eachCommit => {
                     return eachCommit.updater.indexOf(userId) !== -1;
@@ -65,7 +65,7 @@ export default class CommitsDoughnutChart extends React.Component {
                 value: filteredCommits.length || 0,
                 color: randomColor,
                 highlight: shadeColor(randomColor, 20),
-                label: projectKey
+                label: projectName
             });
         });
 
