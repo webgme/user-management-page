@@ -4,7 +4,7 @@
  */
 
 /* eslint-env node, browser */
-import superagent from 'superagent/lib/client';
+import superagent from 'superagent';
 
 export default class BaseClient {
 
