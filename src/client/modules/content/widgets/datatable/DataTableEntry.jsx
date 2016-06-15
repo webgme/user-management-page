@@ -1,5 +1,10 @@
+/**
+ * Base formatting for any data table's entries
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
 
 export default class DataTableEntry extends React.Component {
 

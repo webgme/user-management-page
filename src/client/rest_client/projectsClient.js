@@ -1,3 +1,8 @@
+/**
+ * Projects client - all rest calls for api/projects
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 import BaseClient from './baseClient';
 
 export default class ProjectsClient extends BaseClient {

@@ -1,3 +1,8 @@
+/**
+ * Base client with core requests
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 /* eslint-env node, browser */
 import superagent from 'superagent';
 

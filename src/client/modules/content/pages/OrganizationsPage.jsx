@@ -1,8 +1,13 @@
+/**
+ * Organizations page
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
 // Self defined
-import DataTable from './datatable/DataTable.jsx';
-import OrganizationsDataTableEntry from './datatable/OrganizationsDataTableEntry.jsx';
+import DataTable from '../widgets/datatable/DataTable.jsx';
+import OrganizationsDataTableEntry from '../widgets/datatable/OrganizationsDataTableEntry.jsx';
 
 export default class OrganizationsPage extends React.Component {
 

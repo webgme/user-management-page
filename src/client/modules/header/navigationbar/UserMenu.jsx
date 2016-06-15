@@ -1,6 +1,11 @@
+/**
+ * User menu of the header component
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 /* global window, require */
-import React from '../../../../../node_modules/react/lib/React';
-import {Link} from 'react-router/lib';
+import React from 'react/lib/React';
+import Link from 'react-router/lib/Link';
 
 const STYLING = {
     logoutButtonPadding: {

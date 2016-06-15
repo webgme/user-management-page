@@ -28,12 +28,15 @@ describe('Organizations Rest Client', function() {
                 ]);
             })
             .then(function() {
+                var projectAuthParams = {
+                    entityType: gmeAuth.authorizer.ENTITY_TYPES.PROJECT
+                };
                 return Q.allDone([
-                    gmeAuth.authorizeOrganization('orgA', 'user+project', 'create', {
+                    gmeAuth.authorizer.setAccessRights('orgA', 'user+project', {
                         read: true,
                         write: true,
                         delete: true
-                    }),
+                    }, projectAuthParams),
                     gmeAuth.addUserToOrganization('userOrgA', 'orgA'),
                     gmeAuth.setAdminForUserInOrganization('userOrgA', 'orgA', true)
                 ]);

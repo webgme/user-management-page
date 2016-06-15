@@ -7,8 +7,7 @@
     "start": "node app.js",
     "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
     "test_cover": "node ./node_modules/babel-istanbul/lib/cli.js --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec --timeout 10000 --recursive test",
-    "webpack": "node ./node_modules/webpack/bin/webpack.js",
-    "webpack_dev_server": "webpack-dev-server --inline --content-base ."
+    "webpack": "node ./node_modules/webpack/bin/webpack.js"
   },
   "repository": {
     "type": "git",

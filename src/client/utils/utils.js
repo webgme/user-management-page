@@ -1,8 +1,28 @@
 /**
+ * Utility functions
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+/**
+ * Capitalizes the first letter of a word (formatting help)
+ * @param {string} word - word to be altered
+ * @return {string} - formatted word
+ */
+export function capitalizeFirstLetter(word) {
+    if (word.length === 0) {
+        return '';
+    }
+    if (word.length === 1) {
+        return word.substring(0, 1).toUpperCase();
+    }
+    return word.substring(0, 1).toUpperCase() + word.substring(1);
+}
+
+/**
  * Convert hex and opacity into a RGBA value
- * @param hex - hex value
- * @param opacity - percent opacity (scale of 1 to 100)
- * @returns {string} - returns the rgba ex. rgba(r,g,b,0.a)
+ * @param {string} hex - hex value
+ * @param {Number} opacity - percent opacity (scale of 1 to 100)
+ * @return {string} - returns the rgba ex. rgba(r,g,b,0.a)
  */
 export function convertHexToRGBA(hex, opacity) {
     hex = hex.replace('#', '');
@@ -33,7 +53,7 @@ export function getPastWeeksDays() {
  * @return {string} - hex value for a random color in the format #XXXXXX
  */
 export function getRandomColorHex() {
-    let possibleInHex = 'D1A2B3C'.split(''),
+    let possibleInHex = '21A2B3C'.split(''),
         result = '#';
 
     for (let i = 0; i < 6; i++) {
@@ -45,7 +65,7 @@ export function getRandomColorHex() {
 /**
  * Check if an object is empty
  * @param {Object} object - object to be checked
- * @return {boolean} - returns whether or not the object is "empty"
+ * @return {boolean} - returns whether or not the object is 'empty'
  */
 export function isEmpty(object) {
 
@@ -53,7 +73,7 @@ export function isEmpty(object) {
         return true;
     }
 
-    for (var key in object) {
+    for (let key in object) {
         if (object.hasOwnProperty(key)) {
             return false;
         }
@@ -83,9 +103,9 @@ export function multiselectFormat(allOfOneThing) {
  */
 export function shadeColor(color, percent) {
 
-    var R = parseInt(color.substring(1, 3), 16);
-    var G = parseInt(color.substring(3, 5), 16);
-    var B = parseInt(color.substring(5, 7), 16);
+    let R = parseInt(color.substring(1, 3), 16);
+    let G = parseInt(color.substring(3, 5), 16);
+    let B = parseInt(color.substring(5, 7), 16);
 
     R = parseInt(R * (100 + percent) / 100, 10);
     G = parseInt(G * (100 + percent) / 100, 10);
@@ -95,11 +115,11 @@ export function shadeColor(color, percent) {
     G = (G < 255) ? G : 255;
     B = (B < 255) ? B : 255;
 
-    var RR = ((R.toString(16).length === 1) ? "0" + R.toString(16) : R.toString(16));
-    var GG = ((G.toString(16).length === 1) ? "0" + G.toString(16) : G.toString(16));
-    var BB = ((B.toString(16).length === 1) ? "0" + B.toString(16) : B.toString(16));
+    let RR = ((R.toString(16).length === 1) ? '0' + R.toString(16) : R.toString(16));
+    let GG = ((G.toString(16).length === 1) ? '0' + G.toString(16) : G.toString(16));
+    let BB = ((B.toString(16).length === 1) ? '0' + B.toString(16) : B.toString(16));
 
-    return "#" + RR + GG + BB;
+    return '#' + RR + GG + BB;
 }
 
 /**

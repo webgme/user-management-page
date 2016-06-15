@@ -1,3 +1,8 @@
+/**
+ * User client - all rest calls for api/user
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 import BaseClient from './baseClient';
 
 export default class UserClient extends BaseClient {

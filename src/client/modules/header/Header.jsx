@@ -1,6 +1,11 @@
+/**
+ * Header component
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import Link from '../../../../node_modules/react-router/lib/Link';
-import React from '../../../../node_modules/react/lib/React';
+import Link from 'react-router/lib/Link';
+import React from 'react/lib/React';
 // Self defined
 import ColorMenu from './navigationbar/ColorMenu.jsx';
 // import MessageMenu from './navigationbar/MessageMenu.jsx';
@@ -32,9 +37,9 @@ export default class Header extends React.Component {
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
                         <ColorMenu handleColorSwitch={this.props.handleColorSwitch}/>
-                        {/*<MessageMenu/>*/}
-                        {/*<NotificationsMenu/>*/}
-                        {/*<TasksMenu/>*/}
+                        {/* <MessageMenu/>*/}
+                        {/* <NotificationsMenu/>*/}
+                        {/* <TasksMenu/>*/}
                         <UserMenu restClient={this.props.restClient}
                                   basePath={this.props.basePath}/>
                         <SettingsMenu/>

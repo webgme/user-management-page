@@ -1,5 +1,10 @@
+/**
+ * Sidebar user section
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
 
 const STYLING = {
     welcomeStyle: {
@@ -32,19 +37,17 @@ export default class SideBarUserPanel extends React.Component {
     }
 
     componentDidMount() {
-        var self = this;
         this.props.restClient.user.getCurrentUser()
-            .then(function(data) {
-                self.setState({userData: data});
+            .then(data => {
+                this.setState({userData: data});
             });
     }
 
     render() {
 
-
         return <div className="user-panel" style={STYLING.panelStyle}>
             <div className="pull-left image">
-                <img src={`${this.props.basePath}${require('webgme/src/client/img/gme-logo.png')}`} className="img-circle"
+                <img src={`${this.props.basePath}${require('webgme/src/client/img/gme-logo.png')}`} className="img-circle" // eslint-disable-line max-len
                      alt="User Image" style={STYLING.imageStyle}/>
             </div>
             <div className="pull-left info">

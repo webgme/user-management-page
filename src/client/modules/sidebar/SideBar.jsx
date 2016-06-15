@@ -1,5 +1,10 @@
+/**
+ * Sidebar component
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import React from '../../../../node_modules/react/lib/React';
+import React from 'react/lib/React';
 // Self-defined components
 import SideBarMenu from './SideBarMenu.jsx';
 import SideBarUserPanel from './SideBarUserPanel.jsx';
@@ -19,7 +24,7 @@ export default class SideBar extends React.Component {
                                   basePath={this.props.basePath}/>
 
                 {/* Removing sidebar for now */}
-                {/*<form action="#" method="get" className="sidebar-form">
+                {/* <form action="#" method="get" className="sidebar-form">
                     <div className="input-group">
                         <input type="text" name="q" className="form-control" placeholder="Search..."/>
                     <span className="input-group-btn">
