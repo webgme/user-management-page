@@ -133,3 +133,62 @@ export function sortObjectArrayByField(field) {
             (a[field].toLowerCase() > b[field].toLowerCase()) ? 1 : 0;
     };
 }
+
+// Date functions
+/**
+ * Returns a string of how long ago
+ * @param {string} isoDate - date in JS ISO format: Ex: 2016-06-13T14:21:56.877Z
+ * @return {string} - how long ago
+ */
+export function timeAgo(isoDate) {
+
+    let target = Date.parse(isoDate), // this is in milliseconds
+        current = new Date().getTime(),
+        difference = current - target,
+        result = '';
+
+    if (within(difference, 1000 * 60)) {
+        result = timeOutput(difference, 1000, 'seconds');
+    } else if (within(difference, 1000 * 60 * 60)) {
+        result = timeOutput(difference, 1000 * 60, 'minutes');
+    } else if (within(difference, 1000 * 60 * 60 * 24)) {
+        result = timeOutput(difference, 1000 * 60 * 60, 'hours');
+    } else if (within(difference, 1000 * 60 * 60 * 24 * 7)) {
+        result = timeOutput(difference, 1000 * 60 * 60 * 24, 'days');
+    } else if (within(difference, 1000 * 60 * 60 * 24 * 30)) {
+        result = timeOutput(difference, 1000 * 60 * 60 * 24 * 7, 'weeks');
+    } else if (within(difference, 1000 * 60 * 60 * 24 * 365)) {
+        result = timeOutput(difference, 1000 * 60 * 60 * 24 * 30, 'months');
+    } else {
+        result = timeOutput(difference, 1000 * 60 * 60 * 24 * 365, 'years');
+    }
+
+    return result;
+}
+
+/**
+ * Simple helper to see if the difference is within a certain range
+ * @param {Number} difference - difference in milliseconds
+ * @param {Number} range - range in milliseconds
+ * @return {boolean} returns true or false if the value is within the range
+ */
+function within(difference, range) {
+    return difference < range;
+}
+
+/**
+ * Returns string value of the output
+ * @param {Number} difference - difference from current in milliseconds
+ * @param {Number} timeValue - unit being calculated ex. seconds: 1000
+ * @param {string} pluralTimeName - plural name of time value ex. 'seconds'
+ * @return {string} string of how long ago ex. '1 second ago' or '5 minutes ago'
+ */
+function timeOutput(difference, timeValue, pluralTimeName) {
+    let result = '';
+    if (Math.round(difference / timeValue) === 1) {
+        result = `1 ${pluralTimeName.substring(0, pluralTimeName.length - 1)} ago`;
+    } else {
+        result = `${Math.round(difference / timeValue)} ${pluralTimeName} ago`;
+    }
+    return result;
+}
