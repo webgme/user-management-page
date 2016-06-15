@@ -46,16 +46,12 @@ export default class UserMenu extends React.Component {
 
         return <li className="dropdown user user-menu">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                <img src={`${this.props.basePath}${require('webgme/src/client/img/gme-logo.png')}`}
-                     className="user-image"
-                     alt="User Image"/>
+                <img src="/img/gme-logo.png" className="user-image" alt="User Image"/>
                 <span className="hidden-xs">{this.state.userData._id}</span>
             </a>
             <ul className="dropdown-menu">
                 <li className="user-header">
-                    <img src={`${this.props.basePath}${require('webgme/src/client/img/gme-logo.png')}`}
-                         className="img-circle"
-                         alt="User Image"/>
+                    <img src="/img/gme-logo.png" className="img-circle" alt="User Image"/>
                     <p>
                         {this.state.userData._id}
                         <small>Member since Nov. 2012</small>

@@ -2,8 +2,9 @@
   "name": "user-management-page",
   "version": "0.1.0-beta1",
   "description": "User management page for webgme",
-  "main": "app.js",
+  "main": "./src/server/usermanagement.js",
   "scripts": {
+    "postinstall": "webpack",
     "start": "node app.js",
     "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
     "test_cover": "node ./node_modules/babel-istanbul/lib/cli.js --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec --timeout 10000 --recursive test",
@@ -29,6 +30,7 @@
     "bootstrap-webpack": "0.0.5",
     "chart.js": "^1.1.1",
     "css-loader": "^0.23.1",
+    "ejs": "^2.4.2",
     "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
@@ -59,7 +61,7 @@
     "express": "^4.13.4",
     "http-server": "^0.8.5",
     "mocha": "^2.4.5",
-    "webgme": "webgme/webgme#rest_api_fixes",
+    "webgme": "webgme/webgme#master",
     "webpack-dev-server": "^1.14.1"
   }
 }

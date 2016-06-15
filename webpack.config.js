@@ -4,18 +4,22 @@
  */
 
 var webpack = require('webpack'),
-    path = require('path');
+    path = require('path'),
+    SRC_DIR = path.join(__dirname, 'src/client'),
+    DIST_DIR = path.join(__dirname, 'dist');
 
 module.exports = {
-    entry: {main: path.join(__dirname, '/src/client/main.jsx')},
+    entry: {
+        main: path.join(SRC_DIR, 'main.jsx')
+    },
     output: {
-        path: './dist/',
+        path: DIST_DIR,
         filename: '[name].js',
         publicPath: ''
     },
     module: {
         loaders: [
-            {test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader'},
+            {test: /^((?!config).)*\.(js|jsx)$/, exclude: path.join(__dirname, 'node_modules'), loader: 'babel-loader'},
             {test: /\.css$/, loader: 'style-loader!css-loader'},
             {test: /\.(jpg|png)$/, loader: 'file-loader'},
 
