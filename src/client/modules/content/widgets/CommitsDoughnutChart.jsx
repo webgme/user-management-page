@@ -22,7 +22,6 @@ export default class CommitsDoughnutChart extends React.Component {
             userId: ''
         };
         // Data retrieval
-        this.retrieveAllData = this.retrieveAllData.bind(this);
         this.processCommits = this.processCommits.bind(this);
         this.retrieveCommits = this.retrieveCommits.bind(this);
         this.retrieveUserId = this.retrieveUserId.bind(this);
@@ -30,25 +29,33 @@ export default class CommitsDoughnutChart extends React.Component {
         this.toggleView = this.toggleView.bind(this);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.data !== nextState.data;
+    }
+
     componentWillMount() {
         if (isEmpty(this.state.commits)) { // Parent did not pass down commits
-            this.retrieveAllData();
+            Promise.all([this.retrieveCommits(), this.retrieveUserId()])
+                .then(([commits, userId]) => {
+                    Promise.all([
+                        this.setState({commits: commits}),
+                        this.setState({userId: userId})
+                    ])
+                        .then(() => {
+                            this.processCommits();
+                        });
+                });
         } else {
             this.retrieveUserId()
                 .then(userId => {
-                    this.processCommits(userId);
+                    this.setState({
+                        userId: userId
+                    }, this.processCommits);
                 });
         }
     }
 
-    retrieveAllData() {
-        Promise.all([this.retrieveCommits(), this.retrieveUserId()])
-            .then(([, userId]) => { // Instead of first argument, use from state
-                this.processCommits(userId);
-            });
-    }
-
-    processCommits(userId) {
+    processCommits() {
 
         let data = [];
         Object.keys(this.state.commits).forEach(projectName => {
@@ -56,7 +63,7 @@ export default class CommitsDoughnutChart extends React.Component {
             let filteredCommits = this.state.commits[projectName];
             if (this.state.display === 2) {
                 filteredCommits = filteredCommits.filter(eachCommit => {
-                    return eachCommit.updater.indexOf(userId) !== -1;
+                    return eachCommit.updater.indexOf(this.state.userId) !== -1;
                 });
             }
 
@@ -96,9 +103,7 @@ export default class CommitsDoughnutChart extends React.Component {
                             commits[projectNames[index]] = commitsForOneProject;
                         });
 
-                        this.setState({
-                            commits: commits
-                        });
+                        return commits;
                     });
             });
     }
@@ -122,8 +127,7 @@ export default class CommitsDoughnutChart extends React.Component {
         if (oldDisplay !== newDisplay) {
             this.setState({
                 display: newDisplay
-            });
-            this.retrieveAllData();
+            }, this.processCommits);
         }
     }
 

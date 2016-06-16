@@ -12,7 +12,6 @@ import withRouter from 'react-router/lib/withRouter';
 import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget';
 import CollaboratorsCommitsBarChart from '../widgets/CollaboratorsCommitsBarChart';
 import ProjectCollaboratorTable from '../widgets/datatable/ProjectCollaboratorTable';
-import {multiselectFormat, sortObjectArrayByField} from '../../../utils/utils';
 
 class ProjectPage extends React.Component {
 
@@ -20,32 +19,12 @@ class ProjectPage extends React.Component {
         super(props);
         this.state = {
             authorizeButtonGroup: {read: false, write: false, delete: false},
-            multiselectOptions: [],
-            numTimesClicked: 0,
             valuesInMultiselect: ''
         };
-        // Data retrieval
-        this.retrieveMultiselect = this.retrieveMultiselect.bind(this);
         // Event Handlers
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
-    }
-
-    componentDidMount() {
-        this.retrieveMultiselect();
-    }
-
-    retrieveMultiselect() {
-        Promise.all([
-            this.props.restClient.users.getAllUsers(),
-            this.props.restClient.organizations.getAllOrganizations()
-        ]).then(([allUsers, allOrganizations]) => {
-            let usersAndOrganizations = allUsers.concat(allOrganizations);
-            this.setState({
-                multiselectOptions: multiselectFormat(usersAndOrganizations.sort(sortObjectArrayByField('_id')))
-            });
-        });
     }
 
     handleAuthorizationChange(event) {
@@ -163,7 +142,6 @@ class ProjectPage extends React.Component {
                         <AuthorizationWidget boxSize="12"
                                              handleMultiselectChange={this.handleMultiselectChange}
                                              label={"Authorize Users or Organizations"}
-                                             options={this.state.multiselectOptions}
                                              ownerId={this.props.params.ownerId}
                                              placeholder={"Select one or more (type to search)"}
                                              restClient={this.props.restClient}

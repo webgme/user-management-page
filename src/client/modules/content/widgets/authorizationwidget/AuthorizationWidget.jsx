@@ -4,11 +4,12 @@
  */
 
 // Libraries
-import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import React from 'react/lib/React';
 // Self-defined
-import Multiselect from './Multiselect.jsx';
+import Multiselect from './Multiselect';
+import {multiselectFormat, sortObjectArrayByField} from '../../../../utils/utils';
 
 const STYLING = {
     submitButtonGroup: {
@@ -21,8 +22,11 @@ export default class AuthorizationWidget extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            multiselectOptions: [],
             show: false
         };
+        // Data retrieval
+        this.retrieveMultiselectOptions = this.retrieveMultiselectOptions.bind(this);
     }
 
     componentWillMount() {
@@ -32,6 +36,19 @@ export default class AuthorizationWidget extends React.Component {
                     show: authorization
                 });
             });
+        this.retrieveMultiselectOptions();
+    }
+
+    retrieveMultiselectOptions() {
+        Promise.all([
+            this.props.restClient.users.getAllUsers(),
+            this.props.restClient.organizations.getAllOrganizations()
+        ]).then(([allUsers, allOrganizations]) => {
+            let usersAndOrganizations = allUsers.concat(allOrganizations);
+            this.setState({
+                multiselectOptions: multiselectFormat(usersAndOrganizations.sort(sortObjectArrayByField('_id')))
+            });
+        });
     }
 
     render() {
@@ -75,7 +92,7 @@ export default class AuthorizationWidget extends React.Component {
                                 <Multiselect
                                     label={this.props.label}
                                     placeholder={this.props.placeholder}
-                                    options={this.props.options}
+                                    options={this.state.multiselectOptions}
                                     onChange={this.props.handleMultiselectChange}
                                     valuesInMultiselect={this.props.valuesInMultiselect}/>
                             </div>
