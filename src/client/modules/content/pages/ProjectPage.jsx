@@ -19,6 +19,7 @@ class ProjectPage extends React.Component {
         super(props);
         this.state = {
             authorizeButtonGroup: {read: false, write: false, delete: false},
+            refreshTable: false,
             valuesInMultiselect: ''
         };
         // Event Handlers
@@ -105,6 +106,7 @@ class ProjectPage extends React.Component {
         // Reset fields after submitting
         this.setState({
             authorizeButtonGroup: {read: false, write: false, delete: false},
+            refreshTable: !this.state.refreshTable,
             valuesInMultiselect: ''
         });
     }
@@ -137,7 +139,8 @@ class ProjectPage extends React.Component {
 
                         <ProjectCollaboratorTable restClient={this.props.restClient}
                                                   ownerId={this.props.params.ownerId}
-                                                  projectName={this.props.params.projectName}/>
+                                                  projectName={this.props.params.projectName}
+                                                  refreshTable={this.state.refreshTable}/>
 
                         <AuthorizationWidget boxSize="12"
                                              handleMultiselectChange={this.handleMultiselectChange}

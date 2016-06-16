@@ -32,6 +32,12 @@ export default class ProjectCollaboratorTable extends React.Component {
         this.retrieveCollaborators();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.refreshTable !== this.props.refreshTable) {
+            this.retrieveCollaborators();
+        }
+    }
+
     handleOrderEntries() {
         if (this.state.display === 1) {
             this.setState({
