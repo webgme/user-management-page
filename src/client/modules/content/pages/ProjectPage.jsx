@@ -5,13 +5,13 @@
 
 /* global window, $ */
 // Libraries
-import React from 'react/lib/React';
-import withRouter from 'react-router/lib/withRouter';
+import React from 'react';
+import {withRouter} from 'react-router';
 // Self defined
 import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget.jsx';
 import CollaboratorsCommitsBarChart from '../widgets/CollaboratorsCommitsBarChart.jsx';
 import DataTable from '../widgets/datatable/DataTable.jsx';
-import ProjectDataTableEntry from '../widgets/datatable/ProjectDataTableEntry.jsx';
+import ProjectDataTableEntry from '../widgets/datatable/table_entries/ProjectDataTableEntry.jsx';
 import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
 
 class ProjectPage extends React.Component {
@@ -275,7 +275,9 @@ class ProjectPage extends React.Component {
         return (
 
             <section className="content">
-                <h2> {this.props.params.projectName} by {this.props.params.ownerId} </h2>
+                <h2 style={{fontFamily: "-webkit-body"}}>
+                    <i className="fa fa-cube"/>{` ${this.props.params.projectName} by ${this.props.params.ownerId}`}
+                </h2>
 
                 <div className="row">
                     <div className="col-md-6">

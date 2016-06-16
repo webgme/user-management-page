@@ -9,7 +9,7 @@ import Link from 'react-router/lib/Link';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
 // Self-defined
 import DataTableEntry from './DataTableEntry.jsx';
-import {timeAgo} from '../../../../utils/utils';
+import {timeAgo} from '../../../../../utils/utils';
 
 export default class ProjectsDataTableEntry extends React.Component {
 

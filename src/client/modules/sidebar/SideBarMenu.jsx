@@ -28,19 +28,25 @@ export default class SideBarMenu extends React.Component {
 
             <li className="header">Site Navigation</li>
 
-            <li className={/profile/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/home$/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}home`}>
+                    <i className="fa fa-home"/> <span>Home</span>
+                </Link>
+            </li>
+
+            <li className={/profile$/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${this.props.basePath}profile`}>
                     <i className="fa fa-user"/> <span>My Profile</span>
                 </Link>
             </li>
 
-            <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/projects$/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${this.props.basePath}projects`}>
                     <i className="fa fa-cubes"/> <span>My Projects</span>
                 </Link>
             </li>
 
-            <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/organizations$/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${this.props.basePath}organizations`}>
                     <i className="fa fa-university"/> <span>My Organizations</span>
                 </Link>

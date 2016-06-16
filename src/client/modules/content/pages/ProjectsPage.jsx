@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
+import React from 'react';
 // Self defined
 import CommitsDoughnutChart from '../widgets/CommitsDoughnutChart.jsx';
 import CommitsLineChart from '../widgets/CommitsLineChart.jsx';
 import DataTable from '../widgets/datatable/DataTable.jsx';
-import ProjectsDataTableEntry from '../widgets/datatable/ProjectsDataTableEntry.jsx';
+import ProjectsDataTableEntry from '../widgets/datatable/table_entries/ProjectsDataTableEntry.jsx';
 
 export default class ProjectsPage extends React.Component {
 
@@ -18,14 +18,9 @@ export default class ProjectsPage extends React.Component {
         this.state = {
             projects: []
         };
-        this.retrieveData = this.retrieveData.bind(this);
     }
 
     componentDidMount() {
-        this.retrieveData();
-    }
-
-    retrieveData() {
         this.props.restClient.projects.getAllProjects()
             .then(allProjects => {
                 this.setState({

@@ -4,7 +4,7 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
+import React from 'react';
 
 export default class DataTableEntry extends React.Component {
 
