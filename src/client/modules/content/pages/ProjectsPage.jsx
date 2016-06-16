@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React from 'react';
+import React from 'react/lib/React';
 // Self defined
-import CommitsDoughnutChart from '../widgets/CommitsDoughnutChart.jsx';
-import CommitsLineChart from '../widgets/CommitsLineChart.jsx';
-import DataTable from '../widgets/datatable/DataTable.jsx';
-import ProjectsDataTableEntry from '../widgets/datatable/table_entries/ProjectsDataTableEntry.jsx';
+import CommitsDoughnutChart from '../widgets/CommitsDoughnutChart';
+import CommitsLineChart from '../widgets/CommitsLineChart';
+import DataTable from '../widgets/datatable/DataTable';
+import ProjectsDataTableEntry from '../widgets/datatable/table_entries/ProjectsDataTableEntry';
 
 export default class ProjectsPage extends React.Component {
 

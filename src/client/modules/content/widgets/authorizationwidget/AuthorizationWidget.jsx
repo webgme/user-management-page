@@ -4,7 +4,7 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
+import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 // Self-defined
@@ -20,6 +20,18 @@ export default class AuthorizationWidget extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            show: false
+        };
+    }
+
+    componentWillMount() {
+        this.props.restClient.getAuthorizationToAdd(this.props.ownerId)
+            .then(authorization => {
+                this.setState({
+                    show: authorization
+                });
+            });
     }
 
     render() {
@@ -49,36 +61,36 @@ export default class AuthorizationWidget extends React.Component {
         });
 
         return (
-            <div className="row">
-                <div className={`col-md-${this.props.boxSize}`}>
-                    <div className="box box-primary">
-                        <div className="box-header with-border">
-                            <div className="row">
+        this.state.show ? <div className="row">
+            <div className={`col-md-${this.props.boxSize}`}>
+                <div className="box box-primary">
+                    <div className="box-header with-border">
+                        <div className="row">
 
-                                <ButtonGroup>
-                                    {selectableButtons}
-                                </ButtonGroup>
+                            <ButtonGroup>
+                                {selectableButtons}
+                            </ButtonGroup>
 
-                                <div className="col-sm-6">
-                                    <Multiselect
-                                        label={this.props.label}
-                                        placeholder={this.props.placeholder}
-                                        options={this.props.options}
-                                        onChange={this.props.handleMultiselectChange}
-                                        valuesInMultiselect={this.props.valuesInMultiselect}/>
-                                </div>
-
-                                <div className="row" style={STYLING.submitButtonGroup}>
-                                    <ButtonGroup>
-                                        {submitButtons}
-                                    </ButtonGroup>
-                                </div>
-
+                            <div className="col-sm-6">
+                                <Multiselect
+                                    label={this.props.label}
+                                    placeholder={this.props.placeholder}
+                                    options={this.props.options}
+                                    onChange={this.props.handleMultiselectChange}
+                                    valuesInMultiselect={this.props.valuesInMultiselect}/>
                             </div>
+
+                            <div className="row" style={STYLING.submitButtonGroup}>
+                                <ButtonGroup>
+                                    {submitButtons}
+                                </ButtonGroup>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+        </div> : null
         );
     }
 

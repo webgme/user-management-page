@@ -6,10 +6,10 @@
 // Libraries
 import React from 'react/lib/React';
 // Self-defined components
-import Footer from './footer/Footer.jsx';
-import Header from './header/Header.jsx';
-import RestClient from '../rest_client/restClient.js';
-import SideBar from './sidebar/SideBar.jsx';
+import Footer from './footer/Footer';
+import Header from './header/Header';
+import RestClient from '../rest_client/restClient';
+import SideBar from './sidebar/SideBar';
 /**
  * This is the main layout of the web-page.
  */

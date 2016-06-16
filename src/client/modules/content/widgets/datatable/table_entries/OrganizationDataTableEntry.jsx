@@ -6,7 +6,7 @@
 // Libraries
 import React from 'react/lib/React';
 // Self-defined
-import DataTableEntry from './DataTableEntry.jsx';
+import DataTableEntry from './DataTableEntry';
 
 export default class OrganizationDataTableEntry extends React.Component {
 

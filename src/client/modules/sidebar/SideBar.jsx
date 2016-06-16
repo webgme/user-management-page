@@ -6,8 +6,8 @@
 // Libraries
 import React from 'react/lib/React';
 // Self-defined components
-import SideBarMenu from './SideBarMenu.jsx';
-import SideBarUserPanel from './SideBarUserPanel.jsx';
+import SideBarMenu from './SideBarMenu';
+import SideBarUserPanel from './SideBarUserPanel';
 
 export default class SideBar extends React.Component {
 

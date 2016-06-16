@@ -51,5 +51,8 @@ module.exports = {
         // }),
         // Adding this reduces bundle size by over 50% but increases webpack build time
         // new webpack.optimize.UglifyJsPlugin({minimize: true})
-    ]
+    ],
+    resolve: {
+        extensions: ['', '.js', '.jsx']
+    }
 };

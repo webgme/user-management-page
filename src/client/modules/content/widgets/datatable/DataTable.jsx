@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import React from 'react/lib/React';
 // Self-defined
-import DataTableCategory from './DataTableCategory.jsx';
-import DataTablePagination from './DataTablePagination.jsx';
+import DataTableCategory from './DataTableCategory';
+import DataTablePagination from './DataTablePagination';
 
 export default class DataTable extends React.Component {
 
@@ -35,7 +35,8 @@ export default class DataTable extends React.Component {
 
     handleSelect(event) {
         this.setState({
-            selectValue: parseInt(event.target.value.trim(), 10)
+            selectValue: parseInt(event.target.value.trim(), 10),
+            pageNumber: 1
         });
     }
 
@@ -95,11 +96,11 @@ export default class DataTable extends React.Component {
         let formattedEntries = [];
         for (let i = displayNumStart - 1; i < displayNumEnd; i++) {
             let properties = {};
-            for (let prop in entriesList[i]) {
+            Object.keys(entriesList[i]).forEach(prop => {
                 properties[prop] = entriesList[i][prop];
                 properties.basePath = this.props.basePath;
                 properties.key = i;
-            }
+            });
             formattedEntries.push(React.cloneElement(this.props.children, properties));
         }
 
@@ -121,8 +122,7 @@ export default class DataTable extends React.Component {
         }
 
         return (
-
-                <div className="box">
+                <div className="box" style={this.props.style}>
                     <div className="box-header">
                             <h3 className="box-title">{this.props.tableName}</h3>
                         { (this.props.dualTable && this.props.dualTable.show) ?

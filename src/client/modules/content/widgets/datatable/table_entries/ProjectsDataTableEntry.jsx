@@ -4,9 +4,10 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
 import Link from 'react-router/lib/Link';
-import {OverlayTrigger, Popover} from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Popover from 'react-bootstrap/lib/Popover';
+import React from 'react/lib/React';
 // Self-defined
 import DataTableEntry from './DataTableEntry.jsx';
 import {timeAgo} from '../../../../../utils/utils';

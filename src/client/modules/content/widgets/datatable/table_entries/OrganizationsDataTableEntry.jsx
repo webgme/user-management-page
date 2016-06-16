@@ -7,7 +7,7 @@
 import React from 'react/lib/React';
 import Link from 'react-router/lib/Link';
 // Self-defined
-import DataTableEntry from './DataTableEntry.jsx';
+import DataTableEntry from './DataTableEntry';
 
 export default class OrganizationsDataTableEntry extends React.Component {
 
