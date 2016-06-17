@@ -35,17 +35,18 @@ export default class ProjectsPage extends React.Component {
             {id: 1, name: 'Owner:'},
             {id: 2, name: 'Project Name:'},
             {id: 3, name: 'Last Viewed:'},
-            {id: 4, name: 'Last Changed:'}
+            {id: 4, name: 'Last Changed:'},
+            {id: 5, name: 'Created At:'}
         ];
 
         return <section className="content">
 
-            <DataTable restClient={this.restClient}
+            <DataTable basePath={this.props.routes[0].basePath}
                        categories={categories}
-                       whichTable="projects"
-                       tableName="Projects"
                        entries={this.state.projects}
-                       basePath={this.props.routes[0].basePath}>
+                       restClient={this.restClient}
+                       tableIcon="cube"
+                       tableName="Projects">
                 <ProjectsDataTableEntry/>
             </DataTable>
 

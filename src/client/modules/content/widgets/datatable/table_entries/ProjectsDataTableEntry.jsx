@@ -9,7 +9,7 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import React from 'react/lib/React';
 // Self-defined
-import DataTableEntry from './DataTableEntry.jsx';
+import DataTableEntry from './DataTableEntry';
 import {timeAgo} from '../../../../../utils/utils';
 
 export default class ProjectsDataTableEntry extends React.Component {
@@ -37,12 +37,23 @@ export default class ProjectsDataTableEntry extends React.Component {
 
             <td>
                 <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
-                        <Popover title="Last Viewed At:" id="Viewed At">
+                        <Popover title="Last Modified At:" id="Modified At">
                             {new Date(this.props.info.modifiedAt).toString()}
                             <br/><br/>
                             <i>{`Modified by: ${this.props.info.modifier}`}</i>
                         </Popover>}>
                     <i>{timeAgo(this.props.info.modifiedAt)}</i>
+                </OverlayTrigger>
+            </td>
+
+            <td>
+                <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
+                        <Popover title="Created At:" id="Created At">
+                            {new Date(this.props.info.createdAt).toString()}
+                            <br/><br/>
+                            <i>{`Created by: ${this.props.info.creator}`}</i>
+                        </Popover>}>
+                    <i>{timeAgo(this.props.info.createdAt)}</i>
                 </OverlayTrigger>
             </td>
 

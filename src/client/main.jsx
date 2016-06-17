@@ -14,6 +14,7 @@ import Router from 'react-router/lib/Router';
 // Self-defined
 import App from './modules/app';
 import ContentWrapper from './modules/content/ContentWrapper';
+import HomePage from './modules/content/pages/HomePage';
 import OrganizationPage from './modules/content/pages/OrganizationPage';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage';
 import ProjectPage from './modules/content/pages/ProjectPage';
@@ -37,9 +38,11 @@ render((
 
         <Route path={basePath} component={App} basePath={basePath}>
 
-            <IndexRedirect to="projects"/>
+            <IndexRedirect to="home"/>
 
             <Route component={ContentWrapper}>
+
+                <Route path="home" component={HomePage}/>
 
                 <Route path="organizations" component={OrganizationsPage}/>
 

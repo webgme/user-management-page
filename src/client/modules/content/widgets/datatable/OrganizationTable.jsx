@@ -1,5 +1,5 @@
 /**
- * Container widget for the collaborators table widget
+ * Container widget for the single organization table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
@@ -7,7 +7,7 @@
 import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
-import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
+import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../utils/utils';
 
 export default class ProjectCollaboratorTable extends React.Component {
@@ -22,19 +22,19 @@ export default class ProjectCollaboratorTable extends React.Component {
         };
 
         // Data retrieval
-        this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
+        this.retrieveMembersAndAdmins = this.retrieveMembersAndAdmins.bind(this);
         // Event handlers
         this.handleOrderEntries = this.handleOrderEntries.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
 
     componentDidMount() {
-        this.retrieveCollaborators();
+        this.retrieveMembersAndAdmins();
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.refreshTable !== this.props.refreshTable) {
-            this.retrieveCollaborators();
+            this.retrieveMembersAndAdmins();
         }
     }
 
@@ -160,7 +160,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            sortable={true}
                            tableName="Collaborators"
                            style={this.state.display === 2 ? {display: "none"} : {}}>
-                    <ProjectDataTableEntry/>
+                    <OrganizationDataTableEntry/>
                 </DataTable>
 
                 <DataTable categories={dataTableData.categories.organizations}
@@ -177,7 +177,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            tableIcon="cube"
                            tableName="Collaborators"
                            style={this.state.display === 1 ? {display: "none"} : {}}>
-                    <ProjectDataTableEntry/>
+                    <OrganizationDataTableEntry/>
                 </DataTable>
             </div>
         );

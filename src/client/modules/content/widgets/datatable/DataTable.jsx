@@ -124,7 +124,10 @@ export default class DataTable extends React.Component {
         return (
                 <div className="box" style={this.props.style}>
                     <div className="box-header">
-                            <h3 className="box-title">{this.props.tableName}</h3>
+
+                        <h3 className="box-title">
+                            <i className={`fa fa-${this.props.tableIcon}`}/> {` ${this.props.tableName}`}
+                        </h3>
                         { (this.props.dualTable && this.props.dualTable.show) ?
                             <ButtonGroup style={{float: "right"}}>
                                 <Button bsStyle={this.props.display === 1 ? "primary" : null}
@@ -158,10 +161,10 @@ export default class DataTable extends React.Component {
                                 {/* Search bar */}
                                 <div className="col-sm-6">
                                     <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                        <label>Search:
+                                        <label>Filter:
                                             <input type="text"
                                                    className="form-control input-sm"
-                                                   placeholder={`Search ${this.props.tableName.toLowerCase()} name`}
+                                                   placeholder={`(Type ${this.props.tableName.toLowerCase()} name)`}
                                                    value={this.state.searchText}
                                                    aria-controls="example1"
                                                    onChange={this.handleSearch}/>
