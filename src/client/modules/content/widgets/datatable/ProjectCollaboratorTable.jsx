@@ -25,6 +25,7 @@ export default class ProjectCollaboratorTable extends React.Component {
         this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         // Event handlers
         this.handleOrderEntries = this.handleOrderEntries.bind(this);
+        this.handleRevoke = this.handleRevoke.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
 
@@ -36,6 +37,15 @@ export default class ProjectCollaboratorTable extends React.Component {
         if (nextProps.refreshTable !== this.props.refreshTable) {
             this.retrieveCollaborators();
         }
+    }
+
+    handleRevoke(event) {
+        this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
+                                                             this.props.projectName,
+                                                             event.target.id)
+            .then(() => {
+                this.retrieveCollaborators(); // Re-render after revoking rights
+            });
     }
 
     handleOrderEntries() {
@@ -151,6 +161,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            display={this.state.display}
                            dualTable={dataTableData.dualTable}
                            entries={this.state.userCollaborators}
+                           handleRevoke={this.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
@@ -167,6 +178,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            display={this.state.display}
                            dualTable={dataTableData.dualTable}
                            entries={this.state.organizationCollaborators}
+                           handleRevoke={this.props.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}

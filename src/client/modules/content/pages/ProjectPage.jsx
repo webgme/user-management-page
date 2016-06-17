@@ -96,8 +96,9 @@ class ProjectPage extends React.Component {
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
-                // Have to update the list after authorization rights change
-                this.retrieveCollaborators();
+                this.setState({
+                    refreshTable: !this.state.refreshTable
+                });
             })
             .catch(() => {
                 console.log('Authorization denied.'); // eslint-disable-line no-console
@@ -106,7 +107,6 @@ class ProjectPage extends React.Component {
         // Reset fields after submitting
         this.setState({
             authorizeButtonGroup: {read: false, write: false, delete: false},
-            refreshTable: !this.state.refreshTable,
             valuesInMultiselect: ''
         });
     }
@@ -137,10 +137,10 @@ class ProjectPage extends React.Component {
                 <div className="row">
                     <div className="col-md-6">
 
-                        <ProjectCollaboratorTable restClient={this.props.restClient}
-                                                  ownerId={this.props.params.ownerId}
+                        <ProjectCollaboratorTable ownerId={this.props.params.ownerId}
                                                   projectName={this.props.params.projectName}
-                                                  refreshTable={this.state.refreshTable}/>
+                                                  refreshTable={this.state.refreshTable}
+                                                  restClient={this.props.restClient}/>
 
                         <AuthorizationWidget boxSize="12"
                                              handleMultiselectChange={this.handleMultiselectChange}

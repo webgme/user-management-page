@@ -30,7 +30,6 @@ export default class Header extends React.Component {
                 <a href="#" className="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span className="sr-only">Toggle navigation</span>
                 </a>
-
                 
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">

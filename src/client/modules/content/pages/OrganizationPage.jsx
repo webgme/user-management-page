@@ -223,7 +223,6 @@ class OrganizationPage extends React.Component {
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
-                           tableIcon="institution"
                            tableName={this.state.display === 1 ? "Members" : "Admins"}>
                     <OrganizationDataTableEntry/>
                 </DataTable>

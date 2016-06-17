@@ -9,7 +9,6 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import React from 'react/lib/React';
 // Self-defined
-import DataTableEntry from './DataTableEntry';
 import {timeAgo} from '../../../../../utils/utils';
 
 export default class ProjectsDataTableEntry extends React.Component {
@@ -17,7 +16,7 @@ export default class ProjectsDataTableEntry extends React.Component {
     render() {
         let buildLink = `${this.props.basePath}projects/${this.props.owner}/${this.props.name}`;
 
-        return <DataTableEntry>
+        return <tr role="row" className="odd">
             <td>{this.props.owner}</td>
 
             <td className="sorting_1">
@@ -57,6 +56,6 @@ export default class ProjectsDataTableEntry extends React.Component {
                 </OverlayTrigger>
             </td>
 
-        </DataTableEntry>;
+        </tr>;
     }
 }

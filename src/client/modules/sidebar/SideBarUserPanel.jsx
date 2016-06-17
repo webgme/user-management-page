@@ -24,7 +24,8 @@ const STYLING = {
         paddingTop: "15px"
     },
     panelStyle: {
-        padding: "15px"
+        padding: "15px",
+        cursor: "pointer"
     },
     imageStyle: {
         maxWidth: "60px",

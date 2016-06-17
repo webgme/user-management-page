@@ -100,6 +100,9 @@ export default class DataTable extends React.Component {
                 properties[prop] = entriesList[i][prop];
                 properties.basePath = this.props.basePath;
                 properties.key = i;
+                properties.handleRevoke = this.props.handleRevoke;
+                properties.ownerId = this.props.ownerId;
+                properties.projectName = this.props.projectName;
             });
             formattedEntries.push(React.cloneElement(this.props.children, properties));
         }

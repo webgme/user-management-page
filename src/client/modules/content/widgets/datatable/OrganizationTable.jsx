@@ -17,8 +17,8 @@ export default class ProjectCollaboratorTable extends React.Component {
         this.state = {
             display: 1, // 1 indicates users entries, 2 indicates organizations entries
             numTimesClicked: 0,
-            organizationCollaborators: [],
-            userCollaborators: []
+            members: [],
+            admins: []
         };
 
         // Data retrieval
@@ -41,16 +41,16 @@ export default class ProjectCollaboratorTable extends React.Component {
     handleOrderEntries() {
         if (this.state.display === 1) {
             this.setState({
-                userCollaborators: this.state.numTimesClicked % 2 === 0 ?
-                    this.state.userCollaborators.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.userCollaborators.sort(sortObjectArrayByField('name')),
+                members: this.state.numTimesClicked % 2 === 0 ?
+                    this.state.members.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.members.sort(sortObjectArrayByField('name')),
                 numTimesClicked: this.state.numTimesClicked + 1
             });
         } else {
             this.setState({
-                organizationCollaborators: this.state.numTimesClicked % 2 === 0 ?
-                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')),
+                admins: this.state.numTimesClicked % 2 === 0 ?
+                    this.state.admins.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.admins.sort(sortObjectArrayByField('name')),
                 numTimesClicked: this.state.numTimesClicked + 1
             });
         }
@@ -66,91 +66,59 @@ export default class ProjectCollaboratorTable extends React.Component {
         }
     }
 
-    retrieveCollaborators() {
-        let didUserRemoveSelfWhenOnlyCollaborator = false;
-        let projectId = `${this.props.ownerId}+${this.props.projectName}`;
+    retrieveMembersAndAdmins() {
+        this.props.restClient.organizations.getOrganization(this.props.params.organizationId)
+            .then(organizationData => {
 
-        Promise.all([
-            this.props.restClient.users.getUsersWithAccessToProject(projectId),
-            this.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId),
-            this.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
-        ]).then(([usersWithAccess, usersInOrganizationsWithAccess, organizationsWithAccess]) => {
-
-            // Union of rights if in organization
-            if (!isEmpty(usersInOrganizationsWithAccess)) {
-                Object.keys(usersInOrganizationsWithAccess).forEach(oneUser => {
-                    if (usersWithAccess[oneUser]) {
-                        usersWithAccess[oneUser].read = usersWithAccess[oneUser].read || usersInOrganizationsWithAccess[oneUser].read; // eslint-disable-line max-len
-                        usersWithAccess[oneUser].write = usersWithAccess[oneUser].write || usersInOrganizationsWithAccess[oneUser].write; // eslint-disable-line max-len
-                        usersWithAccess[oneUser].delete = usersWithAccess[oneUser].delete || usersInOrganizationsWithAccess[oneUser].delete; // eslint-disable-line max-len
-                    } else {
-                        usersWithAccess[oneUser] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[oneUser]));
-                    }
-                });
-            } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
-                didUserRemoveSelfWhenOnlyCollaborator = true;
-                this.props.router.replace(`${this.props.routes[0].basePath}projects`);
-            } else {
-                // Do nothing because then usersWithAccess is just self and does not need to be modified
-            }
-
-            if (!didUserRemoveSelfWhenOnlyCollaborator) {
-                let userCollaborators = [];
-                let organizationCollaborators = [];
-                Object.keys(usersWithAccess).forEach(user => {
-                    userCollaborators.push({
-                        name: user,
-                        read: usersWithAccess[user].read,
-                        write: usersWithAccess[user].write,
-                        delete: usersWithAccess[user].delete,
-                        inOrg: usersWithAccess[user].inOrg
+                // When user removed self...
+                if (isEmpty(organizationData.users)) {
+                    this.props.router.replace(`${this.props.routes[0].basePath}organizations`);
+                } else {
+                    this.setState({
+                        members: organizationData.users
+                            .map(oneUser => {
+                                return {
+                                    name: oneUser,
+                                    admin: organizationData.admins.indexOf(oneUser) !== -1
+                                };
+                            })
+                            .sort(sortObjectArrayByField('name')),
+                        admins: organizationData.admins
+                            .map(oneAdmin => {
+                                return {
+                                    name: oneAdmin
+                                };
+                            })
+                            .sort(sortObjectArrayByField('name'))
                     });
-                });
-
-                Object.keys(organizationsWithAccess).forEach(organization => {
-                    organizationCollaborators.push({
-                        name: organization,
-                        read: organizationsWithAccess[organization].read,
-                        write: organizationsWithAccess[organization].write,
-                        delete: organizationsWithAccess[organization].delete,
-                        inOrg: organizationsWithAccess[organization].inOrg
-                    });
-                });
-
-                this.setState({
-                    userCollaborators: userCollaborators.sort(sortObjectArrayByField('name')),
-                    organizationCollaborators: organizationCollaborators.sort(sortObjectArrayByField('name'))
-                });
-            }
-
-        });
+                }
+            });
     }
 
     render() {
 
         let dataTableData = {
             categories: {
-                users: [
-                    {id: 1, name: 'UserID:'},
-                    {id: 2, name: 'Rights (RWD)'}
+                members: [
+                    {id: 1, name: 'Member Name:'},
+                    {id: 2, name: 'Admin:'}
                 ],
-                organizations: [
-                    {id: 1, name: 'OrganizationID:'},
-                    {id: 2, name: 'Rights(RWD)'}
+                admins: [
+                    {id: 1, name: 'Admin Name:'}
                 ]
             },
             dualTable: {
                 show: true,
-                options: ['Users', 'Organizations']
+                options: ['Members', 'Admins']
             }
         };
 
         return (
             <div>
-                <DataTable categories={dataTableData.categories.users}
+                <DataTable categories={dataTableData.categories.members}
                            display={this.state.display}
                            dualTable={dataTableData.dualTable}
-                           entries={this.state.userCollaborators}
+                           entries={this.state.members}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
@@ -163,10 +131,10 @@ export default class ProjectCollaboratorTable extends React.Component {
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
-                <DataTable categories={dataTableData.categories.organizations}
+                <DataTable categories={dataTableData.categories.admins}
                            display={this.state.display}
                            dualTable={dataTableData.dualTable}
-                           entries={this.state.organizationCollaborators}
+                           entries={this.state.admins}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}

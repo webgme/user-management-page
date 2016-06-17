@@ -19,7 +19,7 @@ export default class DataTableCategories extends React.Component {
             {this.props.name}
             {this.props.sortable ? <i className={this.props.numTimesClicked % 2 === 1 ? "fa fa-level-down" :
                                                                                         "fa fa-level-up"}
-                                      style={{textAlign: "right"}}
+                                      style={{textAlign: "right", cursor: "pointer"}}
                                       onClick={this.props.orderEntries}/> : <i/>}
         </th>;
     }
