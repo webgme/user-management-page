@@ -197,12 +197,12 @@ class OrganizationPage extends React.Component {
                 {
                     submitButtonHandler: this.handleSubmitAuthorization,
                     submitButtonText: this.state.display === 1 ? 'Add members' : 'Add admins',
-                    submitButtonState: false
+                    submitButtonState: "success"
                 },
                 {
                     submitButtonHandler: this.handleSubmitAuthorization,
                     submitButtonText: this.state.display === 1 ? 'Remove members' : 'Remove admins',
-                    submitButtonState: true
+                    submitButtonState: "danger"
                 }
             ]
         };
@@ -232,7 +232,6 @@ class OrganizationPage extends React.Component {
                                      label={this.state.display === 1 ? "Add or Remove Members" : "Add or Remove Admins"} // eslint-disable-line max-len
                                      options={this.state.formattedMembers}
                                      ownerId={this.props.params.organizationId}
-                                     placeholder="Select one or more users (type to search)"
                                      restClient={this.props.restClient}
                                      selectableButtons={{}}
                                      selectableButtonsChange={this.handleAuthorizationChange}

@@ -3,17 +3,12 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-/* global window, $ */
-
 // Libraries
 import React from 'react/lib/React';
-import withRouter from 'react-router/lib/withRouter';
 // Self defined
-import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget';
-import CollaboratorsCommitsBarChart from '../widgets/charts/CollaboratorsCommitsBarChart';
-import ProjectCollaboratorTable from '../widgets/datatable/ProjectCollaboratorTable';
+import AuthorizationWidget from './AuthorizationWidget';
 
-class ProjectPage extends React.Component {
+export default class ProjectAuthorizationWidget extends React.Component {
 
     constructor(props) {
         super(props);
@@ -43,7 +38,7 @@ class ProjectPage extends React.Component {
                     holdButtonGroup[button] = true;
                 }
             }
-        // Handling deselection
+            // Handling deselection
         } else if (this.state.authorizeButtonGroup[buttonClicked] === true) {
             let passedCurrentButton = false;
             for (let button in holdButtonGroup) {
@@ -81,9 +76,9 @@ class ProjectPage extends React.Component {
             this.state.valuesInMultiselect.split(',').forEach(userOrOrgName => {
                 promiseArrayToGrant.push(
                     this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
-                                                                        this.props.params.projectName,
-                                                                        userOrOrgName,
-                                                                        projectRights));
+                        this.props.params.projectName,
+                        userOrOrgName,
+                        projectRights));
             });
         }
 
@@ -108,8 +103,8 @@ class ProjectPage extends React.Component {
 
         let authorizationWidgetData = {
             noRightsSelected: !(this.state.authorizeButtonGroup.read ||
-                                this.state.authorizeButtonGroup.write ||
-                                this.state.authorizeButtonGroup.delete)
+            this.state.authorizeButtonGroup.write ||
+            this.state.authorizeButtonGroup.delete)
         };
         authorizationWidgetData.submitButtons = [
             {
@@ -141,20 +136,7 @@ class ProjectPage extends React.Component {
 
         return (
 
-            <section className="content">
-                <h2 style={{fontFamily: "-webkit-body"}}>
-                    <i className="fa fa-cube"/>{` ${this.props.params.projectName} by ${this.props.params.ownerId}`}
-                </h2>
-
-                <div className="row">
-                    <div className="col-md-6">
-
-                        <ProjectCollaboratorTable ownerId={this.props.params.ownerId}
-                                                  projectName={this.props.params.projectName}
-                                                  refreshTable={this.state.refreshTable}
-                                                  restClient={this.props.restClient}/>
-
-                        <AuthorizationWidget boxSize="12"
+            <AuthorizationWidget boxSize="12"
                                              disableLast={true}
                                              handleMultiselectChange={this.handleMultiselectChange}
                                              label={"Authorize Users or Organizations"}
@@ -164,24 +146,7 @@ class ProjectPage extends React.Component {
                                              selectableButtonsChange={this.handleAuthorizationChange}
                                              submitButtons={authorizationWidgetData.submitButtons}
                                              valuesInMultiselect={this.state.valuesInMultiselect}/>
-
-                    </div>
-
-                    <CollaboratorsCommitsBarChart height={$(window).height() / 1.8}
-                                                 options={{}}
-                                                 ownerId={this.props.params.ownerId}
-                                                 projectName={this.props.params.projectName}
-                                                 restClient={this.props.restClient}
-                                                 title="Commits By Collaborator"
-                                                 width={$(window).width() / 2.36}/>
-
-                </div>
-
-            </section>
         );
     }
 
 }
-
-// Needs withRouter for component's context (router is contained in there)
-export default withRouter(ProjectPage);

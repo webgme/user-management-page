@@ -6,8 +6,8 @@
 // Libraries
 import React from 'react/lib/React';
 // Self defined
-import CommitsDoughnutChart from '../widgets/CommitsDoughnutChart';
-import CommitsLineChart from '../widgets/CommitsLineChart';
+import CommitsDoughnutChart from '../widgets/charts/CommitsDoughnutChart';
+import CommitsLineChart from '../widgets/charts/CommitsLineChart';
 import DataTable from '../widgets/datatable/DataTable';
 import ProjectsDataTableEntry from '../widgets/datatable/table_entries/ProjectsDataTableEntry';
 

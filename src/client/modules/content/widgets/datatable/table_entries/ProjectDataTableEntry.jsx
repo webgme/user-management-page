@@ -15,11 +15,21 @@ export default class ProjectDataTableEntry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false
+            showModal: false,
+            authorization: false
         };
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.confirm = this.confirm.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.restClient.getAuthorizationToAdd(this.props.ownerId)
+            .then(authorization => {
+                this.setState({
+                    authorization: authorization
+                });
+            });
     }
 
     open() {
@@ -78,7 +88,9 @@ export default class ProjectDataTableEntry extends React.Component {
             </td>
 
             <td>
-                {rights} {this.props.ownerId === this.props.name ?
+                {rights}
+                {/* Only the owner(s) can see the remove option */}
+                {this.state.authorization ? this.props.ownerId === this.props.name ?
                 <OverlayTrigger trigger={["click"]}
                                 placement="top"
                                 rootClose={true}
@@ -89,7 +101,7 @@ export default class ProjectDataTableEntry extends React.Component {
                     <i className="fa fa-times-circle-o"
                        style={{float: "right", color: "red", cursor: "pointer", fontSize: "15px"}}
                        onClick={this.open}
-                       id={this.props.name}/>}
+                       id={this.props.name}/> : null}
             </td>
         </tr>;
     }

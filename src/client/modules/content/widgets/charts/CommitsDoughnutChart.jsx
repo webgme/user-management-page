@@ -9,7 +9,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import DoughnutChart from 'react-chartjs/lib/doughnut';
 import React from 'react/lib/React';
 // Self-defined
-import {getRandomColorHex, isEmpty, shadeColor} from '../../../utils/utils.js';
+import {getRandomColorHex, isEmpty, shadeColor} from '../../../../utils/utils.js';
 
 export default class CommitsDoughnutChart extends React.Component {
 

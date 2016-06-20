@@ -9,7 +9,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import LineChart from 'react-chartjs/lib/line';
 import React from 'react/lib/React';
 // Self-defined
-import {convertHexToRGBA, getPastWeeksDays, getRandomColorHex, isEmpty, shadeColor} from '../../../utils/utils.js';
+import {convertHexToRGBA, getPastWeeksDays, getRandomColorHex, isEmpty, shadeColor} from '../../../../utils/utils.js';
 
 export default class CommitsLineChart extends React.Component {
 

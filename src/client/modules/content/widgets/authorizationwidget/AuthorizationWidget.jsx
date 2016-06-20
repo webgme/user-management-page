@@ -69,8 +69,11 @@ export default class AuthorizationWidget extends React.Component {
         let submitButtons = [];
         this.props.submitButtons.forEach((oneSubmitButton, index) => {
             submitButtons.push(
-                <Button bsStyle={oneSubmitButton.submitButtonState ? "danger" : "success"}
-                        onClick={oneSubmitButton.submitButtonHandler}
+                <Button bsStyle={oneSubmitButton.submitButtonState}
+                        className={(this.props.disableLast && index === this.props.submitButtons.length - 1 &&
+                                    this.props.noRightsSelected) ? "disabled" : ""}
+                        onClick={this.props.disableLast && index === this.props.submitButtons.length - 1 &&
+                                    this.props.noRightsSelected ? () => {} : oneSubmitButton.submitButtonHandler}
                         key={index}>
                     {oneSubmitButton.submitButtonText}
                 </Button>
@@ -91,7 +94,7 @@ export default class AuthorizationWidget extends React.Component {
                             <div className="col-sm-6">
                                 <Multiselect
                                     label={this.props.label}
-                                    placeholder={this.props.placeholder}
+                                    placeholder="Select one or more (type to search)"
                                     options={this.state.multiselectOptions}
                                     onChange={this.props.handleMultiselectChange}
                                     valuesInMultiselect={this.props.valuesInMultiselect}/>

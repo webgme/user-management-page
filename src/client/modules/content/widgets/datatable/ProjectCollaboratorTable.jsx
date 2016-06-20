@@ -157,6 +157,7 @@ export default class ProjectCollaboratorTable extends React.Component {
 
         return (
             <div>
+
                 <DataTable categories={dataTableData.categories.users}
                            display={this.state.display}
                            dualTable={dataTableData.dualTable}
@@ -178,7 +179,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            display={this.state.display}
                            dualTable={dataTableData.dualTable}
                            entries={this.state.organizationCollaborators}
-                           handleRevoke={this.props.handleRevoke}
+                           handleRevoke={this.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
@@ -191,6 +192,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            style={this.state.display === 1 ? {display: "none"} : {}}>
                     <ProjectDataTableEntry/>
                 </DataTable>
+
             </div>
         );
     }

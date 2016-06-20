@@ -3,8 +3,10 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import React from 'react/lib/React';
+// Libraries
 import Link from 'react-router/lib/Link';
+import React from 'react/lib/React';
+// Self-defined
 import {capitalizeFirstLetter} from '../../utils/utils';
 
 const STYLING = {
