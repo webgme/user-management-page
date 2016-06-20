@@ -134,24 +134,8 @@ export default class DataTable extends React.Component {
                     <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
                         <div className="row">
 
-                            {/* Number of entries shown */}
-                            <div className="col-sm-6">
-                                <div className="dataTables_length" id="example1_length">
-                                    <label>Show
-                                        <select name="example1_length"
-                                                aria-controls="example1"
-                                                className="form-control input-sm"
-                                                onChange={this.handleSelect}>
-
-                                            {formattedSelectOptions}
-
-                                        </select> {(this.props.tableName.toLowerCase())}
-                                    </label>
-                                </div>
-                            </div>
-
                             {/* Search bar */}
-                            <div className="col-sm-6">
+                            <div className="col-sm-12">
                                 <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
                                     <label>Filter:
                                         <input type="text"
@@ -165,7 +149,9 @@ export default class DataTable extends React.Component {
                             </div>
 
                         </div>
+
                         <div className="row">
+
                             <div className="col-sm-12">
                                 <table id="example1"
                                        className="table table-bordered table-striped dataTable"
@@ -184,25 +170,44 @@ export default class DataTable extends React.Component {
 
                                 </table>
                             </div>
+
                         </div>
 
                         <div className="row">
 
-                            <div className="col-sm-5">
+                            <div className="col-sm-4">
                                 <div className="dataTables_info" id="example1_info" role="status"
                                      aria-live="polite">
-                                    <div style={{lineHeight: 6, paddingRight: "0px"}}>
+                                    <div>
                                         {showString}
                                     </div>
                                 </div>
                             </div>
 
-                            {entriesList.length > this.state.selectValue ?
-                                <DataTablePagination clickHandler={this.handlePagination}
-                                                     formattedPaginationButtons={formattedPaginationButtons}
-                                                     numPages={numPages}
-                                                     pageNumber={this.state.pageNumber}/> :
-                             null }
+                            <div className="col-sm-4" style={{textAlign: "center"}}>
+                                {entriesList.length > this.state.selectValue ?
+                                    <DataTablePagination clickHandler={this.handlePagination}
+                                                         formattedPaginationButtons={formattedPaginationButtons}
+                                                         numPages={numPages}
+                                                         pageNumber={this.state.pageNumber}/> :
+                                    null }
+                            </div>
+
+                            {/* Number of entries shown */}
+                            <div className="col-sm-4" style={{textAlign: "right"}}>
+                                <div className="dataTables_length" id="example1_length">
+                                    <label>Show
+                                        <select name="example1_length"
+                                                aria-controls="example1"
+                                                className="form-control input-sm"
+                                                onChange={this.handleSelect}>
+
+                                            {formattedSelectOptions}
+
+                                        </select> {(this.props.tableName.toLowerCase())}
+                                    </label>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
