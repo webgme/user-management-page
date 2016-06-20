@@ -7,6 +7,7 @@
 import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
+import ProjectCollaboratorTableHeader from './table_headers/ProjectCollaboratorTableHeader';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../utils/utils';
 
@@ -148,10 +149,6 @@ export default class ProjectCollaboratorTable extends React.Component {
                     {id: 1, name: 'OrganizationID:'},
                     {id: 2, name: 'Rights(RWD)'}
                 ]
-            },
-            dualTable: {
-                show: true,
-                options: ['Users', 'Organizations']
             }
         };
 
@@ -164,7 +161,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            entries={this.state.userCollaborators}
                            handleRevoke={this.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
-                           iconClass="fa fa-cube"
+                           iconClass={null}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
@@ -172,6 +169,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            style={this.state.display === 2 ? {display: "none"} : {}}
+                           TableHeader={<ProjectCollaboratorTableHeader/>}
                            tableName="Collaborators">
                     <ProjectDataTableEntry/>
                 </DataTable>
@@ -182,7 +180,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            entries={this.state.organizationCollaborators}
                            handleRevoke={this.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
-                           iconClass="fa fa-cube"
+                           iconClass={null}
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
@@ -190,6 +188,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            style={this.state.display === 1 ? {display: "none"} : {}}
+                           TableHeader={<ProjectCollaboratorTableHeader/>}
                            tableName="Collaborators">
                     <ProjectDataTableEntry/>
                 </DataTable>

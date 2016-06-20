@@ -7,6 +7,7 @@
 import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
+import DataTableHeader from './table_headers/DataTableHeader';
 import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../utils/utils';
 
@@ -128,6 +129,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            style={this.state.display === 2 ? {display: "none"} : {}}
+                           TableHeader={<DataTableHeader/>}
                            tableName="Collaborators">
                     <OrganizationDataTableEntry/>
                 </DataTable>
@@ -145,6 +147,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            style={this.state.display === 1 ? {display: "none"} : {}}
+                           TableHeader={<DataTableHeader/>}
                            tableName="Collaborators">
                     <OrganizationDataTableEntry/>
                 </DataTable>

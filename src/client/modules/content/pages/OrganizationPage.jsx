@@ -8,8 +8,9 @@ import React from 'react/lib/React';
 import withRouter from 'react-router/lib/withRouter';
 // Self defined
 import AuthorizationWidget from '../widgets/authorization_widget/AuthorizationWidget';
-import DataTable from '../widgets/data_table/DataTable';
-import OrganizationDataTableEntry from '../widgets/data_table/table_entries/OrganizationDataTableEntry';
+import DataTable from '../widgets/data_tables/DataTable';
+import DataTableHeader from '../widgets/data_tables/table_headers/DataTableHeader';
+import OrganizationDataTableEntry from '../widgets/data_tables/table_entries/OrganizationDataTableEntry';
 import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils';
 
 class OrganizationPage extends React.Component {
@@ -223,6 +224,7 @@ class OrganizationPage extends React.Component {
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
+                           TableHeader={<DataTableHeader/>}
                            tableName={this.state.display === 1 ? "Members" : "Admins"}>
                     <OrganizationDataTableEntry/>
                 </DataTable>

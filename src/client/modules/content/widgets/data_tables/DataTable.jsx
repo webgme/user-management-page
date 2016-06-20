@@ -4,8 +4,6 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import React from 'react/lib/React';
 // Self-defined
 import DataTableCategory from './DataTableCategory';
@@ -128,21 +126,10 @@ export default class DataTable extends React.Component {
         return (
 
             <div className="box" style={this.props.style}>
-                <div className="box-header">
 
-                    <h3 className="box-title">
-                        <i className={this.props.iconClass}/> {` ${this.props.tableName}`}
-                    </h3>
-                    { (this.props.dualTable && this.props.dualTable.show) ?
-                        <ButtonGroup style={{float: "right"}}>
-                            <Button bsStyle={this.props.display === 1 ? "primary" : null}
-                                    onClick={this.props.handleTableSwitch}
-                                    id="or">{this.props.dualTable.options[0]}</Button>
-                            <Button bsStyle={this.props.display === 2 ? "primary" : null}
-                                    onClick={this.props.handleTableSwitch}
-                                    id="ow">{this.props.dualTable.options[1]}</Button>
-                        </ButtonGroup> : null}
-                </div>
+                {/* Customizable Table Header) */}
+                {React.cloneElement(this.props.TableHeader, this.props)}
+
                 <div className="box-body">
                     <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
                         <div className="row">
@@ -211,14 +198,16 @@ export default class DataTable extends React.Component {
                             </div>
 
                             {entriesList.length > this.state.selectValue ?
-                                <DataTablePagination pageNumber={this.state.pageNumber}
-                                                     clickHandler={this.handlePagination}
+                                <DataTablePagination clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
-                                                     numPages={numPages}/> : null }
+                                                     numPages={numPages}
+                                                     pageNumber={this.state.pageNumber}/> :
+                             null }
 
                         </div>
                     </div>
                 </div>
+
             </div>
         );
     }
