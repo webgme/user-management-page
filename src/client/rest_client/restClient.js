@@ -3,10 +3,10 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+import OrganizationsClient from './organizationsClient';
+import ProjectsClient from './projectsClient';
 import UserClient from './userClient';
 import UsersClient from './usersClient';
-import ProjectsClient from './projectsClient';
-import OrganizationsClient from './organizationsClient';
 
 /**
  * Single rest clients that contains user, users, projects, and orgs clients
@@ -27,31 +27,30 @@ function RestClient(baseUrl, debugMode) {
      * @return {Promise.<boolean>} - Boolean on if authorized!
      */
     this.canUserAuthorize = function(ownerId) {
-        let self = this;
-        let amIAuthorized = false;
+        let authorization = false;
 
-        return self.user.getCurrentUser()
+        return this.user.getCurrentUser()
             .then(currentUser => {
                 if (currentUser._id === ownerId) {
-                    amIAuthorized = true;
+                    authorization = true;
                 } else { // Check if owner is an organization and current user is an admin
                     let findAdminPromiseArray = [];
                     currentUser.orgs.forEach(orgName =>
-                        findAdminPromiseArray.push(self.organizations.getOrganization(orgName))
+                        findAdminPromiseArray.push(this.organizations.getOrganization(orgName))
                     );
                     return Promise.all(findAdminPromiseArray)
                         .then(adminsOfOrganizationsUserIsIn => {
                             adminsOfOrganizationsUserIsIn.forEach(organizationData => {
                                 if (ownerId === organizationData._id &&
                                     organizationData.admins.indexOf(currentUser._id) !== -1) {
-                                    amIAuthorized = true;
+                                    authorization = true;
                                 }
                             });
                             // Done checking all organizations in and if owner is self
-                            return amIAuthorized;
+                            return authorization;
                         });
                 }
-                return amIAuthorized;
+                return authorization;
             });
     };
 }
