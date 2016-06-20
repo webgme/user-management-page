@@ -21,6 +21,7 @@ export default class App extends React.Component {
         this.state = {
             headerColor: 'purple'
         };
+        // Event handlers
         this.handleColorSwitch = this.handleColorSwitch.bind(this);
     }
 
@@ -38,17 +39,6 @@ export default class App extends React.Component {
         });
     }
 
-    /**
-     * ---------------------------------------------------------|
-     * SKINS         | skin-blue                                |
-     *               | skin-black                               |
-     *               | skin-purple                              |
-     *               | skin-yellow                              |
-     *               | skin-red                                 |
-     *               | skin-green                               |
-     * ---------------------------------------------------------|
-     * @return {XML} Can make this a user setting in the future
-     */
     render() {
 
         // Passing props through the route

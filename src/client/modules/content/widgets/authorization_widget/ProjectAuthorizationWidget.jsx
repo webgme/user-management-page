@@ -67,7 +67,9 @@ export default class ProjectAuthorizationWidget extends React.Component {
         });
     }
 
-    handleSubmitAuthorization() {
+    handleSubmitAuthorization(event) {
+        // Release focus
+        event.target.blur();
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';

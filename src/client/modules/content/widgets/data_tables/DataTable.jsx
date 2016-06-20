@@ -6,8 +6,8 @@
 // Libraries
 import React from 'react/lib/React';
 // Self-defined
-import DataTableCategory from './DataTableCategory';
-import DataTablePagination from './DataTablePagination';
+import DataTableCategory from './table_utilities/DataTableCategory';
+import DataTablePagination from './table_utilities/DataTablePagination';
 
 export default class DataTable extends React.Component {
 
@@ -53,6 +53,9 @@ export default class DataTable extends React.Component {
     }
 
     handleSelect(event) {
+        // Release focus
+        event.target.blur();
+
         this.setState({
             selectValue: parseInt(event.target.value.trim(), 10),
             pageNumber: 1
@@ -67,8 +70,8 @@ export default class DataTable extends React.Component {
             formattedCategories.push(<DataTableCategory key={category.id}
                                                         name={category.name}
                                                         orderEntries={this.props.orderEntries}
-                                                        numTimesClicked={this.props.numTimesClicked}
-                                                        sortable={this.props.sortable}/>));
+                                                        sortable={this.props.sortable}
+                                                        sortedForward={this.props.sortedForward}/>));
 
         // Setting up bounds
         let entriesList = this.props.entries.filter(oneEntry => {
@@ -124,92 +127,86 @@ export default class DataTable extends React.Component {
         }
 
         return (
+            <div className="box-body">
 
-            <div className="box" style={this.props.style}>
+                <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap" style={this.props.style}>
+                    <div className="row">
 
-                {/* Customizable Table Header) */}
-                {React.cloneElement(this.props.TableHeader, this.props)}
-
-                <div className="box-body">
-                    <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
-                        <div className="row">
-
-                            {/* Search bar */}
-                            <div className="col-sm-12">
-                                <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                    <label>Filter:
-                                        <input type="text"
-                                               className="form-control input-sm"
-                                               placeholder={`(Type ${this.props.tableName.toLowerCase()} name)`}
-                                               value={this.state.searchText}
-                                               aria-controls="example1"
-                                               onChange={this.handleSearch}/>
-                                    </label>
-                                </div>
+                        {/* Search bar */}
+                        <div className="col-sm-12">
+                            <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
+                                <label>Filter:
+                                    <input type="text"
+                                           className="form-control input-sm"
+                                           placeholder={`(Type ${this.props.tableName.toLowerCase()} name)`}
+                                           value={this.state.searchText}
+                                           aria-controls="example1"
+                                           onChange={this.handleSearch}/>
+                                </label>
                             </div>
-
                         </div>
 
-                        <div className="row">
+                    </div>
 
-                            <div className="col-sm-12">
-                                <table id="example1"
-                                       className="table table-bordered table-striped dataTable"
-                                       role="grid"
-                                       aria-describedby="example1_info">
+                    <div className="row">
 
-                                    <thead>
-                                    <tr role="row">
-                                        {formattedCategories}
-                                    </tr>
-                                    </thead>
+                        <div className="col-sm-12">
+                            <table id="example1"
+                                   className="table table-bordered table-striped dataTable"
+                                   role="grid"
+                                   aria-describedby="example1_info">
 
-                                    <tbody>
-                                    {formattedEntries}
-                                    </tbody>
+                                <thead>
+                                <tr role="row">
+                                    {formattedCategories}
+                                </tr>
+                                </thead>
 
-                                </table>
-                            </div>
+                                <tbody>
+                                {formattedEntries}
+                                </tbody>
 
+                            </table>
                         </div>
 
-                        <div className="row">
+                    </div>
 
-                            <div className="col-sm-4">
-                                <div className="dataTables_info" id="example1_info" role="status"
-                                     aria-live="polite">
-                                    <div>
-                                        {showString}
-                                    </div>
+                    <div className="row">
+
+                        <div className="col-sm-4">
+                            <div className="dataTables_info" id="example1_info" role="status"
+                                 aria-live="polite">
+                                <div>
+                                    {showString}
                                 </div>
                             </div>
-
-                            <div className="col-sm-4" style={{textAlign: "center"}}>
-                                {entriesList.length > this.state.selectValue ?
-                                    <DataTablePagination clickHandler={this.handlePagination}
-                                                         formattedPaginationButtons={formattedPaginationButtons}
-                                                         numPages={numPages}
-                                                         pageNumber={this.state.pageNumber}/> :
-                                    null }
-                            </div>
-
-                            {/* Number of entries shown */}
-                            <div className="col-sm-4" style={{textAlign: "right"}}>
-                                <div className="dataTables_length" id="example1_length">
-                                    <label>Show
-                                        <select name="example1_length"
-                                                aria-controls="example1"
-                                                className="form-control input-sm"
-                                                onChange={this.handleSelect}>
-
-                                            {formattedSelectOptions}
-
-                                        </select> {(this.props.tableName.toLowerCase())}
-                                    </label>
-                                </div>
-                            </div>
-
                         </div>
+
+                        <div className="col-sm-4" style={{textAlign: "center"}}>
+                            {entriesList.length > this.state.selectValue ?
+                                <DataTablePagination clickHandler={this.handlePagination}
+                                                     formattedPaginationButtons={formattedPaginationButtons}
+                                                     numPages={numPages}
+                                                     pageNumber={this.state.pageNumber}/> :
+                                null }
+                        </div>
+
+                        {/* Number of entries shown */}
+                        <div className="col-sm-4" style={{textAlign: "right"}}>
+                            <div className="dataTables_length" id="example1_length">
+                                <label>Show
+                                    <select name="example1_length"
+                                            aria-controls="example1"
+                                            className="form-control input-sm"
+                                            onChange={this.handleSelect}>
+
+                                        {formattedSelectOptions}
+
+                                    </select> {(this.props.tableName.toLowerCase())}
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

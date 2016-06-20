@@ -39,6 +39,7 @@ export default class ProjectPage extends React.Component {
                 </h2>
 
                 <div className="row">
+
                     <div className="col-md-6">
 
                         <ProjectCollaboratorTable ownerId={this.props.params.ownerId}

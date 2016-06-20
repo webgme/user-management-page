@@ -74,7 +74,7 @@ export default class AuthorizationWidget extends React.Component {
                                     this.props.noRightsSelected) ? "disabled" : ""}
                         key={index}
                         onClick={this.props.disableLast && index === this.props.submitButtons.length - 1 &&
-                                    this.props.noRightsSelected ? () => {} : oneSubmitButton.submitButtonHandler}>
+                                    this.props.noRightsSelected ? event => event.target.blur() : oneSubmitButton.submitButtonHandler}>
                     {oneSubmitButton.submitButtonText}
                 </Button>
             );
