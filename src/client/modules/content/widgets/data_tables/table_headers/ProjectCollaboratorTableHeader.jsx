@@ -19,7 +19,7 @@ export default class DataTableHeader extends React.Component {
         return (
             <div className="box-header" style={{paddingBottom: 0}}>
 
-                <h3 className="box-title">
+                <h3 className="box-title" style={{fontSize: 28}}>
                     <i className={this.props.iconClass}/> {` ${this.props.tableName}`}
                 </h3>
 

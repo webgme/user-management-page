@@ -26,6 +26,8 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         let buttonClicked = event.target.innerHTML.toLowerCase(),
             holdButtonGroup = this.state.authorizeButtonGroup;
+        // Release focus
+        event.target.blur();
 
         if (buttonClicked === 'none') {
             holdButtonGroup = {read: false, write: false, delete: false};

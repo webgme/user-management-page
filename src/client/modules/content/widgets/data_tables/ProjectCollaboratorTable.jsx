@@ -3,6 +3,8 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+/* global $ */
+
 // Libraries
 import React from 'react/lib/React';
 // Self-defined
@@ -100,7 +102,10 @@ export default class ProjectCollaboratorTable extends React.Component {
         });
     }
 
-    handleOrderEntries() {
+    handleOrderEntries(event) {
+        // Release focus (surrounding box)
+        $(event.target).parent().blur();
+
         if (this.state.display === 1) {
             this.setState({
                 userCollaborators: this.state.numTimesClicked % 2 === 0 ?

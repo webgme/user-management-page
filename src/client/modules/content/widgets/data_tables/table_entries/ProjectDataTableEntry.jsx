@@ -15,12 +15,14 @@ export default class ProjectDataTableEntry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false,
-            authorization: false
+            authorization: false,
+            hover: false,
+            showModal: false
         };
         this.close = this.close.bind(this);
         this.confirm = this.confirm.bind(this);
         this.open = this.open.bind(this);
+        this.toggleHover = this.toggleHover.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +47,12 @@ export default class ProjectDataTableEntry extends React.Component {
     open() {
         this.setState({
             showModal: true
+        });
+    }
+
+    toggleHover() {
+        this.setState({
+            hover: !this.state.hover
         });
     }
 
@@ -97,12 +105,16 @@ export default class ProjectDataTableEntry extends React.Component {
                                         rootClose={true}
                                         trigger={["click"]}>
                             <i className="fa fa-tag"
-                               style={{float: "right", color: "green", cursor: "pointer", fontSize: "15px"}}/>
+                               onMouseEnter={this.toggleHover}
+                               onMouseLeave={this.toggleHover}
+                               style={{float: "right", color: this.state.hover ? "green" : "", cursor: "pointer", fontSize: "15px"}}/>
                         </OverlayTrigger> :
-                        <i className="fa fa-times-circle-o"
+                        <i className="fa fa-remove"
                            id={this.props.name}
                            onClick={this.open}
-                           style={{float: "right", color: "red", cursor: "pointer", fontSize: "15px"}}/> :
+                           onMouseEnter={this.toggleHover}
+                           onMouseLeave={this.toggleHover}
+                           style={{float: "right", color: this.state.hover ? "red" : "", cursor: "pointer", fontSize: "15px"}}/> :
                  null}
             </td>
         </tr>;
