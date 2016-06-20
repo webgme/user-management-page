@@ -9,8 +9,8 @@
 import React from 'react/lib/React';
 // Self defined
 import CollaboratorsCommitsBarChart from '../widgets/charts/CollaboratorsCommitsBarChart';
-import ProjectAuthorizationWidget from '../widgets/authorizationwidget/ProjectAuthorizationWidget';
-import ProjectCollaboratorTable from '../widgets/datatable/ProjectCollaboratorTable';
+import ProjectAuthorizationWidget from '../widgets/authorization_widget/ProjectAuthorizationWidget';
+import ProjectCollaboratorTable from '../widgets/data_table/ProjectCollaboratorTable';
 
 export default class ProjectPage extends React.Component {
 

@@ -72,9 +72,9 @@ export default class AuthorizationWidget extends React.Component {
                 <Button bsStyle={oneSubmitButton.submitButtonState}
                         className={(this.props.disableLast && index === this.props.submitButtons.length - 1 &&
                                     this.props.noRightsSelected) ? "disabled" : ""}
+                        key={index}
                         onClick={this.props.disableLast && index === this.props.submitButtons.length - 1 &&
-                                    this.props.noRightsSelected ? () => {} : oneSubmitButton.submitButtonHandler}
-                        key={index}>
+                                    this.props.noRightsSelected ? () => {} : oneSubmitButton.submitButtonHandler}>
                     {oneSubmitButton.submitButtonText}
                 </Button>
             );
@@ -94,9 +94,9 @@ export default class AuthorizationWidget extends React.Component {
                             <div className="col-sm-6">
                                 <Multiselect
                                     label={this.props.label}
-                                    placeholder="Select one or more (type to search)"
-                                    options={this.state.multiselectOptions}
                                     onChange={this.props.handleMultiselectChange}
+                                    options={this.state.multiselectOptions}
+                                    placeholder="Select one or more (type to search)"
                                     valuesInMultiselect={this.props.valuesInMultiselect}/>
                             </div>
 

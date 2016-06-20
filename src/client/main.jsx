@@ -30,7 +30,7 @@ require('react-select/examples/src/example.less');
 require('chart.js');
 require('react-chartjs');
 
-var basePath = document.getElementById('baseUrlHolder').getAttribute('data');
+let basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 
 render((
 

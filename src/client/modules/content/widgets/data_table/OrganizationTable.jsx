@@ -15,10 +15,10 @@ export default class ProjectCollaboratorTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            admins: [],
             display: 1, // 1 indicates users entries, 2 indicates organizations entries
-            numTimesClicked: 0,
             members: [],
-            admins: []
+            numTimesClicked: 0
         };
 
         // Data retrieval
@@ -35,34 +35,6 @@ export default class ProjectCollaboratorTable extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.refreshTable !== this.props.refreshTable) {
             this.retrieveMembersAndAdmins();
-        }
-    }
-
-    handleOrderEntries() {
-        if (this.state.display === 1) {
-            this.setState({
-                members: this.state.numTimesClicked % 2 === 0 ?
-                    this.state.members.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.members.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
-            });
-        } else {
-            this.setState({
-                admins: this.state.numTimesClicked % 2 === 0 ?
-                    this.state.admins.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.admins.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
-            });
-        }
-    }
-
-    handleTableSwitch(event) {
-        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
-
-        if (newDisplayNum !== this.state.display) {
-            this.setState({
-                display: newDisplayNum
-            });
         }
     }
 
@@ -93,6 +65,34 @@ export default class ProjectCollaboratorTable extends React.Component {
                     });
                 }
             });
+    }
+
+    handleOrderEntries() {
+        if (this.state.display === 1) {
+            this.setState({
+                members: this.state.numTimesClicked % 2 === 0 ?
+                    this.state.members.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.members.sort(sortObjectArrayByField('name')),
+                numTimesClicked: this.state.numTimesClicked + 1
+            });
+        } else {
+            this.setState({
+                admins: this.state.numTimesClicked % 2 === 0 ?
+                    this.state.admins.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.admins.sort(sortObjectArrayByField('name')),
+                numTimesClicked: this.state.numTimesClicked + 1
+            });
+        }
+    }
+
+    handleTableSwitch(event) {
+        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
+
+        if (newDisplayNum !== this.state.display) {
+            this.setState({
+                display: newDisplayNum
+            });
+        }
     }
 
     render() {
@@ -126,8 +126,8 @@ export default class ProjectCollaboratorTable extends React.Component {
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
-                           tableName="Collaborators"
-                           style={this.state.display === 2 ? {display: "none"} : {}}>
+                           style={this.state.display === 2 ? {display: "none"} : {}}
+                           tableName="Collaborators">
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
@@ -142,9 +142,9 @@ export default class ProjectCollaboratorTable extends React.Component {
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
+                           style={this.state.display === 1 ? {display: "none"} : {}}
                            tableIcon="cube"
-                           tableName="Collaborators"
-                           style={this.state.display === 1 ? {display: "none"} : {}}>
+                           tableName="Collaborators">
                     <OrganizationDataTableEntry/>
                 </DataTable>
             </div>

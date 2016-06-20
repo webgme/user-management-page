@@ -18,9 +18,9 @@ export default class ProjectDataTableEntry extends React.Component {
             showModal: false,
             authorization: false
         };
-        this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.confirm = this.confirm.bind(this);
+        this.open = this.open.bind(this);
     }
 
     componentDidMount() {
@@ -32,12 +32,6 @@ export default class ProjectDataTableEntry extends React.Component {
             });
     }
 
-    open() {
-        this.setState({
-            showModal: true
-        });
-    }
-
     close() {
         this.setState({
             showModal: false
@@ -46,6 +40,12 @@ export default class ProjectDataTableEntry extends React.Component {
 
     confirm(event) {
         this.setState({showModal: false}, this.props.handleRevoke(event));
+    }
+
+    open() {
+        this.setState({
+            showModal: true
+        });
     }
 
     render() {
@@ -91,17 +91,17 @@ export default class ProjectDataTableEntry extends React.Component {
                 {rights}
                 {/* Only the owner(s) can see the remove option */}
                 {this.state.authorization ? this.props.ownerId === this.props.name ?
-                <OverlayTrigger trigger={["click"]}
+                <OverlayTrigger overlay={<Popover id="1"><strong>You are the owner</strong></Popover>}
                                 placement="top"
                                 rootClose={true}
-                                overlay={<Popover id="1"><strong>You are the owner</strong></Popover>}>
+                                trigger={["click"]}>
                     <i className="fa fa-tag"
                        style={{float: "right", color: "green", cursor: "pointer", fontSize: "15px"}}/>
                 </OverlayTrigger> :
                     <i className="fa fa-times-circle-o"
-                       style={{float: "right", color: "red", cursor: "pointer", fontSize: "15px"}}
+                       id={this.props.name}
                        onClick={this.open}
-                       id={this.props.name}/> : null}
+                       style={{float: "right", color: "red", cursor: "pointer", fontSize: "15px"}}/> : null}
             </td>
         </tr>;
     }

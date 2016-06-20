@@ -7,9 +7,9 @@
 import React from 'react/lib/React';
 import withRouter from 'react-router/lib/withRouter';
 // Self defined
-import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget';
-import DataTable from '../widgets/datatable/DataTable';
-import OrganizationDataTableEntry from '../widgets/datatable/table_entries/OrganizationDataTableEntry';
+import AuthorizationWidget from '../widgets/authorization_widget/AuthorizationWidget';
+import DataTable from '../widgets/data_table/DataTable';
+import OrganizationDataTableEntry from '../widgets/data_table/table_entries/OrganizationDataTableEntry';
 import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils';
 
 class OrganizationPage extends React.Component {
@@ -23,15 +23,15 @@ class OrganizationPage extends React.Component {
             formattedMembers: [],
             members: [],
             numTimesClicked: 0,
-            valuesInMembersMultiselect: '',
-            valuesInAdminsMultiselect: ''
+            valuesInAdminsMultiselect: '',
+            valuesInMembersMultiselect: ''
         };
         // Data retrieval
         this.retrieveMembersAndAdmins = this.retrieveMembersAndAdmins.bind(this);
         this.retrieveMultiselect = this.retrieveMultiselect.bind(this);
         // Event handlers
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
-        this.handlerOrderEntries = this.handlerOrderEntries.bind(this);
+        this.handleOrderEntries = this.handleOrderEntries.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
@@ -91,7 +91,7 @@ class OrganizationPage extends React.Component {
         }
     }
 
-    handlerOrderEntries() {
+    handleOrderEntries() {
         if (this.state.display === 1) {
             this.setState({
                 members: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
@@ -218,7 +218,7 @@ class OrganizationPage extends React.Component {
                            entries={this.state.display === 1 ? this.state.members : this.state.admins}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
-                           orderEntries={this.handlerOrderEntries}
+                           orderEntries={this.handleOrderEntries}
                            ownerId={this.props.params.ownerId}
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}

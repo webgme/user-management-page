@@ -8,8 +8,8 @@ import React from 'react/lib/React';
 // Self defined
 import CommitsDoughnutChart from '../widgets/charts/CommitsDoughnutChart';
 import CommitsLineChart from '../widgets/charts/CommitsLineChart';
-import DataTable from '../widgets/datatable/DataTable';
-import ProjectsDataTableEntry from '../widgets/datatable/table_entries/ProjectsDataTableEntry';
+import DataTable from '../widgets/data_table/DataTable';
+import ProjectsDataTableEntry from '../widgets/data_table/table_entries/ProjectsDataTableEntry';
 
 export default class ProjectsPage extends React.Component {
 

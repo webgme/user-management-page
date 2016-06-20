@@ -39,43 +39,6 @@ export default class ProjectCollaboratorTable extends React.Component {
         }
     }
 
-    handleRevoke(event) {
-        this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
-                                                             this.props.projectName,
-                                                             event.target.id)
-            .then(() => {
-                this.retrieveCollaborators(); // Re-render after revoking rights
-            });
-    }
-
-    handleOrderEntries() {
-        if (this.state.display === 1) {
-            this.setState({
-                userCollaborators: this.state.numTimesClicked % 2 === 0 ?
-                    this.state.userCollaborators.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.userCollaborators.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
-            });
-        } else {
-            this.setState({
-                organizationCollaborators: this.state.numTimesClicked % 2 === 0 ?
-                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
-            });
-        }
-    }
-
-    handleTableSwitch(event) {
-        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
-
-        if (newDisplayNum !== this.state.display) {
-            this.setState({
-                display: newDisplayNum
-            });
-        }
-    }
-
     retrieveCollaborators() {
         let didUserRemoveSelfWhenOnlyCollaborator = false;
         let projectId = `${this.props.ownerId}+${this.props.projectName}`;
@@ -136,6 +99,43 @@ export default class ProjectCollaboratorTable extends React.Component {
         });
     }
 
+    handleOrderEntries() {
+        if (this.state.display === 1) {
+            this.setState({
+                userCollaborators: this.state.numTimesClicked % 2 === 0 ?
+                    this.state.userCollaborators.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.userCollaborators.sort(sortObjectArrayByField('name')),
+                numTimesClicked: this.state.numTimesClicked + 1
+            });
+        } else {
+            this.setState({
+                organizationCollaborators: this.state.numTimesClicked % 2 === 0 ?
+                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')).reverse() :
+                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')),
+                numTimesClicked: this.state.numTimesClicked + 1
+            });
+        }
+    }
+
+    handleRevoke(event) {
+        this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
+            this.props.projectName,
+            event.target.id)
+            .then(() => {
+                this.retrieveCollaborators(); // Re-render after revoking rights
+            });
+    }
+
+    handleTableSwitch(event) {
+        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
+
+        if (newDisplayNum !== this.state.display) {
+            this.setState({
+                display: newDisplayNum
+            });
+        }
+    }
+
     render() {
 
         let dataTableData = {
@@ -170,8 +170,8 @@ export default class ProjectCollaboratorTable extends React.Component {
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
-                           tableName="Collaborators"
-                           style={this.state.display === 2 ? {display: "none"} : {}}>
+                           style={this.state.display === 2 ? {display: "none"} : {}}
+                           tableName="Collaborators">
                     <ProjectDataTableEntry/>
                 </DataTable>
 
@@ -187,9 +187,9 @@ export default class ProjectCollaboratorTable extends React.Component {
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
+                           style={this.state.display === 1 ? {display: "none"} : {}}
                            tableIcon="cube"
-                           tableName="Collaborators"
-                           style={this.state.display === 1 ? {display: "none"} : {}}>
+                           tableName="Collaborators">
                     <ProjectDataTableEntry/>
                 </DataTable>
 

@@ -20,9 +20,9 @@ export default class DataTable extends React.Component {
             pageNumber: 1,
             searchText: ''
         };
-        this.handleSelect = this.handleSelect.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,13 +31,6 @@ export default class DataTable extends React.Component {
                 searchText: ''
             });
         }
-    }
-
-    handleSelect(event) {
-        this.setState({
-            selectValue: parseInt(event.target.value.trim(), 10),
-            pageNumber: 1
-        });
     }
 
     handlePagination(event) {
@@ -58,6 +51,13 @@ export default class DataTable extends React.Component {
     handleSearch(event) {
         this.setState({
             searchText: event.target.value.toLowerCase()
+        });
+    }
+
+    handleSelect(event) {
+        this.setState({
+            selectValue: parseInt(event.target.value.trim(), 10),
+            pageNumber: 1
         });
     }
 
@@ -99,8 +99,8 @@ export default class DataTable extends React.Component {
             Object.keys(entriesList[i]).forEach(prop => {
                 properties[prop] = entriesList[i][prop];
                 properties.basePath = this.props.basePath;
-                properties.key = i;
                 properties.handleRevoke = this.props.handleRevoke;
+                properties.key = i;
                 properties.ownerId = this.props.ownerId;
                 properties.projectName = this.props.projectName;
                 properties.restClient = this.props.restClient;

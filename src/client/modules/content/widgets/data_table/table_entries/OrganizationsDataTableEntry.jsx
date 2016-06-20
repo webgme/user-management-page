@@ -4,8 +4,8 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
 import Link from 'react-router/lib/Link';
+import React from 'react/lib/React';
 
 export default class OrganizationsDataTableEntry extends React.Component {
 

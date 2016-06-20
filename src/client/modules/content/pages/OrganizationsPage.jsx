@@ -6,8 +6,8 @@
 // Libraries
 import React from 'react/lib/React';
 // Self defined
-import DataTable from '../widgets/datatable/DataTable';
-import OrganizationsDataTableEntry from '../widgets/datatable/table_entries/OrganizationsDataTableEntry';
+import DataTable from '../widgets/data_table/DataTable';
+import OrganizationsDataTableEntry from '../widgets/data_table/table_entries/OrganizationsDataTableEntry';
 
 export default class OrganizationsPage extends React.Component {
 
