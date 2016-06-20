@@ -26,7 +26,7 @@ function RestClient(baseUrl, debugMode) {
      * @param {string} ownerId - id of owner
      * @return {Promise.<boolean>} - Boolean on if authorized!
      */
-    this.getAuthorizationToAdd = function(ownerId) {
+    this.canUserAuthorize = function(ownerId) {
         let self = this;
         let amIAuthorized = false;
 

@@ -30,7 +30,7 @@ export default class AuthorizationWidget extends React.Component {
     }
 
     componentWillMount() {
-        this.props.restClient.getAuthorizationToAdd(this.props.ownerId)
+        this.props.restClient.canUserAuthorize(this.props.ownerId)
             .then(authorization => {
                 this.setState({
                     show: authorization

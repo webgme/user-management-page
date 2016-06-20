@@ -126,99 +126,100 @@ export default class DataTable extends React.Component {
         }
 
         return (
-                <div className="box" style={this.props.style}>
-                    <div className="box-header">
 
-                        <h3 className="box-title">
-                            <i className={`fa fa-${this.props.tableIcon}`}/> {` ${this.props.tableName}`}
-                        </h3>
-                        { (this.props.dualTable && this.props.dualTable.show) ?
-                            <ButtonGroup style={{float: "right"}}>
-                                <Button bsStyle={this.props.display === 1 ? "primary" : null}
-                                        onClick={this.props.handleTableSwitch}
-                                        id="or">{this.props.dualTable.options[0]}</Button>
-                                <Button bsStyle={this.props.display === 2 ? "primary" : null}
-                                        onClick={this.props.handleTableSwitch}
-                                        id="ow">{this.props.dualTable.options[1]}</Button>
-                            </ButtonGroup> : null}
-                    </div>
-                    <div className="box-body">
-                        <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
-                            <div className="row">
+            <div className="box" style={this.props.style}>
+                <div className="box-header">
 
-                                {/* Number of entries shown */}
-                                <div className="col-sm-6">
-                                    <div className="dataTables_length" id="example1_length">
-                                        <label>Show
-                                            <select name="example1_length"
-                                                    aria-controls="example1"
-                                                    className="form-control input-sm"
-                                                    onChange={this.handleSelect}>
+                    <h3 className="box-title">
+                        <i className={this.props.iconClass}/> {` ${this.props.tableName}`}
+                    </h3>
+                    { (this.props.dualTable && this.props.dualTable.show) ?
+                        <ButtonGroup style={{float: "right"}}>
+                            <Button bsStyle={this.props.display === 1 ? "primary" : null}
+                                    onClick={this.props.handleTableSwitch}
+                                    id="or">{this.props.dualTable.options[0]}</Button>
+                            <Button bsStyle={this.props.display === 2 ? "primary" : null}
+                                    onClick={this.props.handleTableSwitch}
+                                    id="ow">{this.props.dualTable.options[1]}</Button>
+                        </ButtonGroup> : null}
+                </div>
+                <div className="box-body">
+                    <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap">
+                        <div className="row">
 
-                                                {formattedSelectOptions}
+                            {/* Number of entries shown */}
+                            <div className="col-sm-6">
+                                <div className="dataTables_length" id="example1_length">
+                                    <label>Show
+                                        <select name="example1_length"
+                                                aria-controls="example1"
+                                                className="form-control input-sm"
+                                                onChange={this.handleSelect}>
 
-                                            </select> {(this.props.tableName.toLowerCase())}
-                                        </label>
-                                    </div>
-                                </div>
+                                            {formattedSelectOptions}
 
-                                {/* Search bar */}
-                                <div className="col-sm-6">
-                                    <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                        <label>Filter:
-                                            <input type="text"
-                                                   className="form-control input-sm"
-                                                   placeholder={`(Type ${this.props.tableName.toLowerCase()} name)`}
-                                                   value={this.state.searchText}
-                                                   aria-controls="example1"
-                                                   onChange={this.handleSearch}/>
-                                        </label>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="row">
-                                <div className="col-sm-12">
-                                    <table id="example1"
-                                           className="table table-bordered table-striped dataTable"
-                                           role="grid"
-                                           aria-describedby="example1_info">
-
-                                        <thead>
-                                        <tr role="row">
-                                            {formattedCategories}
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {formattedEntries}
-                                        </tbody>
-
-                                    </table>
+                                        </select> {(this.props.tableName.toLowerCase())}
+                                    </label>
                                 </div>
                             </div>
 
-                            <div className="row">
+                            {/* Search bar */}
+                            <div className="col-sm-6">
+                                <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
+                                    <label>Filter:
+                                        <input type="text"
+                                               className="form-control input-sm"
+                                               placeholder={`(Type ${this.props.tableName.toLowerCase()} name)`}
+                                               value={this.state.searchText}
+                                               aria-controls="example1"
+                                               onChange={this.handleSearch}/>
+                                    </label>
+                                </div>
+                            </div>
 
-                                <div className="col-sm-5">
-                                    <div className="dataTables_info" id="example1_info" role="status"
-                                         aria-live="polite">
-                                        <div style={{lineHeight: 6, paddingRight: "0px"}}>
-                                            {showString}
-                                        </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <table id="example1"
+                                       className="table table-bordered table-striped dataTable"
+                                       role="grid"
+                                       aria-describedby="example1_info">
+
+                                    <thead>
+                                    <tr role="row">
+                                        {formattedCategories}
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {formattedEntries}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <div className="row">
+
+                            <div className="col-sm-5">
+                                <div className="dataTables_info" id="example1_info" role="status"
+                                     aria-live="polite">
+                                    <div style={{lineHeight: 6, paddingRight: "0px"}}>
+                                        {showString}
                                     </div>
                                 </div>
+                            </div>
 
-                                {entriesList.length > this.state.selectValue ?
+                            {entriesList.length > this.state.selectValue ?
                                 <DataTablePagination pageNumber={this.state.pageNumber}
                                                      clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
                                                      numPages={numPages}/> : null }
 
-                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
         );
     }
 

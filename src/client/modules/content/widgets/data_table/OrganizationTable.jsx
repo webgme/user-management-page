@@ -120,6 +120,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            dualTable={dataTableData.dualTable}
                            entries={this.state.members}
                            handleTableSwitch={this.handleTableSwitch}
+                           iconClass="fa fa-university"
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
@@ -136,6 +137,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            dualTable={dataTableData.dualTable}
                            entries={this.state.admins}
                            handleTableSwitch={this.handleTableSwitch}
+                           iconClass="fa fa-university"
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
@@ -143,7 +145,6 @@ export default class ProjectCollaboratorTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            style={this.state.display === 1 ? {display: "none"} : {}}
-                           tableIcon="cube"
                            tableName="Collaborators">
                     <OrganizationDataTableEntry/>
                 </DataTable>

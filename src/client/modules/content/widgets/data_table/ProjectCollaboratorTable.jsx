@@ -164,6 +164,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            entries={this.state.userCollaborators}
                            handleRevoke={this.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
+                           iconClass="fa fa-cube"
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
@@ -181,6 +182,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                            entries={this.state.organizationCollaborators}
                            handleRevoke={this.handleRevoke}
                            handleTableSwitch={this.handleTableSwitch}
+                           iconClass="fa fa-cube"
                            numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
@@ -188,7 +190,6 @@ export default class ProjectCollaboratorTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            style={this.state.display === 1 ? {display: "none"} : {}}
-                           tableIcon="cube"
                            tableName="Collaborators">
                     <ProjectDataTableEntry/>
                 </DataTable>
