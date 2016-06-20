@@ -52,7 +52,8 @@ function initialize(middlewareOpts) {
         serveFile(onlyFileExtension, res);
     });
 
-    const ROUTES = ['/', '/projects', '/profile', '/organizations', /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
+    const ROUTES = ['/', '/home', '/projects', '/profile', '/organizations',
+        /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
 
     router.get(ROUTES, function(req, res) {
 

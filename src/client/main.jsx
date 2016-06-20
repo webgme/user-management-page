@@ -11,14 +11,15 @@ import React from 'react/lib/React';
 import {render} from 'react/lib/ReactMount';
 import Route from 'react-router/lib/Route';
 import Router from 'react-router/lib/Router';
-// Our components
-import App from './modules/app.jsx';
-import ContentWrapper from './modules/content/ContentWrapper.jsx';
-import OrganizationPage from './modules/content/pages/OrganizationPage.jsx';
-import OrganizationsPage from './modules/content/pages/OrganizationsPage.jsx';
-import ProjectPage from './modules/content/pages/ProjectPage.jsx';
-import ProjectsPage from './modules/content/pages/ProjectsPage.jsx';
-import UserProfilePage from './modules/content/pages/UserProfilePage.jsx';
+// Self-defined
+import App from './modules/app';
+import ContentWrapper from './modules/content/ContentWrapper';
+import HomePage from './modules/content/pages/HomePage';
+import OrganizationPage from './modules/content/pages/OrganizationPage';
+import OrganizationsPage from './modules/content/pages/OrganizationsPage';
+import ProjectPage from './modules/content/pages/ProjectPage';
+import ProjectsPage from './modules/content/pages/ProjectsPage';
+import UserProfilePage from './modules/content/pages/UserProfilePage';
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
@@ -29,7 +30,7 @@ require('react-select/examples/src/example.less');
 require('chart.js');
 require('react-chartjs');
 
-var basePath = document.getElementById('baseUrlHolder').getAttribute('data');
+let basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 
 render((
 
@@ -37,9 +38,11 @@ render((
 
         <Route path={basePath} component={App} basePath={basePath}>
 
-            <IndexRedirect to="projects"/>
+            <IndexRedirect to="home"/>
 
             <Route component={ContentWrapper}>
+
+                <Route path="home" component={HomePage}/>
 
                 <Route path="organizations" component={OrganizationsPage}/>
 

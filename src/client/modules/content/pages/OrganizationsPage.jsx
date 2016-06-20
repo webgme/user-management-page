@@ -6,8 +6,9 @@
 // Libraries
 import React from 'react/lib/React';
 // Self defined
-import DataTable from '../widgets/datatable/DataTable.jsx';
-import OrganizationsDataTableEntry from '../widgets/datatable/OrganizationsDataTableEntry.jsx';
+import DataTable from '../widgets/data_tables/DataTable';
+import DataTableHeader from '../widgets/data_tables/table_headers/DataTableHeader';
+import OrganizationsDataTableEntry from '../widgets/data_tables/table_entries/OrganizationsDataTableEntry';
 
 export default class OrganizationsPage extends React.Component {
 
@@ -62,11 +63,13 @@ export default class OrganizationsPage extends React.Component {
 
         return <section className="content">
 
-            <DataTable restClient={this.restClient}
+            <DataTable basePath={this.props.routes[0].basePath}
                        categories={categories}
-                       tableName="Organizations"
                        entries={this.state.organizations}
-                       basePath={this.props.routes[0].basePath}>
+                       restClient={this.restClient}
+                       TableHeader={<DataTableHeader/>}
+                       tableIcon="institution"
+                       tableName="Organizations">
                 <OrganizationsDataTableEntry/>
             </DataTable>
 

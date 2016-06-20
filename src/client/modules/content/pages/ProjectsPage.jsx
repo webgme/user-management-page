@@ -6,10 +6,11 @@
 // Libraries
 import React from 'react/lib/React';
 // Self defined
-import CommitsDoughnutChart from '../widgets/CommitsDoughnutChart.jsx';
-import CommitsLineChart from '../widgets/CommitsLineChart.jsx';
-import DataTable from '../widgets/datatable/DataTable.jsx';
-import ProjectsDataTableEntry from '../widgets/datatable/ProjectsDataTableEntry.jsx';
+import CommitsDoughnutChart from '../widgets/charts/CommitsDoughnutChart';
+import CommitsLineChart from '../widgets/charts/CommitsLineChart';
+import DataTable from '../widgets/data_tables/DataTable';
+import DataTableHeader from '../widgets/data_tables/table_headers/DataTableHeader';
+import ProjectsDataTableEntry from '../widgets/data_tables/table_entries/ProjectsDataTableEntry';
 
 export default class ProjectsPage extends React.Component {
 
@@ -18,14 +19,9 @@ export default class ProjectsPage extends React.Component {
         this.state = {
             projects: []
         };
-        this.retrieveData = this.retrieveData.bind(this);
     }
 
     componentDidMount() {
-        this.retrieveData();
-    }
-
-    retrieveData() {
         this.props.restClient.projects.getAllProjects()
             .then(allProjects => {
                 this.setState({
@@ -40,17 +36,19 @@ export default class ProjectsPage extends React.Component {
             {id: 1, name: 'Owner:'},
             {id: 2, name: 'Project Name:'},
             {id: 3, name: 'Last Viewed:'},
-            {id: 4, name: 'Last Changed:'}
+            {id: 4, name: 'Last Changed:'},
+            {id: 5, name: 'Created At:'}
         ];
 
         return <section className="content">
 
-            <DataTable restClient={this.restClient}
+            <DataTable basePath={this.props.routes[0].basePath}
                        categories={categories}
-                       whichTable="projects"
-                       tableName="Projects"
                        entries={this.state.projects}
-                       basePath={this.props.routes[0].basePath}>
+                       iconClass="fa fa-cube"
+                       restClient={this.restClient}
+                       TableHeader={<DataTableHeader/>}
+                       tableName="Projects">
                 <ProjectsDataTableEntry/>
             </DataTable>
 

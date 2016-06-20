@@ -22,13 +22,20 @@ export default class SideBarMenu extends React.Component {
     }
 
     render() {
+
         return (
 
         <ul className="sidebar-menu" style={STYLING.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
 
-            <li className={/profile/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/home$/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}home`}>
+                    <i className="fa fa-home"/> <span>Home</span>
+                </Link>
+            </li>
+
+            <li className={/profile$/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${this.props.basePath}profile`}>
                     <i className="fa fa-user"/> <span>My Profile</span>
                 </Link>

@@ -4,10 +4,10 @@
  */
 
 // Libraries:
-import React from 'react/lib/React';
 import BarChart from 'react-chartjs/lib/bar';
+import React from 'react/lib/React';
 // Self defined:
-import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../utils/utils.js';
+import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../../utils/utils.js';
 
 export default class CollaboratorsCommitsBarGraph extends React.Component {
 
@@ -20,6 +20,10 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
             },
             numCommits: 100
         };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.data !== nextState.data;
     }
 
     componentDidMount() {
@@ -79,10 +83,10 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
                     </div>
                     <div className="box-body">
                         <BarChart data={this.state.data}
-                                  options={this.props.options}
-                                  width={this.props.width}
                                   height={this.props.height}
-                                  redraw/>
+                                  options={this.props.options}
+                                  redraw
+                                  width={this.props.width}/>
                     </div>
                 </div>
             </div>

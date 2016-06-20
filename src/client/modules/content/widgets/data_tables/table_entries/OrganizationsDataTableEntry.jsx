@@ -4,10 +4,8 @@
  */
 
 // Libraries
-import React from 'react/lib/React';
 import Link from 'react-router/lib/Link';
-// Self-defined
-import DataTableEntry from './DataTableEntry.jsx';
+import React from 'react/lib/React';
 
 export default class OrganizationsDataTableEntry extends React.Component {
 
@@ -15,10 +13,10 @@ export default class OrganizationsDataTableEntry extends React.Component {
 
         let buildLink = `${this.props.basePath}organizations/${this.props.name}`;
 
-        return <DataTableEntry>
+        return <tr role="row" className="odd">
             <td className="sorting_1">
                 <Link to={buildLink}>{this.props.name}</Link>
             </td>
-        </DataTableEntry>;
+        </tr>;
     }
 }

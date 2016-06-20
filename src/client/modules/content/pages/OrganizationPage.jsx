@@ -7,10 +7,11 @@
 import React from 'react/lib/React';
 import withRouter from 'react-router/lib/withRouter';
 // Self defined
-import AuthorizationWidget from '../widgets/authorizationwidget/AuthorizationWidget.jsx';
-import DataTable from '../widgets/datatable/DataTable.jsx';
-import OrganizationDataTableEntry from '../widgets/datatable/OrganizationDataTableEntry.jsx';
-import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils.js';
+import AuthorizationWidget from '../widgets/authorization_widget/AuthorizationWidget';
+import DataTable from '../widgets/data_tables/DataTable';
+import DataTableHeader from '../widgets/data_tables/table_headers/DataTableHeader';
+import OrganizationDataTableEntry from '../widgets/data_tables/table_entries/OrganizationDataTableEntry';
+import {isEmpty, multiselectFormat, sortObjectArrayByField} from '../../../utils/utils';
 
 class OrganizationPage extends React.Component {
 
@@ -23,38 +24,22 @@ class OrganizationPage extends React.Component {
             formattedMembers: [],
             members: [],
             numTimesClicked: 0,
-            valuesInMembersMultiselect: '',
-            valuesInAdminsMultiselect: ''
+            valuesInAdminsMultiselect: '',
+            valuesInMembersMultiselect: ''
         };
         // Data retrieval
-        this.retrieveAuthorizationToAdd = this.retrieveAuthorizationToAdd.bind(this);
         this.retrieveMembersAndAdmins = this.retrieveMembersAndAdmins.bind(this);
         this.retrieveMultiselect = this.retrieveMultiselect.bind(this);
         // Event handlers
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
-        this.handlerOrderEntries = this.handlerOrderEntries.bind(this);
+        this.handleOrderEntries = this.handleOrderEntries.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
         this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
 
     componentDidMount() {
         this.retrieveMembersAndAdmins();
-        this.retrieveAuthorizationToAdd();
         this.retrieveMultiselect();
-    }
-
-    retrieveAuthorizationToAdd() {
-        // Setting authorization (To set the dropdowns/buttons visibility)
-        Promise.all([
-            this.props.restClient.organizations.getOrganization(this.props.params.organizationId),
-            this.props.restClient.user.getCurrentUser()
-        ]).then(([organizationData, currentUser]) => {
-            if (organizationData.admins.indexOf(currentUser._id) !== -1) {
-                this.setState({
-                    authorizedToAdd: true
-                });
-            }
-        });
     }
 
     retrieveMembersAndAdmins() {
@@ -107,7 +92,7 @@ class OrganizationPage extends React.Component {
         }
     }
 
-    handlerOrderEntries() {
+    handleOrderEntries() {
         if (this.state.display === 1) {
             this.setState({
                 members: this.state.numTimesClicked % 2 === 0 ? // Switch ordering every click
@@ -213,12 +198,12 @@ class OrganizationPage extends React.Component {
                 {
                     submitButtonHandler: this.handleSubmitAuthorization,
                     submitButtonText: this.state.display === 1 ? 'Add members' : 'Add admins',
-                    submitButtonState: false
+                    submitButtonState: "success"
                 },
                 {
                     submitButtonHandler: this.handleSubmitAuthorization,
                     submitButtonText: this.state.display === 1 ? 'Remove members' : 'Remove admins',
-                    submitButtonState: true
+                    submitButtonState: "danger"
                 }
             ]
         };
@@ -234,27 +219,26 @@ class OrganizationPage extends React.Component {
                            entries={this.state.display === 1 ? this.state.members : this.state.admins}
                            handleTableSwitch={this.handleTableSwitch}
                            numTimesClicked={this.state.numTimesClicked}
-                           orderEntries={this.handlerOrderEntries}
+                           orderEntries={this.handleOrderEntries}
                            ownerId={this.props.params.ownerId}
                            projectName={this.props.params.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
+                           TableHeader={<DataTableHeader/>}
                            tableName={this.state.display === 1 ? "Members" : "Admins"}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
-                {/* Loaded only if user is an owner/(admin of org who is the owner))*/}
-                {this.state.authorizedToAdd ?
-                    <AuthorizationWidget boxSize="6"
-                                         handleMultiselectChange={this.handleMultiselectChange}
-                                         label={this.state.display === 1 ? "Add or Remove Members" : "Add or Remove Admins"} // eslint-disable-line max-len
-                                         options={this.state.formattedMembers}
-                                         placeholder="Select one or more users (type to search)"
-                                         selectableButtons={{}}
-                                         selectableButtonsChange={this.handleAuthorizationChange}
-                                         submitButtons={authorizationWidgetData.submitButtons}
-                                         valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect} // eslint-disable-line max-len
-                    /> : null}
+                <AuthorizationWidget boxSize="6"
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     label={this.state.display === 1 ? "Add or Remove Members" : "Add or Remove Admins"} // eslint-disable-line max-len
+                                     options={this.state.formattedMembers}
+                                     ownerId={this.props.params.organizationId}
+                                     restClient={this.props.restClient}
+                                     selectableButtons={{}}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     submitButtons={authorizationWidgetData.submitButtons}
+                                     valuesInMultiselect={this.state.display === 1 ? this.state.valuesInMembersMultiselect : this.state.valuesInAdminsMultiselect}/>
 
             </section>
         );

@@ -28,11 +28,11 @@ export default class MultiSelectField extends React.Component {
             <div className="section">
                 <h3 className="section-heading">{this.props.label}</h3>
                 <Select multi
-                        simpleValue
-                        value={this.props.valuesInMultiselect}
-                        placeholder={this.props.placeholder}
+                        onChange={this.handleSelectChange}
                         options={this.props.options}
-                        onChange={this.handleSelectChange} />
+                        placeholder={this.props.placeholder}
+                        simpleValue
+                        value={this.props.valuesInMultiselect}/>
             </div>
         );
     }
