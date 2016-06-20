@@ -1,5 +1,5 @@
 /**
- * Individual project page
+ * Separate component to hold the authorization widget for the project page
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
@@ -14,7 +14,6 @@ export default class ProjectAuthorizationWidget extends React.Component {
         super(props);
         this.state = {
             authorizeButtonGroup: {read: false, write: false, delete: false},
-            refreshTable: false,
             valuesInMultiselect: ''
         };
         // Event Handlers
@@ -75,8 +74,8 @@ export default class ProjectAuthorizationWidget extends React.Component {
         if (this.state.valuesInMultiselect !== '') {
             this.state.valuesInMultiselect.split(',').forEach(userOrOrgName => {
                 promiseArrayToGrant.push(
-                    this.props.restClient.projects.grantRightsToProject(this.props.params.ownerId,
-                        this.props.params.projectName,
+                    this.props.restClient.projects.grantRightsToProject(this.props.ownerId,
+                        this.props.projectName,
                         userOrOrgName,
                         projectRights));
             });
@@ -84,9 +83,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
-                this.setState({
-                    refreshTable: !this.state.refreshTable
-                });
+                this.props.refreshTable();
             })
             .catch(() => {
                 console.log('Authorization denied.'); // eslint-disable-line no-console
@@ -103,8 +100,8 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         let authorizationWidgetData = {
             noRightsSelected: !(this.state.authorizeButtonGroup.read ||
-            this.state.authorizeButtonGroup.write ||
-            this.state.authorizeButtonGroup.delete)
+                                this.state.authorizeButtonGroup.write ||
+                                this.state.authorizeButtonGroup.delete)
         };
         authorizationWidgetData.submitButtons = [
             {
@@ -137,15 +134,15 @@ export default class ProjectAuthorizationWidget extends React.Component {
         return (
 
             <AuthorizationWidget boxSize="12"
-                                             disableLast={true}
-                                             handleMultiselectChange={this.handleMultiselectChange}
-                                             label={"Authorize Users or Organizations"}
-                                             noRightsSelected={authorizationWidgetData.noRightsSelected}
-                                             ownerId={this.props.params.ownerId}
-                                             restClient={this.props.restClient}
-                                             selectableButtonsChange={this.handleAuthorizationChange}
-                                             submitButtons={authorizationWidgetData.submitButtons}
-                                             valuesInMultiselect={this.state.valuesInMultiselect}/>
+                                 disableLast={true}
+                                 handleMultiselectChange={this.handleMultiselectChange}
+                                 label={"Authorize Users or Organizations"}
+                                 noRightsSelected={authorizationWidgetData.noRightsSelected}
+                                 ownerId={this.props.ownerId}
+                                 restClient={this.props.restClient}
+                                 selectableButtonsChange={this.handleAuthorizationChange}
+                                 submitButtons={authorizationWidgetData.submitButtons}
+                                 valuesInMultiselect={this.state.valuesInMultiselect}/>
         );
     }
 
