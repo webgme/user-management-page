@@ -27,25 +27,29 @@ export default class ProjectAuthorizationWidget extends React.Component {
         let buttonClicked = event.target.innerHTML.toLowerCase(),
             holdButtonGroup = this.state.authorizeButtonGroup;
 
-        // Handling selection
-        if (this.state.authorizeButtonGroup[buttonClicked] === false) {
-            for (let button in holdButtonGroup) {
-                if (button === buttonClicked) {
-                    holdButtonGroup[buttonClicked] = true;
-                    break;
-                } else {
-                    holdButtonGroup[button] = true;
+        if (buttonClicked === 'none') {
+            holdButtonGroup = {read: false, write: false, delete: false};
+        } else {
+            // Handling selection
+            if (this.state.authorizeButtonGroup[buttonClicked] === false) {
+                for (let button in holdButtonGroup) {
+                    if (button === buttonClicked) {
+                        holdButtonGroup[buttonClicked] = true;
+                        break;
+                    } else {
+                        holdButtonGroup[button] = true;
+                    }
                 }
-            }
-            // Handling deselection
-        } else if (this.state.authorizeButtonGroup[buttonClicked] === true) {
-            let passedCurrentButton = false;
-            for (let button in holdButtonGroup) {
-                if (button === buttonClicked) {
-                    holdButtonGroup[buttonClicked] = false;
-                    passedCurrentButton = true;
-                } else if (passedCurrentButton) {
-                    holdButtonGroup[button] = false;
+                // Handling deselection
+            } else if (this.state.authorizeButtonGroup[buttonClicked] === true) {
+                let passedCurrentButton = false;
+                for (let button in holdButtonGroup) {
+                    if (button === buttonClicked) {
+                        holdButtonGroup[buttonClicked] = false;
+                        passedCurrentButton = true;
+                    } else if (passedCurrentButton) {
+                        holdButtonGroup[button] = false;
+                    }
                 }
             }
         }
