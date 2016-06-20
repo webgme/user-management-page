@@ -22,6 +22,10 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
         };
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.data !== nextState.data;
+    }
+
     componentDidMount() {
         let updaters = {};
 
