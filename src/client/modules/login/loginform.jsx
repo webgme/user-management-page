@@ -3,8 +3,11 @@
  */
 
 // Libraries
+import Button from 'react-bootstrap/lib/Button';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import Link from 'react-router/lib/Link';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Popover from 'react-bootstrap/lib/Popover';
 import React from 'react/lib/React';
 
 export default class LoginForm extends React.Component {
@@ -19,31 +22,44 @@ export default class LoginForm extends React.Component {
             <form>
 
                 {/* Username */}
-                <div className="form-group has-feedback">
-                    <div className="row">
-                        <div className="col-sm-12">
-                            <input type="text" className="form-control" placeholder="User ID"/>
-                        </div>
-
-                        <i className="glyphicon glyphicon-user form-control-feedback"/>
-
-                    </div>
-
+                <div className="input-group">
+                    <span className="input-group-addon">
+                        <i className="glyphicon glyphicon-user"/>
+                    </span>
+                    <input type="text" className="form-control"
+                           placeholder="User ID"/>
                 </div>
+
+                <br/>
 
                 {/* Password */}
-                <div className="form-group has-feedback">
-                    <input type="password" className="form-control" placeholder="Password"/>
-                    <i className="glyphicon glyphicon-lock form-control-feedback"/>
+                <div className="input-group">
+                    <span className="input-group-addon">
+                        <i className="glyphicon glyphicon-lock"/>
+                    </span>
+                    <input type="text" className="form-control"
+                           placeholder="Password"/>
                 </div>
+
+                <br/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
-                    <Checkbox className="col-sm-8">Remember Me</Checkbox>
+                    <Checkbox className="col-sm-6">Remember Me</Checkbox>
 
-                    <div className="col-sm-4">
-                        <button className="btn btn-primary btn-block btn-flat">Sign In</button>
+                    <div className="col-sm-6">
+
+                        <Link to={`${this.props.basePath}register`}>
+                            <Button bsStyle="warning">
+                                Register
+                            </Button>
+                        </Link>
+
+                        <Button bsStyle="primary">
+                            Sign In
+                        </Button>
+
                     </div>
 
                 </div>
@@ -51,13 +67,13 @@ export default class LoginForm extends React.Component {
             </form>
 
             {/* TODO: implement system for forgot password */}
-            <Link to={`${this.props.basePath}#`}>
-                I forgot my password
-            </Link>
-            <br/>
-            <Link to={`${this.props.basePath}register`}>
-                Register a new membership!
-            </Link>
+            <OverlayTrigger trigger="click"
+                            placement="bottom"
+                            overlay={<Popover title="" id="randomId">
+                                <strong>Coming soon</strong>
+                                </Popover>}>
+                <Link to={`${this.props.basePath}`}>I forgot my password</Link>
+            </OverlayTrigger>
 
         </div>;
     }

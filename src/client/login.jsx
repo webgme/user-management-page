@@ -13,7 +13,7 @@ import Route from 'react-router/lib/Route';
 import Router from 'react-router/lib/Router';
 
 // Self-defined
-import LoginApp from './modules/login/app';
+import App from './modules/login/app';
 import LoginForm from './modules/login/LoginForm';
 import RegisterForm from './modules/login/RegisterForm';
 
@@ -26,7 +26,7 @@ render((
 
     <Router history={browserHistory}>
 
-        <Route path={basePath} component={LoginApp} basePath={basePath}>
+        <Route path={basePath} component={App} basePath={basePath}>
 
             <Route path="login" component={LoginForm}/>
 

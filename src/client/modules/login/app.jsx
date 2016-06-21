@@ -6,7 +6,7 @@
 import React from 'react/lib/React';
 // Self-defined
 
-export default class LoginApp extends React.Component {
+export default class App extends React.Component {
     constructor(props) {
         super(props);
     }

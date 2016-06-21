@@ -1,6 +1,11 @@
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
+
+// Libraries
+import Button from 'react-bootstrap/lib/Button';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
+import Link from 'react-router/lib/Link';
 import React from 'react/lib/React';
 
 export default class RegisterForm extends React.Component {
@@ -13,36 +18,65 @@ export default class RegisterForm extends React.Component {
             <p className="login-box-msg">Register a new membership</p>
 
             <form>
-                <div className="form-group has-feedback">
-                    <input type="text" className="form-control" placeholder="User ID"/>
-                        <span className="glyphicon glyphicon-user form-control-feedback"/>
+
+                <div className="input-group">
+                    <span className="input-group-addon">
+                        <i className="glyphicon glyphicon-user"/>
+                    </span>
+                    <input type="text" className="form-control"
+                           placeholder="User ID"/>
                 </div>
-                <div className="form-group has-feedback">
-                    <input type="email" className="form-control" placeholder="Email"/>
-                        <span className="glyphicon glyphicon-envelope form-control-feedback"/>
+
+                <br/>
+
+                <div className="input-group">
+                    <span className="input-group-addon">
+                        <i className="glyphicon glyphicon-envelope"/>
+                    </span>
+                    <input type="text" className="form-control"
+                           placeholder="Email"/>
                 </div>
-                <div className="form-group has-feedback">
-                    <input type="password" className="form-control" placeholder="Password"/>
-                        <span className="glyphicon glyphicon-lock form-control-feedback"/>
+
+                <br/>
+
+                <div className="input-group">
+                    <span className="input-group-addon">
+                        <i className="glyphicon glyphicon-lock"/>
+                    </span>
+                    <input type="text" className="form-control"
+                           placeholder="Password"/>
                 </div>
-                <div className="form-group has-feedback">
-                    <input type="password" className="form-control" placeholder="Retype password"/>
-                        <span className="glyphicon glyphicon-log-in form-control-feedback"/>
+
+                <br/>
+
+                <div className="input-group">
+                    <span className="input-group-addon">
+                        <i className="glyphicon glyphicon-log-in"/>
+                    </span>
+                    <input type="text" className="form-control"
+                           placeholder="Confirm password"/>
                 </div>
+
+                <br/>
+
+                {/* Remember Check / Sign in attempt */}
                 <div className="row">
-                    <div className="col-xs-8">
-                        <div className="checkbox icheck">
-                            <label>
-                                <input type="checkbox"/> I agree to the <a href="#">terms</a>
-                            </label>
-                        </div>
+
+                    <Checkbox className="col-sm-6">I agree to the terms</Checkbox>
+
+                    <div className="col-sm-6">
+                        <Button bsStyle="warning" style={{float: "right"}}>
+                            Register
+                        </Button>
                     </div>
-                    <div className="col-xs-4">
-                        <button className="btn btn-primary btn-block btn-flat">Register</button>
-                    </div>
+
                 </div>
+
             </form>
-            <a href="/login" className="text-center">I already have a membership</a>
+
+            <Link to={`${this.props.basePath}login`}>
+                I already have a membership
+            </Link>
         </div>;
     }
 }
