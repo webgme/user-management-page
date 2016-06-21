@@ -27,35 +27,33 @@ export default class ProjectsTable extends React.Component {
     componentDidMount() {
         let currentUserId;
 
-        this.props.restClient.user.getCurrentUser()
-            .then(currentUser => {
+        // TODO: change this workaround after a solidified position is made on admins in orgs
+        Promise.all([
+            this.props.restClient.user.getCurrentUser(),
+            this.props.restClient.organizations.getAllOrganizations()
+        ])
+            .then(([currentUser, allOrganizations]) => {
                 currentUserId = currentUser._id;
-                let formattedOrganizations = currentUser.orgs.map(org => {
-                    return {name: org};
+                let organizations = currentUser.orgs.map(organizationName => {
+                    return {name: organizationName};
                 });
 
-                // TODO: change this workaround after a solidified position is made on admins in orgs
-                this.setState({
-                    organizations: formattedOrganizations
-                });
-                return this.props.restClient.organizations.getAllOrganizations();
-            })
-            .then(allOrganizations => {
+                // Also adds the organizations user is an admin of (to even view the project in the list)
                 allOrganizations.forEach(oneOrganization => {
-                    let isAMember = -1;
-                    this.state.organizations.forEach(organization => {
-                        if (this.state.organizations.indexOf(organization) !== -1) {
-                            isAMember = 1;
-                        }
-                    });
-                    if (oneOrganization.admins.indexOf(currentUserId) !== -1 && isAMember === -1) {
-                        this.setState({
-                            organizations: this.state.organizations.concat({
-                                name: oneOrganization._id
-                            })
+                    let isAdmin = oneOrganization.admins.indexOf(currentUserId) !== -1,
+                        inListAlready = organizations.indexOf(oneOrganization._id) === -1;
+
+                    if (isAdmin && !inListAlready) {
+                        organizations.push({
+                            name: oneOrganization._id
                         });
                     }
                 });
+
+                this.setState({
+                    organizations: organizations
+                });
+
             });
     }
 
