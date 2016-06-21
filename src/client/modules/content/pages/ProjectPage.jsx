@@ -49,8 +49,8 @@ export default class ProjectPage extends React.Component {
 
                         <ProjectAuthorizationWidget ownerId={this.props.params.ownerId}
                                                     projectName={this.props.params.projectName}
-                                                    restClient={this.props.restClient}
-                                                    refreshTable={this.refreshTable}/>
+                                                    refreshTable={this.refreshTable}
+                                                    restClient={this.props.restClient}/>
 
                     </div>
 

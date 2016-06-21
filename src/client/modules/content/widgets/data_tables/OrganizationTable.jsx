@@ -3,30 +3,31 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+/* global $ */
+
 // Libraries
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
-import DataTableHeader from './table_headers/DataTableHeader';
 import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../utils/utils';
 
-export default class ProjectCollaboratorTable extends React.Component {
+export default class OrganizationTable extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             admins: [],
-            display: 1, // 1 indicates users entries, 2 indicates organizations entries
             members: [],
-            numTimesClicked: 0
+            sortedForward: true
         };
 
         // Data retrieval
         this.retrieveMembersAndAdmins = this.retrieveMembersAndAdmins.bind(this);
         // Event handlers
         this.handleOrderEntries = this.handleOrderEntries.bind(this);
-        this.handleTableSwitch = this.handleTableSwitch.bind(this);
     }
 
     componentDidMount() {
@@ -40,7 +41,7 @@ export default class ProjectCollaboratorTable extends React.Component {
     }
 
     retrieveMembersAndAdmins() {
-        this.props.restClient.organizations.getOrganization(this.props.params.organizationId)
+        this.props.restClient.organizations.getOrganization(this.props.organizationId)
             .then(organizationData => {
 
                 // When user removed self...
@@ -68,30 +69,23 @@ export default class ProjectCollaboratorTable extends React.Component {
             });
     }
 
-    handleOrderEntries() {
-        if (this.state.display === 1) {
+    handleOrderEntries(event) {
+        // Release focus (surrounding box)
+        $(event.target).parent().blur();
+
+        if (this.props.display === 1) {
             this.setState({
-                members: this.state.numTimesClicked % 2 === 0 ?
+                members: this.state.sortedForward ?
                     this.state.members.sort(sortObjectArrayByField('name')).reverse() :
                     this.state.members.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
+                sortedForward: !this.state.sortedForward
             });
         } else {
             this.setState({
-                admins: this.state.numTimesClicked % 2 === 0 ?
+                admins: this.state.sortedForward ?
                     this.state.admins.sort(sortObjectArrayByField('name')).reverse() :
                     this.state.admins.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
-            });
-        }
-    }
-
-    handleTableSwitch(event) {
-        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
-
-        if (newDisplayNum !== this.state.display) {
-            this.setState({
-                display: newDisplayNum
+                sortedForward: !this.state.sortedForward
             });
         }
     }
@@ -107,51 +101,62 @@ export default class ProjectCollaboratorTable extends React.Component {
                 admins: [
                     {id: 1, name: 'Admin Name:'}
                 ]
-            },
-            dualTable: {
-                show: true,
-                options: ['Members', 'Admins']
             }
         };
 
         return (
-            <div>
+        <div>
+            {/* Users collaborators table */}
+            <div className="box">
+
+                {/* Self-defined header */}
+                <div className="box-header" style={{paddingBottom: 0}}>
+                    <h3 className="box-title" style={{fontSize: 28}}>
+                        <i className={this.props.iconClass}/> {` Collaborators`}
+                    </h3>
+                    <ButtonGroup style={{float: "right"}}>
+                        <Button bsStyle={this.props.display === 1 ? "primary" : null}
+                                onClick={this.props.handleTableSwitch}
+                                id="or">Members</Button>
+                        <Button bsStyle={this.props.display === 2 ? "primary" : null}
+                                onClick={this.props.handleTableSwitch}
+                                id="ow">Admins</Button>
+                    </ButtonGroup>
+                </div>
+
                 <DataTable categories={dataTableData.categories.members}
-                           display={this.state.display}
-                           dualTable={dataTableData.dualTable}
+                           display={this.props.display}
                            entries={this.state.members}
-                           handleTableSwitch={this.handleTableSwitch}
                            iconClass="fa fa-university"
-                           numTimesClicked={this.state.numTimesClicked}
+                           sortedForward={this.state.sortedForward}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
-                           style={this.state.display === 2 ? {display: "none"} : {}}
-                           TableHeader={<DataTableHeader/>}
-                           tableName="Collaborators">
+                           style={this.props.display === 2 ? {display: "none"} : {}}
+                           tableName="Members">
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
                 <DataTable categories={dataTableData.categories.admins}
-                           display={this.state.display}
-                           dualTable={dataTableData.dualTable}
+                           display={this.props.display}
                            entries={this.state.admins}
-                           handleTableSwitch={this.handleTableSwitch}
                            iconClass="fa fa-university"
-                           numTimesClicked={this.state.numTimesClicked}
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
-                           style={this.state.display === 1 ? {display: "none"} : {}}
-                           TableHeader={<DataTableHeader/>}
-                           tableName="Collaborators">
+                           sortedForward={this.state.sortedForward}
+                           style={this.props.display === 1 ? {display: "none"} : {}}
+                           tableName="Admins">
                     <OrganizationDataTableEntry/>
                 </DataTable>
+
             </div>
+
+        </div>
         );
     }
 }
