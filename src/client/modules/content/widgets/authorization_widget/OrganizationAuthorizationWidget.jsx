@@ -83,7 +83,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
                 this.props.refreshTable();
             })
             .catch(err => {
-                console.log('Authorization denied! Error: ', err); // eslint-disable-line no-console
+                console.error(err) // eslint-disable-line no-console
             });
 
         // Empty multiselect after submission

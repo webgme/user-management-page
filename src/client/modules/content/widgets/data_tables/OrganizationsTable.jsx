@@ -1,9 +1,9 @@
+/* global $ */
+
 /**
  * Container widget for the organizations table widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
-
-/* global $ */
 
 // Libraries
 import React from 'react/lib/React';

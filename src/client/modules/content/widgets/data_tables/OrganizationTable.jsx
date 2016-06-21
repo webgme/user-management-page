@@ -1,9 +1,9 @@
+/* global $ */
+
 /**
  * Container widget for the single organization table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
-
-/* global $ */
 
 // Libraries
 import Button from 'react-bootstrap/lib/Button';

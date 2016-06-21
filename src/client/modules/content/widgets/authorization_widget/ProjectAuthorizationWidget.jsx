@@ -112,9 +112,10 @@ export default class ProjectAuthorizationWidget extends React.Component {
         Promise.all(promiseArrayToGrant)
             .then(() => {
                 this.props.refreshTable();
+                this.methodDoesntExist();
             })
             .catch(err => {
-                console.log('Authorization denied! Error: ', err); // eslint-disable-line no-console
+                console.error(err); // eslint-disable-line no-console
             });
 
         // Reset fields after submitting

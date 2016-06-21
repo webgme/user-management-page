@@ -1,9 +1,9 @@
+/* global $ */
+
 /**
  * Container widget for the projects data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
-
-/* global $ */
 
 // Libraries
 import React from 'react/lib/React';

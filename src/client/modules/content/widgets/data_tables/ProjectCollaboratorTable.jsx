@@ -1,9 +1,9 @@
+/* global $ */
+
 /**
  * Container widget for the project collaborator table widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
-
-/* global $ */
 
 // Libraries
 import Button from 'react-bootstrap/lib/Button';
