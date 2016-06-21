@@ -112,7 +112,6 @@ export default class ProjectAuthorizationWidget extends React.Component {
         Promise.all(promiseArrayToGrant)
             .then(() => {
                 this.props.refreshTable();
-                this.methodDoesntExist();
             })
             .catch(err => {
                 console.error(err); // eslint-disable-line no-console
