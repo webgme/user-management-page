@@ -15,6 +15,7 @@ import Router from 'react-router/lib/Router';
 import App from './modules/app';
 import ContentWrapper from './modules/content/ContentWrapper';
 import HomePage from './modules/content/pages/HomePage';
+import LoginApp from './modules/login/app';
 import OrganizationPage from './modules/content/pages/OrganizationPage';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage';
 import ProjectPage from './modules/content/pages/ProjectPage';

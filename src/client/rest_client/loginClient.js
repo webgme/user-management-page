@@ -6,7 +6,7 @@
 import superagent from 'superagent';
 
 /**
- * Class for logging in and register user. Note that these post requests do not require
+ * Class for logging in and registering user. Note that these post requests do not require
  * the user to be authenticated.
  * @class
  */
@@ -25,19 +25,40 @@ export default class LoginClient {
      * @return {Promise} resolves if successfully logged in.
      */
     login(userId, password, redirectUrl) {
-        var url = this.baseUrl + '/login',
+        let url = this.baseUrl + '/login',
             data = {
                 userId: userId,
                 password: password
             };
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             superagent
                 .post(url)
                 .send(data)
                 .query({redirect: redirectUrl})
                 .query({username: userId})
-                .end(function(err, res) {
+                .end((err, res) => {
+                    if (err || !res.ok) {
+                        reject(err);
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+        });
+    }
+
+    /**
+     * Post request for logging out
+     * Cookies will be cleared and user will be redirected to login page
+     * @return {Promise} resolves if successfully logged in.
+     */
+    logout() {
+        let url = this.baseUrl + '/login';
+
+        return new Promise((resolve, reject) => {
+            superagent
+                .post(url)
+                .end((err, res) => {
                     if (err || !res.ok) {
                         reject(err);
                     } else {
@@ -55,18 +76,18 @@ export default class LoginClient {
      * @return {Promise} - resolves if successfully added user, rejects otherwise.
      */
     register(userId, password, email) {
-        var url = this.baseUrl + '/api/register';
-        var data = {
-            userId: userId,
-            password: password,
-            email: email || ''
-        };
+        let url = this.baseUrl + '/api/register',
+            data = {
+                userId: userId,
+                password: password,
+                email: email || ''
+            };
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             superagent
                 .post(url)
                 .send(data)
-                .end(function(err, res) {
+                .end((err, res) => {
                     if (err || !res.ok) {
                         reject(err);
                     } else {

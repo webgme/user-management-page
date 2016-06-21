@@ -48,11 +48,11 @@ export default class ProjectsTable extends React.Component {
     render() {
 
         let categories = [
-            {id: 1, name: 'Owner:'},
-            {id: 2, name: 'Project Name:'},
-            {id: 3, name: 'Last Viewed:'},
-            {id: 4, name: 'Last Changed:'},
-            {id: 5, name: 'Created At:'}
+            {id: 1, name: 'Owner'},
+            {id: 2, name: 'Project Name'},
+            {id: 3, name: 'Last Viewed'},
+            {id: 4, name: 'Last Changed'},
+            {id: 5, name: 'Created At'}
         ];
 
         return (

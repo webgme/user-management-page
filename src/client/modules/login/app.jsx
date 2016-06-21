@@ -1,21 +1,33 @@
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
-import React from 'react/lib/React';
-import LoginForm from './loginform';
-import RegisterForm from './registerform';
 
-export default class App extends React.Component {
+// Libraries
+import React from 'react/lib/React';
+// Self-defined
+
+export default class LoginApp extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        return <div className="login-box">
-            <div className="login-logo">
-                <a href="../../index2.html"><b>Admin</b>LTE</a>
+
+        // Passing props through the route
+        let FormWithBasePath = React.Children.map(this.props.children,
+            child => React.cloneElement(child, {
+                basePath: this.props.route.basePath
+            }));
+
+        return (
+            <div className="login-box">
+                <div className="login-logo">
+                    <b>GME</b>Profile
+                </div>
+
+                {FormWithBasePath}
+
             </div>
-            <LoginForm/>
-        </div>;
+        );
     }
 }

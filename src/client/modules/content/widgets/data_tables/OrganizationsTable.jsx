@@ -12,7 +12,7 @@ import DataTable from './DataTable';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
 import {sortObjectArrayByField} from '../../../../utils/utils';
 
-export default class ProjectsTable extends React.Component {
+export default class OrganizationsTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -62,9 +62,9 @@ export default class ProjectsTable extends React.Component {
         $(event.target).parent().blur();
 
         this.setState({
-            projects: this.state.sortedForward ?
-                this.state.projects.sort(sortObjectArrayByField('name')).reverse() :
-                this.state.projects.sort(sortObjectArrayByField('name')),
+            organizations: this.state.sortedForward ?
+                this.state.organizations.sort(sortObjectArrayByField('name')).reverse() :
+                this.state.organizations.sort(sortObjectArrayByField('name')),
             sortedForward: !this.state.sortedForward
         });
     }
@@ -72,7 +72,7 @@ export default class ProjectsTable extends React.Component {
     render() {
 
         let categories = [
-            {id: 1, name: 'Organization Name:'}
+            {id: 1, name: 'Organization Name'}
         ];
 
         return (

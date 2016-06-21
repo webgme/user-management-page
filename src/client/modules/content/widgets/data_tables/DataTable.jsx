@@ -32,6 +32,9 @@ export default class DataTable extends React.Component {
     }
 
     handlePagination(event) {
+        // Release focus
+        event.target.blur();
+
         let newPageNum;
         if (event.target.innerHTML.trim() === 'Next') {
             newPageNum = this.state.pageNumber + 1;

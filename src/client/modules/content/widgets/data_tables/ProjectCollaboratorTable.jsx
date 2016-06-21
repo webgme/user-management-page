@@ -152,11 +152,11 @@ export default class ProjectCollaboratorTable extends React.Component {
         let dataTableData = {
             categories: {
                 users: [
-                    {id: 1, name: 'UserID:'},
+                    {id: 1, name: 'UserID'},
                     {id: 2, name: 'Rights (RWD)'}
                 ],
                 organizations: [
-                    {id: 1, name: 'OrganizationID:'},
+                    {id: 1, name: 'OrganizationID'},
                     {id: 2, name: 'Rights(RWD)'}
                 ]
             }

@@ -17,10 +17,10 @@ export default class DataTableCategories extends React.Component {
                    colSpan="1" aria-sort="ascending"
                    aria-label="Rendering engine: activate to sort column descending">
             {this.props.name}
-            {this.props.sortable ? <i className={this.props.sortedForward ? "fa fa-level-down" :
-                                                                            "fa fa-level-up"}
-                                      style={{textAlign: "right", cursor: "pointer"}}
-                                      onClick={this.props.orderEntries}/> : <i/>}
+            {this.props.sortable && (/name/i).test(this.props.name) ?
+                <i className={this.props.sortedForward ? "fa fa-level-down" : "fa fa-level-up"}
+                   style={{textAlign: "right", cursor: "pointer"}}
+                   onClick={this.props.orderEntries}/> : <i/>}
         </th>;
     }
 }

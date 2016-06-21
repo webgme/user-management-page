@@ -95,11 +95,11 @@ export default class OrganizationTable extends React.Component {
         let dataTableData = {
             categories: {
                 members: [
-                    {id: 1, name: 'Member Name:'},
-                    {id: 2, name: 'Admin:'}
+                    {id: 1, name: 'Member Name'},
+                    {id: 2, name: 'Admin'}
                 ],
                 admins: [
-                    {id: 1, name: 'Admin Name:'}
+                    {id: 1, name: 'Admin Name'}
                 ]
             }
         };
