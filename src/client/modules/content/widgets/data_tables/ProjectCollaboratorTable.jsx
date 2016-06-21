@@ -1,13 +1,16 @@
+/* global $ */
+
 /**
- * Container widget for the collaborators table widget
+ * Container widget for the project collaborator table widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
-import ProjectCollaboratorTableHeader from './table_headers/ProjectCollaboratorTableHeader';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../utils/utils';
 
@@ -17,8 +20,8 @@ export default class ProjectCollaboratorTable extends React.Component {
         super(props);
         this.state = {
             display: 1, // 1 indicates users entries, 2 indicates organizations entries
-            numTimesClicked: 0,
             organizationCollaborators: [],
+            sortedForward: true,
             userCollaborators: []
         };
 
@@ -41,7 +44,6 @@ export default class ProjectCollaboratorTable extends React.Component {
     }
 
     retrieveCollaborators() {
-        let didUserRemoveSelfWhenOnlyCollaborator = false;
         let projectId = `${this.props.ownerId}+${this.props.projectName}`;
 
         Promise.all([
@@ -51,7 +53,9 @@ export default class ProjectCollaboratorTable extends React.Component {
         ]).then(([usersWithAccess, usersInOrganizationsWithAccess, organizationsWithAccess]) => {
 
             // Union of rights if in organization
-            if (!isEmpty(usersInOrganizationsWithAccess)) {
+            if (isEmpty(usersInOrganizationsWithAccess)) {
+                // Do nothing because then usersWithAccess is just self and does not need to be modified
+            } else {
                 Object.keys(usersInOrganizationsWithAccess).forEach(oneUser => {
                     if (usersWithAccess[oneUser]) {
                         usersWithAccess[oneUser].read = usersWithAccess[oneUser].read || usersInOrganizationsWithAccess[oneUser].read; // eslint-disable-line max-len
@@ -61,59 +65,55 @@ export default class ProjectCollaboratorTable extends React.Component {
                         usersWithAccess[oneUser] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[oneUser]));
                     }
                 });
-            } else if (isEmpty(usersWithAccess)) { // Case for when project is not owned by any organizations
-                didUserRemoveSelfWhenOnlyCollaborator = true;
-                this.props.router.replace(`${this.props.routes[0].basePath}projects`);
-            } else {
-                // Do nothing because then usersWithAccess is just self and does not need to be modified
             }
 
-            if (!didUserRemoveSelfWhenOnlyCollaborator) {
-                let userCollaborators = [];
-                let organizationCollaborators = [];
-                Object.keys(usersWithAccess).forEach(user => {
-                    userCollaborators.push({
-                        name: user,
-                        read: usersWithAccess[user].read,
-                        write: usersWithAccess[user].write,
-                        delete: usersWithAccess[user].delete,
-                        inOrg: usersWithAccess[user].inOrg
-                    });
+            let userCollaborators = [];
+            let organizationCollaborators = [];
+            Object.keys(usersWithAccess).forEach(user => {
+                userCollaborators.push({
+                    name: user,
+                    read: usersWithAccess[user].read,
+                    write: usersWithAccess[user].write,
+                    delete: usersWithAccess[user].delete,
+                    inOrg: usersWithAccess[user].inOrg
                 });
+            });
 
-                Object.keys(organizationsWithAccess).forEach(organization => {
-                    organizationCollaborators.push({
-                        name: organization,
-                        read: organizationsWithAccess[organization].read,
-                        write: organizationsWithAccess[organization].write,
-                        delete: organizationsWithAccess[organization].delete,
-                        inOrg: organizationsWithAccess[organization].inOrg
-                    });
+            Object.keys(organizationsWithAccess).forEach(organization => {
+                organizationCollaborators.push({
+                    name: organization,
+                    read: organizationsWithAccess[organization].read,
+                    write: organizationsWithAccess[organization].write,
+                    delete: organizationsWithAccess[organization].delete,
+                    inOrg: organizationsWithAccess[organization].inOrg
                 });
+            });
 
-                this.setState({
-                    userCollaborators: userCollaborators.sort(sortObjectArrayByField('name')),
-                    organizationCollaborators: organizationCollaborators.sort(sortObjectArrayByField('name'))
-                });
-            }
+            this.setState({
+                userCollaborators: userCollaborators.sort(sortObjectArrayByField('name')),
+                organizationCollaborators: organizationCollaborators.sort(sortObjectArrayByField('name'))
+            });
 
         });
     }
 
-    handleOrderEntries() {
+    handleOrderEntries(event) {
+        // Release focus (surrounding box)
+        $(event.target).parent().blur();
+
         if (this.state.display === 1) {
             this.setState({
-                userCollaborators: this.state.numTimesClicked % 2 === 0 ?
+                userCollaborators: this.state.sortedForward ?
                     this.state.userCollaborators.sort(sortObjectArrayByField('name')).reverse() :
                     this.state.userCollaborators.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
+                sortedForward: !this.state.sortedForward
             });
         } else {
             this.setState({
-                organizationCollaborators: this.state.numTimesClicked % 2 === 0 ?
+                organizationCollaborators: this.state.sortedForward ?
                     this.state.organizationCollaborators.sort(sortObjectArrayByField('name')).reverse() :
                     this.state.organizationCollaborators.sort(sortObjectArrayByField('name')),
-                numTimesClicked: this.state.numTimesClicked + 1
+                sortedForward: !this.state.sortedForward
             });
         }
     }
@@ -131,9 +131,19 @@ export default class ProjectCollaboratorTable extends React.Component {
         let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
 
         if (newDisplayNum !== this.state.display) {
-            this.setState({
-                display: newDisplayNum
-            });
+            if (newDisplayNum === 1) {
+                this.setState({
+                    display: newDisplayNum,
+                    sortedForward: true, // Also account for ordering
+                    userCollaborators: this.state.userCollaborators.sort(sortObjectArrayByField('name'))
+                });
+            } else if (newDisplayNum === 2) {
+                this.setState({
+                    display: newDisplayNum,
+                    organizationCollaborators: this.state.organizationCollaborators.sort(sortObjectArrayByField('name')), // eslint-disable-line max-len
+                    sortedForward: true // Also account for ordering
+                });
+            }
         }
     }
 
@@ -154,44 +164,57 @@ export default class ProjectCollaboratorTable extends React.Component {
 
         return (
             <div>
+                {/* Users collaborators table */}
+                <div className="box">
 
-                <DataTable categories={dataTableData.categories.users}
-                           display={this.state.display}
-                           dualTable={dataTableData.dualTable}
-                           entries={this.state.userCollaborators}
-                           handleRevoke={this.handleRevoke}
-                           handleTableSwitch={this.handleTableSwitch}
-                           iconClass={null}
-                           numTimesClicked={this.state.numTimesClicked}
-                           orderEntries={this.handleOrderEntries}
-                           ownerId={this.props.ownerId}
-                           projectName={this.props.projectName}
-                           restClient={this.props.restClient}
-                           sortable={true}
-                           style={this.state.display === 2 ? {display: "none"} : {}}
-                           TableHeader={<ProjectCollaboratorTableHeader/>}
-                           tableName="Collaborators">
-                    <ProjectDataTableEntry/>
-                </DataTable>
+                    {/* Self-defined header */}
+                    <div className="box-header" style={{paddingBottom: 0}}>
+                        <h3 className="box-title" style={{fontSize: 28}}>
+                            <i className={this.props.iconClass}/> {` Collaborators`}
+                        </h3>
+                        <ButtonGroup style={{float: "right"}}>
+                            <Button bsStyle={this.state.display === 1 ? "primary" : null}
+                                    onClick={this.handleTableSwitch}
+                                    id="or">Users</Button>
+                            <Button bsStyle={this.state.display === 2 ? "primary" : null}
+                                    onClick={this.handleTableSwitch}
+                                    id="ow">Organizations</Button>
+                        </ButtonGroup>
+                    </div>
 
-                <DataTable categories={dataTableData.categories.organizations}
-                           display={this.state.display}
-                           dualTable={dataTableData.dualTable}
-                           entries={this.state.organizationCollaborators}
-                           handleRevoke={this.handleRevoke}
-                           handleTableSwitch={this.handleTableSwitch}
-                           iconClass={null}
-                           numTimesClicked={this.state.numTimesClicked}
-                           orderEntries={this.handleOrderEntries}
-                           ownerId={this.props.ownerId}
-                           projectName={this.props.projectName}
-                           restClient={this.props.restClient}
-                           sortable={true}
-                           style={this.state.display === 1 ? {display: "none"} : {}}
-                           TableHeader={<ProjectCollaboratorTableHeader/>}
-                           tableName="Collaborators">
-                    <ProjectDataTableEntry/>
-                </DataTable>
+                    <DataTable categories={dataTableData.categories.users}
+                               display={this.state.display}
+                               entries={this.state.userCollaborators}
+                               handleRevoke={this.handleRevoke}
+                               iconClass={null}
+                               orderEntries={this.handleOrderEntries}
+                               ownerId={this.props.ownerId}
+                               projectName={this.props.projectName}
+                               restClient={this.props.restClient}
+                               sortable={true}
+                               sortedForward={this.state.sortedForward}
+                               style={this.state.display === 2 ? {display: "none"} : {}}
+                               tableName="Collaborators">
+                        <ProjectDataTableEntry/>
+                    </DataTable>
+
+                    <DataTable categories={dataTableData.categories.organizations}
+                               display={this.state.display}
+                               entries={this.state.organizationCollaborators}
+                               handleRevoke={this.handleRevoke}
+                               iconClass={null}
+                               orderEntries={this.handleOrderEntries}
+                               ownerId={this.props.ownerId}
+                               projectName={this.props.projectName}
+                               restClient={this.props.restClient}
+                               sortable={true}
+                               sortedForward={this.state.sortedForward}
+                               style={this.state.display === 1 ? {display: "none"} : {}}
+                               tableName="Collaborators">
+                        <ProjectDataTableEntry/>
+                    </DataTable>
+
+                </div>
 
             </div>
         );

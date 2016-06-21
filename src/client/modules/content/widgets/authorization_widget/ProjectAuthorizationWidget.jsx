@@ -7,6 +7,7 @@
 import React from 'react/lib/React';
 // Self defined
 import AuthorizationWidget from './AuthorizationWidget';
+import {multiselectFormat, sortObjectArrayByField} from '../../../../utils/utils';
 
 export default class ProjectAuthorizationWidget extends React.Component {
 
@@ -14,18 +15,39 @@ export default class ProjectAuthorizationWidget extends React.Component {
         super(props);
         this.state = {
             authorizeButtonGroup: {read: false, write: false, delete: false},
+            multiselectOptions: [],
             valuesInMultiselect: ''
         };
+        // Data Retrieval
+        this.retrieveMultiselectOptions = this.retrieveMultiselectOptions.bind(this);
         // Event Handlers
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
         this.handleSubmitAuthorization = this.handleSubmitAuthorization.bind(this);
     }
 
+    componentDidMount() {
+        this.retrieveMultiselectOptions();
+    }
+
+    retrieveMultiselectOptions() {
+        Promise.all([
+            this.props.restClient.users.getAllUsers(),
+            this.props.restClient.organizations.getAllOrganizations()
+        ]).then(([allUsers, allOrganizations]) => {
+            let usersAndOrganizations = allUsers.concat(allOrganizations);
+            this.setState({
+                multiselectOptions: multiselectFormat(usersAndOrganizations.sort(sortObjectArrayByField('_id')))
+            });
+        });
+    }
+
     handleAuthorizationChange(event) {
 
         let buttonClicked = event.target.innerHTML.toLowerCase(),
             holdButtonGroup = this.state.authorizeButtonGroup;
+        // Release focus
+        event.target.blur();
 
         if (buttonClicked === 'none') {
             holdButtonGroup = {read: false, write: false, delete: false};
@@ -65,7 +87,9 @@ export default class ProjectAuthorizationWidget extends React.Component {
         });
     }
 
-    handleSubmitAuthorization() {
+    handleSubmitAuthorization(event) {
+        // Release focus
+        event.target.blur();
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
@@ -79,9 +103,9 @@ export default class ProjectAuthorizationWidget extends React.Component {
             this.state.valuesInMultiselect.split(',').forEach(userOrOrgName => {
                 promiseArrayToGrant.push(
                     this.props.restClient.projects.grantRightsToProject(this.props.ownerId,
-                        this.props.projectName,
-                        userOrOrgName,
-                        projectRights));
+                                                                        this.props.projectName,
+                                                                        userOrOrgName,
+                                                                        projectRights));
             });
         }
 
@@ -89,8 +113,8 @@ export default class ProjectAuthorizationWidget extends React.Component {
             .then(() => {
                 this.props.refreshTable();
             })
-            .catch(() => {
-                console.log('Authorization denied.'); // eslint-disable-line no-console
+            .catch(err => {
+                console.error(err); // eslint-disable-line no-console
             });
 
         // Reset fields after submitting
@@ -141,6 +165,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
                                  disableLast={true}
                                  handleMultiselectChange={this.handleMultiselectChange}
                                  label={"Authorize Users or Organizations"}
+                                 multiselectOptions={this.state.multiselectOptions}
                                  noRightsSelected={authorizationWidgetData.noRightsSelected}
                                  ownerId={this.props.ownerId}
                                  restClient={this.props.restClient}

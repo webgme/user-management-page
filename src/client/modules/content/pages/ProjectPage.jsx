@@ -39,6 +39,7 @@ export default class ProjectPage extends React.Component {
                 </h2>
 
                 <div className="row">
+
                     <div className="col-md-6">
 
                         <ProjectCollaboratorTable ownerId={this.props.params.ownerId}
@@ -48,8 +49,8 @@ export default class ProjectPage extends React.Component {
 
                         <ProjectAuthorizationWidget ownerId={this.props.params.ownerId}
                                                     projectName={this.props.params.projectName}
-                                                    restClient={this.props.restClient}
-                                                    refreshTable={this.refreshTable}/>
+                                                    refreshTable={this.refreshTable}
+                                                    restClient={this.props.restClient}/>
 
                     </div>
 

@@ -9,9 +9,8 @@ import React from 'react/lib/React';
 export default class DataTableEntry extends React.Component {
 
     render() {
-        return <div className="col-sm-7">
-            <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                <ul className="pagination" style={{float: "right", paddingLeft: "0px"}}>
+        return <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                <ul className="pagination" style={{margin: 0}}>
                     <li id="example1_previous"
                         className={this.props.pageNumber === 1 ? "paginate_button previous disabled" :
                                                                  "paginate_button previous"}
@@ -28,7 +27,6 @@ export default class DataTableEntry extends React.Component {
                         <a href="#" aria-controls="example1" data-dt-idx="7" tabIndex="0">Next</a>
                     </li>
                 </ul>
-            </div>
-        </div>;
+            </div>;
     }
 }

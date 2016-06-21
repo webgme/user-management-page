@@ -17,8 +17,8 @@ export default class DataTableCategories extends React.Component {
                    colSpan="1" aria-sort="ascending"
                    aria-label="Rendering engine: activate to sort column descending">
             {this.props.name}
-            {this.props.sortable ? <i className={this.props.numTimesClicked % 2 === 1 ? "fa fa-level-down" :
-                                                                                        "fa fa-level-up"}
+            {this.props.sortable ? <i className={this.props.sortedForward ? "fa fa-level-down" :
+                                                                            "fa fa-level-up"}
                                       style={{textAlign: "right", cursor: "pointer"}}
                                       onClick={this.props.orderEntries}/> : <i/>}
         </th>;
