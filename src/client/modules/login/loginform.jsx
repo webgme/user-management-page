@@ -123,16 +123,29 @@ export default class LoginForm extends React.Component {
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
-                    <Checkbox className="col-sm-6"
-                              checked={this.state.rememberMe}
-                              onChange={this.onRememberMeChange}
-                              validationState={this.state.rememberMe ? "success" : "warning"}>
-                        Remember Me
-                    </Checkbox>
+                    <div className="col-sm-6">
+
+                        <Checkbox checked={this.state.rememberMe}
+                                  onChange={this.onRememberMeChange}
+                                  style={{marginBottom: 0}}
+                                  validationState={this.state.rememberMe ? "success" : "warning"}>
+                            Remember Me
+                        </Checkbox>
+
+                        {/* TODO: implement system for forgot password */}
+                        <OverlayTrigger trigger="click"
+                                        placement="bottom"
+                                        overlay={<Popover title="" id="randomId">
+                                <strong>Coming soon</strong>
+                                </Popover>}>
+                            <Link to={`${this.props.basePath}login`}>I forgot my password</Link>
+                        </OverlayTrigger>
+
+                    </div>
 
                     <div className="col-sm-6">
 
-                        <div style={{float: "right"}}>
+                        <div style={{float: "right", marginTop: "5px"}}>
                             <Link to={`${this.props.basePath}register`}>
                                 <Button bsStyle="warning">
                                     Register
@@ -148,15 +161,6 @@ export default class LoginForm extends React.Component {
                 </div>
 
             </form>
-
-            {/* TODO: implement system for forgot password */}
-            <OverlayTrigger trigger="click"
-                            placement="bottom"
-                            overlay={<Popover title="" id="randomId">
-                                <strong>Coming soon</strong>
-                                </Popover>}>
-                <Link to={`${this.props.basePath}login`}>I forgot my password</Link>
-            </OverlayTrigger>
 
         </div>;
     }

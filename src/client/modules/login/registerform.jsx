@@ -173,17 +173,24 @@ export default class RegisterForm extends React.Component {
                             </div>
                         </div> : null}
 
-                    <Checkbox className="col-sm-6"
-                              checked={this.state.agreeToTerms}
-                              onChange={this.onAgreeToTermsChange}
-                              validationState={this.state.agreeToTerms ? "success" : "warning"}>
-                        I agree to the terms
-                    </Checkbox>
+                    <div className="col-sm-8">
 
-                    <div className="col-sm-6">
+                        <Checkbox checked={this.state.agreeToTerms}
+                                  onChange={this.onAgreeToTermsChange}
+                                  validationState={this.state.agreeToTerms ? "success" : "warning"}>
+                            I agree to the terms
+                        </Checkbox>
+
+                        <Link to={`${this.props.basePath}login`}>
+                            I already have an account
+                        </Link>
+
+                    </div>
+
+                    <div className="col-sm-4">
                         <Button bsStyle="warning"
                                 onClick={this.onRegister}
-                                style={{float: "right"}}>
+                                style={{float: "right", marginTop: "5px"}}>
                             Register
                         </Button>
                     </div>
@@ -192,9 +199,6 @@ export default class RegisterForm extends React.Component {
 
             </form>
 
-            <Link to={`${this.props.basePath}login`}>
-                I already have an account
-            </Link>
         </div>;
     }
 }
