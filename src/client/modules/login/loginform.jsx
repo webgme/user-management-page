@@ -53,13 +53,22 @@ export default class LoginForm extends React.Component {
 
     onSignIn() {
 
-        this.props.loginClient.login(this.state.userId, this.state.password, window.location.href)
+        this.props.loginClient.login(this.state.userId, this.state.password)
             .then(res => {
                 if (/2\d\d/.test(res.statusCode)) {
-                    let redirect = res.req._query[0],
-                        decodedRedirect = window.decodeURIComponent(redirect),
-                        url = /redirect=(\S+)/.exec(decodedRedirect)[1];
-                    browserHistory.push(url);
+
+                    let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
+                        /redirect=(\S+)/.exec(window.location.href)[1] :
+                        '',
+                        nextLocation = '';
+
+                    if (redirectPath === '') {
+                        nextLocation = window.location.pathname.replace('login', '');
+                    } else {
+                        nextLocation = window.decodeURIComponent(redirectPath);
+                    }
+
+                    browserHistory.push(nextLocation);
                     window.location.reload();
                 }
             })
@@ -123,15 +132,16 @@ export default class LoginForm extends React.Component {
 
                     <div className="col-sm-6">
 
-                        <Link to={`${this.props.basePath}register`}>
-                            <Button bsStyle="warning">
-                                Register
+                        <div style={{float: "right"}}>
+                            <Link to={`${this.props.basePath}register`}>
+                                <Button bsStyle="warning">
+                                    Register
+                                </Button>
+                            </Link>
+                            <Button bsStyle="primary" onClick={this.onSignIn}>
+                                Sign In
                             </Button>
-                        </Link>
-
-                        <Button bsStyle="primary" onClick={this.onSignIn}>
-                            Sign In
-                        </Button>
+                        </div>
 
                     </div>
 

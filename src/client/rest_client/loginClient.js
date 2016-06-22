@@ -24,7 +24,7 @@ export default class LoginClient {
      * @param {string} redirectUrl - where to redirect on success
      * @return {Promise} resolves if successfully logged in.
      */
-    login(userId, password, redirectUrl) {
+    login(userId, password) {
         // let url = this.baseUrl + '/login',
         let url = '/login',
             data = {
@@ -36,7 +36,7 @@ export default class LoginClient {
             superagent
                 .post(url)
                 .send(data)
-                .query({redirect: redirectUrl})
+                // .query({redirect: redirectUrl})
                 // .query({username: userId})
                 .end((err, res) => {
                     if (err || !res.ok) {
