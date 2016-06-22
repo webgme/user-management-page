@@ -3,7 +3,6 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import LoginClient from './loginClient';
 import OrganizationsClient from './organizationsClient';
 import ProjectsClient from './projectsClient';
 import UserClient from './userClient';
@@ -21,7 +20,6 @@ function RestClient(baseUrl, debugMode) {
     this.users = new UsersClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);
     this.organizations = new OrganizationsClient(baseUrl);
-    this.login = new LoginClient(baseUrl);
 
     /**
      * Returns a boolean for if the current user can authorize others to the project

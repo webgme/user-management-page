@@ -1,9 +1,12 @@
+/* global window */
+
 /**
  * @author pmeijer / https://github.com/pmeijer
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
+import browserHistory from 'react-router/lib/browserHistory';
 import Button from 'react-bootstrap/lib/Button';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import Link from 'react-router/lib/Link';
@@ -23,12 +26,19 @@ export default class LoginForm extends React.Component {
             validCredentials: true
         };
         // Event handlers
+        this.onClickSignIn = this.onClickSignIn.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRememberMeChange = this.onRememberMeChange.bind(this);
         this.onSignIn = this.onSignIn.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
     }
 
+    onClickSignIn(event) {
+        // Release focus
+        event.target.blur();
+
+        this.onSignIn();
+    }
     onPasswordChange(event) {
         this.setState({
             password: event.target.value
@@ -42,19 +52,28 @@ export default class LoginForm extends React.Component {
     }
 
     onSignIn() {
-        this.props.restClient.login.login(this.state.userId, this.state.password, this.props.basePath)
+
+        this.props.loginClient.login(this.state.userId,
+                                          this.state.password,
+                                          "http://localhost:8888/rest/external/usermanagement/")
+            .then(res => {
+                if (/2\d\d/.test(res.statusCode)) {
+                    let redirect = res.req._query[0],
+                        decodedRedirect = window.decodeURIComponent(redirect),
+                        url = /redirect=(\S+)/.exec(decodedRedirect)[1];
+                    browserHistory.push(url);
+                    window.location.reload();
+                }
+            })
             .catch(err => {
                 console.error(err); // eslint-disable-line no-console
+                // Reset fields
                 this.setState({
+                    password: '',
+                    rememberMe: false,
                     validCredentials: false
                 });
             });
-
-        // Reset fields
-        this.setState({
-            password: '',
-            rememberMe: false
-        });
     }
 
     onUserIdChange(event) {

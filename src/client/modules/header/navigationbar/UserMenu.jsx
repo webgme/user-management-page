@@ -1,11 +1,14 @@
+/* global window, require */
+
 /**
  * User menu of the header component
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-/* global window, require */
+// Libraries
+import browserHistory from 'react-router/lib/browserHistory';
+import Button from 'react-bootstrap/lib/Button';
 import React from 'react/lib/React';
-import Link from 'react-router/lib/Link';
 
 const STYLING = {
     logoutButtonPadding: {
@@ -39,6 +42,7 @@ export default class UserMenu extends React.Component {
 
     handleSignOut() {
         // Manually reload page or won't actually show login page (not part of user management)
+        browserHistory.push(`${this.props.basePath}login`);
         window.location.reload();
     }
 
@@ -59,10 +63,9 @@ export default class UserMenu extends React.Component {
                 </li>
                 <li className="user-footer" style={STYLING.logoutAreaBorder}>
                     <div className="col-xs-4 text-center" style={STYLING.logoutButtonPadding}>
-                        <Link to="/login" className="btn btn-default btn-flat"
-                              onClick={this.handleSignOut}
-                              style={STYLING.logoutButtonBorder}>Sign Out
-                        </Link>
+                        <Button onClick={this.handleSignOut}
+                                style={STYLING.logoutButtonBorder}>Sign Out
+                        </Button>
                     </div>
                 </li>
             </ul>

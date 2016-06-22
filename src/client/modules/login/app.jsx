@@ -5,12 +5,12 @@
 // Libraries
 import React from 'react/lib/React';
 // Self-defined
-import RestClient from '../../rest_client/restClient';
+import LoginClient from '../../rest_client/loginClient';
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.restClient = new RestClient('');
+        this.loginClient = new LoginClient('');
     }
 
     render() {
@@ -18,7 +18,7 @@ export default class App extends React.Component {
         // Passing props through the route
         let FormWithBasePath = React.Children.map(this.props.children,
             child => React.cloneElement(child, {
-                restClient: this.restClient,
+                loginClient: this.loginClient,
                 basePath: this.props.route.basePath
             }));
 

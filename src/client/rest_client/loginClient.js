@@ -25,7 +25,8 @@ export default class LoginClient {
      * @return {Promise} resolves if successfully logged in.
      */
     login(userId, password, redirectUrl) {
-        let url = this.baseUrl + '/login',
+        // let url = this.baseUrl + '/login',
+        let url = '/login',
             data = {
                 userId: userId,
                 password: password
@@ -36,12 +37,12 @@ export default class LoginClient {
                 .post(url)
                 .send(data)
                 .query({redirect: redirectUrl})
-                .query({username: userId})
+                // .query({username: userId})
                 .end((err, res) => {
                     if (err || !res.ok) {
                         reject(err);
                     } else {
-                        resolve(res.body);
+                        resolve(res);
                     }
                 });
         });

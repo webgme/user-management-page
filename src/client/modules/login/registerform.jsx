@@ -85,7 +85,7 @@ export default class RegisterForm extends React.Component {
         });
 
         if (allValid) {
-            this.props.restClient.login.register(this.state.userId, this.state.password, this.state.email)
+            this.props.loginClient.register(this.state.userId, this.state.password, this.state.email)
                 .catch(err => {
                     console.error(err); // eslint-disable-line no-console
                 });
