@@ -48,8 +48,7 @@ export default class RegisterForm extends React.Component {
             this.setState({
                 validCredentials: {
                     agreeToTerms: this.state.agreeToTerms,
-                    confirmPassword: this.state.password === this.state.confirmPassword &&
-                    this.state.confirmPassword !== '',
+                    confirmPassword: this.state.password === this.state.confirmPassword,
                     email: verifyEmail(this.state.email),
                     password: verifyPassword(this.state.password),
                     userId: verifyUserId(this.state.userId)
@@ -149,8 +148,8 @@ export default class RegisterForm extends React.Component {
                             iconClass="glyphicon glyphicon-lock"
                             invalidMessage={"Password must be at least 3 characters long and must not be " +
                                             "a poor password such as 'password'"}
-                            textType="password"
                             onInputChange={this.onPasswordChange}
+                            textType="password"
                             valid={this.state.validCredentials.password}
                             value={this.state.password}/>
 
@@ -158,8 +157,8 @@ export default class RegisterForm extends React.Component {
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
                             invalidMessage={"Passwords must match"}
-                            textType="password"
                             onInputChange={this.onConfirmPasswordChange}
+                            textType="password"
                             valid={this.state.validCredentials.confirmPassword}
                             value={this.state.confirmPassword}/>
 
@@ -202,3 +201,8 @@ export default class RegisterForm extends React.Component {
         </div>;
     }
 }
+
+RegisterForm.propTypes = {
+    basePath: React.PropTypes.string.isRequired,
+    loginClient: React.PropTypes.object
+};

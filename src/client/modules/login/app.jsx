@@ -8,6 +8,7 @@ import React from 'react/lib/React';
 import LoginClient from '../../rest_client/loginClient';
 
 export default class App extends React.Component {
+
     constructor(props) {
         super(props);
         this.loginClient = new LoginClient('');
@@ -34,3 +35,9 @@ export default class App extends React.Component {
         );
     }
 }
+
+App.propTypes = {
+    route: React.PropTypes.shape({
+        basePath: React.PropTypes.string.isRequired
+    })
+};

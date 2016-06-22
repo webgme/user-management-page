@@ -164,3 +164,8 @@ export default class LoginForm extends React.Component {
         </div>;
     }
 }
+
+LoginForm.propTypes = {
+    basePath: React.PropTypes.string.isRequired,
+    loginClient: React.PropTypes.object
+};

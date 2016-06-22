@@ -2,6 +2,7 @@
  * Template login field
  * @author patrickkerypei / https://github.com/patrickkerrypei
  */
+
 // Libraries
 import React from 'react';
 
@@ -46,3 +47,13 @@ export default class LoginField extends React.Component {
         );
     }
 }
+
+LoginField.propTypes = {
+    hint: React.PropTypes.string.isRequired,
+    iconClass: React.PropTypes.string.isRequired,
+    invalidMessage: React.PropTypes.string,
+    onEnter: React.PropTypes.func,
+    onInputChange: React.PropTypes.func.isRequired,
+    valid: React.PropTypes.bool,
+    value: React.PropTypes.string.isRequired
+};

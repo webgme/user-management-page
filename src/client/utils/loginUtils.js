@@ -19,7 +19,7 @@ export function verifyEmail(email) {
  * @return {boolean} - T/F valid password
  */
 export function verifyPassword(password) {
-    let badPasswords = ['password', '123', 'usermanagementsucks'];
+    let badPasswords = ['password', '123'];
     return password.length >= 3 &&
            badPasswords.indexOf(password) === -1;
 }

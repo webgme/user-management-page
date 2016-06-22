@@ -1,4 +1,5 @@
 /* global document, require */
+
 /**
  * Entry point for login/register page.
  *
