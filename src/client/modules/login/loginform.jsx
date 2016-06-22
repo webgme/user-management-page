@@ -53,9 +53,7 @@ export default class LoginForm extends React.Component {
 
     onSignIn() {
 
-        this.props.loginClient.login(this.state.userId,
-                                          this.state.password,
-                                          "http://localhost:8888/rest/external/usermanagement/")
+        this.props.loginClient.login(this.state.userId, this.state.password, window.location.href)
             .then(res => {
                 if (/2\d\d/.test(res.statusCode)) {
                     let redirect = res.req._query[0],
