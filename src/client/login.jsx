@@ -11,7 +11,6 @@ import React from 'react';
 import {render} from 'react-dom';
 import Route from 'react-router/lib/Route';
 import Router from 'react-router/lib/Router';
-
 // Self-defined
 import App from './modules/login/app';
 import LoginForm from './modules/login/LoginForm';
