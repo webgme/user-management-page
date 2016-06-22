@@ -9,6 +9,13 @@ export default class LoginField extends React.Component {
 
     constructor(props) {
         super(props);
+        this.checkEnter = this.checkEnter.bind(this);
+    }
+
+    checkEnter(event) {
+        if (event.which === 13) {
+            this.props.onEnter();
+        }
     }
 
     render() {
@@ -23,17 +30,16 @@ export default class LoginField extends React.Component {
                            className="form-control"
                            placeholder={this.props.hint}
                            onChange={this.props.onInputChange}
+                           onKeyUp={this.checkEnter}
                            value={this.props.value}/>
                     <br/>
                 </div>
 
-                {/*
-                <div className="row">
-                    <div className="col-sm-12" style={{textAlign: "center"}}>
-                        <span style={{color: "red", textAlign: "center"}}>Invalid input</span>
-                    </div>
-                </div>
-                */}
+                {!this.props.valid ? <div className="row">
+                        <div className="col-sm-12" style={{textAlign: "center"}}>
+                            <span style={{color: "red", textAlign: "center"}}>{this.props.invalidMessage}</span>
+                        </div>
+                    </div> : null}
 
                 <br/>
             </div>

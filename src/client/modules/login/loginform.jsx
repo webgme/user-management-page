@@ -19,7 +19,8 @@ export default class LoginForm extends React.Component {
         this.state = {
             password: '',
             rememberMe: false,
-            userId: ''
+            userId: '',
+            validCredentials: true
         };
         // Event handlers
         this.onPasswordChange = this.onPasswordChange.bind(this);
@@ -44,13 +45,15 @@ export default class LoginForm extends React.Component {
         this.props.restClient.login.login(this.state.userId, this.state.password, this.props.basePath)
             .catch(err => {
                 console.error(err); // eslint-disable-line no-console
+                this.setState({
+                    validCredentials: false
+                });
             });
 
         // Reset fields
         this.setState({
             password: '',
-            rememberMe: false,
-            userId: ''
+            rememberMe: false
         });
     }
 
@@ -62,7 +65,18 @@ export default class LoginForm extends React.Component {
 
     render() {
         return <div className="login-box-body">
-            <p className="login-box-msg">Sign in to start your session</p>
+            <p className="login-box-msg">
+                Sign in to start your session
+            </p>
+
+            {!this.state.validCredentials ? <div>
+                <div className="row">
+                    <div className="col-sm-12" style={{textAlign: "center"}}>
+                        <span style={{color: "red", textAlign: "center"}}>Invalid username or password</span>
+                    </div>
+                </div>
+                <br/>
+            </div> : null}
 
             <form>
 
@@ -75,6 +89,7 @@ export default class LoginForm extends React.Component {
                 {/* Password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
+                            onEnter={this.onSignIn}
                             onInputChange={this.onPasswordChange}
                             textType="password"
                             value={this.state.password}/>

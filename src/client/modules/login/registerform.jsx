@@ -20,16 +20,34 @@ export default class RegisterForm extends React.Component {
             confirmPassword: '',
             email: '',
             password: '',
-            userId: ''
+            userId: '',
+            validCredentials: {
+                confirmPassword: true,
+                email: true,
+                password: true,
+                userId: true
+            }
         };
 
         // Event handlers
+        this.checkFields = this.checkFields.bind(this);
         this.onAgreeToTermsChange = this.onAgreeToTermsChange.bind(this);
         this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRegister = this.onRegister.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
+    }
+
+    checkFields() {
+        this.setState({
+            validCredentials: {
+                confirmPassword: this.state.password === this.state.confirmPassword,
+                email: verifyEmail(this.state.email),
+                password: verifyPassword(this.state.password),
+                userId: verifyUserId(this.state.userId)
+            }
+        });
     }
 
     onAgreeToTermsChange() {
@@ -57,10 +75,21 @@ export default class RegisterForm extends React.Component {
     }
 
     onRegister() {
-        this.props.restClient.login.register(this.state.userId, this.state.password, this.state.email)
-            .catch(err => {
-                console.error(err); // eslint-disable-line no-console
-            });
+        this.checkFields();
+
+        let allValid = true;
+        Object.keys(this.state.validCredentials).forEach(key => {
+            if (!this.state.validCredentials[key]) {
+                allValid = false;
+            }
+        });
+
+        if (allValid) {
+            this.props.restClient.login.register(this.state.userId, this.state.password, this.state.email)
+                .catch(err => {
+                    console.error(err); // eslint-disable-line no-console
+                });
+        }
 
         // Reset fields
         this.setState({
@@ -87,27 +116,37 @@ export default class RegisterForm extends React.Component {
                 {/* Username */}
                 <LoginField hint="User ID"
                             iconClass="glyphicon glyphicon-user"
+                            invalidMessage={"Username must only contain letters, numbers, and the underscore" +
+                                            " and must be at least 3 characters long"}
                             onInputChange={this.onUserIdChange}
+                            valid={this.state.validCredentials.userId}
                             value={this.state.userId}/>
 
                 {/* Email */}
                 <LoginField hint="Email"
                             iconClass="glyphicon glyphicon-envelope"
+                            invalidMessage={"Invalid email"}
                             onInputChange={this.onEmailChange}
+                            valid={this.state.validCredentials.email}
                             value={this.state.email}/>
 
                 {/* Password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
+                            invalidMessage={"Password must be at least 3 characters long and must not be " +
+                                            "a poor password such as 'password'"}
                             textType="password"
                             onInputChange={this.onPasswordChange}
+                            valid={this.state.validCredentials.password}
                             value={this.state.password}/>
 
                 {/* Confirm password */}
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
+                            invalidMessage={"Passwords must match"}
                             textType="password"
                             onInputChange={this.onConfirmPasswordChange}
+                            valid={this.state.validCredentials.confirmPassword}
                             value={this.state.confirmPassword}/>
 
                 {/* Remember Check / Sign in attempt */}
@@ -122,11 +161,8 @@ export default class RegisterForm extends React.Component {
 
                     <div className="col-sm-6">
                         <Button bsStyle="warning"
-                                style={{float: "right"}}
-                                disabled={!(verifyEmail(this.state.email) &&
-                                            verifyPassword(this.state.password) &&
-                                            verifyUserId(this.state.userId) &&
-                                            this.state.agreeToTerms)}>
+                                onClick={this.onRegister}
+                                style={{float: "right"}}>
                             Register
                         </Button>
                     </div>
