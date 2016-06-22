@@ -123,7 +123,7 @@ export default class LoginForm extends React.Component {
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
-                    <div className="col-sm-6">
+                    <div className="col-sm-8">
 
                         <Checkbox checked={this.state.rememberMe}
                                   onChange={this.onRememberMeChange}
@@ -141,16 +141,15 @@ export default class LoginForm extends React.Component {
                             <Link to={`${this.props.basePath}login`}>I forgot my password</Link>
                         </OverlayTrigger>
 
+                        <br/>
+                        <Link to={`${this.props.basePath}register`}>
+                            Register
+                        </Link>
                     </div>
 
-                    <div className="col-sm-6">
+                    <div className="col-sm-4">
 
                         <div style={{float: "right", marginTop: "5px"}}>
-                            <Link to={`${this.props.basePath}register`}>
-                                <Button bsStyle="warning">
-                                    Register
-                                </Button>
-                            </Link>
                             <Button bsStyle="primary" onClick={this.onSignIn}>
                                 Sign In
                             </Button>

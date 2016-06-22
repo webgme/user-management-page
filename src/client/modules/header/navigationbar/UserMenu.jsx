@@ -1,12 +1,9 @@
-/* global window, require */
-
 /**
  * User menu of the header component
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
-import browserHistory from 'react-router/lib/browserHistory';
 import Button from 'react-bootstrap/lib/Button';
 import React from 'react/lib/React';
 
@@ -29,7 +26,6 @@ export default class UserMenu extends React.Component {
         this.state = {
             userData: {_id: 'loading'}
         };
-        this.handleSignOut = this.handleSignOut.bind(this);
     }
 
     componentDidMount() {
@@ -38,12 +34,6 @@ export default class UserMenu extends React.Component {
             .then(function(data) {
                 self.setState({userData: data});
             });
-    }
-
-    handleSignOut() {
-        // Manually reload page or won't actually show login page (not part of user management)
-        browserHistory.push(`${this.props.basePath}login`);
-        window.location.reload();
     }
 
     render() {
@@ -63,9 +53,9 @@ export default class UserMenu extends React.Component {
                 </li>
                 <li className="user-footer" style={STYLING.logoutAreaBorder}>
                     <div className="col-xs-4 text-center" style={STYLING.logoutButtonPadding}>
-                        <Button onClick={this.handleSignOut}
-                                style={STYLING.logoutButtonBorder}>Sign Out
-                        </Button>
+                        <a href="/logout">
+                            <Button style={STYLING.logoutButtonBorder}>Sign Out</Button>
+                        </a>
                     </div>
                 </li>
             </ul>

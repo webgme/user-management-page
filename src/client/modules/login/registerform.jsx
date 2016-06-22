@@ -95,7 +95,7 @@ export default class RegisterForm extends React.Component {
 
                 if (allValid) {
                     this.props.loginClient.register(this.state.userId, this.state.password, this.state.email)
-                        .then(res => {
+                        .then(() => {
                             browserHistory.push(this.props.basePath);
                             window.location.reload();
                         })
@@ -188,7 +188,7 @@ export default class RegisterForm extends React.Component {
                     </div>
 
                     <div className="col-sm-4">
-                        <Button bsStyle="warning"
+                        <Button bsStyle="primary"
                                 onClick={this.onRegister}
                                 style={{float: "right", marginTop: "5px"}}>
                             Register

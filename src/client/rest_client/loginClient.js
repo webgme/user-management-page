@@ -3,6 +3,8 @@
  */
 
 /* eslint-env node, browser */
+
+// Libraries
 import superagent from 'superagent';
 
 /**
@@ -21,12 +23,10 @@ export default class LoginClient {
      * If successful client will be redirected to the path given in query parameter
      * @param {string} userId - id of user
      * @param {string} password - password of user
-     * @param {string} redirectUrl - where to redirect on success
      * @return {Promise} resolves if successfully logged in.
      */
     login(userId, password) {
-        // let url = this.baseUrl + '/login',
-        let url = '/login',
+        let url = this.baseUrl + '/login',
             data = {
                 userId: userId,
                 password: password
@@ -36,35 +36,11 @@ export default class LoginClient {
             superagent
                 .post(url)
                 .send(data)
-                // .query({redirect: redirectUrl})
-                // .query({username: userId})
                 .end((err, res) => {
                     if (err || !res.ok) {
                         reject(err);
                     } else {
                         resolve(res);
-                    }
-                });
-        });
-    }
-
-    /**
-     * Post request for logging out
-     * Cookies will be cleared and user will be redirected to login page
-     * @return {Promise} resolves if successfully logged in.
-     */
-    logout() {
-        // let url = this.baseUrl + '/login';
-        let url = '/login';
-
-        return new Promise((resolve, reject) => {
-            superagent
-                .post(url)
-                .end((err, res) => {
-                    if (err || !res.ok) {
-                        reject(err);
-                    } else {
-                        resolve(res.body);
                     }
                 });
         });
@@ -78,8 +54,7 @@ export default class LoginClient {
      * @return {Promise} - resolves if successfully added user, rejects otherwise.
      */
     register(userId, password, email) {
-        // let url = this.baseUrl + '/api/register',
-        let url = '/api/register',
+        let url = this.baseUrl + '/api/register',
             data = {
                 userId: userId,
                 password: password,
