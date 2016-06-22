@@ -203,6 +203,6 @@ export default class RegisterForm extends React.Component {
 }
 
 RegisterForm.propTypes = {
-    basePath: React.PropTypes.string.isRequired,
+    basePath: React.PropTypes.string,
     loginClient: React.PropTypes.object
 };
