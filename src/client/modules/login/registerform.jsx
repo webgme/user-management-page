@@ -1,9 +1,12 @@
+/* global window */
+
 /**
  * @author pmeijer / https://github.com/pmeijer
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
+import browserHistory from 'react-router/lib/browserHistory';
 import Button from 'react-bootstrap/lib/Button';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import Link from 'react-router/lib/Link';
@@ -22,6 +25,7 @@ export default class RegisterForm extends React.Component {
             password: '',
             userId: '',
             validCredentials: {
+                agreeToTerms: true,
                 confirmPassword: true,
                 email: true,
                 password: true,
@@ -40,14 +44,18 @@ export default class RegisterForm extends React.Component {
     }
 
     checkFields() {
-        this.setState({
-            validCredentials: {
-                confirmPassword: this.state.password === this.state.confirmPassword,
-                email: verifyEmail(this.state.email),
-                password: verifyPassword(this.state.password),
-                userId: verifyUserId(this.state.userId)
-            }
-        });
+        return Promise.resolve(
+            this.setState({
+                validCredentials: {
+                    agreeToTerms: this.state.agreeToTerms,
+                    confirmPassword: this.state.password === this.state.confirmPassword &&
+                    this.state.confirmPassword !== '',
+                    email: verifyEmail(this.state.email),
+                    password: verifyPassword(this.state.password),
+                    userId: verifyUserId(this.state.userId)
+                }
+            })
+        );
     }
 
     onAgreeToTermsChange() {
@@ -75,30 +83,36 @@ export default class RegisterForm extends React.Component {
     }
 
     onRegister() {
-        this.checkFields();
-
         let allValid = true;
-        Object.keys(this.state.validCredentials).forEach(key => {
-            if (!this.state.validCredentials[key]) {
-                allValid = false;
-            }
-        });
 
-        if (allValid) {
-            this.props.loginClient.register(this.state.userId, this.state.password, this.state.email)
-                .catch(err => {
-                    console.error(err); // eslint-disable-line no-console
+        this.checkFields()
+            .then(() => {
+                Object.keys(this.state.validCredentials).forEach(key => {
+                    if (!this.state.validCredentials[key]) {
+                        allValid = false;
+                    }
                 });
-        }
 
-        // Reset fields
-        this.setState({
-            agreeToTerms: false,
-            confirmPassword: '',
-            email: '',
-            password: '',
-            userId: ''
-        });
+                if (allValid) {
+                    this.props.loginClient.register(this.state.userId, this.state.password, this.state.email)
+                        .then(res => {
+                            browserHistory.push(this.props.basePath);
+                            window.location.reload();
+                        })
+                        .catch(err => {
+                            console.error(err); // eslint-disable-line no-console
+                        });
+                } else {
+                    // Reset fields
+                    this.setState({
+                        agreeToTerms: false,
+                        confirmPassword: '',
+                        email: '',
+                        password: '',
+                        userId: ''
+                    });
+                }
+            });
     }
 
     onUserIdChange(event) {
@@ -151,6 +165,13 @@ export default class RegisterForm extends React.Component {
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
+
+                    {!this.state.validCredentials.agreeToTerms ? // eslint-disable-line no-negated-condition
+                        <div className="row">
+                            <div className="col-sm-12" style={{textAlign: "left"}}>
+                                <span style={{color: "red", textAlign: "left"}}>Please agree to the terms</span>
+                            </div>
+                        </div> : null}
 
                     <Checkbox className="col-sm-6"
                               checked={this.state.agreeToTerms}

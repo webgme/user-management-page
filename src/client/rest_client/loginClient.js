@@ -54,7 +54,8 @@ export default class LoginClient {
      * @return {Promise} resolves if successfully logged in.
      */
     logout() {
-        let url = this.baseUrl + '/login';
+        // let url = this.baseUrl + '/login';
+        let url = '/login';
 
         return new Promise((resolve, reject) => {
             superagent
@@ -77,7 +78,8 @@ export default class LoginClient {
      * @return {Promise} - resolves if successfully added user, rejects otherwise.
      */
     register(userId, password, email) {
-        let url = this.baseUrl + '/api/register',
+        // let url = this.baseUrl + '/api/register',
+        let url = '/api/register',
             data = {
                 userId: userId,
                 password: password,
