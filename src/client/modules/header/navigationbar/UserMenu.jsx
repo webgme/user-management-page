@@ -3,9 +3,9 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-/* global window, require */
+// Libraries
+import Button from 'react-bootstrap/lib/Button';
 import React from 'react/lib/React';
-import Link from 'react-router/lib/Link';
 
 const STYLING = {
     logoutButtonPadding: {
@@ -26,7 +26,6 @@ export default class UserMenu extends React.Component {
         this.state = {
             userData: {_id: 'loading'}
         };
-        this.handleSignOut = this.handleSignOut.bind(this);
     }
 
     componentDidMount() {
@@ -35,11 +34,6 @@ export default class UserMenu extends React.Component {
             .then(function(data) {
                 self.setState({userData: data});
             });
-    }
-
-    handleSignOut() {
-        // Manually reload page or won't actually show login page (not part of user management)
-        window.location.reload();
     }
 
     render() {
@@ -59,10 +53,9 @@ export default class UserMenu extends React.Component {
                 </li>
                 <li className="user-footer" style={STYLING.logoutAreaBorder}>
                     <div className="col-xs-4 text-center" style={STYLING.logoutButtonPadding}>
-                        <Link to="/login" className="btn btn-default btn-flat"
-                              onClick={this.handleSignOut}
-                              style={STYLING.logoutButtonBorder}>Sign Out
-                        </Link>
+                        <a href="/logout">
+                            <Button style={STYLING.logoutButtonBorder}>Sign Out</Button>
+                        </a>
                     </div>
                 </li>
             </ul>

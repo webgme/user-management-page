@@ -16,17 +16,17 @@ import UsersClient from './usersClient';
 function RestClient(baseUrl, debugMode) {
     baseUrl = baseUrl || '/api/';
 
+    this.organizations = new OrganizationsClient(baseUrl);
+    this.projects = new ProjectsClient(baseUrl);
     this.user = new UserClient(baseUrl, debugMode);
     this.users = new UsersClient(baseUrl);
-    this.projects = new ProjectsClient(baseUrl);
-    this.organizations = new OrganizationsClient(baseUrl);
 
     /**
      * Returns a boolean for if the current user can authorize others to the project
      * @param {string} ownerId - id of owner
      * @return {Promise.<boolean>} - Boolean on if authorized!
      */
-    this.canUserAuthorize = function(ownerId) {
+    this.canUserAuthorize = ownerId => {
         let authorization = false;
 
         return this.user.getCurrentUser()

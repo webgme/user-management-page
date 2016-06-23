@@ -59,9 +59,6 @@ render((
 
         </Route>
 
-        {/* Empty path, reloads to login page*/}
-        <Route path="/login"/>
-
     </Router>
 
 ), document.getElementById('mainEntry'));

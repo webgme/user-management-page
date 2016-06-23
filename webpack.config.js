@@ -10,7 +10,8 @@ var webpack = require('webpack'),
 
 module.exports = {
     entry: {
-        main: path.join(SRC_DIR, 'main.jsx')
+        main: path.join(SRC_DIR, 'main.jsx'),
+        login: path.join(SRC_DIR, 'login.jsx')
     },
     output: {
         path: DIST_DIR,

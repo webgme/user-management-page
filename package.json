@@ -61,7 +61,7 @@
     "express": "^4.13.4",
     "http-server": "^0.8.5",
     "mocha": "^2.4.5",
-    "webgme": "webgme/webgme#master",
+    "webgme": "webgme/webgme#user-profile",
     "webpack-dev-server": "^1.14.1"
   }
 }

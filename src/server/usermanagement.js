@@ -41,8 +41,7 @@ function initialize(middlewareOpts) {
     router.use(bodyParser.json({}));
     router.use(bodyParser.urlencoded({extended: true}));
     router.use('*', function(req, res, next) {
-        // TODO: set all headers, check rate limit, etc.
-        res.setHeader('X-WebGME-Media-Type', 'webgme.v2');
+        // res.setHeader('X-WebGME-Media-Type', 'webgme.v2');
         next();
     });
 
@@ -52,10 +51,26 @@ function initialize(middlewareOpts) {
         serveFile(onlyFileExtension, res);
     });
 
+    router.get(['/login', '/register'], function(req, res) {
+        logger.info('Login path taken:', req.originalUrl);
+
+        fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function(err, indexTemplate) {
+            if (err) {
+                logger.error(err);
+                res.send(404);
+            } else {
+                res.contentType('text/html');
+                res.send(ejs.render(indexTemplate, {
+                    baseUrl: req.baseUrl
+                }));
+            }
+        });
+    });
+
     const ROUTES = ['/', '/home', '/projects', '/profile', '/organizations',
         /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
 
-    router.get(ROUTES, function(req, res) {
+    router.get(ROUTES, ensureAuthenticated, function(req, res) {
 
         fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function(err, indexTemplate) {
             if (err) {

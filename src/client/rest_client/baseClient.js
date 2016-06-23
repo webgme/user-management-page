@@ -20,12 +20,12 @@ export default class BaseClient {
      */
     get(path, query) {
         query = query || '';
-        var url = this.baseUrl + path + '/' + query;
+        let url = this.baseUrl + path + '/' + query;
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             superagent
                 .get(url)
-                .end(function(err, res) {
+                .end((err, res) => {
                     if (err || !res.ok) {
                         reject(err);
                     } else {
@@ -42,13 +42,13 @@ export default class BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     put(path, value) {
-        var url = this.baseUrl + path;
+        let url = this.baseUrl + path;
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             superagent
                 .put(url)
                 .send(value)
-                .end(function(err, res) {
+                .end((err, res) => {
                     if (err) {
                         console.log(err); // eslint-disable-line no-console
                         reject(err);
@@ -57,7 +57,6 @@ export default class BaseClient {
                     }
                 });
         });
-
     }
 
     /**
@@ -67,13 +66,13 @@ export default class BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     patch(path, value) {
-        var url = this.baseUrl + path;
+        let url = this.baseUrl + path;
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             superagent
                 .patch(url)
                 .send(value)
-                .end(function(err, res) {
+                .end((err, res) => {
                     if (err) {
                         console.log(err); // eslint-disable-line no-console
                         reject(err);
@@ -90,12 +89,12 @@ export default class BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     delete(path) {
-        var url = this.baseUrl + path;
+        let url = this.baseUrl + path;
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             superagent
                 .delete(url)
-                .end(function(err, res) {
+                .end((err, res) => {
                     if (err || !res.ok) {
                         console.log(err); // eslint-disable-line no-console
                         reject(err);
