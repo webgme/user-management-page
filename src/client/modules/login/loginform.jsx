@@ -90,19 +90,21 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
+
         return <div className="login-box-body">
             <p className="login-box-msg">
                 Sign in to start your session
             </p>
 
-            {!this.state.validCredentials ? <div>
-                <div className="row">
-                    <div className="col-sm-12" style={{textAlign: "center"}}>
-                        <span style={{color: "red", textAlign: "center"}}>Invalid username or password</span>
+            {!this.state.validCredentials ?
+                <div>
+                    <div className="row">
+                        <div className="col-sm-12" style={{textAlign: "center"}}>
+                            <span style={{color: "red", textAlign: "center"}}>Invalid username or password</span>
+                        </div>
                     </div>
-                </div>
-                <br/>
-            </div> : null}
+                    <br/>
+                </div> : null}
 
             <form>
 
@@ -110,8 +112,7 @@ export default class LoginForm extends React.Component {
                 <LoginField hint="User ID"
                             iconClass="glyphicon glyphicon-user"
                             onInputChange={this.onUserIdChange}
-                            value={this.state.userId}
-                            warning={!this.state.validCredentials}/>
+                            value={this.state.userId}/>
 
                 {/* Password */}
                 <LoginField hint="Password"
@@ -144,7 +145,6 @@ export default class LoginForm extends React.Component {
                                 </Popover>}>
                             <Link to={`${this.props.basePath}login`}>I forgot my password</Link>
                         </OverlayTrigger>
-
 
                         <br/>*/}
                         <Link to={`${this.props.basePath}register`}>

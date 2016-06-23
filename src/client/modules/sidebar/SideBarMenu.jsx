@@ -53,6 +53,7 @@ export default class SideBarMenu extends React.Component {
                 </Link>
             </li>
 
+            {/*
             <li className="treeview">
                 <a href="#">
                     <i className="fa fa-link"/> <span>Multilevel</span> <i className="fa fa-angle-left pull-right"/>
@@ -62,6 +63,7 @@ export default class SideBarMenu extends React.Component {
                     <li><a href="#"><i className="fa fa-circle-o"/>Sublevel 2</a></li>
                 </ul>
             </li>
+            */}
 
         </ul>
         );

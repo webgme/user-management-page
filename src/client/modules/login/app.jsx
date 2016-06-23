@@ -14,6 +14,10 @@ export default class App extends React.Component {
         this.loginClient = new LoginClient('');
     }
 
+    componentDidMount() {
+        document.getElementsByClassName("login-box")[0].focus();
+    }
+
     render() {
 
         // Passing props through the route

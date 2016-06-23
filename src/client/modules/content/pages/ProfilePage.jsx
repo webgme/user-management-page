@@ -15,7 +15,7 @@ const STYLING = {
     }
 };
 
-export default class UserProfilePage extends React.Component {
+export default class ProfilePage extends React.Component {
 
     constructor(props) {
         super(props);
