@@ -8,8 +8,8 @@
 
 // Libraries
 import browserHistory from 'react-router/lib/browserHistory';
-import React from 'react';
-import {render} from 'react-dom';
+import React from 'react/lib/React';
+import {render} from 'react/lib/ReactMount';
 import Route from 'react-router/lib/Route';
 import Router from 'react-router/lib/Router';
 // Self-defined

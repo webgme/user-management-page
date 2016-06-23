@@ -4,7 +4,7 @@
  */
 
 // Libraries
-import React from 'react';
+import React from 'react/lib/React';
 
 export default class LoginField extends React.Component {
 
@@ -23,13 +23,14 @@ export default class LoginField extends React.Component {
         return (
             <div>
 
-                <div className="input-group">
+                <div className={`input-group ${this.props.warning ? 'has-error' : ''}`}>
                     <span className="input-group-addon">
                         <i className={this.props.iconClass}/>
                     </span>
                     <input type={this.props.textType || "text"}
                            className="form-control"
                            placeholder={this.props.hint}
+                           onBlur={this.props.value !== '' ? this.props.onBlur : null}
                            onChange={this.props.onInputChange}
                            onKeyUp={this.checkEnter}
                            value={this.props.value}/>
@@ -52,8 +53,10 @@ LoginField.propTypes = {
     hint: React.PropTypes.string.isRequired,
     iconClass: React.PropTypes.string.isRequired,
     invalidMessage: React.PropTypes.string,
+    onBlur: React.PropTypes.func,
     onEnter: React.PropTypes.func,
     onInputChange: React.PropTypes.func.isRequired,
     valid: React.PropTypes.bool,
-    value: React.PropTypes.string.isRequired
+    value: React.PropTypes.string.isRequired,
+    warning: React.PropTypes.bool
 };
