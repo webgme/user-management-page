@@ -96,16 +96,17 @@ export default class ProjectAuthorizationWidget extends React.Component {
     render() {
 
         let authorizationWidgetData = {
+            // Have to make these selectable to be in the right place
             submitButtons: [
                 {
-                    submitButtonHandler: this.handleSubmitAuthorization,
-                    submitButtonText: this.props.display === 1 ? 'Add members' : 'Add admins',
-                    submitButtonState: "success"
+                    selectableButtonChange: this.handleSubmitAuthorization,
+                    selectableButtonText: this.props.display === 1 ? 'Add members' : 'Add admins',
+                    selectableButtonState: "success"
                 },
                 {
-                    submitButtonHandler: this.handleSubmitAuthorization,
-                    submitButtonText: this.props.display === 1 ? 'Remove members' : 'Remove admins',
-                    submitButtonState: "danger"
+                    selectableButtonChange: this.handleSubmitAuthorization,
+                    selectableButtonText: this.props.display === 1 ? 'Remove members' : 'Remove admins',
+                    selectableButtonState: "danger"
                 }
             ]
         };
@@ -117,9 +118,8 @@ export default class ProjectAuthorizationWidget extends React.Component {
                              multiselectOptions={this.state.multiselectOptions}
                              ownerId={this.props.organizationId}
                              restClient={this.props.restClient}
-                             selectableButtons={{}}
+                             selectableButtons={authorizationWidgetData.submitButtons}
                              selectableButtonsChange={this.handleAuthorizationChange}
-                             submitButtons={authorizationWidgetData.submitButtons}
                              valuesInMultiselect={this.state.valuesInMultiselect}/>
         );
     }
