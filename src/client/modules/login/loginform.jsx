@@ -90,19 +90,21 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
+
         return <div className="login-box-body">
             <p className="login-box-msg">
                 Sign in to start your session
             </p>
 
-            {!this.state.validCredentials ? <div>
-                <div className="row">
-                    <div className="col-sm-12" style={{textAlign: "center"}}>
-                        <span style={{color: "red", textAlign: "center"}}>Invalid username or password</span>
+            {!this.state.validCredentials ?
+                <div>
+                    <div className="row">
+                        <div className="col-sm-12" style={{textAlign: "center"}}>
+                            <span style={{color: "red", textAlign: "center"}}>Invalid username or password</span>
+                        </div>
                     </div>
-                </div>
-                <br/>
-            </div> : null}
+                    <br/>
+                </div> : null}
 
             <form>
 
@@ -118,21 +120,24 @@ export default class LoginForm extends React.Component {
                             onEnter={this.onSignIn}
                             onInputChange={this.onPasswordChange}
                             textType="password"
-                            value={this.state.password}/>
+                            value={this.state.password}
+                            warning={!this.state.validCredentials}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
-                    <div className="col-sm-8">
+                    <div className="col-sm-8" style={{paddingTop: "10px"}}>
 
+                        {/*
                         <Checkbox checked={this.state.rememberMe}
                                   onChange={this.onRememberMeChange}
                                   style={{marginBottom: 0}}
                                   validationState={this.state.rememberMe ? "success" : "warning"}>
                             Remember Me
                         </Checkbox>
+                        */}
 
-                        {/* TODO: implement system for forgot password */}
+                        {/* TODO: implement system for forgot password
                         <OverlayTrigger trigger="click"
                                         placement="bottom"
                                         overlay={<Popover title="" id="randomId">
@@ -141,7 +146,7 @@ export default class LoginForm extends React.Component {
                             <Link to={`${this.props.basePath}login`}>I forgot my password</Link>
                         </OverlayTrigger>
 
-                        <br/>
+                        <br/>*/}
                         <Link to={`${this.props.basePath}register`}>
                             Register
                         </Link>
@@ -150,7 +155,9 @@ export default class LoginForm extends React.Component {
                     <div className="col-sm-4">
 
                         <div style={{float: "right", marginTop: "5px"}}>
-                            <Button bsStyle="primary" onClick={this.onSignIn}>
+                            <Button bsStyle="primary"
+                                    onClick={this.onSignIn}
+                                disabled={this.state.userId === '' || this.state.password.length < 3}>
                                 Sign In
                             </Button>
                         </div>

@@ -81,7 +81,7 @@ export default class OrganizationsTable extends React.Component {
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
-                        <i className="fa fa-cube"/> {` Projects`}
+                        <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
                 </div>
 

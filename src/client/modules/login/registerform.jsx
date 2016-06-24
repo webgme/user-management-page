@@ -19,7 +19,7 @@ export default class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            agreeToTerms: false,
+            // agreeToTerms: false,
             confirmPassword: '',
             email: '',
             password: '',
@@ -34,7 +34,10 @@ export default class RegisterForm extends React.Component {
         };
 
         // Event handlers
-        this.checkFields = this.checkFields.bind(this);
+        this.checkAllFields = this.checkAllFields.bind(this);
+        this.checkEmail = this.checkEmail.bind(this);
+        this.checkPassword = this.checkPassword.bind(this);
+        this.checkUserId = this.checkUserId.bind(this);
         this.onAgreeToTermsChange = this.onAgreeToTermsChange.bind(this);
         this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -43,11 +46,11 @@ export default class RegisterForm extends React.Component {
         this.onUserIdChange = this.onUserIdChange.bind(this);
     }
 
-    checkFields() {
+    checkAllFields() {
         return Promise.resolve(
             this.setState({
                 validCredentials: {
-                    agreeToTerms: this.state.agreeToTerms,
+                    // agreeToTerms: this.state.agreeToTerms,
                     confirmPassword: this.state.password === this.state.confirmPassword,
                     email: verifyEmail(this.state.email),
                     password: verifyPassword(this.state.password),
@@ -55,6 +58,42 @@ export default class RegisterForm extends React.Component {
                 }
             })
         );
+    }
+
+    checkEmail() {
+        this.setState({
+            validCredentials: {
+                // agreeToTerms: this.state.validCredentials.agreeToTerms,
+                confirmPassword: this.state.validCredentials.confirmPassword,
+                email: verifyEmail(this.state.email),
+                password: this.state.validCredentials.password,
+                userId: this.state.validCredentials.userId
+            }
+        });
+    }
+
+    checkPassword() {
+        this.setState({
+            validCredentials: {
+                // agreeToTerms: this.state.validCredentials.agreeToTerms,
+                confirmPassword: this.state.validCredentials.confirmPassword,
+                email: this.state.validCredentials.email,
+                password: verifyPassword(this.state.password),
+                userId: this.state.validCredentials.userId
+            }
+        });
+    }
+
+    checkUserId() {
+        this.setState({
+            validCredentials: {
+                // agreeToTerms: this.state.validCredentials.agreeToTerms,
+                confirmPassword: this.state.validCredentials.confirmPassword,
+                email: this.state.validCredentials.email,
+                password: this.state.validCredentials.password,
+                userId: verifyUserId(this.state.userId)
+            }
+        });
     }
 
     onAgreeToTermsChange() {
@@ -84,7 +123,7 @@ export default class RegisterForm extends React.Component {
     onRegister() {
         let allValid = true;
 
-        this.checkFields()
+        this.checkAllFields()
             .then(() => {
                 Object.keys(this.state.validCredentials).forEach(key => {
                     if (!this.state.validCredentials[key]) {
@@ -104,11 +143,11 @@ export default class RegisterForm extends React.Component {
                 } else {
                     // Reset fields
                     this.setState({
-                        agreeToTerms: false,
+                        // agreeToTerms: false,
                         confirmPassword: '',
-                        email: '',
+                        email: this.state.validCredentials.email ? this.state.email : '',
                         password: '',
-                        userId: ''
+                        userId: this.state.validCredentials.userId ? this.state.userId : ''
                     });
                 }
             });
@@ -121,64 +160,81 @@ export default class RegisterForm extends React.Component {
     }
 
     render() {
+
+        let validAndNotEmpty = Object.keys(this.state.validCredentials).reduce(
+            (previousValue, currentValue, currentIndex, array) => {
+                return previousValue && this.state.validCredentials[currentValue] && this.state[currentValue] !== '';
+            }, true);
+
         return <div className="register-box-body">
             <p className="login-box-msg">Register a new membership</p>
 
             <form>
 
-                {/* Username */}
+                {/* userId */}
                 <LoginField hint="User ID"
                             iconClass="glyphicon glyphicon-user"
                             invalidMessage={"Username must only contain letters, numbers, and the underscore" +
                                             " and must be at least 3 characters long"}
+                            onBlur={this.checkUserId}
                             onInputChange={this.onUserIdChange}
                             valid={this.state.validCredentials.userId}
-                            value={this.state.userId}/>
+                            value={this.state.userId}
+                            warning={!this.state.validCredentials.userId}/>
 
-                {/* Email */}
+                {/* email */}
                 <LoginField hint="Email"
                             iconClass="glyphicon glyphicon-envelope"
                             invalidMessage={"Invalid email"}
+                            onBlur={this.checkEmail}
                             onInputChange={this.onEmailChange}
                             valid={this.state.validCredentials.email}
-                            value={this.state.email}/>
+                            value={this.state.email}
+                            warning={!this.state.validCredentials.email}/>
 
-                {/* Password */}
+                {/* password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
                             invalidMessage={"Password must be at least 3 characters long and must not be " +
                                             "a poor password such as 'password'"}
+                            onBlur={this.checkPassword}
                             onInputChange={this.onPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials.password}
-                            value={this.state.password}/>
+                            value={this.state.password}
+                            warning={!this.state.validCredentials.password}/>
 
-                {/* Confirm password */}
+                {/* confirm password */}
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
                             invalidMessage={"Passwords must match"}
                             onInputChange={this.onConfirmPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials.confirmPassword}
-                            value={this.state.confirmPassword}/>
+                            value={this.state.confirmPassword}
+                            warning={!this.state.validCredentials.confirmPassword}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
+                    {/*
                     {!this.state.validCredentials.agreeToTerms ? // eslint-disable-line no-negated-condition
                         <div className="row">
                             <div className="col-sm-12" style={{textAlign: "left"}}>
                                 <span style={{color: "red", textAlign: "left"}}>Please agree to the terms</span>
                             </div>
                         </div> : null}
+                     */}
 
-                    <div className="col-sm-8">
+                    <div className="col-sm-8" style={{paddingTop: "10px"}}>
 
+                        {/*
                         <Checkbox checked={this.state.agreeToTerms}
                                   onChange={this.onAgreeToTermsChange}
                                   validationState={this.state.agreeToTerms ? "success" : "warning"}>
                             I agree to the terms
                         </Checkbox>
+                        */}
 
                         <Link to={`${this.props.basePath}login`}>
                             I already have an account
@@ -188,6 +244,7 @@ export default class RegisterForm extends React.Component {
 
                     <div className="col-sm-4">
                         <Button bsStyle="primary"
+                                disabled={!validAndNotEmpty}
                                 onClick={this.onRegister}
                                 style={{float: "right", marginTop: "5px"}}>
                             Register

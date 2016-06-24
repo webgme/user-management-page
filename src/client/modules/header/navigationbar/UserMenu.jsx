@@ -16,6 +16,9 @@ const STYLING = {
     },
     logoutAreaBorder: {
         padding: "2px"
+    },
+    userHeader: {
+        height: "145px"
     }
 };
 
@@ -44,11 +47,10 @@ export default class UserMenu extends React.Component {
                 <span className="hidden-xs">{this.state.userData._id}</span>
             </a>
             <ul className="dropdown-menu">
-                <li className="user-header">
+                <li className="user-header" style={STYLING.userHeader}>
                     <img src="/img/gme-logo.png" className="img-circle" alt="User Image"/>
                     <p>
                         {this.state.userData._id}
-                        <small>Member since Nov. 2012</small>
                     </p>
                 </li>
                 <li className="user-footer" style={STYLING.logoutAreaBorder}>

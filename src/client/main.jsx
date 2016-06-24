@@ -17,9 +17,9 @@ import ContentWrapper from './modules/content/ContentWrapper';
 import HomePage from './modules/content/pages/HomePage';
 import OrganizationPage from './modules/content/pages/OrganizationPage';
 import OrganizationsPage from './modules/content/pages/OrganizationsPage';
+import ProfilePage from './modules/content/pages/ProfilePage';
 import ProjectPage from './modules/content/pages/ProjectPage';
 import ProjectsPage from './modules/content/pages/ProjectsPage';
-import UserProfilePage from './modules/content/pages/UserProfilePage';
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
@@ -48,7 +48,7 @@ render((
 
                 <Route path="organizations/:organizationId" component={OrganizationPage}/>
 
-                <Route path="profile" component={UserProfilePage}/>
+                <Route path="profile" component={ProfilePage}/>
 
                 <Route path="projects" component={ProjectsPage}/>
 

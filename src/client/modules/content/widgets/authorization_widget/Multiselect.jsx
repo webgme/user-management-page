@@ -25,7 +25,7 @@ export default class MultiSelectField extends React.Component {
     render() {
 
         return (
-            <div className="section">
+            <div className="section" style={{marginBottom: "10px"}}>
                 <h3 className="section-heading">{this.props.label}</h3>
                 <Select multi
                         onChange={this.handleSelectChange}

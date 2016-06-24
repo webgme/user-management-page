@@ -31,5 +31,6 @@ export function verifyPassword(password) {
  */
 export function verifyUserId(userId) {
     return userId.length >= 3 &&
-           /[a-zA-Z0-9_]+/.test(userId);
+           /^[A-Za-z0-9_]+$/.test(userId);
+    // TODO: share the same reference to the check in webgme
 }

@@ -11,8 +11,13 @@ import React from 'react/lib/React';
 import Multiselect from './Multiselect';
 
 const STYLING = {
+    selectableButtonGroup: {
+        lineHeight: 3.6,
+        paddingTop: "15px"
+    },
     submitButtonGroup: {
-        lineHeight: 3.6
+        float: "right",
+        paddingRight: "15px"
     }
 };
 
@@ -36,16 +41,19 @@ export default class AuthorizationWidget extends React.Component {
 
     render() {
 
+        // Selectable buttons
         let selectableButtons = [];
         Object.keys(this.props.selectableButtons).forEach((key, index) => {
             selectableButtons.push(
-                <Button bsStyle={this.props.selectableButtons[key] ? "primary" : null}
-                        onClick={this.props.selectableButtonsChange}
-                        key={index}>{key[0].toUpperCase() + key.substring(1)}
+                <Button bsStyle={this.props.selectableButtons[index].selectableButtonState}
+                        onClick={this.props.selectableButtons[index].selectableButtonChange}
+                        key={index}>
+                    {this.props.selectableButtons[index].selectableButtonText}
                 </Button>
             );
         });
 
+        // Submit buttons
         let submitButtons = [];
         this.props.submitButtons.forEach((oneSubmitButton, index) => {
             submitButtons.push(
@@ -62,41 +70,49 @@ export default class AuthorizationWidget extends React.Component {
         });
 
         return (
-        this.state.authorization ? <div className="row">
-            <div className={`col-md-${this.props.boxSize}`}>
-                <div className="box box-primary">
-                    <div className="box-header with-border">
-                        <div className="row">
+            this.state.authorization ?
+                <div className="row">
+                    <div className={`col-md-${this.props.boxSize}`}>
+                        <div className="box box-primary">
 
-                            <ButtonGroup>
-                                {selectableButtons}
-                            </ButtonGroup>
+                            <div className="box-header with-border">
 
-                            <div className="col-sm-6">
-                                <Multiselect
-                                    label={this.props.label}
-                                    onChange={this.props.handleMultiselectChange}
-                                    options={this.props.multiselectOptions}
-                                    placeholder="Select one or more (type to search)"
-                                    valuesInMultiselect={this.props.valuesInMultiselect}/>
-                            </div>
+                                <div className="row">
 
-                            <div className="row" style={STYLING.submitButtonGroup}>
-                                <ButtonGroup>
-                                    {submitButtons}
-                                </ButtonGroup>
+                                    <div className="col-sm-6">
+                                        <Multiselect
+                                            label={this.props.label}
+                                            onChange={this.props.handleMultiselectChange}
+                                            options={this.props.multiselectOptions}
+                                            placeholder="Select one or more (type to search)"
+                                            valuesInMultiselect={this.props.valuesInMultiselect}/>
+                                    </div>
+
+                                    <div className="col-sm-6" style={STYLING.selectableButtonGroup}>
+                                        <ButtonGroup>
+                                            {selectableButtons}
+                                        </ButtonGroup>
+                                    </div>
+
+                                </div>
+
+                                <div className="row" style={STYLING.submitButtonGroup}>
+                                    <ButtonGroup>
+                                        {submitButtons}
+                                    </ButtonGroup>
+                                </div>
+
                             </div>
 
                         </div>
                     </div>
-                </div>
-            </div>
-        </div> : null
+                </div> : null
         );
     }
 
 }
 
 AuthorizationWidget.defaultProps = {
-    selectableButtons: []
+    selectableButtons: [],
+    submitButtons: []
 };
