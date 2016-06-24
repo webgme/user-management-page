@@ -52,8 +52,7 @@ export default class ColorMenu extends React.Component {
         return (
             <li className="dropdown messages-menu">
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                    <i className="fa fa-paint-brush"/>
-                    <span className="label label-success">!</span>
+                    <i className="fa fa-paint-brush" style={{fontSize: "20px"}}/>
                 </a>
                 <ul className="dropdown-menu" style={STYLING.dropdownMenu}>
                     <li className="header" style={STYLING.menuHeader}>

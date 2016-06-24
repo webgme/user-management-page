@@ -21,14 +21,14 @@ const STYLING = {
         fontWeight: "light",
         paddingLeft: "35px",
         fontSize: "16px",
-        paddingTop: "15px"
+        paddingTop: "5px"
     },
     panelStyle: {
         padding: "15px",
         cursor: "pointer"
     },
     imageStyle: {
-        maxWidth: "60px",
+        maxWidth: "50px",
         borderRadius: 0
     }
 };
