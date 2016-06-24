@@ -13,7 +13,7 @@ import Link from 'react-router/lib/Link';
 import React from 'react/lib/React';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
-import {verifyEmail, verifyPassword, verifyUserId} from '../../utils/loginUtils';
+import {verifyEmail, verifyPassword, verifyUserOrOrganizationId} from '../../utils/loginUtils';
 
 export default class RegisterForm extends React.Component {
     constructor(props) {
@@ -54,7 +54,7 @@ export default class RegisterForm extends React.Component {
                     confirmPassword: this.state.password === this.state.confirmPassword,
                     email: verifyEmail(this.state.email),
                     password: verifyPassword(this.state.password),
-                    userId: verifyUserId(this.state.userId)
+                    userId: verifyUserOrOrganizationId(this.state.userId)
                 }
             })
         );
@@ -91,7 +91,7 @@ export default class RegisterForm extends React.Component {
                 confirmPassword: this.state.validCredentials.confirmPassword,
                 email: this.state.validCredentials.email,
                 password: this.state.validCredentials.password,
-                userId: verifyUserId(this.state.userId)
+                userId: verifyUserOrOrganizationId(this.state.userId)
             }
         });
     }

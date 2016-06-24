@@ -23,7 +23,8 @@ export default class LoginField extends React.Component {
         return (
             <div>
 
-                <div className={`input-group ${this.props.warning ? 'has-error' : ''}`}>
+                <div className={`input-group ${this.props.warning ? 'has-error' : ''}`}
+                     style={this.props.indentStyle || {}}>
                     <span className="input-group-addon">
                         <i className={this.props.iconClass}/>
                     </span>
@@ -52,6 +53,7 @@ export default class LoginField extends React.Component {
 LoginField.propTypes = {
     hint: React.PropTypes.string.isRequired,
     iconClass: React.PropTypes.string.isRequired,
+    indentStyle: React.PropTypes.object,
     invalidMessage: React.PropTypes.string,
     onBlur: React.PropTypes.func,
     onEnter: React.PropTypes.func,
