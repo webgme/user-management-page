@@ -28,9 +28,9 @@ export default class ProjectCollaboratorTable extends React.Component {
         // Data retrieval
         this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         // Event handlers
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
-        this.handleRevoke = this.handleRevoke.bind(this);
-        this.handleTableSwitch = this.handleTableSwitch.bind(this);
+        this.onOrderEntries = this.onOrderEntries.bind(this);
+        this.onRevoke = this.onRevoke.bind(this);
+        this.onTableSwitch = this.onTableSwitch.bind(this);
     }
 
     componentDidMount() {
@@ -97,7 +97,7 @@ export default class ProjectCollaboratorTable extends React.Component {
         });
     }
 
-    handleOrderEntries(event) {
+    onOrderEntries(event) {
         // Release focus (surrounding box)
         $(event.target).parent().blur();
 
@@ -118,7 +118,7 @@ export default class ProjectCollaboratorTable extends React.Component {
         }
     }
 
-    handleRevoke(event) {
+    onRevoke(event) {
         this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
             this.props.projectName,
             event.target.id)
@@ -127,7 +127,7 @@ export default class ProjectCollaboratorTable extends React.Component {
             });
     }
 
-    handleTableSwitch(event) {
+    onTableSwitch(event) {
         let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
 
         if (newDisplayNum !== this.state.display) {
@@ -174,10 +174,10 @@ export default class ProjectCollaboratorTable extends React.Component {
                         </h3>
                         <ButtonGroup style={{float: "right"}}>
                             <Button bsStyle={this.state.display === 1 ? "primary" : null}
-                                    onClick={this.handleTableSwitch}
+                                    onClick={this.onTableSwitch}
                                     id="or">Users</Button>
                             <Button bsStyle={this.state.display === 2 ? "primary" : null}
-                                    onClick={this.handleTableSwitch}
+                                    onClick={this.onTableSwitch}
                                     id="ow">Organizations</Button>
                         </ButtonGroup>
                     </div>
@@ -185,9 +185,9 @@ export default class ProjectCollaboratorTable extends React.Component {
                     <DataTable categories={dataTableData.categories.users}
                                display={this.state.display}
                                entries={this.state.userCollaborators}
-                               handleRevoke={this.handleRevoke}
+                               handleRevoke={this.onRevoke}
                                iconClass={null}
-                               orderEntries={this.handleOrderEntries}
+                               orderEntries={this.onOrderEntries}
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
                                restClient={this.props.restClient}
@@ -201,9 +201,9 @@ export default class ProjectCollaboratorTable extends React.Component {
                     <DataTable categories={dataTableData.categories.organizations}
                                display={this.state.display}
                                entries={this.state.organizationCollaborators}
-                               handleRevoke={this.handleRevoke}
+                               handleRevoke={this.onRevoke}
                                iconClass={null}
-                               orderEntries={this.handleOrderEntries}
+                               orderEntries={this.onOrderEntries}
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
                                restClient={this.props.restClient}

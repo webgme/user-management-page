@@ -14,17 +14,11 @@ import DataTable from './DataTable';
 import LoginField from '../LoginField';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
 import {sortObjectArrayByField} from '../../../../utils/utils';
-import {verifyUserOrOrganizationId} from '../../../../utils/loginUtils';
 
 const STYLE = {
     createOrganizationModal: {
         paddingTop: "50%",
         marginTop: "50%"
-    },
-    modalDialog: {
-        position: "absolute",
-        top: "15%",
-        left: "40%"
     },
     modalDialogTextField: {
         marginLeft: "15px",
@@ -37,25 +31,23 @@ export default class OrganizationsTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            newOrganizationName: '',
             organizations: [],
-            showCreateOrganizationModal: false,
-            sortedForward: true,
-            validOrganizationName: true
+            sortedForward: true
         };
         // Data retrieval
         this.retrieveOrganizations = this.retrieveOrganizations.bind(this);
         // Event handlers
-        this.checkOrganizationName = this.checkOrganizationName.bind(this);
-        this.closeCreateOrganization = this.closeCreateOrganization.bind(this);
-        this.onCreateOrganizationNameChange = this.onCreateOrganizationNameChange.bind(this);
-        this.openCreateOrganization = this.openCreateOrganization.bind(this);
-        this.handleCreateOrganization = this.handleCreateOrganization.bind(this);
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
+        this.onOrderEntries = this.onOrderEntries.bind(this);
     }
 
     componentDidMount() {
         this.retrieveOrganizations();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.refreshTable !== this.props.refreshTable) {
+            this.retrieveOrganizations();
+        }
     }
 
     retrieveOrganizations() {
@@ -85,62 +77,13 @@ export default class OrganizationsTable extends React.Component {
                 });
 
                 this.setState({
-                    organizations: organizations
+                    organizations: organizations.sort(sortObjectArrayByField('name'))
                 });
 
             });
     }
 
-    checkOrganizationName() {
-        this.setState({
-            validOrganizationName: verifyUserOrOrganizationId(this.state.newOrganizationName)
-        });
-    }
-
-    closeCreateOrganization() {
-        this.setState({
-            showCreateOrganizationModal: false,
-            newOrganizationName: ''
-        });
-    }
-
-    onCreateOrganizationNameChange(event) {
-        this.setState({
-            newOrganizationName: event.target.value
-        });
-    }
-
-    openCreateOrganization() {
-        Promise.resolve(this.setState({
-            showCreateOrganizationModal: true
-        }))
-            .then(() => {
-                Object.keys(STYLE.modalDialog).forEach(property => {
-                    $('.modal-dialog')[0].style[property] = STYLE.modalDialog[property];
-                });
-            });
-    }
-
-    handleCreateOrganization() {
-        Promise.resolve(this.checkOrganizationName())
-            .then(() => {
-                if (this.state.validOrganizationName) {
-                    this.props.restClient.organizations.createOrganization(this.state.newOrganizationName)
-                        .then(() => {
-                            this.setState({
-                                showCreateOrganizationModal: false,
-                                newOrganizationName: ''
-                            });
-                            this.retrieveOrganizations();
-                        })
-                        .catch(err => {
-                            console.error(err); // eslint-disable-line no-console
-                        });
-                }
-            });
-    }
-
-    handleOrderEntries(event) {
+    onOrderEntries(event) {
         // Release focus (surrounding box)
         $(event.target).parent().blur();
 
@@ -168,7 +111,7 @@ export default class OrganizationsTable extends React.Component {
                     </h3>
 
                     <div style={{float: "right"}}>
-                        <Button bsStyle="info" onClick={this.openCreateOrganization}>
+                        <Button bsStyle="info" onClick={this.props.openCreateOrganization}>
                             Create an organization
                         </Button>
                     </div>
@@ -182,7 +125,7 @@ export default class OrganizationsTable extends React.Component {
                            categories={categories}
                            entries={this.state.organizations}
                            iconClass="fa fa-institution"
-                           orderEntries={this.handleOrderEntries}
+                           orderEntries={this.onOrderEntries}
                            restClient={this.restClient}
                            sortable={true}
                            sortedForward={this.state.sortedForward}
@@ -191,8 +134,8 @@ export default class OrganizationsTable extends React.Component {
                 </DataTable>
 
                 {/* Create organization modal window */}
-                <Modal onHide={this.closeCreateOrganization}
-                       show={this.state.showCreateOrganizationModal}
+                <Modal onHide={this.props.closeCreateOrganization}
+                       show={this.props.showCreateOrganizationModal}
                        style={STYLE.createOrganizationModal}>
 
                     <Modal.Header closeButton>
@@ -208,20 +151,20 @@ export default class OrganizationsTable extends React.Component {
                     {/* Organization name */}
                     <LoginField hint="Organization Name"
                                 iconClass="fa fa-institution"
-                                onBlur={this.checkOrganizationName}
-                                onInputChange={this.onCreateOrganizationNameChange}
+                                onBlur={this.props.checkOrganizationName}
+                                onInputChange={this.props.onCreateOrganizationNameChange}
                                 indentStyle={STYLE.modalDialogTextField}
                                 invalidMessage={"Organization name must only contain letters, numbers, and" +
                                                 " the underscore and must be at least 3 characters long"}
-                                valid={this.state.validOrganizationName}
-                                value={this.state.newOrganizationName}
-                                warning={!this.state.validOrganizationName}/>
+                                valid={this.props.validOrganizationName}
+                                value={this.props.newOrganizationName}
+                                warning={!this.props.validOrganizationName}/>
 
                     <Modal.Footer>
-                        <Button bsStyle="danger" onClick={this.closeCreateOrganization}>
+                        <Button bsStyle="danger" onClick={this.props.closeCreateOrganization}>
                             Cancel
                         </Button>
-                        <Button bsStyle="success" onClick={this.handleCreateOrganization}>
+                        <Button bsStyle="success" onClick={this.props.createOrganization}>
                             Create
                         </Button>
                     </Modal.Footer>
