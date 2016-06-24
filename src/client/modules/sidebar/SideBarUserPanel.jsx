@@ -20,7 +20,7 @@ const STYLING = {
         color: "#ECF0F1",
         fontWeight: "light",
         paddingLeft: "35px",
-        fontSize: "16px",
+        fontSize: "14px",
         paddingTop: "5px"
     },
     panelStyle: {

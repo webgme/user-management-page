@@ -29,7 +29,7 @@ export function verifyPassword(password) {
  * @param {string} userId - userId to be checked
  * @return {boolean} - T/F valid userId
  */
-export function verifyUserId(userId) {
+export function verifyUserOrOrganizationId(userId) {
     return userId.length >= 3 &&
            /^[A-Za-z0-9_]+$/.test(userId);
     // TODO: share the same reference to the check in webgme

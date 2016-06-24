@@ -34,7 +34,7 @@ export default class OrganizationsClient extends BaseClient {
      * @param {object} organizationObj - object containing org data
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    createOrganization(organizationName, organizationObj) {
+    createOrganization(organizationName, organizationObj = {}) {
         return super.put('orgs/' + organizationName, organizationObj);
     }
 

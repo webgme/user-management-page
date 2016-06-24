@@ -13,7 +13,7 @@ import Link from 'react-router/lib/Link';
 import React from 'react/lib/React';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
-import {verifyEmail, verifyPassword, verifyUserId} from '../../utils/loginUtils';
+import {verifyEmail, verifyPassword, verifyUserOrOrganizationId} from '../../utils/loginUtils';
 
 export default class RegisterForm extends React.Component {
     constructor(props) {
@@ -47,17 +47,16 @@ export default class RegisterForm extends React.Component {
     }
 
     checkAllFields() {
-        return Promise.resolve(
-            this.setState({
-                validCredentials: {
-                    // agreeToTerms: this.state.agreeToTerms,
-                    confirmPassword: this.state.password === this.state.confirmPassword,
-                    email: verifyEmail(this.state.email),
-                    password: verifyPassword(this.state.password),
-                    userId: verifyUserId(this.state.userId)
-                }
-            })
-        );
+        this.setState({
+            validCredentials: {
+                // agreeToTerms: this.state.agreeToTerms,
+                confirmPassword: this.state.password === this.state.confirmPassword,
+                email: verifyEmail(this.state.email),
+                password: verifyPassword(this.state.password),
+                userId: verifyUserOrOrganizationId(this.state.userId)
+            }
+        });
+
     }
 
     checkEmail() {
@@ -91,7 +90,7 @@ export default class RegisterForm extends React.Component {
                 confirmPassword: this.state.validCredentials.confirmPassword,
                 email: this.state.validCredentials.email,
                 password: this.state.validCredentials.password,
-                userId: verifyUserId(this.state.userId)
+                userId: verifyUserOrOrganizationId(this.state.userId)
             }
         });
     }
@@ -123,7 +122,7 @@ export default class RegisterForm extends React.Component {
     onRegister() {
         let allValid = true;
 
-        this.checkAllFields()
+        Promise.resolve(this.checkAllFields())
             .then(() => {
                 Object.keys(this.state.validCredentials).forEach(key => {
                     if (!this.state.validCredentials[key]) {
@@ -179,8 +178,7 @@ export default class RegisterForm extends React.Component {
                             onBlur={this.checkUserId}
                             onInputChange={this.onUserIdChange}
                             valid={this.state.validCredentials.userId}
-                            value={this.state.userId}
-                            warning={!this.state.validCredentials.userId}/>
+                            value={this.state.userId}/>
 
                 {/* email */}
                 <LoginField hint="Email"
@@ -189,8 +187,7 @@ export default class RegisterForm extends React.Component {
                             onBlur={this.checkEmail}
                             onInputChange={this.onEmailChange}
                             valid={this.state.validCredentials.email}
-                            value={this.state.email}
-                            warning={!this.state.validCredentials.email}/>
+                            value={this.state.email}/>
 
                 {/* password */}
                 <LoginField hint="Password"
@@ -201,8 +198,7 @@ export default class RegisterForm extends React.Component {
                             onInputChange={this.onPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials.password}
-                            value={this.state.password}
-                            warning={!this.state.validCredentials.password}/>
+                            value={this.state.password}/>
 
                 {/* confirm password */}
                 <LoginField hint="Confirm password"
@@ -211,8 +207,7 @@ export default class RegisterForm extends React.Component {
                             onInputChange={this.onConfirmPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials.confirmPassword}
-                            value={this.state.confirmPassword}
-                            warning={!this.state.validCredentials.confirmPassword}/>
+                            value={this.state.confirmPassword}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">

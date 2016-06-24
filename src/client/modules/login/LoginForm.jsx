@@ -112,6 +112,7 @@ export default class LoginForm extends React.Component {
                 <LoginField hint="User ID"
                             iconClass="glyphicon glyphicon-user"
                             onInputChange={this.onUserIdChange}
+                            valid={true}
                             value={this.state.userId}/>
 
                 {/* Password */}
@@ -120,8 +121,8 @@ export default class LoginForm extends React.Component {
                             onEnter={this.onSignIn}
                             onInputChange={this.onPasswordChange}
                             textType="password"
-                            value={this.state.password}
-                            warning={!this.state.validCredentials}/>
+                            valid={this.state.validCredentials}
+                            value={this.state.password}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
