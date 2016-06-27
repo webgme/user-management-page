@@ -6,8 +6,41 @@
 var webpack = require('webpack'),
     path = require('path'),
     SRC_DIR = path.join(__dirname, 'src/client'),
-    DIST_DIR = path.join(__dirname, 'dist');
+    DIST_DIR = path.join(__dirname, 'dist'),
+    isProduction = process.env.NODE_ENV ? process.env.NODE_ENV === 'production' : false;
 
+console.log('Production build mode:', isProduction);
+
+/**
+ * Conditionally loads plugins (mainly for production build)
+ * @return {Array} - Array of plugins
+ */
+function getPlugins() {
+    var plugins = [];
+
+    // Always expose NODE_ENV to webpack, you can now use `process.env.NODE_ENV`
+    // inside your code for any environment checks; UglifyJS will automatically
+    // drop any unreachable code.
+    plugins.push(new webpack.DefinePlugin({
+        "process.env": {
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        }
+    }));
+
+    plugins.push(new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery"
+    }));
+
+    // Conditionally add plugins for Production builds.
+    if (isProduction) {
+        plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}));
+    } else { // Development plugins
+        // ...
+    }
+
+    return plugins;
+}
 module.exports = {
     entry: {
         main: path.join(SRC_DIR, 'main.jsx'),
@@ -39,20 +72,7 @@ module.exports = {
             {test: /\.(ttf|eot|svg)(\?v=\d\.\d\.\d)?$/, loader: "file-loader"}
         ]
     },
-    plugins: [
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
-        })
-        // Will minimize & remove all warnings/errors. Add for production
-        // new webpack.DefinePlugin({
-        //     'process.env': {
-        //         'NODE_ENV': JSON.stringify('production')
-        //     }
-        // }),
-        // Adding this reduces bundle size by over 50% but increases webpack build time
-        // new webpack.optimize.UglifyJsPlugin({minimize: true})
-    ],
+    plugins: getPlugins(),
     resolve: {
         extensions: ['', '.js', '.jsx']
     }
