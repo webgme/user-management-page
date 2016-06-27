@@ -1,21 +1,21 @@
 /**
  * @author pmeijer / https://github.com/pmeijer
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 /* eslint-env node, browser */
 
-// Libraries
-import superagent from 'superagent';
+import BaseClient from './baseClient';
 
 /**
  * Class for logging in and registering user. Note that these post requests do not require
  * the user to be authenticated.
  * @class
  */
-export default class LoginClient {
+export default class LoginClient extends BaseClient {
 
-    constructor(baseUrl) {
-        this.baseUrl = baseUrl || '';
+    constructor(baseUrl = '') {
+        super(baseUrl);
     }
 
     /**
@@ -26,24 +26,12 @@ export default class LoginClient {
      * @return {Promise} resolves if successfully logged in.
      */
     login(userId, password) {
-        let url = this.baseUrl + '/login',
-            data = {
-                userId: userId,
-                password: password
-            };
+        let data = {
+            userId: userId,
+            password: password
+        };
 
-        return new Promise((resolve, reject) => {
-            superagent
-                .post(url)
-                .send(data)
-                .end((err, res) => {
-                    if (err || !res.ok) {
-                        reject(err);
-                    } else {
-                        resolve(res);
-                    }
-                });
-        });
+        return super.post(['/login'], data);
     }
 
     /**
@@ -54,40 +42,16 @@ export default class LoginClient {
      * @return {Promise} - resolves if successfully added user, rejects otherwise.
      */
     register(userId, password, email) {
-        let url = this.baseUrl + '/api/register',
-            data = {
-                userId: userId,
-                password: password,
-                email: email || ''
-            };
+        let data = {
+            userId: userId,
+            password: password,
+            email: email || ''
+        };
 
-        return new Promise((resolve, reject) => {
-            superagent
-                .post(url)
-                .send(data)
-                .end((err, res) => {
-                    if (err || !res.ok) {
-                        reject(err);
-                    } else {
-                        resolve(res.body);
-                    }
-                });
-        });
+        return super.post(['/api', 'register'], data);
     }
 
     getAllowGuests() {
-        let url = this.baseUrl + '/gmeConfig.json';
-
-        return new Promise((resolve, reject) => {
-            superagent
-                .get(url)
-                .end((err, res) => {
-                    if (err || !res.ok) {
-                        reject(err);
-                    } else {
-                        resolve(res.body);
-                    }
-                });
-        });
+        return super.get(['/gmeConfig.json']);
     }
 }

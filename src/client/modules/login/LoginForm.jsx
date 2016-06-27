@@ -126,7 +126,8 @@ export default class LoginForm extends React.Component {
             <form>
 
                 {/* Username */}
-                <LoginField hint="User ID"
+                <LoginField autoFocus={true}
+                            hint="User ID"
                             iconClass="glyphicon glyphicon-user"
                             onInputChange={this.onUserIdChange}
                             valid={true}
