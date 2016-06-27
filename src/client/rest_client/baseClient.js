@@ -14,19 +14,20 @@ export default class BaseClient {
 
     /**
      * General GET request
-     * @param {string} path - path
-     * @param {string} query - query if any
+     * @param {Array} path - path (ex. ['projects', 'ownerId', 'projectName'])
+     * @param {Object} query - query if any (ex. {n: 100})
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    get(path, query) {
-        query = query || '';
-        let url = this.baseUrl + path + '/' + query;
+    get(path, query = {}) {
+        let url = this.baseUrl + path.join('/') + '/';
 
         return new Promise((resolve, reject) => {
             superagent
                 .get(url)
+                .query(query)
                 .end((err, res) => {
                     if (err || !res.ok) {
+                        console.error(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);
@@ -37,12 +38,12 @@ export default class BaseClient {
 
     /**
      * General PUT request
-     * @param {string} path - path
+     * @param {Array} path - path (ex. ['projects', 'ownerId', 'projectName'])
      * @param {object} value - value to be set
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    put(path, value) {
-        let url = this.baseUrl + path;
+    put(path, value = {}) {
+        let url = this.baseUrl + path.join('/') + '/';
 
         return new Promise((resolve, reject) => {
             superagent
@@ -50,7 +51,7 @@ export default class BaseClient {
                 .send(value)
                 .end((err, res) => {
                     if (err) {
-                        console.log(err); // eslint-disable-line no-console
+                        console.error(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);
@@ -61,12 +62,12 @@ export default class BaseClient {
 
     /**
      * General PATCH request
-     * @param {string} path - path
+     * @param {Array} path - path (ex. ['projects', 'ownerId', 'projectName'])
      * @param {object} value - value to be updated
      * @return {Promise} //TODO: How to document the resolved value.
      */
     patch(path, value) {
-        let url = this.baseUrl + path;
+        let url = this.baseUrl + path.join('/') + '/';
 
         return new Promise((resolve, reject) => {
             superagent
@@ -74,7 +75,7 @@ export default class BaseClient {
                 .send(value)
                 .end((err, res) => {
                     if (err) {
-                        console.log(err); // eslint-disable-line no-console
+                        console.error(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);
@@ -85,18 +86,18 @@ export default class BaseClient {
 
     /**
      * General DELETE request
-     * @param {string} path - path
+     * @param {Array} path - path (ex. ['projects', 'ownerId', 'projectName'])
      * @return {Promise} //TODO: How to document the resolved value.
      */
     delete(path) {
-        let url = this.baseUrl + path;
+        let url = this.baseUrl + path.join('/') + '/';
 
         return new Promise((resolve, reject) => {
             superagent
                 .delete(url)
                 .end((err, res) => {
                     if (err || !res.ok) {
-                        console.log(err); // eslint-disable-line no-console
+                        console.error(err); // eslint-disable-line no-console
                         reject(err);
                     } else {
                         resolve(res.body);

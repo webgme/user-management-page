@@ -17,7 +17,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient('');
+        this.restClient = new RestClient();
         this.state = {
             headerColor: 'purple'
         };

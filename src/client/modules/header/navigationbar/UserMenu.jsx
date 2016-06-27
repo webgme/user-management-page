@@ -32,10 +32,9 @@ export default class UserMenu extends React.Component {
     }
 
     componentDidMount() {
-        var self = this;
         this.props.restClient.user.getCurrentUser()
-            .then(function(data) {
-                self.setState({userData: data});
+            .then(data => {
+                this.setState({userData: data});
             });
     }
 

@@ -74,4 +74,20 @@ export default class LoginClient {
                 });
         });
     }
+
+    getAllowGuests() {
+        let url = this.baseUrl + '/gmeConfig.json';
+
+        return new Promise((resolve, reject) => {
+            superagent
+                .get(url)
+                .end((err, res) => {
+                    if (err || !res.ok) {
+                        reject(err);
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+        });
+    }
 }

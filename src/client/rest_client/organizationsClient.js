@@ -16,7 +16,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllOrganizations() {
-        return super.get('orgs');
+        return super.get(['orgs']);
     }
 
     /**
@@ -25,7 +25,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getOrganization(organizationName) {
-        return super.get('orgs', organizationName);
+        return super.get(['orgs', organizationName]);
     }
 
     /**
@@ -35,7 +35,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     createOrganization(organizationName, organizationObj = {}) {
-        return super.put('orgs/' + organizationName, organizationObj);
+        return super.put(['orgs', organizationName], organizationObj);
     }
 
     /**
@@ -44,7 +44,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteOrganization(organizationName) {
-        return super.delete('orgs/' + organizationName);
+        return super.delete(['orgs', organizationName]);
     }
 
     /**
@@ -54,7 +54,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     addUserToOrganization(organizationName, username) {
-        return super.put('orgs/' + organizationName + '/users/' + username);
+        return super.put(['orgs', organizationName, 'users', username]);
     }
 
     /**
@@ -64,7 +64,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteUserFromOrganization(organizationName, username) {
-        return super.delete('orgs/' + organizationName + '/users/' + username);
+        return super.delete(['orgs', organizationName, 'users', username]);
     }
 
     /**
@@ -74,7 +74,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     makeAdminOfOrganization(organizationName, username) {
-        return super.put('orgs/' + organizationName + '/admins/' + username);
+        return super.put(['orgs', organizationName, 'admins', username]);
     }
 
     /**
@@ -84,7 +84,7 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     removeAdminOfOrganization(organizationName, username) {
-        return super.delete('orgs/' + organizationName + '/admins/' + username);
+        return super.delete(['orgs', organizationName, 'admins', username]);
     }
 
     // Non REST native Helper methods:
