@@ -5,7 +5,10 @@
 
 import React from 'react/lib/React';
 
-const STYLING = {
+const STYLE = {
+    colorMenu: {
+        paddingLeft: "10%"
+    },
     dropdownMenu: {
         width: "150px"
     },
@@ -13,7 +16,7 @@ const STYLING = {
         paddingTop: "-6px",
         paddingRight: "13px",
         paddingBottom: "-6px",
-        paddingLeft: "25px"
+        paddingLeft: "20px"
     }
 };
 
@@ -54,12 +57,12 @@ export default class ColorMenu extends React.Component {
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                     <i className="fa fa-paint-brush" style={{fontSize: "20px"}}/>
                 </a>
-                <ul className="dropdown-menu" style={STYLING.dropdownMenu}>
-                    <li className="header" style={STYLING.menuHeader}>
+                <ul className="dropdown-menu" style={STYLE.dropdownMenu}>
+                    <li className="header" style={STYLE.menuHeader}>
                         <span style={{fontWeight: 700}}>GMEProfile Color</span>
                     </li>
                     <li>
-                        <ul className="menu">
+                        <ul className="menu" style={STYLE.colorMenu}>
                             {formattedColors}
                         </ul>
                     </li>

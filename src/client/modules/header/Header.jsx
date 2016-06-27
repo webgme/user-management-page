@@ -10,7 +10,7 @@ import Link from 'react-router/lib/Link';
 import React from 'react/lib/React';
 // Self defined
 import ColorMenu from './navigationbar/ColorMenu';
-import SettingsMenu from './navigationbar/SettingsMenu';
+// import SettingsMenu from './navigationbar/SettingsMenu';
 import UserMenu from './navigationbar/UserMenu';
 import {capitalizeFirstLetter} from '../../utils/utils';
 
@@ -119,7 +119,7 @@ export default class Header extends React.Component {
                         <UserMenu restClient={this.props.restClient}
                                   basePath={this.props.basePath}/>
 
-                        <SettingsMenu/>
+                        {/* <SettingsMenu/> */}
 
                     </ul>
                 </div>
