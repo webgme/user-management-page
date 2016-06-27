@@ -7,9 +7,8 @@ import BaseClient from './baseClient';
 
 export default class ProjectsClient extends BaseClient {
 
-    constructor(baseUrl, debugMode) {
+    constructor(baseUrl) {
         super(baseUrl);
-        this.debugMode = debugMode;
     }
 
     /**
@@ -17,7 +16,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllProjects() {
-        return super.get('projects');
+        return super.get(['projects']);
     }
 
     /**
@@ -27,7 +26,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getProject(ownerId, projectName) {
-        return super.get('projects', ownerId + '/' + projectName);
+        return super.get(['projects', ownerId, projectName]);
     }
 
     /**
@@ -42,7 +41,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     addProject(ownerId, projectName, parameters) {
-        return super.put('projects/' + ownerId + '/' + projectName, parameters);
+        return super.put(['projects', ownerId, projectName], parameters);
     }
 
     /**
@@ -52,16 +51,16 @@ export default class ProjectsClient extends BaseClient {
      * @param {string} ownerId - id of owner
      * @param {string} projectName - name of project
      * @param {object} info - object containing project info data to be updated.
-     * @param {string} [parameters.viewedAt] - Sets the last viewed time.
-     * @param {string} [parameters.viewer] - Sets the last user who viewed the project.
-     * @param {string} [parameters.modifiedAt] - Sets the last modified time.
-     * @param {string} [parameters.modifier] - Sets the last user who modified the project.
-     * @param {string} [parameters.createdAt] - Sets the creator of the project.
-     * @param {string} [parameters.creator] - Sets the user who created the project.
+     * @param {string} [info.viewedAt] - Sets the last viewed time.
+     * @param {string} [info.viewer] - Sets the last user who viewed the project.
+     * @param {string} [info.modifiedAt] - Sets the last modified time.
+     * @param {string} [info.modifier] - Sets the last user who modified the project.
+     * @param {string} [info.createdAt] - Sets the creator of the project.
+     * @param {string} [info.creator] - Sets the user who created the project.
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateProject(ownerId, projectName, info) {
-        return super.patch('projects/' + ownerId + '/' + projectName, info);
+        return super.patch(['projects', ownerId, projectName], info);
     }
 
     /**
@@ -72,7 +71,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteProject(ownerId, projectName) {
-        return super.delete('projects/' + ownerId + '/' + projectName);
+        return super.delete(['projects', ownerId, projectName]);
     }
 
     /**
@@ -84,7 +83,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     removeRightsToProject(ownerId, projectName, userOrOrgId) {
-        return super.delete('projects/' + ownerId + '/' + projectName + '/authorize/' + userOrOrgId);
+        return super.delete(['projects', ownerId, projectName, 'authorize', userOrOrgId]);
     }
 
     /**
@@ -97,7 +96,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     grantRightsToProject(ownerId, projectName, userOrOrgId, rights) {
-        return super.put('projects/' + ownerId + '/' + projectName + '/authorize/' + userOrOrgId + '/' + rights);
+        return super.put(['projects', ownerId, projectName, 'authorize', userOrOrgId, rights]);
     }
 
     /**
@@ -108,10 +107,12 @@ export default class ProjectsClient extends BaseClient {
      * @param {number} [numCommits=100] - Maximum number of commits to retrieve.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getLatestCommits(ownerId, projectName, numCommits) {
-        numCommits = numCommits || 100;
-        var query = '?n=' + numCommits;
-        return super.get('projects/' + ownerId + '/' + projectName + '/commits', query);
+    getLatestCommits(ownerId, projectName, numCommits = 100) {
+        let query = {
+            n: numCommits
+        };
+
+        return super.get(['projects', ownerId, projectName, 'commits'], query);
     }
 
     /**
@@ -123,7 +124,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getCommitById(ownerId, projectName, commitId) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/commits', commitId);
+        return super.get(['projects', ownerId, projectName, 'commits', commitId]);
     }
 
     /**
@@ -135,7 +136,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getRawDataAtPath(ownerId, projectName, commitId, nodePath) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/commits/' + commitId + '/tree', nodePath);
+        return super.get(['projects', ownerId, projectName, 'commits', commitId, 'tree', nodePath]);
     }
 
     /**
@@ -147,8 +148,8 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getBranchOrCommitComparison(ownerId, projectName, branchOrCommitA, branchOrCommitB) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/compare',
-            branchOrCommitA + '...' + branchOrCommitB);
+        return super.get(['projects', ownerId, projectName, 'compare',
+            branchOrCommitA, '...', branchOrCommitB]);
     }
 
     /**
@@ -159,7 +160,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllBranches(ownerId, projectName) {
-        return super.get('projects/' + ownerId + '/' + projectName, 'branches');
+        return super.get(['projects', ownerId, projectName, 'branches']);
     }
 
     /**
@@ -170,7 +171,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getBranch(ownerId, projectName, branchId) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/branches', branchId);
+        return super.get(['projects', ownerId, projectName, 'branches', branchId]);
     }
 
     /**
@@ -182,7 +183,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     addBranch(ownerId, projectName, branchId, branchObj) {
-        return super.put('projects/' + ownerId + '/' + projectName + '/branches/' + branchId, branchObj);
+        return super.put(['projects', ownerId, projectName, 'branches', branchId], branchObj);
     }
 
     /**
@@ -194,7 +195,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateBranch(ownerId, projectName, branchId, branchObj) {
-        return super.patch('projects/' + ownerId + '/' + projectName + '/branches/' + branchId, branchObj);
+        return super.patch(['projects', ownerId, projectName, 'branches', branchId], branchObj);
     }
 
     /**
@@ -205,7 +206,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteBranch(ownerId, projectName, branchId) {
-        return super.delete('projects/' + ownerId + '/' + projectName + '/branches/' + branchId);
+        return super.delete(['projects', ownerId, projectName, 'branches', branchId]);
     }
 
     /**
@@ -216,10 +217,12 @@ export default class ProjectsClient extends BaseClient {
      * @param {number} numCommits - maximum to retrieve (default 100)
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getLatestCommitsByBranch(ownerId, projectName, branchId, numCommits) {
-        numCommits = numCommits || 100;
-        var query = '?n=' + numCommits;
-        return super.get('projects/' + ownerId + '/' + projectName + '/branches/' + branchId + '/commits', query);
+    getLatestCommitsByBranch(ownerId, projectName, branchId, numCommits = 100) {
+        let query = {
+            n: numCommits
+        };
+
+        return super.get(['projects', ownerId, projectName, 'branches', branchId, 'commits'], query);
     }
 
     /**
@@ -231,7 +234,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getRawDataAtPathAtBranch(ownerId, projectName, branchId, nodePath) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/branches/' + branchId + '/tree', nodePath);
+        return super.get(['projects', ownerId, projectName, 'branches', branchId, 'tree', nodePath]);
     }
 
     /**
@@ -241,7 +244,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getProjectTags(ownerId, projectName) {
-        return super.get('projects/' + ownerId + '/' + projectName, 'tags');
+        return super.get(['projects', ownerId, projectName, 'tags']);
     }
 
     /**
@@ -252,7 +255,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getTag(ownerId, projectName, tagId) {
-        return super.get('projects/' + ownerId + '/' + projectName + '/tags', tagId);
+        return super.get(['projects', ownerId, projectName, 'tags', tagId]);
     }
 
     /**
@@ -264,7 +267,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     addTag(ownerId, projectName, tagId, tagObj) {
-        return super.put('projects/' + ownerId + '/' + projectName + '/tags/' + tagId, tagObj);
+        return super.put(['projects', ownerId, projectName, 'tags', tagId], tagObj);
     }
 
     /**
@@ -276,7 +279,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateTag(ownerId, projectName, tagId, tagObj) {
-        return super.patch('projects/' + ownerId + '/' + projectName + '/tags/' + tagId, tagObj);
+        return super.patch(['projects', ownerId, projectName, 'tags', tagId], tagObj);
     }
 
     /**
@@ -287,7 +290,7 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteTag(ownerId, projectName, tagId) {
-        return super.delete('projects/' + ownerId + '/' + projectName + '/tags/' + tagId);
+        return super.delete(['projects', ownerId, projectName, 'tags', tagId]);
     }
 
 }

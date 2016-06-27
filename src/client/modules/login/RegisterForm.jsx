@@ -161,7 +161,7 @@ export default class RegisterForm extends React.Component {
     render() {
 
         let validAndNotEmpty = Object.keys(this.state.validCredentials).reduce(
-            (previousValue, currentValue, currentIndex, array) => {
+            (previousValue, currentValue /* , currentIndex, array */) => {
                 return previousValue && this.state.validCredentials[currentValue] && this.state[currentValue] !== '';
             }, true);
 
@@ -171,7 +171,8 @@ export default class RegisterForm extends React.Component {
             <form>
 
                 {/* userId */}
-                <LoginField hint="User ID"
+                <LoginField autoFocus={true}
+                            hint="User ID"
                             iconClass="glyphicon glyphicon-user"
                             invalidMessage={"Username must only contain letters, numbers, and the underscore" +
                                             " and must be at least 3 characters long"}

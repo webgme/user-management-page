@@ -28,12 +28,13 @@ export default class LoginField extends React.Component {
                     <span className="input-group-addon">
                         <i className={this.props.iconClass}/>
                     </span>
-                    <input type={this.props.textType || "text"}
+                    <input autoFocus={this.props.autoFocus}
                            className="form-control"
                            placeholder={this.props.hint}
                            onBlur={this.props.value !== '' ? this.props.onBlur : null}
                            onChange={this.props.onInputChange}
                            onKeyUp={this.checkEnter}
+                           type={this.props.textType || "text"}
                            value={this.props.value}/>
                     <br/>
                 </div>
@@ -51,6 +52,7 @@ export default class LoginField extends React.Component {
 }
 
 LoginField.propTypes = {
+    autoFocus: React.PropTypes.bool,
     hint: React.PropTypes.string.isRequired,
     iconClass: React.PropTypes.string.isRequired,
     indentStyle: React.PropTypes.object,

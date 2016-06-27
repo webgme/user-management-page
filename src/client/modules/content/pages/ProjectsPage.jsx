@@ -12,18 +12,6 @@ export default class ProjectsPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            projects: []
-        };
-    }
-
-    componentDidMount() {
-        this.props.restClient.projects.getAllProjects()
-            .then(allProjects => {
-                this.setState({
-                    projects: allProjects
-                });
-            });
     }
 
     render() {

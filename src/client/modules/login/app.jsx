@@ -11,11 +11,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.loginClient = new LoginClient('');
-    }
-
-    componentDidMount() {
-        document.getElementsByClassName("login-box")[0].focus();
+        this.loginClient = new LoginClient();
     }
 
     render() {

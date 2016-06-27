@@ -8,6 +8,7 @@
 // Libraries
 import browserHistory from 'react-router/lib/browserHistory';
 import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import Link from 'react-router/lib/Link';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
@@ -20,25 +21,42 @@ export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            allowGuests: false,
             password: '',
             rememberMe: false,
             userId: '',
             validCredentials: true
         };
         // Event handlers
-        this.onClickSignIn = this.onClickSignIn.bind(this);
+        this.onClickSignIn = this.onClickSignIn.bind(this); // Allows click to release focus vs enter key
+        this.onGuestLogIn = this.onGuestLogIn.bind(this);
+        this.onLogIn = this.onLogIn.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRememberMeChange = this.onRememberMeChange.bind(this);
-        this.onSignIn = this.onSignIn.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.loginClient.getAllowGuests()
+            .then(res => {
+                this.setState({
+                    allowGuests: res.authentication.allowGuests
+                });
+            });
     }
 
     onClickSignIn(event) {
         // Release focus
         event.target.blur();
 
-        this.onSignIn();
+        this.onLogIn();
     }
+
+    onGuestLogIn() {
+        browserHistory.push(this.props.basePath);
+        window.location.reload();
+    }
+
     onPasswordChange(event) {
         this.setState({
             password: event.target.value
@@ -51,8 +69,7 @@ export default class LoginForm extends React.Component {
         });
     }
 
-    onSignIn() {
-
+    onLogIn() {
         this.props.loginClient.login(this.state.userId, this.state.password)
             .then(res => {
                 if (/2\d\d/.test(res.statusCode)) {
@@ -109,7 +126,8 @@ export default class LoginForm extends React.Component {
             <form>
 
                 {/* Username */}
-                <LoginField hint="User ID"
+                <LoginField autoFocus={true}
+                            hint="User ID"
                             iconClass="glyphicon glyphicon-user"
                             onInputChange={this.onUserIdChange}
                             valid={true}
@@ -118,7 +136,7 @@ export default class LoginForm extends React.Component {
                 {/* Password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
-                            onEnter={this.onSignIn}
+                            onEnter={this.onLogIn}
                             onInputChange={this.onPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials}
@@ -127,7 +145,7 @@ export default class LoginForm extends React.Component {
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
-                    <div className="col-sm-8" style={{paddingTop: "10px"}}>
+                    <div className="col-sm-5" style={{paddingTop: "10px"}}>
 
                         {/*
                         <Checkbox checked={this.state.rememberMe}
@@ -153,14 +171,21 @@ export default class LoginForm extends React.Component {
                         </Link>
                     </div>
 
-                    <div className="col-sm-4">
+                    <div className="col-sm-7">
 
                         <div style={{float: "right", marginTop: "5px"}}>
-                            <Button bsStyle="primary"
-                                    onClick={this.onSignIn}
-                                disabled={this.state.userId === '' || this.state.password.length < 3}>
-                                Sign In
-                            </Button>
+                            <ButtonGroup>
+                                {this.state.allowGuests ?
+                                    <Button bsStyle="warning"
+                                            onClick={this.onGuestLogIn}>
+                                        Guest
+                                    </Button> : null}
+                                <Button bsStyle="primary"
+                                        onClick={this.onClickSignIn}
+                                        disabled={this.state.userId === '' || this.state.password.length < 3}>
+                                    Sign In
+                                </Button>
+                            </ButtonGroup>
                         </div>
 
                     </div>

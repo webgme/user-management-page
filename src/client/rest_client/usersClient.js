@@ -16,7 +16,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllUsers() {
-        return super.get('users');
+        return super.get(['users']);
     }
 
     /**
@@ -25,7 +25,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getUser(username) {
-        return super.get('users', username);
+        return super.get(['users', username]);
     }
 
     /**
@@ -35,7 +35,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     addUser(username, userObj) {
-        return super.put('users/' + username, userObj);
+        return super.put(['users', username], userObj);
     }
 
     /**
@@ -44,7 +44,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateUser(username, userObj) {
-        return super.patch('users/' + username, userObj);
+        return super.patch(['users', username], userObj);
     }
 
     /**
@@ -53,7 +53,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteUser(username) {
-        return super.delete('users/' + username);
+        return super.delete(['users', username]);
     }
 
     /**
@@ -62,7 +62,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getUserData(username) {
-        return super.get('users/' + username + '/data');
+        return super.get(['users', username, 'data']);
     }
 
     /**
@@ -72,7 +72,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     setUserData(username, userData) {
-        return super.put('users/' + username + '/data', userData);
+        return super.put(['users', username, 'data'], userData);
     }
 
     /**
@@ -82,7 +82,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateUserData(username, userData) {
-        return super.patch('users/' + username + '/data', userData);
+        return super.patch(['users', username, 'data'], userData);
     }
 
     /**
@@ -91,7 +91,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteUserData(username) {
-        return super.delete('users/' + username + '/data');
+        return super.delete(['users', username, 'data']);
     }
 
     // Non REST native Helper methods:

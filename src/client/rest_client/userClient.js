@@ -7,9 +7,8 @@ import BaseClient from './baseClient';
 
 export default class UserClient extends BaseClient {
 
-    constructor(baseUrl, debugMode) {
+    constructor(baseUrl) {
         super(baseUrl);
-        this.debugMode = debugMode;
     }
 
     /**
@@ -17,7 +16,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getCurrentUser() {
-        return super.get('user');
+        return super.get(['user']);
     }
 
     /**
@@ -32,7 +31,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateCurrentUser(parameters) {
-        return super.patch('user', parameters);
+        return super.patch(['user'], parameters);
     }
 
     /**
@@ -40,7 +39,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteCurrentUser() {
-        return super.delete('user');
+        return super.delete(['user']);
     }
 
     /**
@@ -48,7 +47,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getCurrentUserData() {
-        return super.get('user/data');
+        return super.get(['user', 'data']);
     }
 
     /**
@@ -57,7 +56,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     setCurrentUserData(value) {
-        return super.put('user/data', value);
+        return super.put(['user', 'data'], value);
     }
 
     /**
@@ -66,7 +65,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateCurrentUserData(value) {
-        return super.put('user/data', value);
+        return super.put(['user', 'data'], value);
     }
 
     /**
@@ -74,7 +73,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     deleteCurrentUserData() {
-        return super.delete('user/data');
+        return super.delete(['user', 'data']);
     }
 
 }
