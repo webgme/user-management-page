@@ -106,10 +106,8 @@ export default class OrganizationsTable extends React.Component {
 
                 {/* Header */}
                 <div className="box-header"
-                     style={{backgroundColor: THEME_COLORS[this.props.themeColor],
-                             paddingBottom: "0px",
-                             textAlign: "-webkit-center"}}>
-                    <h3 className="box-title" style={{color: "white", fontSize: 28}}>
+                     style={{paddingBottom: "0px"}}>
+                    <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
 
@@ -154,6 +152,7 @@ export default class OrganizationsTable extends React.Component {
                     {/* Organization name */}
                     <LoginField hint="Organization Name"
                                 iconClass="fa fa-institution"
+                                name="organization"
                                 onBlur={this.props.checkOrganizationName}
                                 onInputChange={this.props.onCreateOrganizationNameChange}
                                 indentStyle={STYLE.modalDialogTextField}

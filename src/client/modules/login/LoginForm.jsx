@@ -53,7 +53,7 @@ export default class LoginForm extends React.Component {
     }
 
     onGuestLogIn() {
-        browserHistory.push(this.props.basePath);
+        browserHistory.push(window.location.origin);
         window.location.reload();
     }
 
@@ -80,7 +80,8 @@ export default class LoginForm extends React.Component {
                         nextLocation = '';
 
                     if (redirectPath === '') {
-                        nextLocation = window.location.pathname.replace('login', '');
+                        nextLocation = window.location.origin;
+                        // nextLocation = window.location.pathname.replace('login', '');
                     } else {
                         nextLocation = window.decodeURIComponent(redirectPath);
                     }
@@ -107,8 +108,6 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-
-        console.log('check');
         return <div className="login-box-body">
             <p className="login-box-msg">
                 Sign in to start your session

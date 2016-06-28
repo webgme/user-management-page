@@ -34,9 +34,9 @@ export default class ProjectPage extends React.Component {
         return (
 
             <section className="content">
-                <h2 style={{fontFamily: "-webkit-body"}}>
+                {/* <h2>
                     <i className="fa fa-cube"/>{` ${this.props.params.projectName} by ${this.props.params.ownerId}`}
-                </h2>
+                </h2> */}
 
                 <div className="row">
 

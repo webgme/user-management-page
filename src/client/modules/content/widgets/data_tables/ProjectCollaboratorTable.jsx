@@ -182,6 +182,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                         </ButtonGroup>
                     </div>
 
+                    {this.state.display === 1 ?
                     <DataTable categories={dataTableData.categories.users}
                                display={this.state.display}
                                entries={this.state.userCollaborators}
@@ -193,11 +194,9 @@ export default class ProjectCollaboratorTable extends React.Component {
                                restClient={this.props.restClient}
                                sortable={true}
                                sortedForward={this.state.sortedForward}
-                               style={this.state.display === 2 ? {display: "none"} : {}}
                                tableName="Collaborators">
                         <ProjectDataTableEntry/>
-                    </DataTable>
-
+                    </DataTable> :
                     <DataTable categories={dataTableData.categories.organizations}
                                display={this.state.display}
                                entries={this.state.organizationCollaborators}
@@ -209,10 +208,9 @@ export default class ProjectCollaboratorTable extends React.Component {
                                restClient={this.props.restClient}
                                sortable={true}
                                sortedForward={this.state.sortedForward}
-                               style={this.state.display === 1 ? {display: "none"} : {}}
                                tableName="Collaborators">
                         <ProjectDataTableEntry/>
-                    </DataTable>
+                    </DataTable>}
 
                 </div>
 

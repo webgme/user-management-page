@@ -124,6 +124,7 @@ export default class OrganizationTable extends React.Component {
                     </ButtonGroup>
                 </div>
 
+                {this.props.display === 1 ?
                 <DataTable categories={dataTableData.categories.members}
                            display={this.props.display}
                            entries={this.state.members}
@@ -134,11 +135,9 @@ export default class OrganizationTable extends React.Component {
                            projectName={this.props.projectName}
                            restClient={this.props.restClient}
                            sortable={true}
-                           style={this.props.display === 2 ? {display: "none"} : {}}
                            tableName="Members">
                     <OrganizationDataTableEntry/>
-                </DataTable>
-
+                </DataTable> :
                 <DataTable categories={dataTableData.categories.admins}
                            display={this.props.display}
                            entries={this.state.admins}
@@ -149,10 +148,9 @@ export default class OrganizationTable extends React.Component {
                            restClient={this.props.restClient}
                            sortable={true}
                            sortedForward={this.state.sortedForward}
-                           style={this.props.display === 1 ? {display: "none"} : {}}
                            tableName="Admins">
                     <OrganizationDataTableEntry/>
-                </DataTable>
+                </DataTable>}
 
             </div>
 

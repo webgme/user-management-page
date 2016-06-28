@@ -9,7 +9,7 @@ import React from 'react/lib/React';
 import AuthorizationWidget from './AuthorizationWidget';
 import {multiselectFormat, sortObjectArrayByField} from '../../../../utils/utils';
 
-export default class ProjectAuthorizationWidget extends React.Component {
+export default class OrganizationAuthorizationWidget extends React.Component {
 
     constructor(props) {
         super(props);
