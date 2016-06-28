@@ -10,7 +10,7 @@ import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import {sortObjectArrayByField} from '../../../../utils/utils';
+import {sortObjectArrayByField, THEME_COLORS} from '../../../../utils/utils';
 
 export default class ProjectsTable extends React.Component {
 
@@ -71,7 +71,7 @@ export default class ProjectsTable extends React.Component {
                            entries={this.state.projects}
                            iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}
-                           restClient={this.restClient}
+                           restClient={this.props.restClient}
                            sortable={true}
                            sortedForward={this.state.sortedForward}
                            tableName="Projects">
@@ -82,4 +82,3 @@ export default class ProjectsTable extends React.Component {
         );
     }
 }
-

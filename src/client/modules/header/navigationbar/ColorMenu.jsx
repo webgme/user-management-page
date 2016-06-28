@@ -3,7 +3,10 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+// Libraries
 import React from 'react/lib/React';
+// Self-defined
+import {THEME_COLORS} from '../../../utils/utils';
 
 const STYLE = {
     colorMenu: {
@@ -35,7 +38,7 @@ export default class ColorMenu extends React.Component {
                 width: 10,
                 height: 10,
                 display: "inline-block",
-                backgroundColor: color
+                backgroundColor: THEME_COLORS[color]
             };
             formattedColors.push(
                 <li key={index}>
@@ -59,7 +62,7 @@ export default class ColorMenu extends React.Component {
                 </a>
                 <ul className="dropdown-menu" style={STYLE.dropdownMenu}>
                     <li className="header" style={STYLE.menuHeader}>
-                        <span style={{fontWeight: 700}}>GMEProfile Color</span>
+                        <span style={{fontWeight: 700}}>Color Theme</span>
                     </li>
                     <li>
                         <ul className="menu" style={STYLE.colorMenu}>

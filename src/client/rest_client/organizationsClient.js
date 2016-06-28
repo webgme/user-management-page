@@ -113,28 +113,28 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise.<map>} returns map of the users in the specified list of organizations (names to rights)
      */
     getUsersInOrganizationsWithAccessToProject(projectId) {
-        let userInOrganizationMap = {};
+        let userToOrgsRights = {};
 
         return this.getAllOrganizations()
-            .then(allOrganizations => {
-                allOrganizations.forEach(oneOrganization => {
-                    if (oneOrganization.projects.hasOwnProperty(projectId)) {
-                        oneOrganization.users.forEach(oneUser => {
-                            if (userInOrganizationMap[oneUser]) { // If in multiple organizations
-                                userInOrganizationMap[oneUser] = {
-                                    read: userInOrganizationMap[oneUser].read || oneOrganization[projectId].read,
-                                    write: userInOrganizationMap[oneUser].write || oneOrganization[projectId].write,
-                                    delete: userInOrganizationMap[oneUser].delete || oneOrganization[projectId].delete,
+            .then(orgs => {
+                orgs.forEach(org => {
+                    if (org.projects.hasOwnProperty(projectId)) {
+                        org.users.forEach(user => {
+                            if (userToOrgsRights[user]) { // If in multiple organizations
+                                userToOrgsRights[user] = {
+                                    read: userToOrgsRights[user].read || org[projectId].read,
+                                    write: userToOrgsRights[user].write || org[projectId].write,
+                                    delete: userToOrgsRights[user].delete || org[projectId].delete,
                                     inOrg: true
                                 };
                             } else {
-                                userInOrganizationMap[oneUser] = oneOrganization.projects[projectId];
-                                userInOrganizationMap[oneUser].inOrg = true;
+                                userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));
+                                userToOrgsRights[user].inOrg = true;
                             }
                         });
                     }
                 });
-                return userInOrganizationMap;
+                return userToOrgsRights;
             });
     }
 

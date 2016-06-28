@@ -10,7 +10,7 @@
  */
 export function verifyEmail(email) {
     return email.length >= 3 &&
-           /^\w+@\w+\.\w+$/.test(email);
+           /^\w+@\S+\.\S+$/.test(email);
 }
 
 /**

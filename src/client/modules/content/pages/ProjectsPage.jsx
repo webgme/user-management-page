@@ -15,11 +15,10 @@ export default class ProjectsPage extends React.Component {
     }
 
     render() {
-
         return <section className="content">
 
-            <ProjectsTable restClient={this.props.restClient}
-                           basePath={this.props.routes[0].basePath}/>
+            <ProjectsTable basePath={this.props.basePath}
+                           restClient={this.props.restClient}/>
 
         </section>;
     }

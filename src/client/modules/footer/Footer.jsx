@@ -12,7 +12,7 @@ export default class Footer extends React.Component {
     }
 
     render() {
-        return <footer className="main-footer" style={{padding: "5px"}}>
+        return <footer className="main-footer" style={{padding: "0px"}}>
 
             <strong>&copy; 2016
                 <a href="https://www.vanderbilt.edu" target="_blank">

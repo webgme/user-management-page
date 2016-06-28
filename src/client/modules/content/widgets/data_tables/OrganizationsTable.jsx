@@ -13,7 +13,7 @@ import React from 'react/lib/React';
 import DataTable from './DataTable';
 import LoginField from '../LoginField';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
-import {sortObjectArrayByField} from '../../../../utils/utils';
+import {sortObjectArrayByField, THEME_COLORS} from '../../../../utils/utils';
 
 const STYLE = {
     createOrganizationModal: {
@@ -105,7 +105,8 @@ export default class OrganizationsTable extends React.Component {
             <div className="box">
 
                 {/* Header */}
-                <div className="box-header" style={{paddingBottom: 0}}>
+                <div className="box-header"
+                     style={{paddingBottom: "0px"}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
@@ -151,6 +152,7 @@ export default class OrganizationsTable extends React.Component {
                     {/* Organization name */}
                     <LoginField hint="Organization Name"
                                 iconClass="fa fa-institution"
+                                name="organization"
                                 onBlur={this.props.checkOrganizationName}
                                 onInputChange={this.props.onCreateOrganizationNameChange}
                                 indentStyle={STYLE.modalDialogTextField}

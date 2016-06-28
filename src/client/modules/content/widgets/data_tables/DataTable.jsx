@@ -141,7 +141,7 @@ export default class DataTable extends React.Component {
                                 <label>Filter:
                                     <input type="text"
                                            className="form-control input-sm"
-                                           placeholder={`(Type ${this.props.tableName.toLowerCase()} name)`}
+                                           placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}
                                            value={this.state.searchText}
                                            aria-controls="example1"
                                            onChange={this.handleSearch}/>
@@ -180,7 +180,9 @@ export default class DataTable extends React.Component {
                             <div className="dataTables_info" id="example1_info" role="status"
                                  aria-live="polite">
                                 <div>
-                                    {showString}
+                                    <label style={{lineHeight: "2.4"}}>
+                                        {showString}
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -197,15 +199,16 @@ export default class DataTable extends React.Component {
                         {/* Number of entries shown */}
                         <div className="col-sm-4" style={{textAlign: "right"}}>
                             <div className="dataTables_length" id="example1_length">
-                                <label>Show
+                                <label>{this.props.tableName} per page
                                     <select name="example1_length"
                                             aria-controls="example1"
                                             className="form-control input-sm"
-                                            onChange={this.handleSelect}>
+                                            onChange={this.handleSelect}
+                                            style={{padding: "5px 1px"}}>
 
                                         {formattedSelectOptions}
 
-                                    </select> {(this.props.tableName.toLowerCase())}
+                                    </select>
                                 </label>
                             </div>
                         </div>

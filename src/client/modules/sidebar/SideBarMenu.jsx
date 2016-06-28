@@ -19,12 +19,6 @@ export default class SideBarMenu extends React.Component {
 
     constructor(props) {
         super(props);
-        this.blurMenu = this.blurMenu.bind(this);
-    }
-
-    blurMenu(event) {
-        // Release focus from link underlining
-        event.target.blur();
     }
 
     render() {
@@ -35,30 +29,26 @@ export default class SideBarMenu extends React.Component {
 
             <li className="header">Site Navigation</li>
 
-            <li className={/home$/.test(this.props.location.pathname) ? 'active' : ''}
-                onFocus={this.blurMenu}>
-                <Link to={`${this.props.basePath}home`}>
+            <li className={/home$/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}home`} style={{textDecoration: "none"}}>
                     <i className="fa fa-home"/> <span>Home</span>
                 </Link>
             </li>
 
-            <li className={/profile$/.test(this.props.location.pathname) ? 'active' : ''}
-                onFocus={this.blurMenu}>
-                <Link to={`${this.props.basePath}profile`}>
+            <li className={/profile$/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}profile`} style={{textDecoration: "none"}}>
                     <i className="fa fa-user"/> <span>My Profile</span>
                 </Link>
             </li>
 
-            <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}
-                onFocus={this.blurMenu}>
-                <Link to={`${this.props.basePath}projects`}>
+            <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}projects`} style={{textDecoration: "none"}}>
                     <i className="fa fa-cubes"/> <span>My Projects</span>
                 </Link>
             </li>
 
-            <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}
-                onFocus={this.blurMenu}>
-                <Link to={`${this.props.basePath}organizations`}>
+            <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${this.props.basePath}organizations`} style={{textDecoration: "none"}}>
                     <i className="fa fa-university"/> <span>My Organizations</span>
                 </Link>
             </li>

@@ -19,6 +19,10 @@ export default class LoginField extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.value !== this.props.value;
+    }
+
     render() {
         return (
             <div>
@@ -30,10 +34,12 @@ export default class LoginField extends React.Component {
                     </span>
                     <input autoFocus={this.props.autoFocus}
                            className="form-control"
-                           placeholder={this.props.hint}
+                           name={this.props.name}
                            onBlur={this.props.value !== '' ? this.props.onBlur : null}
                            onChange={this.props.onInputChange}
                            onKeyUp={this.checkEnter}
+                           placeholder={this.props.hint}
+                           required="required"
                            type={this.props.textType || "text"}
                            value={this.props.value}/>
                     <br/>
@@ -57,6 +63,7 @@ LoginField.propTypes = {
     iconClass: React.PropTypes.string.isRequired,
     indentStyle: React.PropTypes.object,
     invalidMessage: React.PropTypes.string,
+    name: React.PropTypes.string.isRequired,
     onBlur: React.PropTypes.func,
     onEnter: React.PropTypes.func,
     onInputChange: React.PropTypes.func.isRequired,

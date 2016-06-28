@@ -37,10 +37,10 @@ export default class LoginForm extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loginClient.getAllowGuests()
-            .then(res => {
+        this.props.loginClient.getGmeConfig()
+            .then(gmeConfig => {
                 this.setState({
-                    allowGuests: res.authentication.allowGuests
+                    allowGuests: gmeConfig.authentication.allowGuests
                 });
             });
     }
@@ -53,7 +53,7 @@ export default class LoginForm extends React.Component {
     }
 
     onGuestLogIn() {
-        browserHistory.push(this.props.basePath);
+        browserHistory.push(window.location.origin);
         window.location.reload();
     }
 
@@ -75,12 +75,11 @@ export default class LoginForm extends React.Component {
                 if (/2\d\d/.test(res.statusCode)) {
 
                     let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
-                        /redirect=(\S+)/.exec(window.location.href)[1] :
-                        '',
+                                       /redirect=(\S+)/.exec(window.location.href)[1] : '',
                         nextLocation = '';
 
                     if (redirectPath === '') {
-                        nextLocation = window.location.pathname.replace('login', '');
+                        nextLocation = window.location.origin;
                     } else {
                         nextLocation = window.decodeURIComponent(redirectPath);
                     }
@@ -107,7 +106,6 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-
         return <div className="login-box-body">
             <p className="login-box-msg">
                 Sign in to start your session
@@ -123,12 +121,13 @@ export default class LoginForm extends React.Component {
                     <br/>
                 </div> : null}
 
-            <form>
+            <form autoComplete="on" method="post">
 
                 {/* Username */}
                 <LoginField autoFocus={true}
                             hint="User ID"
                             iconClass="glyphicon glyphicon-user"
+                            name="username"
                             onInputChange={this.onUserIdChange}
                             valid={true}
                             value={this.state.userId}/>
@@ -136,6 +135,7 @@ export default class LoginForm extends React.Component {
                 {/* Password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
+                            name="password"
                             onEnter={this.onLogIn}
                             onInputChange={this.onPasswordChange}
                             textType="password"
@@ -181,8 +181,7 @@ export default class LoginForm extends React.Component {
                                         Guest
                                     </Button> : null}
                                 <Button bsStyle="primary"
-                                        onClick={this.onClickSignIn}
-                                        disabled={this.state.userId === '' || this.state.password.length < 3}>
+                                        onClick={this.onClickSignIn}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>

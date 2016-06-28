@@ -44,7 +44,7 @@ class OrganizationPage extends React.Component {
         return (
 
             <section className="content">
-                <h3> {this.props.params.organizationId} </h3>
+                {/* <h3> {this.props.params.organizationId} </h3> */}
 
                 <OrganizationTable display={this.state.display}
                                    handleTableSwitch={this.handleTableSwitch}

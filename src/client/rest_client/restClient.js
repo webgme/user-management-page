@@ -13,7 +13,7 @@ import UsersClient from './usersClient';
  * @param {string} baseUrl - the base url
  * @param {boolean} debugMode - whether or not in debugMode(mocking data)
  */
-function RestClient(baseUrl = '/api/', debugMode) {
+function RestClient(baseUrl = '/api/', debugMode = false) {
 
     this.organizations = new OrganizationsClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);

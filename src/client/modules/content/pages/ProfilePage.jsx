@@ -60,7 +60,7 @@ export default class ProfilePage extends React.Component {
                     <div className="icon">
                         <i className="fa fa-cubes"/>
                     </div>
-                    <Link to={`${this.props.routes[0].basePath}projects`}
+                    <Link to={`${this.props.basePath}projects`}
                           className="small-box-footer">
                         More info <i className="fa fa-arrow-circle-right"/>
                     </Link>
@@ -74,7 +74,7 @@ export default class ProfilePage extends React.Component {
                     <div className="icon">
                         <i className="fa fa-institution"/>
                     </div>
-                    <Link to={`${this.props.routes[0].basePath}organizations`}
+                    <Link to={`${this.props.basePath}organizations`}
                           className="small-box-footer">
                         More info <i className="fa fa-arrow-circle-right"/>
                     </Link>

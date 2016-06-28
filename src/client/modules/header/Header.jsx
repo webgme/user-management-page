@@ -96,7 +96,7 @@ export default class Header extends React.Component {
 
         return <header className="main-header">
 
-            <Link to={`${this.props.basePath}`} className="logo">
+            <Link to={`${this.props.basePath}`} className="logo" style={{textDecoration: "none"}}>
                 <span className="logo-mini"><b>GME</b></span>
                 <span className="logo-lg"><b>GME</b>Profile</span>
             </Link>
