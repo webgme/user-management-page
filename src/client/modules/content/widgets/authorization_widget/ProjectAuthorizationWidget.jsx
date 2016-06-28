@@ -47,38 +47,19 @@ export default class ProjectAuthorizationWidget extends React.Component {
         event.target.blur();
 
         let buttonClicked = event.target.innerHTML.toLowerCase(),
-            holdButtonGroup = this.state.authorizeButtonGroup;
+            authorizeButtonGroup = this.state.authorizeButtonGroup;
 
-        // Incremental Buttons
+        // Radio buttons
         if (buttonClicked === 'none') {
-            holdButtonGroup = {read: false, write: false, delete: false};
+            authorizeButtonGroup = {read: false, write: false, delete: false};
         } else {
-            // Handling selection
-            if (this.state.authorizeButtonGroup[buttonClicked] === false) {
-                for (let button in holdButtonGroup) {
-                    if (button === buttonClicked) {
-                        holdButtonGroup[buttonClicked] = true;
-                        break;
-                    } else {
-                        holdButtonGroup[button] = true;
-                    }
-                }
-                // Handling deselection
-            } else if (this.state.authorizeButtonGroup[buttonClicked] === true) {
-                let passedCurrentButton = false;
-                for (let button in holdButtonGroup) {
-                    if (button === buttonClicked) {
-                        holdButtonGroup[buttonClicked] = false;
-                        passedCurrentButton = true;
-                    } else if (passedCurrentButton) {
-                        holdButtonGroup[button] = false;
-                    }
-                }
-            }
+            Object.keys(this.state.authorizeButtonGroup).forEach(right => {
+                authorizeButtonGroup[right] = right === buttonClicked;
+            });
         }
 
         this.setState({
-            authorizeButtonGroup: holdButtonGroup
+            authorizeButtonGroup: authorizeButtonGroup
         });
     }
 
@@ -94,9 +75,13 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
-        projectRights += this.state.authorizeButtonGroup.read ? 'r' : '';
-        projectRights += this.state.authorizeButtonGroup.write ? 'w' : '';
-        projectRights += this.state.authorizeButtonGroup.delete ? 'd' : '';
+        if (this.state.authorizeButtonGroup.read) {
+            projectRights = 'r';
+        } else if (this.state.authorizeButtonGroup.write) {
+            projectRights = 'rw';
+        } else if (this.state.authorizeButtonGroup.delete) {
+            projectRights = 'rwd';
+        }
 
         let promiseArrayToGrant = [];
 
