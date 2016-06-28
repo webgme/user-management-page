@@ -106,6 +106,7 @@ export default class OrganizationsPage extends React.Component {
                                     refreshTable={this.state.refreshTable}
                                     restClient={this.props.restClient}
                                     showCreateOrganizationModal={this.state.showCreateOrganizationModal}
+                                    themeColor={this.props.themeColor}
                                     validOrganizationName={this.state.validOrganizationName}/>
 
         </section>;

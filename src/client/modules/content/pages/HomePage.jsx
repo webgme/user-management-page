@@ -21,24 +21,24 @@ export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'loading',
-            numProjects: 0,
-            numOrganizations: 0
+            ownedProjects: 0,
+            name: '',
+            numOrganizations: 0,
+            viewableProjects: 0
         };
     }
 
     componentDidMount() {
-        this.props.restClient.user.getCurrentUser()
-            .then(currentUser => {
-
-                let localNumProj = 0;
-                for (let oneProj in currentUser.projects) { // eslint-disable-line no-unused-vars, guard-for-in
-                    localNumProj++;
-                }
+        Promise.all([
+            this.props.restClient.user.getCurrentUser(),
+            this.props.restClient.projects.getAllProjects()
+        ])
+            .then(([user, projects]) => {
                 this.setState({
-                    name: currentUser._id,
-                    numProjects: localNumProj,
-                    numOrganizations: currentUser.orgs.length
+                    ownedProjects: Object.keys(user.projects).length,
+                    name: user._id,
+                    numOrganizations: user.orgs.length,
+                    viewableProjects: projects.length
                 });
             });
     }
@@ -58,7 +58,10 @@ export default class HomePage extends React.Component {
 
                     <ul className="list-group list-group-unbordered">
                         <li className="list-group-item">
-                            <b>Projects</b> <a className="pull-right">{this.state.numProjects}</a>
+                            <b>Owned Projects</b> <a className="pull-right">{this.state.ownedProjects}</a>
+                        </li>
+                        <li className="list-group-item">
+                            <b>Viewable Projects</b> <a className="pull-right">{this.state.viewableProjects}</a>
                         </li>
                         <li className="list-group-item">
                             <b>Organizations</b> <a className="pull-right">{this.state.numOrganizations}</a>

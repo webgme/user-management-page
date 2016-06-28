@@ -10,7 +10,7 @@ import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import {sortObjectArrayByField} from '../../../../utils/utils';
+import {sortObjectArrayByField, THEME_COLORS} from '../../../../utils/utils';
 
 export default class ProjectsTable extends React.Component {
 
@@ -59,8 +59,9 @@ export default class ProjectsTable extends React.Component {
             <div className="box">
 
                 {/* Header */}
-                <div className="box-header" style={{paddingBottom: 0}}>
-                    <h3 className="box-title" style={{fontSize: 28}}>
+                <div className="box-header"
+                     style={{backgroundColor: THEME_COLORS[this.props.themeColor], textAlign: "-webkit-center"}}>
+                    <h3 className="box-title" style={{color: "white", fontSize: 28}}>
                         <i className="fa fa-cube"/> {` Projects`}
                     </h3>
                 </div>
@@ -82,4 +83,8 @@ export default class ProjectsTable extends React.Component {
         );
     }
 }
+
+ProjectsTable.defaultProps = {
+    themeColor: "green"
+};
 

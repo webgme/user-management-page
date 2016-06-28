@@ -13,7 +13,7 @@ import React from 'react/lib/React';
 import DataTable from './DataTable';
 import LoginField from '../LoginField';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
-import {sortObjectArrayByField} from '../../../../utils/utils';
+import {sortObjectArrayByField, THEME_COLORS} from '../../../../utils/utils';
 
 const STYLE = {
     createOrganizationModal: {
@@ -105,8 +105,11 @@ export default class OrganizationsTable extends React.Component {
             <div className="box">
 
                 {/* Header */}
-                <div className="box-header" style={{paddingBottom: 0}}>
-                    <h3 className="box-title" style={{fontSize: 28}}>
+                <div className="box-header"
+                     style={{backgroundColor: THEME_COLORS[this.props.themeColor],
+                             paddingBottom: "0px",
+                             textAlign: "-webkit-center"}}>
+                    <h3 className="box-title" style={{color: "white", fontSize: 28}}>
                         <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
 

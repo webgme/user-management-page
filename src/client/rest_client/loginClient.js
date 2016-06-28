@@ -51,7 +51,7 @@ export default class LoginClient extends BaseClient {
         return super.post(['/api', 'register'], data);
     }
 
-    getAllowGuests() {
+    getGmeConfig() {
         return super.get(['/gmeConfig.json']);
     }
 }

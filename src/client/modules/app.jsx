@@ -10,6 +10,8 @@ import Footer from './footer/Footer';
 import Header from './header/Header';
 import RestClient from '../rest_client/restClient';
 import SideBar from './sidebar/SideBar';
+import {THEME_COLORS} from '../utils/utils';
+
 /**
  * This is the main layout of the web-page.
  */
@@ -19,23 +21,24 @@ export default class App extends React.Component {
         super(props);
         this.restClient = new RestClient();
         this.state = {
-            headerColor: 'purple'
+            themeColor: 'purple'
         };
         // Event handlers
         this.handleColorSwitch = this.handleColorSwitch.bind(this);
     }
 
     handleColorSwitch(event) {
-        let headerColor;
+        let themeColor;
         if (event.target.outerHTML.length > 20) {
-            headerColor = event.target.outerHTML
-                .match(/background-color: \w+/)[0]
-                .replace('background-color: ', '');
+            let rgbString = event.target.outerHTML.match(/background-color: (.*?);/)[1];
+            themeColor = Object.keys(THEME_COLORS).filter(color => {
+                return THEME_COLORS[color] === rgbString;
+            })[0];
         } else {
-            headerColor = event.target.innerHTML.toLowerCase();
+            themeColor = event.target.innerHTML.toLowerCase();
         }
         this.setState({
-            headerColor: headerColor
+            themeColor: themeColor
         });
     }
 
@@ -44,15 +47,15 @@ export default class App extends React.Component {
         // Passing props through the route
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
             child => React.cloneElement(child, {
+                basePath: this.props.route.basePath,
                 restClient: this.restClient,
-                basePath: this.props.route.basePath
+                themeColor: this.state.themeColor
             }));
 
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
-        return <div className={`wrapper skin-${this.state.headerColor}`}>
+        return <div className={`wrapper skin-${this.state.themeColor}`}>
 
             <Header restClient={this.restClient}
-                    headerColor={this.state.headerColor}
                     handleColorSwitch={this.handleColorSwitch}
                     basePath={this.props.route.basePath}/>
 
