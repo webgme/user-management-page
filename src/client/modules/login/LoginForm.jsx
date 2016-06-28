@@ -38,9 +38,9 @@ export default class LoginForm extends React.Component {
 
     componentDidMount() {
         this.props.loginClient.getGmeConfig()
-            .then(res => {
+            .then(gmeConfig => {
                 this.setState({
-                    allowGuests: res.authentication.allowGuests
+                    allowGuests: gmeConfig.authentication.allowGuests
                 });
             });
     }
@@ -75,13 +75,11 @@ export default class LoginForm extends React.Component {
                 if (/2\d\d/.test(res.statusCode)) {
 
                     let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
-                        /redirect=(\S+)/.exec(window.location.href)[1] :
-                        '',
+                                       /redirect=(\S+)/.exec(window.location.href)[1] : '',
                         nextLocation = '';
 
                     if (redirectPath === '') {
                         nextLocation = window.location.origin;
-                        // nextLocation = window.location.pathname.replace('login', '');
                     } else {
                         nextLocation = window.decodeURIComponent(redirectPath);
                     }
@@ -183,8 +181,7 @@ export default class LoginForm extends React.Component {
                                         Guest
                                     </Button> : null}
                                 <Button bsStyle="primary"
-                                        onClick={this.onClickSignIn}
-                                        disabled={this.state.userId === '' || this.state.password.length < 3}>
+                                        onClick={this.onClickSignIn}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>

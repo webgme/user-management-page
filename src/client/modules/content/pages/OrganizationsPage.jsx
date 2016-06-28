@@ -96,7 +96,7 @@ export default class OrganizationsPage extends React.Component {
     render() {
         return <section className="content">
 
-            <OrganizationsDataTable basePath={this.props.routes[0].basePath}
+            <OrganizationsDataTable basePath={this.props.basePath}
                                     checkOrganizationName={this.checkOrganizationName}
                                     closeCreateOrganization={this.closeCreateOrganization}
                                     createOrganization={this.createOrganization}
@@ -106,7 +106,6 @@ export default class OrganizationsPage extends React.Component {
                                     refreshTable={this.state.refreshTable}
                                     restClient={this.props.restClient}
                                     showCreateOrganizationModal={this.state.showCreateOrganizationModal}
-                                    themeColor={this.props.themeColor}
                                     validOrganizationName={this.state.validOrganizationName}/>
 
         </section>;

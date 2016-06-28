@@ -1,5 +1,4 @@
-/**
- * User menu of the header component
+/** User menu of the header component
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 

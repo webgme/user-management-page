@@ -48,8 +48,7 @@ export default class App extends React.Component {
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
             child => React.cloneElement(child, {
                 basePath: this.props.route.basePath,
-                restClient: this.restClient,
-                themeColor: this.state.themeColor
+                restClient: this.restClient
             }));
 
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
