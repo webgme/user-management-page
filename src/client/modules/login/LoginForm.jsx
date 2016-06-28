@@ -108,6 +108,7 @@ export default class LoginForm extends React.Component {
 
     render() {
 
+        console.log('check');
         return <div className="login-box-body">
             <p className="login-box-msg">
                 Sign in to start your session
@@ -123,12 +124,13 @@ export default class LoginForm extends React.Component {
                     <br/>
                 </div> : null}
 
-            <form>
+            <form autoComplete="on" method="post">
 
                 {/* Username */}
                 <LoginField autoFocus={true}
                             hint="User ID"
                             iconClass="glyphicon glyphicon-user"
+                            name="username"
                             onInputChange={this.onUserIdChange}
                             valid={true}
                             value={this.state.userId}/>
@@ -136,6 +138,7 @@ export default class LoginForm extends React.Component {
                 {/* Password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
+                            name="password"
                             onEnter={this.onLogIn}
                             onInputChange={this.onPasswordChange}
                             textType="password"

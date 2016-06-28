@@ -60,7 +60,7 @@ export default class ProjectsTable extends React.Component {
 
                 {/* Header */}
                 <div className="box-header"
-                     style={{backgroundColor: THEME_COLORS[this.props.themeColor], textAlign: "-webkit-center"}}>
+                     style={{backgroundColor: THEME_COLORS[this.props.themeColor], paddingRight: "10%", textAlign: "-webkit-center"}}>
                     <h3 className="box-title" style={{color: "white", fontSize: 28}}>
                         <i className="fa fa-cube"/> {` Projects`}
                     </h3>
