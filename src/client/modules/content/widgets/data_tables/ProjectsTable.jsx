@@ -68,6 +68,7 @@ export default class ProjectsTable extends React.Component {
                 {/* Body */}
                 <DataTable basePath={this.props.basePath}
                            categories={categories}
+                           content="Projects"
                            entries={this.state.projects}
                            iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}

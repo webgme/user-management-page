@@ -185,6 +185,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
                                restClient={this.props.restClient}
+                               showOtherTitle={true}
                                sortable={true}
                                sortedForward={this.state.sortedForward}
                                tableName="Collaborators">
@@ -202,6 +203,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
                                restClient={this.props.restClient}
+                               showOtherTitle={true}
                                sortable={true}
                                sortedForward={this.state.sortedForward}
                                tableName="Collaborators">

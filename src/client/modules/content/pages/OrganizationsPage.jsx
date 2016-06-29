@@ -67,9 +67,10 @@ export default class OrganizationsPage extends React.Component {
                             });
                         })
                         .catch(err => {
-                            if (err === 400) {
+                            if (err.status === 400) {
                                 this.setState({
-                                    createOrganizationInvalidMessage: 'Name already taken'
+                                    createOrganizationInvalidMessage: 'Name already taken',
+                                    validOrganizationName: false
                                 });
                             }
                             console.error(err); // eslint-disable-line no-console

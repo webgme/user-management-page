@@ -142,7 +142,7 @@ export default class DataTable extends React.Component {
                      className="dataTables_wrapper form-inline dt-bootstrap"
                      style={this.props.style}>
 
-                    <strong>{this.props.content}</strong>
+                    <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
                     {entriesList.length === 0 || entriesList.length > this.state.selectValue ? null :
                         <div className="row">
 

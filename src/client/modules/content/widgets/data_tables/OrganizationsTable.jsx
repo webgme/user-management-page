@@ -124,6 +124,7 @@ export default class OrganizationsTable extends React.Component {
                 {/* Body */}
                 <DataTable basePath={this.props.basePath}
                            categories={categories}
+                           content="Organizations"
                            entries={this.state.organizations}
                            iconClass="fa fa-institution"
                            orderEntries={this.onOrderEntries}
