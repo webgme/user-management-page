@@ -24,6 +24,8 @@ export default class OrganizationsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            createOrganizationInvalidMessage: 'Organization name must only contain letters, numbers, and' +
+                                              ' the underscore and must be at least 3 characters long',
             newOrganizationName: '',
             refreshTable: false,
             showCreateOrganizationModal: false,
@@ -64,6 +66,11 @@ export default class OrganizationsPage extends React.Component {
                             });
                         })
                         .catch(err => {
+                            if (err === 400) {
+                                this.setState({
+                                    createOrganizationInvalidMessage: 'Name already taken'
+                                });
+                            }
                             console.error(err); // eslint-disable-line no-console
                         });
                 }
@@ -100,6 +107,7 @@ export default class OrganizationsPage extends React.Component {
                                     checkOrganizationName={this.checkOrganizationName}
                                     closeCreateOrganization={this.closeCreateOrganization}
                                     createOrganization={this.createOrganization}
+                                    createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
                                     newOrganizationName={this.state.newOrganizationName}
                                     onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
                                     openCreateOrganization={this.openCreateOrganization}

@@ -142,8 +142,11 @@ export default class RegisterForm extends React.Component {
                 if (allValid) {
                     this.props.loginClient.register(this.state.userId, this.state.password, this.state.email)
                         .then(() => {
-                            browserHistory.push(this.props.basePath);
-                            window.location.reload();
+                            this.props.loginClient.login(this.state.userId, this.state.password)
+                                .then(() => {
+                                    browserHistory.push('/');
+                                    window.location.reload();
+                                });
                         })
                         .catch(err => {
                             if (err.status === 400) {

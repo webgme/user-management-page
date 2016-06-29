@@ -156,8 +156,7 @@ export default class OrganizationsTable extends React.Component {
                                 onBlur={this.props.checkOrganizationName}
                                 onInputChange={this.props.onCreateOrganizationNameChange}
                                 indentStyle={STYLE.modalDialogTextField}
-                                invalidMessage={"Organization name must only contain letters, numbers, and" +
-                                                " the underscore and must be at least 3 characters long"}
+                                invalidMessage={this.props.createOrganizationInvalidMessage}
                                 valid={this.props.validOrganizationName}
                                 value={this.props.newOrganizationName}
                                 warning={!this.props.validOrganizationName}/>

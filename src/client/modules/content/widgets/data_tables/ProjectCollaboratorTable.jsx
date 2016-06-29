@@ -184,6 +184,7 @@ export default class ProjectCollaboratorTable extends React.Component {
 
                     {this.state.display === 1 ?
                     <DataTable categories={dataTableData.categories.users}
+                               content="Users"
                                display={this.state.display}
                                entries={this.state.userCollaborators}
                                handleRevoke={this.onRevoke}
@@ -198,6 +199,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                         <ProjectDataTableEntry/>
                     </DataTable> :
                     <DataTable categories={dataTableData.categories.organizations}
+                               content="Organizations"
                                display={this.state.display}
                                entries={this.state.organizationCollaborators}
                                handleRevoke={this.onRevoke}

@@ -62,7 +62,7 @@ export default class ProjectDataTableEntry extends React.Component {
         rights += this.props.write ? 'Write  ' : '';
         rights += this.props.delete ? 'Delete' : '';
 
-        return <tr role="row" className="odd">
+        return <tr role="row" className="odd" style={{height: "5px"}}>
             <Modal show={this.state.showModal} onHide={this.close}>
 
                 <Modal.Header closeButton>

@@ -53,7 +53,7 @@ export default class LoginForm extends React.Component {
     }
 
     onGuestLogIn() {
-        browserHistory.push(window.location.origin);
+        browserHistory.push('/');
         window.location.reload();
     }
 
@@ -79,7 +79,7 @@ export default class LoginForm extends React.Component {
                         nextLocation = '';
 
                     if (redirectPath === '') {
-                        nextLocation = window.location.origin;
+                        nextLocation = '/';
                     } else {
                         nextLocation = window.decodeURIComponent(redirectPath);
                     }
