@@ -162,11 +162,11 @@ export default class OrganizationsTable extends React.Component {
                                 warning={!this.props.validOrganizationName}/>
 
                     <Modal.Footer>
-                        <Button bsStyle="danger" onClick={this.props.closeCreateOrganization}>
-                            Cancel
-                        </Button>
                         <Button bsStyle="success" onClick={this.props.createOrganization}>
                             Create
+                        </Button>
+                        <Button bsStyle="default" onClick={this.props.closeCreateOrganization}>
+                            Cancel
                         </Button>
                     </Modal.Footer>
 

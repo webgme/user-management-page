@@ -172,18 +172,10 @@ export default class ProjectCollaboratorTable extends React.Component {
                         <h3 className="box-title" style={{fontSize: 28}}>
                             <i className={this.props.iconClass}/> {` Collaborators`}
                         </h3>
-                        <ButtonGroup style={{float: "right"}}>
-                            <Button bsStyle={this.state.display === 1 ? "primary" : null}
-                                    onClick={this.onTableSwitch}
-                                    id="or">Users</Button>
-                            <Button bsStyle={this.state.display === 2 ? "primary" : null}
-                                    onClick={this.onTableSwitch}
-                                    id="ow">Organizations</Button>
-                        </ButtonGroup>
                     </div>
 
-                    {this.state.display === 1 ?
                     <DataTable categories={dataTableData.categories.users}
+                               categoryStyle={{width: "50%"}}
                                content="Users"
                                display={this.state.display}
                                entries={this.state.userCollaborators}
@@ -197,8 +189,10 @@ export default class ProjectCollaboratorTable extends React.Component {
                                sortedForward={this.state.sortedForward}
                                tableName="Collaborators">
                         <ProjectDataTableEntry/>
-                    </DataTable> :
+                    </DataTable>
+
                     <DataTable categories={dataTableData.categories.organizations}
+                               categoryStyle={{width: "50%"}}
                                content="Organizations"
                                display={this.state.display}
                                entries={this.state.organizationCollaborators}
@@ -212,7 +206,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                                sortedForward={this.state.sortedForward}
                                tableName="Collaborators">
                         <ProjectDataTableEntry/>
-                    </DataTable>}
+                    </DataTable>
 
                 </div>
 

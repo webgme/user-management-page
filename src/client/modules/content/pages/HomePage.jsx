@@ -13,7 +13,6 @@ const STYLE = {
         paddingRight: "10%"
     },
     profileBoxBorder: {
-        borderRadius: "50px",
         margin: "auto",
         padding: "10px 10px",
         width: "40%"

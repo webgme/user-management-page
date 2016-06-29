@@ -45,10 +45,10 @@ export default class ProjectPage extends React.Component {
             <section className="content">
                 <div className="box box-primary">
                     <div className="row">
-                        <h2 className="col-md-10" style={{paddingLeft: "15px", paddingTop: "14px"}}>
+                        <h2 className="col-md-10" style={{paddingLeft: "30px", paddingTop: "14px"}}>
                             <i className="fa fa-cube"/>{` ${this.props.params.ownerId} / ${this.props.params.projectName}`}
                         </h2>
-                        <div className="col-md-2" style={{paddingRight: "14px", paddingTop: "14px"}}>
+                        <div className="col-md-2" style={{paddingRight: "30px", paddingTop: "14px"}}>
                             <Button bsStyle="info" style={{float: "right"}}
                                     onClick={this.goToEditor}>
                                 Open in editor
@@ -66,21 +66,26 @@ export default class ProjectPage extends React.Component {
                                                   refreshTable={this.state.refreshTable}
                                                   restClient={this.props.restClient}/>
 
+                    </div>
+
+                    <div className="col-md-6">
+
                         <ProjectAuthorizationWidget ownerId={this.props.params.ownerId}
                                                     projectName={this.props.params.projectName}
                                                     refreshTable={this.refreshTable}
                                                     restClient={this.props.restClient}/>
 
+                        <div className="row">
+                            <CollaboratorsCommitsBarChart height={$(window).height() / 1.8}
+                                                          options={{}}
+                                                          ownerId={this.props.params.ownerId}
+                                                          projectName={this.props.params.projectName}
+                                                          restClient={this.props.restClient}
+                                                          title="Commits By Collaborator"
+                                                          width={$(window).width() / 2.36}/>
+                        </div>
+
                     </div>
-
-                    <CollaboratorsCommitsBarChart height={$(window).height() / 1.8}
-                                                 options={{}}
-                                                 ownerId={this.props.params.ownerId}
-                                                 projectName={this.props.params.projectName}
-                                                 restClient={this.props.restClient}
-                                                 title="Commits By Collaborator"
-                                                 width={$(window).width() / 2.36}/>
-
                 </div>
 
             </section>

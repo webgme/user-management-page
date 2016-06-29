@@ -70,7 +70,7 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
     render() {
 
         return (
-            <div className="col-md-6">
+            <div className="col-md-12">
                 <div className="box box-info">
                     <div className="box-header with-border">
                         <h3 className="box-title">{this.props.title}</h3>

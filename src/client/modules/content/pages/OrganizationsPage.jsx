@@ -48,8 +48,9 @@ export default class OrganizationsPage extends React.Component {
 
     closeCreateOrganization() {
         this.setState({
+            newOrganizationName: '',
             showCreateOrganizationModal: false,
-            newOrganizationName: ''
+            validOrganizationName: true
         });
     }
 

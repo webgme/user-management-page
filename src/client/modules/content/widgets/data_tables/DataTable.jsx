@@ -74,7 +74,8 @@ export default class DataTable extends React.Component {
                                                         name={category.name}
                                                         orderEntries={this.props.orderEntries}
                                                         sortable={this.props.sortable}
-                                                        sortedForward={this.props.sortedForward}/>));
+                                                        sortedForward={this.props.sortedForward}
+                                                        style={this.props.categoryStyle}/>));
 
         // Setting up bounds
         let entriesList = this.props.entries.filter(oneEntry => {
@@ -129,6 +130,11 @@ export default class DataTable extends React.Component {
                 </li>);
         }
 
+        const minHeight = 70 + 35 * entriesList.length < this.state.selectValue ? entriesList.length : this.state.selectValue,
+            tableMinHeight = {
+                minHeight: minHeight + "px"
+            };
+
         return (
             <div className="box-body">
 
@@ -136,7 +142,8 @@ export default class DataTable extends React.Component {
                      className="dataTables_wrapper form-inline dt-bootstrap"
                      style={this.props.style}>
 
-                    {entriesList.length === 0 ? null :
+                    <strong>{this.props.content}</strong>
+                    {entriesList.length === 0 || entriesList.length > this.state.selectValue ? null :
                         <div className="row">
 
                             {/* Search bar */}
@@ -158,7 +165,7 @@ export default class DataTable extends React.Component {
                     {entriesList.length === 0 ? <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
                     <div className="row">
 
-                        <div className="col-sm-12">
+                        <div className="col-sm-12" style={tableMinHeight}>
                             <table aria-describedby="example1_info"
                                    className="table table-bordered table-striped dataTable"
                                    id="example1"
@@ -181,8 +188,9 @@ export default class DataTable extends React.Component {
 
                     <div className="row">
 
-                        {entriesList.length > this.state.selectValue ?
-                            <div className="col-sm-4">
+
+                        <div className="col-sm-3">
+                            {entriesList.length > this.state.selectValue ?
                                 <div className="dataTables_info" id="example1_info" role="status"
                                      aria-live="polite">
                                     <div>
@@ -190,10 +198,10 @@ export default class DataTable extends React.Component {
                                             {showString}
                                         </label>
                                     </div>
-                                </div>
-                            </div> : null }
+                                </div> : null }
+                        </div>
 
-                        <div className="col-sm-4" style={{textAlign: "center"}}>
+                        <div className="col-sm-5" style={{textAlign: "center"}}>
                             {entriesList.length > this.state.selectValue ?
                                 <DataTablePagination clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
@@ -203,8 +211,8 @@ export default class DataTable extends React.Component {
                         </div>
 
                         {/* Number of entries shown */}
-                        {entriesList.length > this.state.selectValue ?
-                            <div className="col-sm-4" style={{textAlign: "right"}}>
+                        <div className="col-sm-4" style={{textAlign: "right"}}>
+                            {this.props.entries.length < selectOptions[0] ? null :
                                 <div className="dataTables_length" id="example1_length">
                                     <label>{this.props.tableName} per page
                                         <select name="example1_length"
@@ -217,8 +225,8 @@ export default class DataTable extends React.Component {
 
                                         </select>
                                     </label>
-                                </div>
-                            </div> : null }
+                                </div>}
+                        </div>
 
                     </div>
                 </div>

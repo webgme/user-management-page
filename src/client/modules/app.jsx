@@ -21,7 +21,7 @@ export default class App extends React.Component {
         super(props);
         this.restClient = new RestClient();
         this.state = {
-            themeColor: 'purple'
+            themeColor: 'blue'
         };
         // Event handlers
         this.handleColorSwitch = this.handleColorSwitch.bind(this);
