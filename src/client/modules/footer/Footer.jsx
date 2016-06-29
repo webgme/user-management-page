@@ -5,6 +5,19 @@
 
 import React from 'react/lib/React';
 
+const STYLE = {
+    mainFooter: {
+        fontSize: "12px",
+        padding: "0px"
+    },
+    footerLeft: {
+        paddingLeft: "10px"
+    },
+    footerRight: {
+        paddingRight: "10px"
+    }
+};
+
 export default class Footer extends React.Component {
 
     constructor(props) {
@@ -12,9 +25,9 @@ export default class Footer extends React.Component {
     }
 
     render() {
-        return <footer className="main-footer" style={{padding: "0px"}}>
+        return <footer className="main-footer" style={STYLE.mainFooter}>
 
-            <strong>&copy; 2016
+            <strong style={STYLE.footerLeft}>&copy; 2016
                 <a href="https://www.vanderbilt.edu" target="_blank">
                     &nbsp;Vanderbilt University
                 </a>
@@ -26,7 +39,7 @@ export default class Footer extends React.Component {
                 </a>
             </strong>
 
-            <div className="pull-right hidden-xs">
+            <div className="pull-right hidden-xs" style={STYLE.footerRight}>
                 Version 0.1.0-beta1
             </div>
 

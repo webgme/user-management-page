@@ -124,6 +124,7 @@ export default class OrganizationsTable extends React.Component {
                 {/* Body */}
                 <DataTable basePath={this.props.basePath}
                            categories={categories}
+                           content="Organizations"
                            entries={this.state.organizations}
                            iconClass="fa fa-institution"
                            orderEntries={this.onOrderEntries}
@@ -156,18 +157,17 @@ export default class OrganizationsTable extends React.Component {
                                 onBlur={this.props.checkOrganizationName}
                                 onInputChange={this.props.onCreateOrganizationNameChange}
                                 indentStyle={STYLE.modalDialogTextField}
-                                invalidMessage={"Organization name must only contain letters, numbers, and" +
-                                                " the underscore and must be at least 3 characters long"}
+                                invalidMessage={this.props.createOrganizationInvalidMessage}
                                 valid={this.props.validOrganizationName}
                                 value={this.props.newOrganizationName}
                                 warning={!this.props.validOrganizationName}/>
 
                     <Modal.Footer>
-                        <Button bsStyle="danger" onClick={this.props.closeCreateOrganization}>
-                            Cancel
-                        </Button>
                         <Button bsStyle="success" onClick={this.props.createOrganization}>
                             Create
+                        </Button>
+                        <Button bsStyle="default" onClick={this.props.closeCreateOrganization}>
+                            Cancel
                         </Button>
                     </Modal.Footer>
 

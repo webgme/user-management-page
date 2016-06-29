@@ -74,7 +74,8 @@ export default class DataTable extends React.Component {
                                                         name={category.name}
                                                         orderEntries={this.props.orderEntries}
                                                         sortable={this.props.sortable}
-                                                        sortedForward={this.props.sortedForward}/>));
+                                                        sortedForward={this.props.sortedForward}
+                                                        style={this.props.categoryStyle}/>));
 
         // Setting up bounds
         let entriesList = this.props.entries.filter(oneEntry => {
@@ -129,35 +130,46 @@ export default class DataTable extends React.Component {
                 </li>);
         }
 
+        const minHeight = 70 + 35 * entriesList.length < this.state.selectValue ? entriesList.length : this.state.selectValue,
+            tableMinHeight = {
+                minHeight: minHeight + "px"
+            };
+
         return (
             <div className="box-body">
 
-                <div id="example1_wrapper" className="dataTables_wrapper form-inline dt-bootstrap" style={this.props.style}>
-                    <div className="row">
+                <div id="example1_wrapper"
+                     className="dataTables_wrapper form-inline dt-bootstrap"
+                     style={this.props.style}>
 
-                        {/* Search bar */}
-                        <div className="col-sm-12">
-                            <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                <label>Filter:
-                                    <input type="text"
-                                           className="form-control input-sm"
-                                           placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}
-                                           value={this.state.searchText}
-                                           aria-controls="example1"
-                                           onChange={this.handleSearch}/>
-                                </label>
+                    <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
+                    {entriesList.length === 0 || entriesList.length > this.state.selectValue ? null :
+                        <div className="row">
+
+                            {/* Search bar */}
+                            <div className="col-sm-12">
+                                <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
+                                    <label>
+                                        <input type="text"
+                                               className="form-control input-sm"
+                                               placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}
+                                               value={this.state.searchText}
+                                               aria-controls="example1"
+                                               onChange={this.handleSearch}/>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                    </div>
+                        </div>}
 
+                    {entriesList.length === 0 ? <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
                     <div className="row">
 
-                        <div className="col-sm-12">
-                            <table id="example1"
+                        <div className="col-sm-12" style={tableMinHeight}>
+                            <table aria-describedby="example1_info"
                                    className="table table-bordered table-striped dataTable"
-                                   role="grid"
-                                   aria-describedby="example1_info">
+                                   id="example1"
+                                   role="grid">
 
                                 <thead>
                                 <tr role="row">
@@ -172,22 +184,24 @@ export default class DataTable extends React.Component {
                             </table>
                         </div>
 
-                    </div>
+                    </div>}
 
                     <div className="row">
 
-                        <div className="col-sm-4">
-                            <div className="dataTables_info" id="example1_info" role="status"
-                                 aria-live="polite">
-                                <div>
-                                    <label style={{lineHeight: "2.4"}}>
-                                        {showString}
-                                    </label>
-                                </div>
-                            </div>
+
+                        <div className="col-sm-3">
+                            {entriesList.length > this.state.selectValue ?
+                                <div className="dataTables_info" id="example1_info" role="status"
+                                     aria-live="polite">
+                                    <div>
+                                        <label style={{lineHeight: "2.4"}}>
+                                            {showString}
+                                        </label>
+                                    </div>
+                                </div> : null }
                         </div>
 
-                        <div className="col-sm-4" style={{textAlign: "center"}}>
+                        <div className="col-sm-5" style={{textAlign: "center"}}>
                             {entriesList.length > this.state.selectValue ?
                                 <DataTablePagination clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
@@ -198,19 +212,20 @@ export default class DataTable extends React.Component {
 
                         {/* Number of entries shown */}
                         <div className="col-sm-4" style={{textAlign: "right"}}>
-                            <div className="dataTables_length" id="example1_length">
-                                <label>{this.props.tableName} per page
-                                    <select name="example1_length"
-                                            aria-controls="example1"
-                                            className="form-control input-sm"
-                                            onChange={this.handleSelect}
-                                            style={{padding: "5px 1px"}}>
+                            {this.props.entries.length < selectOptions[0] ? null :
+                                <div className="dataTables_length" id="example1_length">
+                                    <label>{this.props.tableName} per page
+                                        <select name="example1_length"
+                                                aria-controls="example1"
+                                                className="form-control input-sm"
+                                                onChange={this.handleSelect}
+                                                style={{padding: "5px 1px"}}>
 
-                                        {formattedSelectOptions}
+                                            {formattedSelectOptions}
 
-                                    </select>
-                                </label>
-                            </div>
+                                        </select>
+                                    </label>
+                                </div>}
                         </div>
 
                     </div>

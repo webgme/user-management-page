@@ -61,13 +61,14 @@ export default class ProjectsTable extends React.Component {
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
-                        <i className="fa fa-cube"/> {` Projects`}
+                        <i className="fa fa-cubes"/> {` Projects`}
                     </h3>
                 </div>
 
                 {/* Body */}
                 <DataTable basePath={this.props.basePath}
                            categories={categories}
+                           content="Projects"
                            entries={this.state.projects}
                            iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}

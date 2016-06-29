@@ -1,4 +1,4 @@
-/*jshint node: true*/
+/* jshint node: true*/
 /**
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
@@ -16,5 +16,5 @@ config.rest.components = {
     'usermanagement': path.resolve('./src/server/usermanagement')
 };
 
-//config.client.appDir = './dist';
+// config.client.appDir = './dist';
 module.exports = config;

@@ -122,9 +122,9 @@ export default class OrganizationsClient extends BaseClient {
                         org.users.forEach(user => {
                             if (userToOrgsRights[user]) { // If in multiple organizations
                                 userToOrgsRights[user] = {
-                                    read: userToOrgsRights[user].read || org[projectId].read,
-                                    write: userToOrgsRights[user].write || org[projectId].write,
-                                    delete: userToOrgsRights[user].delete || org[projectId].delete,
+                                    read: userToOrgsRights[user].read || org.projects[projectId].read,
+                                    write: userToOrgsRights[user].write || org.projects[projectId].write,
+                                    delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
                                     inOrg: true
                                 };
                             } else {
