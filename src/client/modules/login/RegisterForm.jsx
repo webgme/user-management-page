@@ -22,10 +22,19 @@ export default class RegisterForm extends React.Component {
             // agreeToTerms: false,
             confirmPassword: '',
             email: '',
+            // State so a different message for duplicate userId can be shown
+            invalidMessage: {
+                confirmPassword: "Passwords must match",
+                email: "Invalid email",
+                password: "Password must be at least 3 characters long and must not be " +
+                          "a poor password such as 'password'",
+                userId: "Username must only contain letters, numbers, and the underscore" +
+                        " and must be at least 3 characters long"
+            },
             password: '',
             userId: '',
             validCredentials: {
-                agreeToTerms: true,
+                // agreeToTerms: true,
                 confirmPassword: true,
                 email: true,
                 password: true,
@@ -137,6 +146,24 @@ export default class RegisterForm extends React.Component {
                             window.location.reload();
                         })
                         .catch(err => {
+                            if (err.status === 400) {
+                                // Immutability add-ons aren't worth installing for this one case
+                                this.setState({
+                                    invalidMessage: {
+                                        confirmPassword: "Passwords must match",
+                                        email: "Invalid email",
+                                        password: "Password must be at least 3 characters long and must not be " +
+                                                  "a poor password such as 'password'",
+                                        userId: "Username already taken"
+                                    },
+                                    validCredentials: {
+                                        confirmPassword: this.state.password === this.state.confirmPassword,
+                                        email: this.state.validCredentials.email,
+                                        password: this.state.validCredentials.password,
+                                        userId: false
+                                    }
+                                });
+                            }
                             console.error(err); // eslint-disable-line no-console
                         });
                 } else {
@@ -168,14 +195,13 @@ export default class RegisterForm extends React.Component {
         return <div className="register-box-body">
             <p className="login-box-msg">Register a new membership</p>
 
-            <form>
+            <form >
 
                 {/* userId */}
                 <LoginField autoFocus={true}
                             hint="User ID"
                             iconClass="glyphicon glyphicon-user"
-                            invalidMessage={"Username must only contain letters, numbers, and the underscore" +
-                                            " and must be at least 3 characters long"}
+                            invalidMessage={this.state.invalidMessage.userId}
                             onBlur={this.checkUserId}
                             onInputChange={this.onUserIdChange}
                             valid={this.state.validCredentials.userId}
@@ -184,7 +210,7 @@ export default class RegisterForm extends React.Component {
                 {/* email */}
                 <LoginField hint="Email"
                             iconClass="glyphicon glyphicon-envelope"
-                            invalidMessage={"Invalid email"}
+                            invalidMessage={this.state.invalidMessage.email}
                             onBlur={this.checkEmail}
                             onInputChange={this.onEmailChange}
                             valid={this.state.validCredentials.email}
@@ -193,8 +219,7 @@ export default class RegisterForm extends React.Component {
                 {/* password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
-                            invalidMessage={"Password must be at least 3 characters long and must not be " +
-                                            "a poor password such as 'password'"}
+                            invalidMessage={this.state.invalidMessage.password}
                             onBlur={this.checkPassword}
                             onInputChange={this.onPasswordChange}
                             textType="password"
@@ -204,7 +229,7 @@ export default class RegisterForm extends React.Component {
                 {/* confirm password */}
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
-                            invalidMessage={"Passwords must match"}
+                            invalidMessage={this.state.invalidMessage.confirmPassword}
                             onInputChange={this.onConfirmPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials.confirmPassword}

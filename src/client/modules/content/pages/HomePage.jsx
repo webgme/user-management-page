@@ -3,16 +3,23 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+// Libraries
+import Link from 'react-router/lib/Link';
 import React from 'react/lib/React';
 
-const STYLING = {
+const STYLE = {
     profileBox: {
-        paddingLeft: "35%",
-        paddingRight: "35%"
+        paddingLeft: "10%",
+        paddingRight: "10%"
     },
     profileBoxBorder: {
         borderRadius: "50px",
-        padding: "10px 10px"
+        margin: "auto",
+        padding: "10px 10px",
+        width: "40%"
+    },
+    widgetBox: {
+        color: "white"
     }
 };
 
@@ -21,56 +28,83 @@ export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ownedProjects: 0,
-            name: '',
             numOrganizations: 0,
-            viewableProjects: 0
+            numProjects: 0,
+            user: {}
         };
     }
 
     componentDidMount() {
         Promise.all([
-            this.props.restClient.user.getCurrentUser(),
-            this.props.restClient.projects.getAllProjects()
+            this.props.restClient.projects.getAllProjects(),
+            this.props.restClient.user.getCurrentUser()
         ])
-            .then(([user, projects]) => {
+            .then(([projects, user]) => {
                 this.setState({
-                    ownedProjects: Object.keys(user.projects).length,
-                    name: user._id,
+                    numProjects: projects.length,
                     numOrganizations: user.orgs.length,
-                    viewableProjects: projects.length
+                    user: user
                 });
             });
     }
 
     render() {
-        return <section className="content" style={STYLING.profileBox}>
+        return <section className="content" style={STYLE.profileBox}>
 
-            <div className="box box-primary" style={STYLING.profileBoxBorder}>
+            <div className="row">
+                <div className="small-box bg-aqua col-sm-6">
+                    <div className="inner">
+                        <h3 style={STYLE.widgetBox}>{this.state.numProjects}</h3>
+                        <p>Total Project(s)</p>
+                    </div>
+                    <div className="icon">
+                        <i className="fa fa-cubes"/>
+                    </div>
+                    <Link to={`${this.props.basePath}projects`}
+                          className="small-box-footer">
+                        Show Projects <i className="fa fa-arrow-circle-right"/>
+                    </Link>
+                </div>
+
+                <div className="small-box bg-red col-sm-6">
+                    <div className="inner">
+                        <h3 style={STYLE.widgetBox}>{this.state.numOrganizations}</h3>
+                        <p>Organization Membership(s)</p>
+                    </div>
+                    <div className="icon">
+                        <i className="fa fa-institution"/>
+                    </div>
+                    <Link to={`${this.props.basePath}organizations`}
+                          className="small-box-footer">
+                        Show Organizations <i className="fa fa-arrow-circle-right"/>
+                    </Link>
+                </div>
+
+            </div>
+
+            <div className="box box-primary" style={STYLE.profileBoxBorder}>
                 <div className="box-body box-profile">
-                    <img className="profile-user-img img-responsive img-circle"
-                         src="/img/gme-logo.png"
-                         alt="User profile picture"/>
 
-                    <h3 className="profile-username text-center">{this.state.name}</h3>
+                    <h3 className="profile-username text-center">{this.state.user._id}</h3>
 
                     <p className="text-muted text-center">WebGME</p>
 
                     <ul className="list-group list-group-unbordered">
                         <li className="list-group-item">
-                            <b>Owned Projects</b> <a className="pull-right">{this.state.ownedProjects}</a>
+                            <b>UserID:</b> <a className="pull-right">{this.state.user._id}</a>
                         </li>
                         <li className="list-group-item">
-                            <b>Viewable Projects</b> <a className="pull-right">{this.state.viewableProjects}</a>
+                            <b>Email</b> <a className="pull-right">{this.state.user.email}</a>
                         </li>
                         <li className="list-group-item">
-                            <b>Organizations</b> <a className="pull-right">{this.state.numOrganizations}</a>
+                            <b>Site Admin</b> <a className="pull-right">{this.state.user.siteAdmin ? 'Yes' : 'No'}</a>
                         </li>
                     </ul>
 
-                    <a href="#" className="btn btn-primary btn-block"><b>Update (Coming Soon)</b></a>
+                    {/* <a href="#" className="btn btn-primary btn-block"><b>Update (Coming Soon)</b></a> */}
                 </div>
             </div>
+
         </section>;
     }
 

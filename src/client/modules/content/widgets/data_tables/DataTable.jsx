@@ -138,7 +138,7 @@ export default class DataTable extends React.Component {
                         {/* Search bar */}
                         <div className="col-sm-12">
                             <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                <label>Filter:
+                                <label>
                                     <input type="text"
                                            className="form-control input-sm"
                                            placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}

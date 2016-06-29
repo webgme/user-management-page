@@ -1,4 +1,4 @@
-/*jshint node: true*/
+/* jshint node: true*/
 /**
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
@@ -10,11 +10,11 @@ config.server.port = 8888;
 config.mongo.uri = 'mongodb://127.0.0.1:27017/example';
 
 config.authentication.enable = true;
-config.authentication.allowGuests = true;
+config.authentication.allowGuests = false;
 
 config.rest.components = {
     'usermanagement': path.resolve('./src/server/usermanagement')
 };
 
-//config.client.appDir = './dist';
+// config.client.appDir = './dist';
 module.exports = config;

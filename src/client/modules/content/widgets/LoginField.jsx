@@ -20,7 +20,8 @@ export default class LoginField extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.value !== this.props.value;
+        return nextProps.value !== this.props.value ||
+               nextProps.valid !== this.props.valid;
     }
 
     render() {
@@ -45,11 +46,12 @@ export default class LoginField extends React.Component {
                     <br/>
                 </div>
 
-                {!this.props.valid ? <div className="row">
+                {this.props.valid ? null :
+                    <div className="row">
                         <div className="col-sm-12" style={{textAlign: "center"}}>
                             <span style={{color: "red", textAlign: "center"}}>{this.props.invalidMessage}</span>
                         </div>
-                    </div> : null}
+                    </div>}
 
                 <br/>
             </div>
@@ -63,7 +65,7 @@ LoginField.propTypes = {
     iconClass: React.PropTypes.string.isRequired,
     indentStyle: React.PropTypes.object,
     invalidMessage: React.PropTypes.string,
-    name: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string,
     onBlur: React.PropTypes.func,
     onEnter: React.PropTypes.func,
     onInputChange: React.PropTypes.func.isRequired,
