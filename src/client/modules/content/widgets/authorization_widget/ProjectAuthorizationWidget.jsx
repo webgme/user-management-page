@@ -14,7 +14,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            authorizeButtonGroup: {read: false, write: false, delete: false},
+            authorizeButtonGroup: {read: true, write: false, delete: false},
             multiselectOptions: [],
             valuesInMultiselect: ''
         };
@@ -50,13 +50,9 @@ export default class ProjectAuthorizationWidget extends React.Component {
             authorizeButtonGroup = this.state.authorizeButtonGroup;
 
         // Radio buttons
-        if (buttonClicked === 'none') {
-            authorizeButtonGroup = {read: false, write: false, delete: false};
-        } else {
-            Object.keys(this.state.authorizeButtonGroup).forEach(right => {
-                authorizeButtonGroup[right] = right === buttonClicked;
-            });
-        }
+        Object.keys(this.state.authorizeButtonGroup).forEach(right => {
+            authorizeButtonGroup[right] = right === buttonClicked;
+        });
 
         this.setState({
             authorizeButtonGroup: authorizeButtonGroup
@@ -105,7 +101,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         // Reset fields after submitting
         this.setState({
-            authorizeButtonGroup: {read: false, write: false, delete: false},
+            authorizeButtonGroup: {read: true, write: false, delete: false},
             valuesInMultiselect: ''
         });
     }
@@ -113,39 +109,31 @@ export default class ProjectAuthorizationWidget extends React.Component {
     render() {
 
         let authorizationWidgetData = {
-            noRightsSelected: !(this.state.authorizeButtonGroup.read ||
-                                this.state.authorizeButtonGroup.write ||
-                                this.state.authorizeButtonGroup.delete)
+            selectableButtons: [
+                {
+                    selectableButtonChange: this.handleAuthorizationChange,
+                    selectableButtonText: 'Read',
+                    selectableButtonState: this.state.authorizeButtonGroup.read ? 'primary' : null
+                },
+                {
+                    selectableButtonChange: this.handleAuthorizationChange,
+                    selectableButtonText: 'Write',
+                    selectableButtonState: this.state.authorizeButtonGroup.write ? 'primary' : null
+                },
+                {
+                    selectableButtonChange: this.handleAuthorizationChange,
+                    selectableButtonText: 'Delete',
+                    selectableButtonState: this.state.authorizeButtonGroup.delete ? 'primary' : null
+                }
+            ],
+            submitButtons: [
+                {
+                    submitButtonHandler: this.handleSubmitAuthorization,
+                    submitButtonText: 'Submit',
+                    submitButtonState: 'primary'
+                }
+            ]
         };
-        authorizationWidgetData.selectableButtons = [
-            {
-                selectableButtonChange: this.handleAuthorizationChange,
-                selectableButtonText: 'None',
-                selectableButtonState: authorizationWidgetData.noRightsSelected ? 'primary' : null
-            },
-            {
-                selectableButtonChange: this.handleAuthorizationChange,
-                selectableButtonText: 'Read',
-                selectableButtonState: this.state.authorizeButtonGroup.read ? 'primary' : null
-            },
-            {
-                selectableButtonChange: this.handleAuthorizationChange,
-                selectableButtonText: 'Write',
-                selectableButtonState: this.state.authorizeButtonGroup.write ? 'primary' : null
-            },
-            {
-                selectableButtonChange: this.handleAuthorizationChange,
-                selectableButtonText: 'Delete',
-                selectableButtonState: this.state.authorizeButtonGroup.delete ? 'primary' : null
-            }
-        ];
-        authorizationWidgetData.submitButtons = [
-            {
-                submitButtonHandler: this.handleSubmitAuthorization,
-                submitButtonText: 'Submit',
-                submitButtonState: authorizationWidgetData.noRightsSelected ? 'danger' : 'success'
-            }
-        ];
 
         return (
 
@@ -154,7 +142,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
                                  handleMultiselectChange={this.handleMultiselectChange}
                                  label={"Authorize Users or Organizations"}
                                  multiselectOptions={this.state.multiselectOptions}
-                                 noRightsSelected={authorizationWidgetData.noRightsSelected}
+                                 noneSelected={this.state.valuesInMultiselect === ''}
                                  ownerId={this.props.ownerId}
                                  restClient={this.props.restClient}
                                  selectableButtons={authorizationWidgetData.selectableButtons}

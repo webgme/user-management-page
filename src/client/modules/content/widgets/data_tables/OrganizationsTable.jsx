@@ -112,7 +112,7 @@ export default class OrganizationsTable extends React.Component {
                     </h3>
 
                     <div style={{float: "right"}}>
-                        <Button bsStyle="info" onClick={this.props.openCreateOrganization}>
+                        <Button bsStyle="primary" onClick={this.props.openCreateOrganization}>
                             Create an organization
                         </Button>
                     </div>
@@ -163,7 +163,7 @@ export default class OrganizationsTable extends React.Component {
                                 warning={!this.props.validOrganizationName}/>
 
                     <Modal.Footer>
-                        <Button bsStyle="success" onClick={this.props.createOrganization}>
+                        <Button bsStyle="primary" onClick={this.props.createOrganization}>
                             Create
                         </Button>
                         <Button bsStyle="default" onClick={this.props.closeCreateOrganization}>

@@ -149,23 +149,24 @@ export default class DataTable extends React.Component {
 
                     <div className="row">
 
+                        {/* Optional title */}
                         <div className="col-sm-6" style={{paddingTop: "8px"}}>
                             <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
                         </div>
+
                         {/* Search bar */}
-                        {showBasedOnRawData ? null :
-                            <div className="col-sm-6">
-                                <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                    <label>
-                                        <input type="text"
-                                               className="form-control input-sm"
-                                               placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}
-                                               value={this.state.searchText}
-                                               aria-controls="example1"
-                                               onChange={this.handleSearch}/>
-                                    </label>
-                                </div>
-                            </div>}
+                        <div className="col-sm-6">
+                            <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
+                                <label>
+                                    <input type="text"
+                                           className="form-control input-sm"
+                                           placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}
+                                           value={this.state.searchText}
+                                           aria-controls="example1"
+                                           onChange={this.handleSearch}/>
+                                </label>
+                            </div>
+                        </div>
 
                     </div>
 

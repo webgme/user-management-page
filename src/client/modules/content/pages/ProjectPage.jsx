@@ -49,7 +49,7 @@ export default class ProjectPage extends React.Component {
                             <i className="fa fa-cube"/>{` ${this.props.params.ownerId} / ${this.props.params.projectName}`}
                         </h2>
                         <div className="col-md-2" style={{paddingRight: "30px", paddingTop: "14px"}}>
-                            <Button bsStyle="info" style={{float: "right"}}
+                            <Button bsStyle="primary" style={{float: "right"}}
                                     onClick={this.goToEditor}>
                                 Open in editor
                             </Button>

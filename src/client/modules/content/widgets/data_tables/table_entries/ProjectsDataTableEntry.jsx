@@ -23,7 +23,7 @@ export default class ProjectsDataTableEntry extends React.Component {
                 <Link to={buildLink}>{this.props.name}</Link>
             </td>
 
-            <td>
+            <td style={this.props.columnStyle}>
                 <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Last Viewed At:" id="Viewed At">
                             {this.props.info.viewedAt ? new Date(this.props.info.viewedAt).toString() : this.props.unavailable}
@@ -34,7 +34,7 @@ export default class ProjectsDataTableEntry extends React.Component {
                 </OverlayTrigger>
             </td>
 
-            <td>
+            <td style={this.props.columnStyle}>
                 <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Last Modified At:" id="Modified At">
                             {new Date(this.props.info.modifiedAt).toString()}
@@ -45,7 +45,7 @@ export default class ProjectsDataTableEntry extends React.Component {
                 </OverlayTrigger>
             </td>
 
-            <td>
+            <td style={this.props.columnStyle}>
                 <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Created At:" id="Created At">
                             {new Date(this.props.info.createdAt).toString()}
@@ -62,6 +62,9 @@ export default class ProjectsDataTableEntry extends React.Component {
 
 ProjectsDataTableEntry.propTypes = {
     basePath: React.PropTypes.string,
+    columnStyle: React.PropTypes.shape({
+        width: React.PropTypes.string
+    }),
     info: React.PropTypes.shape({
         createdAt: React.PropTypes.Date,
         modifiedAt: React.PropTypes.Date,

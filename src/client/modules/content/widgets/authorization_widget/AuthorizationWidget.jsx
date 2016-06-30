@@ -59,10 +59,10 @@ export default class AuthorizationWidget extends React.Component {
             submitButtons.push(
                 <Button bsStyle={oneSubmitButton.submitButtonState}
                         className={(this.props.disableLast && index === this.props.submitButtons.length - 1 &&
-                                    this.props.noRightsSelected) ? "disabled" : ""}
+                                    this.props.noneSelected) ? "disabled" : ""}
                         key={index}
                         onClick={this.props.disableLast && index === this.props.submitButtons.length - 1 &&
-                                    this.props.noRightsSelected ? event => event.target.blur() :
+                                    this.props.noneSelected ? event => event.target.blur() :
                                                                   oneSubmitButton.submitButtonHandler}>
                     {oneSubmitButton.submitButtonText}
                 </Button>
@@ -73,7 +73,7 @@ export default class AuthorizationWidget extends React.Component {
             this.state.authorization ?
                 <div className="row">
                     <div className={`col-md-${this.props.boxSize}`}>
-                        <div className="box box-primary">
+                        <div className="box">
 
                             <div className="box-header with-border">
 

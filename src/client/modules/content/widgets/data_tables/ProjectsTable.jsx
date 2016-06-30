@@ -75,7 +75,7 @@ export default class ProjectsTable extends React.Component {
                            sortable={true}
                            sortedForward={this.state.sortedForward}
                            tableName="Projects">
-                    <ProjectsDataTableEntry/>
+                    <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
                 </DataTable>
             </div>
         );
