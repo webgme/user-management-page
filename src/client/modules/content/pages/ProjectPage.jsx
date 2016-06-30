@@ -74,7 +74,7 @@ export default class ProjectPage extends React.Component {
                                                           ownerId={this.props.params.ownerId}
                                                           projectName={this.props.params.projectName}
                                                           restClient={this.props.restClient}
-                                                          title="Commits By Collaborator"
+                                                          title="Latest Commits"
                                                           width={$(window).width() / 2.36}/>
                         </div>
 
