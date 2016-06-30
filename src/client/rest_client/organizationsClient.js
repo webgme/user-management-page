@@ -132,6 +132,18 @@ export default class OrganizationsClient extends BaseClient {
             .then(orgs => {
                 orgs.forEach(org => {
                     if (org.projects.hasOwnProperty(projectId)) {
+
+                        let rightsOrigin = '';
+                        if (org.projects[projectId].read) {
+                            rightsOrigin += 'Read ';
+                        }
+                        if (org.projects[projectId].write) {
+                            rightsOrigin += 'Write ';
+                        }
+                        if (org.projects[projectId].delete) {
+                            rightsOrigin += 'Delete ';
+                        }
+
                         org.users.forEach(user => {
                             if (userToOrgsRights[user]) { // If in multiple organizations
                                 userToOrgsRights[user] = {
@@ -139,20 +151,9 @@ export default class OrganizationsClient extends BaseClient {
                                     write: userToOrgsRights[user].write || org.projects[projectId].write,
                                     delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
                                     inOrg: true,
-                                    rightsOrigin: userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + JSON.stringify(orgs.projects[projectId]) : JSON.stringify(orgs.projects[projectId])
+                                    rightsOrigin: userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + ': ' + rightsOrigin : org._id + ': ' + rightsOrigin
                                 };
                             } else {
-                                let rightsOrigin = '';
-                                if (org.projects[projectId].read) {
-                                    rightsOrigin += 'Read ';
-                                }
-                                if (org.projects[projectId].write) {
-                                    rightsOrigin += 'Write ';
-                                }
-                                if (org.projects[projectId].delete) {
-                                    rightsOrigin += 'Delete ';
-                                }
-
                                 userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));
                                 userToOrgsRights[user].inOrg = true;
                                 userToOrgsRights[user].rightsOrigin = userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + ': ' + rightsOrigin : org._id + ': ' + rightsOrigin;

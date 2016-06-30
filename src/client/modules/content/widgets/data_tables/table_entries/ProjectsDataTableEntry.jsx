@@ -17,7 +17,9 @@ export default class ProjectsDataTableEntry extends React.Component {
         let buildLink = `${this.props.basePath}projects/${this.props.owner}/${this.props.name}`;
 
         return <tr role="row" className="odd">
-            <td>{this.props.owner}</td>
+            <td style={this.props.columnStyle}>
+                {this.props.owner}
+            </td>
 
             <td className="sorting_1">
                 <Link to={buildLink}>{this.props.name}</Link>
