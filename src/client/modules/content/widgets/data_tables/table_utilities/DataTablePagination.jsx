@@ -27,7 +27,7 @@ export default class DataTableEntry extends React.Component {
                         className={this.props.pageNumber === 1 ? "paginate_button previous disabled" :
                                                                  "paginate_button previous"}
                         onClick={this.props.pageNumber === 1 ? this.handleDisabledClick : this.props.clickHandler}>
-                        <a href="#;" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
+                        <a href="#" aria-controls="example1" data-dt-idx="0" tabIndex="0">Previous</a>
                     </li>
 
                     {this.props.formattedPaginationButtons}

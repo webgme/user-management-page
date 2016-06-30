@@ -139,7 +139,7 @@ export default class OrganizationsClient extends BaseClient {
                                     write: userToOrgsRights[user].write || org.projects[projectId].write,
                                     delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
                                     inOrg: true,
-                                    rightsOrigin: userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + JSON.stringify(orgs.projects[projectId]) : JSON.stringify(orgs.projects[projectId])
+                                    rightsOrigin: userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + JSON.stringify(org.projects[projectId]) : JSON.stringify(org.projects[projectId])
                                 };
                             } else {
                                 let rightsOrigin = '';

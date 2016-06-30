@@ -64,9 +64,9 @@ export default class ProjectDataTableEntry extends React.Component {
 
         // Building rights origin (needs breaks)
         let rightsOrigin = [];
-        this.props.rightsOrigin.split('\n').forEach(line => {
+        this.props.rightsOrigin.split('\n').forEach((line, index) => {
             rightsOrigin.push(
-                <span>
+                <span key={index}>
                     {line}
                     <br/>
                 </span>
@@ -91,7 +91,7 @@ export default class ProjectDataTableEntry extends React.Component {
                     <Button bsStyle="danger" onClick={this.confirm} id={this.props.name}>
                         OK
                     </Button>
-                    <Button bsStyle="primary" onClick={this.close}>
+                    <Button bsStyle="default" onClick={this.close}>
                         Cancel
                     </Button>
                 </Modal.Footer>

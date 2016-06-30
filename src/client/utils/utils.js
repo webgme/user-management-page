@@ -147,7 +147,9 @@ export function timeAgo(isoDate) {
         difference = current - target,
         result = '';
 
-    if (within(difference, 1000 * 60)) {
+    if (difference < 0) {
+        result = 'just now';
+    } else if (within(difference, 1000 * 60)) {
         result = timeOutput(difference, 1000, 'seconds');
     } else if (within(difference, 1000 * 60 * 60)) {
         result = timeOutput(difference, 1000 * 60, 'minutes');

@@ -11,25 +11,27 @@ import withRouter from 'react-router/lib/withRouter';
 
 const STYLING = {
     welcomeStyle: {
-        fontSize: "13px",
         color: "#BAB8B8",
+        fontSize: "13px",
         lineHeight: "15px",
-        paddingLeft: "30px"
+        paddingLeft: "27px"
     },
     nameStyle: {
         color: "#ECF0F1",
-        fontWeight: "light",
-        paddingLeft: "35px",
         fontSize: "14px",
+        fontWeight: "light",
+        paddingLeft: "25px",
         paddingTop: "5px"
     },
     panelStyle: {
-        padding: "15px",
-        cursor: "pointer"
+        cursor: "pointer",
+        padding: "15px"
     },
     imageStyle: {
+        borderRadius: 0,
         maxWidth: "50px",
-        borderRadius: 0
+        paddingLeft: "10px",
+        paddingTop: "8px"
     }
 };
 
@@ -37,32 +39,30 @@ class SideBarUserPanel extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {userData: {_id: 'loading'}};
-        this.sendToEditor = this.sendToEditor.bind(this);
+        this.state = {
+            user: {}
+        };
     }
 
     componentDidMount() {
         this.props.restClient.user.getCurrentUser()
-            .then(data => {
-                this.setState({userData: data});
+            .then(user => {
+                this.setState({
+                    user: user
+                });
             });
-    }
-
-    sendToEditor() {
-        let urlRegex = new RegExp(`^(\\S+)${this.props.basePath.substring(0, this.props.basePath.length - 1)}`);
-        let match = urlRegex.exec(window.location.href);
-        this.props.router.replace(match[1]);
-        window.location.reload();
     }
 
     render() {
 
         return <div className="user-panel" style={STYLING.panelStyle}>
-            <div className="pull-left image" onClick={this.sendToEditor}>
-                <img src="/img/gme-logo.png" className="img-circle" alt="User Image" style={STYLING.imageStyle}/>
-            </div>
+            <a href="/">
+                <div className="pull-left image">
+                    <img src="/img/gme-logo.png" className="img-circle" alt="User Image" style={STYLING.imageStyle}/>
+                </div>
+            </a>
             <div className="pull-left info">
-                <p style={STYLING.nameStyle}>{this.state.userData._id}</p>
+                <p style={STYLING.nameStyle}>&nbsp;{this.state.user._id}&nbsp;</p>
                 <a href="#" style={STYLING.welcomeStyle}><i className="fa fa-circle text-success"/> Online</a>
             </div>
         </div>;
