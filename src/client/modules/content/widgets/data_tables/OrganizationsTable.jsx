@@ -102,7 +102,7 @@ export default class OrganizationsTable extends React.Component {
         ];
 
         return (
-            <div className="box">
+            <div>
 
                 {/* Header */}
                 <div className="box-header"

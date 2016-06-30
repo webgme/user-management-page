@@ -27,6 +27,7 @@ export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: '',
             numOrganizations: 0,
             numProjects: 0,
             user: {}
@@ -40,8 +41,11 @@ export default class HomePage extends React.Component {
         ])
             .then(([projects, user]) => {
                 this.setState({
-                    numProjects: projects.length,
+                    ownedProjects: Object.keys(user.projects).length,
+                    name: user._id,
                     numOrganizations: user.orgs.length,
+                    viewableProjects: projects.length,
+                    numProjects: projects.length,
                     user: user
                 });
             });
@@ -83,24 +87,25 @@ export default class HomePage extends React.Component {
 
             <div className="box box-primary" style={STYLE.profileBoxBorder}>
                 <div className="box-body box-profile">
+                    <img className="profile-user-img img-responsive img-circle"
+                         src="/img/gme-logo.png"
+                         alt="User profile picture"/>
 
-                    <h3 className="profile-username text-center">{this.state.user._id}</h3>
+                    <h3 className="profile-username text-center">&nbsp;{this.state.name}&nbsp;</h3>
 
                     <p className="text-muted text-center">WebGME</p>
 
                     <ul className="list-group list-group-unbordered">
                         <li className="list-group-item">
-                            <b>UserID:</b> <a className="pull-right">{this.state.user._id}</a>
+                            <b>Owned Projects</b> <a className="pull-right">{this.state.ownedProjects}</a>
                         </li>
                         <li className="list-group-item">
-                            <b>Email</b> <a className="pull-right">{this.state.user.email}</a>
+                            <b>Viewable Projects</b> <a className="pull-right">{this.state.viewableProjects}</a>
                         </li>
                         <li className="list-group-item">
-                            <b>Site Admin</b> <a className="pull-right">{this.state.user.siteAdmin ? 'Yes' : 'No'}</a>
+                            <b>Organizations</b> <a className="pull-right">{this.state.numOrganizations}</a>
                         </li>
                     </ul>
-
-                    {/* <a href="#" className="btn btn-primary btn-block"><b>Update (Coming Soon)</b></a> */}
                 </div>
             </div>
 

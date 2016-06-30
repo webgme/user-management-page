@@ -78,10 +78,10 @@ export default class ProjectDataTableEntry extends React.Component {
 
                 <Modal.Footer>
                     <Button bsStyle="danger" onClick={this.confirm} id={this.props.name}>
-                        Yes revoke {this.props.name}'s rights
+                        Revoke
                     </Button>
                     <Button bsStyle="primary" onClick={this.close}>
-                        No, do not revoke {this.props.name}'s rights
+                        Cancel
                     </Button>
                 </Modal.Footer>
 

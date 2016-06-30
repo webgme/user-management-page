@@ -198,7 +198,7 @@ export default class RegisterForm extends React.Component {
         return <div className="register-box-body">
             <p className="login-box-msg">Register a new membership</p>
 
-            <form >
+            <form>
 
                 {/* userId */}
                 <LoginField autoFocus={true}

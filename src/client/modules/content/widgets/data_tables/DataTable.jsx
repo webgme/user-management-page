@@ -130,10 +130,15 @@ export default class DataTable extends React.Component {
                 </li>);
         }
 
-        const minHeight = 70 + 35 * entriesList.length < this.state.selectValue ? entriesList.length : this.state.selectValue,
+        // Setting up minimum height of table
+        const minHeight = 70 + 35 * (this.props.entries.length < this.state.selectValue ? entriesList.length : this.state.selectValue),
             tableMinHeight = {
                 minHeight: minHeight + "px"
             };
+
+        // Rules for showing showString, pagination, and select options
+        let showBasedOnRawData = this.props.entries.length > selectOptions[0];
+        let showPagination = this.state.selectValue < entriesList.length;
 
         return (
             <div className="box-body">
@@ -142,12 +147,14 @@ export default class DataTable extends React.Component {
                      className="dataTables_wrapper form-inline dt-bootstrap"
                      style={this.props.style}>
 
-                    <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
-                    {entriesList.length === 0 || entriesList.length > this.state.selectValue ? null :
-                        <div className="row">
+                    <div className="row">
 
-                            {/* Search bar */}
-                            <div className="col-sm-12">
+                        <div className="col-sm-6" style={{paddingTop: "8px"}}>
+                            <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
+                        </div>
+                        {/* Search bar */}
+                        {showBasedOnRawData ? null :
+                            <div className="col-sm-6">
                                 <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
                                     <label>
                                         <input type="text"
@@ -158,11 +165,11 @@ export default class DataTable extends React.Component {
                                                onChange={this.handleSearch}/>
                                     </label>
                                 </div>
-                            </div>
+                            </div>}
 
-                        </div>}
+                    </div>
 
-                    {entriesList.length === 0 ? <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
+                    {this.props.entries.length === 0 ? <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
                     <div className="row">
 
                         <div className="col-sm-12" style={tableMinHeight}>
@@ -188,33 +195,33 @@ export default class DataTable extends React.Component {
 
                     <div className="row">
 
-
+                        {/* "Showing" */}
                         <div className="col-sm-3">
-                            {entriesList.length > this.state.selectValue ?
+                            {showBasedOnRawData ?
                                 <div className="dataTables_info" id="example1_info" role="status"
                                      aria-live="polite">
                                     <div>
-                                        <label style={{lineHeight: "2.4"}}>
+                                        <label style={{fontWeight: "normal", lineHeight: "2.4"}}>
                                             {showString}
                                         </label>
                                     </div>
                                 </div> : null }
                         </div>
 
-                        <div className="col-sm-5" style={{textAlign: "center"}}>
-                            {entriesList.length > this.state.selectValue ?
+                        {/* Pagination buttons */}
+                        <div className="col-sm-6" style={{textAlign: "center"}}>
+                            {showPagination ?
                                 <DataTablePagination clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
                                                      numPages={numPages}
-                                                     pageNumber={this.state.pageNumber}/> :
-                                null }
+                                                     pageNumber={this.state.pageNumber}/> : null }
                         </div>
 
-                        {/* Number of entries shown */}
-                        <div className="col-sm-4" style={{textAlign: "right"}}>
-                            {this.props.entries.length < selectOptions[0] ? null :
+                        {/* Select dropdown */}
+                        <div className="col-sm-3" style={{textAlign: "right"}}>
+                            {showBasedOnRawData ?
                                 <div className="dataTables_length" id="example1_length">
-                                    <label>{this.props.tableName} per page
+                                    <label style={{fontWeight: "normal"}}>{this.props.content} per page
                                         <select name="example1_length"
                                                 aria-controls="example1"
                                                 className="form-control input-sm"
@@ -225,7 +232,7 @@ export default class DataTable extends React.Component {
 
                                         </select>
                                     </label>
-                                </div>}
+                                </div> : null}
                         </div>
 
                     </div>
