@@ -30,7 +30,8 @@ export default class ProjectsDataTableEntry extends React.Component {
                             <br/><br/>
                             <i>{`Viewed by: ${this.props.info.viewer ? this.props.info.viewer : this.props.unavailable}`}</i>
                         </Popover>}>
-                    <i>{this.props.info.viewedAt ? timeAgo(this.props.info.viewedAt) : this.props.unavailable}</i>
+                    <i>{this.props.info.viewedAt ? timeAgo(this.props.info.viewedAt) :
+                                                   timeAgo(new Date(1447879297957).toISOString())}</i>
                 </OverlayTrigger>
             </td>
 
@@ -41,7 +42,8 @@ export default class ProjectsDataTableEntry extends React.Component {
                             <br/><br/>
                             <i>{`Modified by: ${this.props.info.modifier ? this.props.info.modifier : this.props.unavailable}`}</i>
                         </Popover>}>
-                    <i>{this.props.info.modifiedAt ? timeAgo(this.props.info.modifiedAt) : this.props.unavailable}</i>
+                    <i>{this.props.info.modifiedAt ? timeAgo(this.props.info.modifiedAt) :
+                                                     timeAgo(new Date(1447879297957).toISOString())}</i>
                 </OverlayTrigger>
             </td>
 
@@ -52,7 +54,8 @@ export default class ProjectsDataTableEntry extends React.Component {
                             <br/><br/>
                             <i>{`Created by: ${this.props.info.creator ? this.props.info.creator : this.props.unavailable}`}</i>
                         </Popover>}>
-                    <i>{this.props.info.createdAt ? timeAgo(this.props.info.createdAt) : this.props.unavailable}</i>
+                    <i>{this.props.info.createdAt ? timeAgo(this.props.info.createdAt) :
+                                                    timeAgo(new Date(1447879297957).toISOString())}</i>
                 </OverlayTrigger>
             </td>
 

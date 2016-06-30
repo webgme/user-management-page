@@ -103,14 +103,28 @@ export default class UsersClient extends BaseClient {
     getUsersWithAccessToProject(projectId) {
         let userMap = {};
         return this.getAllUsers()
-            .then(arrayOfAllUsers => {
-                arrayOfAllUsers.forEach(oneUser => {
-                    if (oneUser.projects.hasOwnProperty(projectId)) {
-                        userMap[oneUser._id] = {
-                            read: oneUser.projects[projectId].read,
-                            write: oneUser.projects[projectId].write,
-                            delete: oneUser.projects[projectId].delete,
-                            inOrg: false
+            .then(users => {
+                users.forEach(user => {
+                    if (user.projects.hasOwnProperty(projectId)) {
+
+                        // Building rights string
+                        let rightsOrigin = 'Self: ';
+                        if (user.projects[projectId].read) {
+                            rightsOrigin += 'Read ';
+                        }
+                        if (user.projects[projectId].write) {
+                            rightsOrigin += 'Write ';
+                        }
+                        if (user.projects[projectId].delete) {
+                            rightsOrigin += 'Delete ';
+                        }
+
+                        userMap[user._id] = {
+                            read: user.projects[projectId].read,
+                            write: user.projects[projectId].write,
+                            delete: user.projects[projectId].delete,
+                            inOrg: false,
+                            rightsOrigin: rightsOrigin
                         };
                     }
                 });

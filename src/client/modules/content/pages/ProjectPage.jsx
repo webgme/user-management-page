@@ -1,13 +1,12 @@
+/* global window, $ */
+
 /**
  * Individual project page
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-/* global window, $ */
-
 // Libraries
-import browserHistory from 'react-router/lib/browserHistory';
-import Button from'react-bootstrap/lib/Button';
+import Button from 'react-bootstrap/lib/Button';
 import React from 'react/lib/React';
 // Self defined
 import CollaboratorsCommitsBarChart from '../widgets/charts/CollaboratorsCommitsBarChart';
@@ -22,14 +21,7 @@ export default class ProjectPage extends React.Component {
             refreshTable: false
         };
         // Event Handlers
-        this.goToEditor = this.goToEditor.bind(this);
         this.refreshTable = this.refreshTable.bind(this);
-    }
-
-    goToEditor() {
-        let encode = `${this.props.params.ownerId}+${this.props.params.projectName}`;
-        browserHistory.push('/?project=' + window.encodeURIComponent(encode));
-        window.location.reload();
     }
 
     refreshTable() {
@@ -41,18 +33,19 @@ export default class ProjectPage extends React.Component {
     render() {
 
         return (
-
             <section className="content">
+
                 <div className="box box-primary">
                     <div className="row">
                         <h2 className="col-md-10" style={{paddingLeft: "30px", paddingTop: "14px"}}>
                             <i className="fa fa-cube"/>{` ${this.props.params.ownerId} / ${this.props.params.projectName}`}
                         </h2>
                         <div className="col-md-2" style={{paddingRight: "30px", paddingTop: "14px"}}>
-                            <Button bsStyle="primary" style={{float: "right"}}
-                                    onClick={this.goToEditor}>
-                                Open in editor
-                            </Button>
+                            <a href={"/?project=" + window.encodeURIComponent(`${this.props.params.ownerId}+${this.props.params.projectName}`)}>
+                                <Button bsStyle="primary" style={{float: "right"}}>
+                                    Open in editor
+                                </Button>
+                            </a>
                         </div>
                     </div>
                 </div>
