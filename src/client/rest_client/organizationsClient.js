@@ -94,16 +94,29 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise.<{map}>} (Had to resolve the map to use it in parallel with another async function)
      */
     getOrganizationsWithAccessToProject(projectId) {
-        let organizationMap = {};
+        let orgToRights = {};
 
         return this.getAllOrganizations()
-            .then(allOrganizations => {
-                allOrganizations.forEach(oneOrganization => {
-                    if (oneOrganization.projects.hasOwnProperty(projectId)) {
-                        organizationMap[oneOrganization._id] = oneOrganization.projects[projectId];
+            .then(orgs => {
+                orgs.forEach(org => {
+                    if (org.projects.hasOwnProperty(projectId)) {
+
+                        let rightsOrigin = '';
+                        if (org.projects[projectId].read) {
+                            rightsOrigin += 'Read ';
+                        }
+                        if (org.projects[projectId].write) {
+                            rightsOrigin += 'Write ';
+                        }
+                        if (org.projects[projectId].delete) {
+                            rightsOrigin += 'Delete ';
+                        }
+
+                        orgToRights[org._id] = org.projects[projectId];
+                        orgToRights[org._id].rightsOrigin = org._id + ': ' + rightsOrigin;
                     }
                 });
-                return Promise.resolve(organizationMap);
+                return Promise.resolve(orgToRights);
             });
     }
 
@@ -125,11 +138,24 @@ export default class OrganizationsClient extends BaseClient {
                                     read: userToOrgsRights[user].read || org.projects[projectId].read,
                                     write: userToOrgsRights[user].write || org.projects[projectId].write,
                                     delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
-                                    inOrg: true
+                                    inOrg: true,
+                                    rightsOrigin: userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + JSON.stringify(orgs.projects[projectId]) : JSON.stringify(orgs.projects[projectId])
                                 };
                             } else {
+                                let rightsOrigin = '';
+                                if (org.projects[projectId].read) {
+                                    rightsOrigin += 'Read ';
+                                }
+                                if (org.projects[projectId].write) {
+                                    rightsOrigin += 'Write ';
+                                }
+                                if (org.projects[projectId].delete) {
+                                    rightsOrigin += 'Delete ';
+                                }
+
                                 userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));
                                 userToOrgsRights[user].inOrg = true;
+                                userToOrgsRights[user].rightsOrigin = userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + ': ' + rightsOrigin : org._id + ': ' + rightsOrigin;
                             }
                         });
                     }

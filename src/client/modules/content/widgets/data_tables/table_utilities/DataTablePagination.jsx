@@ -19,7 +19,9 @@ export default class DataTableEntry extends React.Component {
     }
 
     render() {
-        return <div className="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+        return <div className="dataTables_paginate paging_simple_numbers"
+                    id="example1_paginate"
+                    style={{fontSize: "12px"}}>
                 <ul className="pagination" style={{margin: 0}}>
                     <li id="example1_previous"
                         className={this.props.pageNumber === 1 ? "paginate_button previous disabled" :

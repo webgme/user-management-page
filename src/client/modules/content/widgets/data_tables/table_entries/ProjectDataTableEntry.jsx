@@ -62,6 +62,17 @@ export default class ProjectDataTableEntry extends React.Component {
         rights += this.props.write ? 'Write  ' : '';
         rights += this.props.delete ? 'Delete' : '';
 
+        // Building rights origin (needs breaks)
+        let rightsOrigin = [];
+        this.props.rightsOrigin.split('\n').forEach(line => {
+            rightsOrigin.push(
+                <span>
+                    {line}
+                    <br/>
+                </span>
+            );
+        });
+
         return <tr role="row" className="odd">
             <Modal show={this.state.showModal} onHide={this.close}>
 
@@ -78,21 +89,28 @@ export default class ProjectDataTableEntry extends React.Component {
 
                 <Modal.Footer>
                     <Button bsStyle="danger" onClick={this.confirm} id={this.props.name}>
-                        Yes revoke {this.props.name}'s rights
+                        OK
                     </Button>
                     <Button bsStyle="primary" onClick={this.close}>
-                        No, do not revoke {this.props.name}'s rights
+                        Cancel
                     </Button>
                 </Modal.Footer>
 
             </Modal>
 
             <td>
-                {this.props.inOrg ? <i className="fa fa-user-plus" style={{fontSize: "15px", float: "left"}}/> :
-                                    <i className="fa fa-user" style={{fontSize: "15px", float: "left"}}/> }
-                <span style={{paddingLeft: "8px"}}>
-                    {this.props.name}
-                </span>
+                <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
+                        <Popover title="Rights Origin" id="Rights Origin">
+                            {rightsOrigin}
+                        </Popover>}>
+                    <div style={{float: "left"}}>
+                        <i className={`fa fa-user${this.props.inOrg ? '-plus' : ''}`}
+                           style={{fontSize: "15px", float: "left"}}/>
+                        <span style={{paddingLeft: "8px"}}>
+                            {this.props.name}
+                        </span>
+                    </div>
+                </OverlayTrigger>
             </td>
 
             <td>

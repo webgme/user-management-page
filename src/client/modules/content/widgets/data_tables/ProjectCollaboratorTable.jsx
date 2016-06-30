@@ -56,13 +56,14 @@ export default class ProjectCollaboratorTable extends React.Component {
             if (isEmpty(usersInOrganizationsWithAccess)) {
                 // Do nothing because then usersWithAccess is just self and does not need to be modified
             } else {
-                Object.keys(usersInOrganizationsWithAccess).forEach(oneUser => {
-                    if (usersWithAccess[oneUser]) {
-                        usersWithAccess[oneUser].read = usersWithAccess[oneUser].read || usersInOrganizationsWithAccess[oneUser].read; // eslint-disable-line max-len
-                        usersWithAccess[oneUser].write = usersWithAccess[oneUser].write || usersInOrganizationsWithAccess[oneUser].write; // eslint-disable-line max-len
-                        usersWithAccess[oneUser].delete = usersWithAccess[oneUser].delete || usersInOrganizationsWithAccess[oneUser].delete; // eslint-disable-line max-len
+                Object.keys(usersInOrganizationsWithAccess).forEach(user => {
+                    if (usersWithAccess[user]) {
+                        usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
+                        usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
+                        usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
+                        usersWithAccess[user].rightsOrigin = usersWithAccess[user].rightsOrigin + '\n' + usersInOrganizationsWithAccess[user].rightsOrigin; // eslint-disable-line max-len
                     } else {
-                        usersWithAccess[oneUser] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[oneUser]));
+                        usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
                     }
                 });
             }
@@ -75,7 +76,8 @@ export default class ProjectCollaboratorTable extends React.Component {
                     read: usersWithAccess[user].read,
                     write: usersWithAccess[user].write,
                     delete: usersWithAccess[user].delete,
-                    inOrg: usersWithAccess[user].inOrg
+                    inOrg: usersWithAccess[user].inOrg,
+                    rightsOrigin: usersWithAccess[user].rightsOrigin
                 });
             });
 
@@ -85,7 +87,8 @@ export default class ProjectCollaboratorTable extends React.Component {
                     read: organizationsWithAccess[organization].read,
                     write: organizationsWithAccess[organization].write,
                     delete: organizationsWithAccess[organization].delete,
-                    inOrg: organizationsWithAccess[organization].inOrg
+                    inOrg: organizationsWithAccess[organization].inOrg,
+                    rightsOrigin: organizationsWithAccess[organization].rightsOrigin
                 });
             });
 
@@ -108,7 +111,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                     this.state.userCollaborators.sort(sortObjectArrayByField('name')),
                 sortedForward: !this.state.sortedForward
             });
-        } else {
+        } else if (this.state.display === 2) {
             this.setState({
                 organizationCollaborators: this.state.sortedForward ?
                     this.state.organizationCollaborators.sort(sortObjectArrayByField('name')).reverse() :
@@ -120,8 +123,8 @@ export default class ProjectCollaboratorTable extends React.Component {
 
     onRevoke(event) {
         this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
-            this.props.projectName,
-            event.target.id)
+                                                             this.props.projectName,
+                                                             event.target.id)
             .then(() => {
                 this.retrieveCollaborators(); // Re-render after revoking rights
             });

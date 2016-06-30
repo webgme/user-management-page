@@ -56,8 +56,7 @@ export default class ProjectsTable extends React.Component {
         ];
 
         return (
-            <div className="box">
-
+            <div>
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
@@ -76,9 +75,8 @@ export default class ProjectsTable extends React.Component {
                            sortable={true}
                            sortedForward={this.state.sortedForward}
                            tableName="Projects">
-                    <ProjectsDataTableEntry/>
+                    <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
                 </DataTable>
-
             </div>
         );
     }

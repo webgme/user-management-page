@@ -17,8 +17,12 @@ export default class ProjectsPage extends React.Component {
     render() {
         return <section className="content">
 
-            <ProjectsTable basePath={this.props.basePath}
-                           restClient={this.props.restClient}/>
+            <div className="box box-primary">
+
+                <ProjectsTable basePath={this.props.basePath}
+                               restClient={this.props.restClient}/>
+
+            </div>
 
         </section>;
     }

@@ -71,7 +71,8 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
 
         return (
             <div className="col-md-12">
-                <div className="box box-info">
+                <div className="box">
+
                     <div className="box-header with-border">
                         <h3 className="box-title">{this.props.title}</h3>
 
@@ -81,6 +82,7 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
                             </button>
                         </div>
                     </div>
+
                     <div className="box-body">
                         <BarChart data={this.state.data}
                                   height={this.props.height}
@@ -88,6 +90,7 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
                                   redraw
                                   width={this.props.width}/>
                     </div>
+
                 </div>
             </div>
         );
