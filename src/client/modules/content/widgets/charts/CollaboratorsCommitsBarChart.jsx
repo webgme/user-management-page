@@ -1,3 +1,5 @@
+/* global window, $ */
+
 /**
  * BarGraph for 'commits by collaborators' widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -16,17 +18,20 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
         this.state = {
             data: {
                 labels: [],
-                datasets: []
+                datasets: [],
+                height: 0.0,
+                width: 0.0
             },
             numCommits: 100
         };
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.data !== nextState.data;
+        this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     componentDidMount() {
+        $(window).resize(() => {
+            this.updateDimensions();
+        });
+
         let updaters = {};
 
         this.props.restClient.projects.getLatestCommits(this.props.ownerId, this.props.projectName, this.state.numCommits) // eslint-disable-line max-len
@@ -67,6 +72,30 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
             });
     }
 
+    componentWillMount() {
+        this.updateDimensions();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.data !== nextState.data ||
+               this.state.height !== nextState.height ||
+               this.state.width !== nextState.width;
+    }
+
+    updateDimensions() {
+        console.log('Updating the window dimensions state');
+        console.log('New height: ', $(window).height(), 'New width: ', $(window).width());
+        console.log('Width of barChartBox: ', $("#barChartBox").width());
+        this.setState({
+            height: $(window).height(),
+            width: $(window).width()
+        });
+    }
+
     render() {
 
         return (
@@ -83,12 +112,12 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
                         </div>
                     </div>
 
-                    <div className="box-body">
+                    <div className="box-body" id="barChartBox">
                         <BarChart data={this.state.data}
-                                  height={this.props.height}
+                                  height={this.state.height / 3}
                                   options={this.props.options}
-                                  redraw
-                                  width={this.props.width}/>
+                                  redraw={true}
+                                  width={-120 + this.state.width * 10.0 / 21.0}/>
                     </div>
 
                 </div>

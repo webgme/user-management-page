@@ -20,7 +20,14 @@ export default class DataTableCategories extends React.Component {
                    className="sorting_asc"
                    colSpan="1"
                    rowSpan="1"
-                   style={this.props.style}
+                   style={Object.assign({WebkitUserSelect: "none",
+                                         KhtmlUserSelect: "none",
+                                         MozUserSelect: "none",
+                                         MsUserSelect: "none",
+                                         OUserSelect: "none",
+                                         userSelect: "none",
+                                         outlineStyle: "none",
+                                         WebkitTapHighlightColor: "transparent"}, this.props.style)}
                    tabIndex="0">
             {this.props.name}
             {this.props.sortable && (/name/i).test(this.props.name) ?

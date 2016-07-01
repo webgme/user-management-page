@@ -1,13 +1,9 @@
-/* global $ */
-
 /**
  * Container widget for the project collaborator table widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
