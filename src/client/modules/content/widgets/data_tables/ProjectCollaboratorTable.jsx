@@ -1,3 +1,5 @@
+/* global $ */
+
 /**
  * Container widget for the project collaborator table widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -99,12 +101,8 @@ export default class ProjectCollaboratorTable extends React.Component {
     }
 
     onOrderEntries(event) {
-        // Stop propogation
-        event.stopPropagation();
-        event.preventDefault();
-
         // Release focus (surrounding box)
-        // $(event.target).parent().blur();
+        $(event.target).parent().blur();
 
         if (this.state.display === 1) {
             this.setState({
