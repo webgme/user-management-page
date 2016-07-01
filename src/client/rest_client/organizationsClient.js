@@ -101,19 +101,19 @@ export default class OrganizationsClient extends BaseClient {
                 orgs.forEach(org => {
                     if (org.projects.hasOwnProperty(projectId)) {
 
-                        let rightsOrigin = '';
+                        let orgsRightsOrigin = '';
                         if (org.projects[projectId].read) {
-                            rightsOrigin += 'Read ';
+                            orgsRightsOrigin += 'Read ';
                         }
                         if (org.projects[projectId].write) {
-                            rightsOrigin += 'Write ';
+                            orgsRightsOrigin += 'Write ';
                         }
                         if (org.projects[projectId].delete) {
-                            rightsOrigin += 'Delete ';
+                            orgsRightsOrigin += 'Delete ';
                         }
 
                         orgToRights[org._id] = org.projects[projectId];
-                        orgToRights[org._id].rightsOrigin = org._id + ': ' + rightsOrigin;
+                        orgToRights[org._id].orgsRightsOrigin = orgToRights[org._id].orgsRightsOrigin ? orgToRights[org._id].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin];
                     }
                 });
                 return Promise.resolve(orgToRights);
@@ -133,15 +133,15 @@ export default class OrganizationsClient extends BaseClient {
                 orgs.forEach(org => {
                     if (org.projects.hasOwnProperty(projectId)) {
 
-                        let rightsOrigin = '';
+                        let orgsRightsOrigin = '';
                         if (org.projects[projectId].read) {
-                            rightsOrigin += 'Read ';
+                            orgsRightsOrigin += 'Read ';
                         }
                         if (org.projects[projectId].write) {
-                            rightsOrigin += 'Write ';
+                            orgsRightsOrigin += 'Write ';
                         }
                         if (org.projects[projectId].delete) {
-                            rightsOrigin += 'Delete ';
+                            orgsRightsOrigin += 'Delete ';
                         }
 
                         org.users.forEach(user => {
@@ -151,12 +151,12 @@ export default class OrganizationsClient extends BaseClient {
                                     write: userToOrgsRights[user].write || org.projects[projectId].write,
                                     delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
                                     inOrg: true,
-                                    rightsOrigin: userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + ': ' + rightsOrigin : org._id + ': ' + rightsOrigin
+                                    orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin])
                                 };
                             } else {
                                 userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));
                                 userToOrgsRights[user].inOrg = true;
-                                userToOrgsRights[user].rightsOrigin = userToOrgsRights[user].rightsOrigin ? userToOrgsRights[user].rightsOrigin + '\n' + org._id + ': ' + rightsOrigin : org._id + ': ' + rightsOrigin;
+                                userToOrgsRights[user].orgsRightsOrigin = userToOrgsRights[user].orgsRightsOrigin ? userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin];
                             }
                         });
                     }

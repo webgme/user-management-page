@@ -61,7 +61,6 @@ export default class ProjectCollaboratorTable extends React.Component {
                         usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
                         usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
                         usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
-                        usersWithAccess[user].rightsOrigin = usersWithAccess[user].rightsOrigin + '\n' + usersInOrganizationsWithAccess[user].rightsOrigin; // eslint-disable-line max-len
                     } else {
                         usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
                     }
@@ -77,7 +76,8 @@ export default class ProjectCollaboratorTable extends React.Component {
                     write: usersWithAccess[user].write,
                     delete: usersWithAccess[user].delete,
                     inOrg: usersWithAccess[user].inOrg,
-                    rightsOrigin: usersWithAccess[user].rightsOrigin
+                    userRightsOrigin: usersWithAccess[user].userRightsOrigin,
+                    orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin
                 });
             });
 
@@ -88,7 +88,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                     write: organizationsWithAccess[organization].write,
                     delete: organizationsWithAccess[organization].delete,
                     inOrg: organizationsWithAccess[organization].inOrg,
-                    rightsOrigin: organizationsWithAccess[organization].rightsOrigin
+                    orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin
                 });
             });
 

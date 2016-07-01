@@ -160,7 +160,7 @@ export default class DataTable extends React.Component {
                                 <label>
                                     <input type="text"
                                            className="form-control input-sm"
-                                           placeholder={`Enter ${['a', 'e', 'i', 'o', 'u'].indexOf(this.props.tableName.substring(0, 1).toLowerCase()) === -1 ? 'a' : 'an'} ${this.props.tableName.toLowerCase().substring(0, this.props.tableName.length - 1)} name...`}
+                                           placeholder={`Filter...`}
                                            value={this.state.searchText}
                                            aria-controls="example1"
                                            onChange={this.handleSearch}/>

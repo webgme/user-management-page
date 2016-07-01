@@ -90,7 +90,7 @@ export default class Header extends React.Component {
         for (let i = 1; i < breadcrumbs.length; i += 2) {
             breadcrumbs.splice(i, 0,
                 <span style={STYLING.breadCrumbLink} key={i + 100}>
-                    &nbsp;&nbsp;&nbsp; <i className="fa fa-arrows-h"/> &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp; > &nbsp;&nbsp;&nbsp;
                 </span>);
         }
 

@@ -62,16 +62,33 @@ export default class ProjectDataTableEntry extends React.Component {
         rights += this.props.write ? 'Write  ' : '';
         rights += this.props.delete ? 'Delete' : '';
 
-        // Building rights origin (needs breaks)
-        let rightsOrigin = [];
-        this.props.rightsOrigin.split('\n').forEach((line, index) => {
-            rightsOrigin.push(
-                <span key={index}>
-                    {line}
-                    <br/>
-                </span>
-            );
-        });
+        // Building popover
+        let userRightsOrigin = [<div><strong>From User</strong></div>],
+            orgsRightsOrigin = [<div><strong>From Organization</strong></div>];
+
+        if (this.props.userRightsOrigin) {
+            this.props.userRightsOrigin.forEach((right, index) => {
+                userRightsOrigin.push(
+                    <div key={index + 1}>
+                        {right}
+                    </div>
+                );
+            });
+        } else {
+            userRightsOrigin.push(<div key={0}>None</div>);
+        }
+
+        if (this.props.orgsRightsOrigin.length > 0) {
+            this.props.orgsRightsOrigin.forEach((right, index) => {
+                orgsRightsOrigin.push(
+                    <div key={index + 1}>
+                        {right}
+                    </div>
+                );
+            });
+        } else {
+            orgsRightsOrigin.push(<div key={0}>None</div>);
+        }
 
         return <tr role="row" className="odd">
             <Modal show={this.state.showModal} onHide={this.close}>
@@ -101,10 +118,12 @@ export default class ProjectDataTableEntry extends React.Component {
             <td>
                 <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Rights Origin" id="Rights Origin">
-                            {rightsOrigin}
+                            {userRightsOrigin}
+                            <br/>
+                            {orgsRightsOrigin}
                         </Popover>}>
                     <div style={{float: "left"}}>
-                        <i className={`fa fa-user${this.props.inOrg ? '-plus' : ''}`}
+                        <i className={`fa fa-user${this.props.inOrg ? '-times' : ''}`}
                            style={{fontSize: "15px", float: "left"}}/>
                         <span style={{paddingLeft: "8px"}}>
                             {this.props.name}
