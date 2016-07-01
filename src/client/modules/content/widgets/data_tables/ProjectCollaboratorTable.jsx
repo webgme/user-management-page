@@ -88,6 +88,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                     write: organizationsWithAccess[organization].write,
                     delete: organizationsWithAccess[organization].delete,
                     inOrg: organizationsWithAccess[organization].inOrg,
+                    isOrg: true,
                     orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin
                 });
             });

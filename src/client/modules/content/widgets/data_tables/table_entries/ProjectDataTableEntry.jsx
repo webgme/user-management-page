@@ -63,8 +63,8 @@ export default class ProjectDataTableEntry extends React.Component {
         rights += this.props.delete ? 'Delete' : '';
 
         // Building popover
-        let userRightsOrigin = [<div><strong>From User</strong></div>],
-            orgsRightsOrigin = [<div><strong>From Organization</strong></div>];
+        let userRightsOrigin = [<div key={0}><strong>From User</strong></div>],
+            orgsRightsOrigin = [<div key={0}><strong>From Organization</strong></div>];
 
         if (this.props.userRightsOrigin) {
             this.props.userRightsOrigin.forEach((right, index) => {
@@ -123,7 +123,7 @@ export default class ProjectDataTableEntry extends React.Component {
                             {orgsRightsOrigin}
                         </Popover>}>
                     <div style={{float: "left"}}>
-                        <i className={`fa fa-user${this.props.inOrg ? '-times' : ''}`}
+                        <i className={this.props.isOrg ? 'fa fa-university' : `fa fa-user${this.props.inOrg ? '-times' : ''}`}
                            style={{fontSize: "15px", float: "left"}}/>
                         <span style={{paddingLeft: "8px"}}>
                             {this.props.name}
