@@ -1,4 +1,4 @@
-/* global window, $ */
+/* global document, window, $ */
 
 /**
  * BarGraph for 'commits by collaborators' widget
@@ -18,19 +18,13 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
         this.state = {
             data: {
                 labels: [],
-                datasets: [],
-                height: 0.0,
-                width: 0.0
+                datasets: []
             },
             numCommits: 100
         };
-        this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     componentDidMount() {
-        $(window).resize(() => {
-            this.updateDimensions();
-        });
 
         let updaters = {};
 
@@ -72,28 +66,10 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
             });
     }
 
-    componentWillMount() {
-        this.updateDimensions();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateDimensions);
-    }
-
     shouldComponentUpdate(nextProps, nextState) {
         return this.state.data !== nextState.data ||
                this.state.height !== nextState.height ||
                this.state.width !== nextState.width;
-    }
-
-    updateDimensions() {
-        console.log('Updating the window dimensions state');
-        console.log('New height: ', $(window).height(), 'New width: ', $(window).width());
-        console.log('Width of barChartBox: ', $("#barChartBox").width());
-        this.setState({
-            height: $(window).height(),
-            width: $(window).width()
-        });
     }
 
     render() {
@@ -114,10 +90,10 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
 
                     <div className="box-body" id="barChartBox">
                         <BarChart data={this.state.data}
-                                  height={this.state.height / 3}
+                                  height={300}
+                                  width={500}
                                   options={this.props.options}
-                                  redraw={true}
-                                  width={-120 + this.state.width * 10.0 / 21.0}/>
+                                  redraw={true}/>
                     </div>
 
                 </div>
