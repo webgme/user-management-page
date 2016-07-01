@@ -108,15 +108,15 @@ export default class UsersClient extends BaseClient {
                     if (user.projects.hasOwnProperty(projectId)) {
 
                         // Building rights string
-                        let rightsOrigin = 'Self: ';
+                        let userRightsOrigin = '';
                         if (user.projects[projectId].read) {
-                            rightsOrigin += 'Read ';
+                            userRightsOrigin += 'Read ';
                         }
                         if (user.projects[projectId].write) {
-                            rightsOrigin += 'Write ';
+                            userRightsOrigin += 'Write ';
                         }
                         if (user.projects[projectId].delete) {
-                            rightsOrigin += 'Delete ';
+                            userRightsOrigin += 'Delete ';
                         }
 
                         userMap[user._id] = {
@@ -124,7 +124,8 @@ export default class UsersClient extends BaseClient {
                             write: user.projects[projectId].write,
                             delete: user.projects[projectId].delete,
                             inOrg: false,
-                            rightsOrigin: rightsOrigin
+                            userRightsOrigin: [userRightsOrigin],
+                            orgsRightsOrigin: []
                         };
                     }
                 });

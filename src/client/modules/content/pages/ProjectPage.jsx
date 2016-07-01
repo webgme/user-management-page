@@ -1,4 +1,4 @@
-/* global window, $ */
+/* global window */
 
 /**
  * Individual project page
@@ -69,13 +69,11 @@ export default class ProjectPage extends React.Component {
                                                     restClient={this.props.restClient}/>
 
                         <div className="row">
-                            <CollaboratorsCommitsBarChart height={$(window).height() / 1.8}
-                                                          options={{}}
+                            <CollaboratorsCommitsBarChart options={{}}
                                                           ownerId={this.props.params.ownerId}
                                                           projectName={this.props.params.projectName}
                                                           restClient={this.props.restClient}
-                                                          title="Latest Commits"
-                                                          width={$(window).width() / 2.36}/>
+                                                          title="Latest Commits"/>
                         </div>
 
                     </div>

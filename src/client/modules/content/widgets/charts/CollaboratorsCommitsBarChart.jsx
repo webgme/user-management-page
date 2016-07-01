@@ -1,3 +1,5 @@
+/* global document, window, $ */
+
 /**
  * BarGraph for 'commits by collaborators' widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -22,11 +24,8 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
         };
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.data !== nextState.data;
-    }
-
     componentDidMount() {
+
         let updaters = {};
 
         this.props.restClient.projects.getLatestCommits(this.props.ownerId, this.props.projectName, this.state.numCommits) // eslint-disable-line max-len
@@ -67,6 +66,12 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
             });
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.data !== nextState.data ||
+               this.state.height !== nextState.height ||
+               this.state.width !== nextState.width;
+    }
+
     render() {
 
         return (
@@ -83,12 +88,12 @@ export default class CollaboratorsCommitsBarGraph extends React.Component {
                         </div>
                     </div>
 
-                    <div className="box-body">
+                    <div className="box-body" id="barChartBox">
                         <BarChart data={this.state.data}
-                                  height={this.props.height}
+                                  height={300}
+                                  width={500}
                                   options={this.props.options}
-                                  redraw
-                                  width={this.props.width}/>
+                                  redraw={true}/>
                     </div>
 
                 </div>

@@ -1,36 +1,35 @@
+/* global window */
+
 /**
  * Sidebar user section
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-/* global window */
-
 // Libraries
+import browserHistory from 'react-router/lib/browserHistory';
 import React from 'react/lib/React';
 import withRouter from 'react-router/lib/withRouter';
 
 const STYLING = {
-    welcomeStyle: {
+    status: {
         color: "#BAB8B8",
         fontSize: "13px",
         lineHeight: "15px",
-        paddingLeft: "27px"
+        paddingLeft: "23px"
     },
-    nameStyle: {
+    name: {
         color: "#ECF0F1",
         fontSize: "14px",
         fontWeight: "light",
-        paddingLeft: "25px",
+        paddingLeft: "20px",
         paddingTop: "5px"
     },
-    panelStyle: {
-        cursor: "pointer",
+    panel: {
         padding: "15px"
     },
-    imageStyle: {
+    imageIcon: {
         borderRadius: 0,
         maxWidth: "50px",
-        paddingLeft: "10px",
         paddingTop: "8px"
     }
 };
@@ -42,6 +41,7 @@ class SideBarUserPanel extends React.Component {
         this.state = {
             user: {}
         };
+        this.goToEditor = this.goToEditor.bind(this);
     }
 
     componentDidMount() {
@@ -53,17 +53,24 @@ class SideBarUserPanel extends React.Component {
             });
     }
 
+    goToEditor() {
+        browserHistory.push('/');
+        window.location.reload();
+    }
+
     render() {
 
-        return <div className="user-panel" style={STYLING.panelStyle}>
-            <a href="/">
-                <div className="pull-left image">
-                    <img src="/img/gme-logo.png" className="img-circle" alt="User Image" style={STYLING.imageStyle}/>
-                </div>
-            </a>
+        return <div className="user-panel" style={STYLING.panel}>
+            <div className="pull-left image" style={{cursor: "pointer"}}>
+                <img alt="User Image"
+                     className="img-circle"
+                     onClick={this.goToEditor}
+                     src="/img/gme-logo.png"
+                     style={STYLING.imageIcon}/>
+            </div>
             <div className="pull-left info">
-                <p style={STYLING.nameStyle}>&nbsp;{this.state.user._id}&nbsp;</p>
-                <a href="#" style={STYLING.welcomeStyle}><i className="fa fa-circle text-success"/> Online</a>
+                <p style={STYLING.name}>&nbsp;{this.state.user._id}&nbsp;</p>
+                <span style={STYLING.status}><i className="fa fa-circle text-success"/> Online</span>
             </div>
         </div>;
     }
