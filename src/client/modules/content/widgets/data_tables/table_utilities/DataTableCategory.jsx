@@ -29,11 +29,14 @@ export default class DataTableCategories extends React.Component {
                                          outlineStyle: "none",
                                          WebkitTapHighlightColor: "transparent"}, this.props.style)}
                    tabIndex="0">
-            {this.props.name}
-            {this.props.sortable && (/name/i).test(this.props.name) ?
-                <i className={this.props.sortedForward ? "fa fa-level-down" : "fa fa-level-up"}
-                   style={{textAlign: "right", cursor: "pointer"}}
-                   onClick={this.props.orderEntries}/> : <i/>}
+            <div onClick={this.props.sortable && (/name/i).test(this.props.name) ? this.props.orderEntries : () => {}}
+                 style={this.props.sortable && (/name/i).test(this.props.name) ? {cursor: "pointer", float: "left"} : {float: "left"}}>
+                {this.props.name}
+                {this.props.sortable && (/name/i).test(this.props.name) ?
+                    <i className={this.props.sortedForward ? "fa fa-level-down" : "fa fa-level-up"}
+                       style={{textAlign: "right", cursor: "pointer"}}
+                       onClick={this.props.orderEntries}/> : <i/>}
+            </div>
         </th>;
     }
 }

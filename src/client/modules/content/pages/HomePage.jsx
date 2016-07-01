@@ -41,11 +41,11 @@ export default class HomePage extends React.Component {
         ])
             .then(([projects, user]) => {
                 this.setState({
-                    ownedProjects: Object.keys(user.projects).length,
-                    name: user._id,
+                    ownedProjects: projects.filter(project => {
+                        return project.owner === user._id;
+                    }).length,
                     numOrganizations: user.orgs.length,
                     viewableProjects: projects.length,
-                    numProjects: projects.length,
                     user: user
                 });
             });
@@ -91,7 +91,7 @@ export default class HomePage extends React.Component {
                          src="/img/gme-logo.png"
                          alt="User profile picture"/>
 
-                    <h3 className="profile-username text-center">&nbsp;{this.state.name}&nbsp;</h3>
+                    <h3 className="profile-username text-center">&nbsp;{this.state.user._id}&nbsp;</h3>
 
                     <p className="text-muted text-center">WebGME</p>
 
