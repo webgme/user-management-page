@@ -75,7 +75,7 @@ export default class ProjectDataTableEntry extends React.Component {
                 );
             });
         } else {
-            userRightsOrigin.push(<div key={0}>None</div>);
+            userRightsOrigin.push(<div key={1}>None</div>);
         }
 
         if (this.props.orgsRightsOrigin.length > 0) {
@@ -87,7 +87,7 @@ export default class ProjectDataTableEntry extends React.Component {
                 );
             });
         } else {
-            orgsRightsOrigin.push(<div key={0}>None</div>);
+            orgsRightsOrigin.push(<div key={1}>None</div>);
         }
 
         return <tr role="row" className="odd">

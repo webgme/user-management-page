@@ -61,6 +61,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                         usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
                         usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
                         usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
+                        usersWithAccess[user].orgsRightsOrigin = usersInOrganizationsWithAccess[user].orgsRightsOrigin;
                     } else {
                         usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
                     }
@@ -102,8 +103,12 @@ export default class ProjectCollaboratorTable extends React.Component {
     }
 
     onOrderEntries(event) {
+        // Stop propogation
+        event.stopPropagation();
+        event.preventDefault();
+
         // Release focus (surrounding box)
-        $(event.target).parent().blur();
+        // $(event.target).parent().blur();
 
         if (this.state.display === 1) {
             this.setState({

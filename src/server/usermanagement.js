@@ -23,7 +23,7 @@ function serveFile(fileName, res) {
         }
     };
 
-    logger.info('serving file', fileName);
+    logger.debug('serving file', fileName);
     res.sendFile(fileName, options, function(err) {
         if (err) {
             logger.error('Failed to send ' + fileName, err);
@@ -52,7 +52,7 @@ function initialize(middlewareOpts) {
     });
 
     router.get(['/login', '/register'], function(req, res) {
-        logger.info('Login path taken:', req.originalUrl);
+        logger.debug('Login path taken:', req.originalUrl);
 
         fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function(err, indexTemplate) {
             if (err) {
@@ -90,5 +90,11 @@ function initialize(middlewareOpts) {
 
 module.exports = {
     initialize: initialize,
-    router: router
+    router: router,
+    start: function(callback) {
+        callback(null);
+    },
+    stop: function(callback) {
+        callback(null);
+    }
 };

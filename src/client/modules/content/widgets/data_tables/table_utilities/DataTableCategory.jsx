@@ -8,6 +8,10 @@ import React from 'react/lib/React';
 
 export default class DataTableCategories extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     render() {
 
         return <th aria-controls="example1"
