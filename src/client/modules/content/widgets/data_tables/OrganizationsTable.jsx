@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-bootstrap/lib/Modal';
 import React from 'react/lib/React';
 // Self-defined
+import CustomModal from '../CustomModal';
 import DataTable from './DataTable';
 import LoginField from '../LoginField';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
@@ -83,10 +84,7 @@ export default class OrganizationsTable extends React.Component {
             });
     }
 
-    onOrderEntries(event) {
-        // Release focus (surrounding box)
-        $(event.target).parent().blur();
-
+    onOrderEntries() {
         this.setState({
             organizations: this.state.sortedForward ?
                 this.state.organizations.sort(sortObjectArrayByField('name')).reverse() :
@@ -136,20 +134,16 @@ export default class OrganizationsTable extends React.Component {
                 </DataTable>
 
                 {/* Create organization modal window */}
-                <Modal onHide={this.props.closeCreateOrganization}
-                       show={this.props.showCreateOrganizationModal}
-                       style={STYLE.createOrganizationModal}>
-
-                    <Modal.Header closeButton>
-                        <Modal.Title>
-                            <strong>Create an organization</strong>
-                        </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <h4>Please enter the name of the organization you wish to create</h4>
-                    </Modal.Body>
-
+                <CustomModal cancelButtonMessage="Cancel"
+                             cancelButtonStyle="default"
+                             closeHandler={this.props.closeCreateOrganization}
+                             confirmButtonMessage="Create"
+                             confirmButtonStyle="primary"
+                             confirmHandler={this.props.createOrganization}
+                             modalMessage="Please enter the name of the organization you wish to create"
+                             showModal={this.props.showCreateOrganizationModal}
+                             style={STYLE.createOrganizationModal}
+                             title="Create an organization">
                     {/* Organization name */}
                     <LoginField hint="Organization Name"
                                 iconClass="fa fa-institution"
@@ -161,17 +155,8 @@ export default class OrganizationsTable extends React.Component {
                                 valid={this.props.validOrganizationName}
                                 value={this.props.newOrganizationName}
                                 warning={!this.props.validOrganizationName}/>
+                </CustomModal>
 
-                    <Modal.Footer>
-                        <Button bsStyle="primary" onClick={this.props.createOrganization}>
-                            Create
-                        </Button>
-                        <Button bsStyle="default" onClick={this.props.closeCreateOrganization}>
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-
-                </Modal>
             </div>
         );
     }

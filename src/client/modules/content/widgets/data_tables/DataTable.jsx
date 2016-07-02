@@ -23,23 +23,13 @@ export default class DataTable extends React.Component {
         this.handleSelect = this.handleSelect.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.display !== this.props.display) {
-            this.setState({
-                searchText: ''
-            });
-        }
-    }
-
     handlePagination(event) {
-        // Release focus
-        event.target.blur();
 
-        let newPageNum;
+        let newPageNum = this.state.pageNumber;
         if (event.target.innerHTML.trim() === 'Next') {
-            newPageNum = this.state.pageNumber + 1;
+            newPageNum += 1;
         } else if (event.target.innerHTML.trim() === 'Previous') {
-            newPageNum = this.state.pageNumber - 1;
+            newPageNum -= 1;
         } else {
             newPageNum = parseInt(event.target.innerHTML.trim(), 10);
         }
@@ -125,13 +115,25 @@ export default class DataTable extends React.Component {
         for (let i = 1; i <= numPages; i++) {
             formattedPaginationButtons.push(
                 <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
-                    <a onClick={this.handlePagination} href="#" aria-controls="example1" data-dt-idx={i}
+                    <a aria-controls="example1"
+                       data-dt-idx={i}
+                       href="#"
+                       onClick={this.handlePagination}
+                       style={{WebkitUserSelect: "none",
+                               KhtmlUserSelect: "none",
+                               MozUserSelect: "none",
+                               MsUserSelect: "none",
+                               OUserSelect: "none",
+                               userSelect: "none",
+                               outlineStyle: "none",
+                               WebkitTapHighlightColor: "transparent"}}
                        tabIndex="0">{i}</a>
                 </li>);
         }
 
         // Setting up minimum height of table
-        const minHeight = 70 + 35 * (this.props.entries.length < this.state.selectValue ? entriesList.length : this.state.selectValue),
+        const minHeight = 70 + 35 * (this.props.entries.length < this.state.selectValue ? entriesList.length :
+                                                                                          this.state.selectValue),
             tableMinHeight = {
                 minHeight: minHeight + "px"
             };
@@ -170,29 +172,30 @@ export default class DataTable extends React.Component {
 
                     </div>
 
-                    {this.props.entries.length === 0 ? <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
-                    <div className="row">
+                    {this.props.entries.length === 0 ?
+                        <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
+                        <div className="row">
 
-                        <div className="col-sm-12" style={tableMinHeight}>
-                            <table aria-describedby="example1_info"
-                                   className="table table-bordered table-striped dataTable"
-                                   id="example1"
-                                   role="grid">
+                            <div className="col-sm-12" style={tableMinHeight}>
+                                <table aria-describedby="example1_info"
+                                       className="table table-bordered table-striped dataTable"
+                                       id="example1"
+                                       role="grid">
 
-                                <thead>
-                                <tr role="row">
-                                    {formattedCategories}
-                                </tr>
-                                </thead>
+                                    <thead>
+                                    <tr role="row">
+                                        {formattedCategories}
+                                    </tr>
+                                    </thead>
 
-                                <tbody>
-                                {formattedEntries}
-                                </tbody>
+                                    <tbody>
+                                    {formattedEntries}
+                                    </tbody>
 
-                            </table>
-                        </div>
+                                </table>
+                            </div>
 
-                    </div>}
+                        </div>}
 
                     <div className="row">
 

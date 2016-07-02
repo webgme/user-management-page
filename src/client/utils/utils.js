@@ -3,6 +3,8 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+import React from 'react/lib/React';
+
 /**
  * Capitalizes the first letter of a word (formatting help)
  * @param {string} word - word to be altered
@@ -215,3 +217,22 @@ export const THEME_COLORS = {
     red: 'rgb(221, 75, 57)',
     yellow: 'rgb(243, 156, 18)'
 };
+
+/**
+ * Collaborator table's rightsOrigin helper
+ * @param {Array} arr - arr to be sifted through (user / orgs) rights
+ * @return {Array} - formatted JSX of rights
+ */
+export function formatRightsOrigin(arr) {
+    let result = [];
+
+    arr.forEach((right, index) => {
+        result.push(
+            <div key={index + 1}>
+                {right}
+            </div>
+        );
+    });
+
+    return result;
+}
