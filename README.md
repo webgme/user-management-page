@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/webgme/user-management-page.svg?branch=master)](https://travis-ci.org/webgme/user-management-page)
+
 A webpage for users to manage their webgme account and projects.
 
 ## Steps to run as an external REST component within WebGME
@@ -9,4 +11,4 @@ In addition the npm installation requires [Git](https://git-scm.com) to be insta
 2. Install dependencies `npm install`
 3. Run webpack `npm run webpack`
 4. Start (webgme) server `npm start`
-5. From a browser visit `http://localhost:8888/rest/external/usermanagement/`
+5. From a browser visit `http://localhost:8888/usermanagement/`

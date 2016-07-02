@@ -22,6 +22,7 @@ export default class LoginForm extends React.Component {
         super(props);
         this.state = {
             allowGuests: false,
+            allowUserRegistration: false,
             password: '',
             rememberMe: false,
             userId: '',
@@ -40,7 +41,8 @@ export default class LoginForm extends React.Component {
         this.props.loginClient.getGmeConfig()
             .then(gmeConfig => {
                 this.setState({
-                    allowGuests: gmeConfig.authentication.allowGuests
+                    allowGuests: gmeConfig.authentication.allowGuests,
+                    allowUserRegistration: gmeConfig.authentication.allowUserRegistration
                 });
             });
     }
@@ -165,10 +167,12 @@ export default class LoginForm extends React.Component {
                             <Link to={`${this.props.basePath}login`}>I forgot my password</Link>
                         </OverlayTrigger>
 
-                        <br/>*/}
-                        <Link to={`${this.props.basePath}register`}>
-                            Register
-                        </Link>
+                         <br/>*/}
+
+                        {this.state.allowUserRegistration ?
+                            <Link to={`${this.props.basePath}register`}>
+                                Register
+                            </Link> : null}
                     </div>
 
                     <div className="col-sm-7">

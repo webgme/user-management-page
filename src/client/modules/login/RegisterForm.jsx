@@ -19,6 +19,7 @@ export default class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            allowUserRegistration: false,
             // agreeToTerms: false,
             confirmPassword: '',
             email: '',
@@ -53,6 +54,15 @@ export default class RegisterForm extends React.Component {
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRegister = this.onRegister.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.loginClient.getGmeConfig()
+            .then(gmeConfig => {
+                this.setState({
+                    allowUserRegistration: gmeConfig.authentication.allowUserRegistration
+                });
+            });
     }
 
     checkAllFields() {
@@ -198,6 +208,11 @@ export default class RegisterForm extends React.Component {
         return <div className="register-box-body">
             <p className="login-box-msg">Register a new membership</p>
 
+            {this.state.allowUserRegistration ? null :
+                <div style={{color: "red", fontSize: "15px", paddingBottom: "10px", textAlign: "center"}}>
+                    User Registration Not Permitted
+                </div>}
+
             <form>
 
                 {/* userId */}
@@ -267,12 +282,13 @@ export default class RegisterForm extends React.Component {
                     </div>
 
                     <div className="col-sm-4">
-                        <Button bsStyle="primary"
-                                disabled={!validAndNotEmpty}
-                                onClick={this.onRegister}
-                                style={{float: "right", marginTop: "5px"}}>
-                            Register
-                        </Button>
+                        {this.state.allowUserRegistration ?
+                            <Button bsStyle="primary"
+                                    disabled={!validAndNotEmpty}
+                                    onClick={this.onRegister}
+                                    style={{float: "right", marginTop: "5px"}}>
+                                Register
+                            </Button> : null }
                     </div>
 
                 </div>
