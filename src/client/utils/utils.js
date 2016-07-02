@@ -134,6 +134,18 @@ export function sortObjectArrayByField(field) {
     };
 }
 
+/**
+ * Custom sort method to sort objects by nested properties
+ * @param {string} first - first field to search
+ * @param {string} second - second field to search
+ * @return {Function} - to be used as callback for javascript's native sort method
+ */
+export function sortObjectArrayByNestedDateField(first, second) {
+    return function(a, b) {
+        return new Date(b[first][second]) - new Date(a[first][second]);
+    };
+}
+
 // Date functions
 /**
  * Returns a string of how long ago

@@ -26,14 +26,18 @@ export default class UserMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userData: {_id: 'loading'}
+            user: {
+                _id: ''
+            }
         };
     }
 
     componentDidMount() {
         this.props.restClient.user.getCurrentUser()
-            .then(data => {
-                this.setState({userData: data});
+            .then(user => {
+                this.setState({
+                    user: user
+                });
             });
     }
 
@@ -42,13 +46,13 @@ export default class UserMenu extends React.Component {
         return <li className="dropdown user user-menu">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                 <img src="/img/gme-logo.png" className="user-image" alt="User Image"/>
-                <span className="hidden-xs">{this.state.userData._id}</span>
+                <span className="hidden-xs">&nbsp;{this.state.user._id}&nbsp;</span>
             </a>
             <ul className="dropdown-menu">
                 <li className="user-header" style={STYLING.userHeader}>
                     <img src="/img/gme-logo.png" className="img-circle" alt="User Image"/>
                     <p>
-                        {this.state.userData._id}
+                        {this.state.user._id}
                     </p>
                 </li>
                 <li className="user-footer" style={STYLING.logoutAreaBorder}>

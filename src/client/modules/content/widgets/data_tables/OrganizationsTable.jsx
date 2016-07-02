@@ -13,7 +13,7 @@ import React from 'react/lib/React';
 import DataTable from './DataTable';
 import LoginField from '../LoginField';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
-import {sortObjectArrayByField, THEME_COLORS} from '../../../../utils/utils';
+import {sortObjectArrayByField} from '../../../../utils/utils';
 
 const STYLE = {
     createOrganizationModal: {

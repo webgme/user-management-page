@@ -58,10 +58,6 @@ export default class ProjectDataTableEntry extends React.Component {
 
     render() {
 
-        let rights = this.props.read ? 'Read  ' : '';
-        rights += this.props.write ? 'Write  ' : '';
-        rights += this.props.delete ? 'Delete' : '';
-
         // Building popover
         let userRightsOrigin = [<div key={0}><strong>From User</strong></div>],
             orgsRightsOrigin = [<div key={0}><strong>From Organization</strong></div>];
@@ -133,7 +129,7 @@ export default class ProjectDataTableEntry extends React.Component {
             </td>
 
             <td>
-                {rights}
+                {this.props.rights}
                 {/* Only the owner(s) can see the remove option */}
                 {this.state.authorization ?
                     this.props.ownerId === this.props.name ?
