@@ -41,9 +41,10 @@ export default class ProjectPage extends React.Component {
                             <i className="fa fa-cube"/>{` ${this.props.params.ownerId} / ${this.props.params.projectName}`}
                         </h2>
                         <div className="col-md-2" style={{paddingRight: "30px", paddingTop: "14px"}}>
-                            <a href={"/?project=" + window.encodeURIComponent(`${this.props.params.ownerId}+${this.props.params.projectName}`)}>
+                            <a href={"/?project=" + window.encodeURIComponent(`${this.props.params.ownerId}+${this.props.params.projectName}`)}
+                               target="_blank">
                                 <Button bsStyle="primary" style={{float: "right"}}>
-                                    Open in editor
+                                    View in editor
                                 </Button>
                             </a>
                         </div>
