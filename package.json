@@ -1,5 +1,5 @@
 {
-  "name": "user-management-page",
+  "name": "webgme-user-management-page",
   "version": "0.1.0-beta1",
   "description": "User management page for webgme",
   "main": "./src/server/usermanagement.js",
