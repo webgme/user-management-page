@@ -43,7 +43,7 @@ export default class ProjectPage extends React.Component {
                         <div className="col-md-2" style={{paddingRight: "30px", paddingTop: "14px"}}>
                             <a href={"/?project=" + window.encodeURIComponent(`${this.props.params.ownerId}+${this.props.params.projectName}`)}>
                                 <Button bsStyle="primary" style={{float: "right"}}>
-                                    Open in editor
+                                    View in editor
                                 </Button>
                             </a>
                         </div>

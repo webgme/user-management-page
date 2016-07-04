@@ -3,6 +3,8 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+import React from 'react/lib/React';
+
 /**
  * Capitalizes the first letter of a word (formatting help)
  * @param {string} word - word to be altered
@@ -134,6 +136,18 @@ export function sortObjectArrayByField(field) {
     };
 }
 
+/**
+ * Custom sort method to sort objects by nested properties
+ * @param {string} first - first field to search
+ * @param {string} second - second field to search
+ * @return {Function} - to be used as callback for javascript's native sort method
+ */
+export function sortObjectArrayByNestedDateField(first, second) {
+    return function(a, b) {
+        return new Date(b[first][second]) - new Date(a[first][second]);
+    };
+}
+
 // Date functions
 /**
  * Returns a string of how long ago
@@ -203,3 +217,22 @@ export const THEME_COLORS = {
     red: 'rgb(221, 75, 57)',
     yellow: 'rgb(243, 156, 18)'
 };
+
+/**
+ * Collaborator table's rightsOrigin helper
+ * @param {Array} arr - arr to be sifted through (user / orgs) rights
+ * @return {Array} - formatted JSX of rights
+ */
+export function formatRightsOrigin(arr) {
+    let result = [];
+
+    arr.forEach((right, index) => {
+        result.push(
+            <div key={index + 1}>
+                {right}
+            </div>
+        );
+    });
+
+    return result;
+}

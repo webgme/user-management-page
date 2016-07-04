@@ -1,5 +1,3 @@
-/* global $ */
-
 /**
  * Container widget for the project collaborator table widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -12,23 +10,34 @@ import DataTable from './DataTable';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../utils/utils';
 
+const FIELDS = {
+    USER: {
+        "Rights (RWD)": "rights",
+        "UserID": "name"
+    },
+    ORGANIZATION: {
+        "OrganizationID": "name",
+        "Rights (RWD)": "rights"
+    }
+};
+
 export default class ProjectCollaboratorTable extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            display: 1, // 1 indicates users entries, 2 indicates organizations entries
             organizationCollaborators: [],
-            sortedForward: true,
-            userCollaborators: []
+            organizationsSortedForward: true,
+            userCollaborators: [],
+            usersSortedForward: true
         };
 
         // Data retrieval
         this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         // Event handlers
-        this.onOrderEntries = this.onOrderEntries.bind(this);
+        this.onOrderOrganizationEntries = this.onOrderOrganizationEntries.bind(this);
+        this.onOrderUserEntries = this.onOrderUserEntries.bind(this);
         this.onRevoke = this.onRevoke.bind(this);
-        this.onTableSwitch = this.onTableSwitch.bind(this);
     }
 
     componentDidMount() {
@@ -70,25 +79,25 @@ export default class ProjectCollaboratorTable extends React.Component {
             let organizationCollaborators = [];
             Object.keys(usersWithAccess).forEach(user => {
                 userCollaborators.push({
-                    name: user,
-                    read: usersWithAccess[user].read,
-                    write: usersWithAccess[user].write,
-                    delete: usersWithAccess[user].delete,
                     inOrg: usersWithAccess[user].inOrg,
-                    userRightsOrigin: usersWithAccess[user].userRightsOrigin,
-                    orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin
+                    name: user,
+                    orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
+                    rights: usersWithAccess[user].delete ? 'Read Write Delete' :
+                            usersWithAccess[user].write ? 'Read Write' :
+                            usersWithAccess[user].read ? 'Read' : '',
+                    userRightsOrigin: usersWithAccess[user].userRightsOrigin
                 });
             });
 
             Object.keys(organizationsWithAccess).forEach(organization => {
                 organizationCollaborators.push({
-                    name: organization,
-                    read: organizationsWithAccess[organization].read,
-                    write: organizationsWithAccess[organization].write,
-                    delete: organizationsWithAccess[organization].delete,
                     inOrg: organizationsWithAccess[organization].inOrg,
                     isOrg: true,
-                    orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin
+                    name: organization,
+                    orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
+                    rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' :
+                            organizationsWithAccess[organization].write ? 'Read Write' :
+                            organizationsWithAccess[organization].read ? 'Read' : ''
                 });
             });
 
@@ -100,25 +109,26 @@ export default class ProjectCollaboratorTable extends React.Component {
         });
     }
 
-    onOrderEntries(event) {
-        // Release focus (surrounding box)
-        $(event.target).parent().blur();
+    onOrderOrganizationEntries(event) {
+        let sortBy = FIELDS.ORGANIZATION[event.target.value];
 
-        if (this.state.display === 1) {
-            this.setState({
-                userCollaborators: this.state.sortedForward ?
-                    this.state.userCollaborators.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.userCollaborators.sort(sortObjectArrayByField('name')),
-                sortedForward: !this.state.sortedForward
-            });
-        } else if (this.state.display === 2) {
-            this.setState({
-                organizationCollaborators: this.state.sortedForward ?
-                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')).reverse() :
-                    this.state.organizationCollaborators.sort(sortObjectArrayByField('name')),
-                sortedForward: !this.state.sortedForward
-            });
-        }
+        this.setState({
+            organizationCollaborators: this.state.organizationsSortedForward ?
+                this.state.organizationCollaborators.sort(sortObjectArrayByField(sortBy)).reverse() :
+                this.state.organizationCollaborators.sort(sortObjectArrayByField(sortBy)),
+            organizationsSortedForward: !this.state.organizationsSortedForward
+        });
+    }
+
+    onOrderUserEntries(event) {
+        let sortBy = FIELDS.USER[event.target.value];
+
+        this.setState({
+            userCollaborators: this.state.usersSortedForward ?
+                this.state.userCollaborators.sort(sortObjectArrayByField(sortBy)).reverse() :
+                this.state.userCollaborators.sort(sortObjectArrayByField(sortBy)),
+            usersSortedForward: !this.state.usersSortedForward
+        });
     }
 
     onRevoke(event) {
@@ -128,26 +138,6 @@ export default class ProjectCollaboratorTable extends React.Component {
             .then(() => {
                 this.retrieveCollaborators(); // Re-render after revoking rights
             });
-    }
-
-    onTableSwitch(event) {
-        let newDisplayNum = event.target.innerHTML === 'Users' ? 1 : 2;
-
-        if (newDisplayNum !== this.state.display) {
-            if (newDisplayNum === 1) {
-                this.setState({
-                    display: newDisplayNum,
-                    sortedForward: true, // Also account for ordering
-                    userCollaborators: this.state.userCollaborators.sort(sortObjectArrayByField('name'))
-                });
-            } else if (newDisplayNum === 2) {
-                this.setState({
-                    display: newDisplayNum,
-                    organizationCollaborators: this.state.organizationCollaborators.sort(sortObjectArrayByField('name')), // eslint-disable-line max-len
-                    sortedForward: true // Also account for ordering
-                });
-            }
-        }
     }
 
     render() {
@@ -160,7 +150,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                 ],
                 organizations: [
                     {id: 1, name: 'OrganizationID'},
-                    {id: 2, name: 'Rights(RWD)'}
+                    {id: 2, name: 'Rights (RWD)'}
                 ]
             }
         };
@@ -184,13 +174,13 @@ export default class ProjectCollaboratorTable extends React.Component {
                                entries={this.state.userCollaborators}
                                handleRevoke={this.onRevoke}
                                iconClass={null}
-                               orderEntries={this.onOrderEntries}
+                               orderEntries={this.onOrderUserEntries}
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
                                restClient={this.props.restClient}
                                showOtherTitle={true}
                                sortable={true}
-                               sortedForward={this.state.sortedForward}
+                               sortedForward={this.state.usersSortedForward}
                                tableName="Collaborators">
                         <ProjectDataTableEntry/>
                     </DataTable>
@@ -202,13 +192,13 @@ export default class ProjectCollaboratorTable extends React.Component {
                                entries={this.state.organizationCollaborators}
                                handleRevoke={this.onRevoke}
                                iconClass={null}
-                               orderEntries={this.onOrderEntries}
+                               orderEntries={this.onOrderOrganizationEntries}
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
                                restClient={this.props.restClient}
                                showOtherTitle={true}
                                sortable={true}
-                               sortedForward={this.state.sortedForward}
+                               sortedForward={this.state.organizationsSortedForward}
                                tableName="Collaborators">
                         <ProjectDataTableEntry/>
                     </DataTable>

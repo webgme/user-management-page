@@ -10,7 +10,15 @@ import React from 'react/lib/React';
 // Self-defined
 import DataTable from './DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import {sortObjectArrayByField, THEME_COLORS} from '../../../../utils/utils';
+import {sortObjectArrayByField, sortObjectArrayByNestedDateField} from '../../../../utils/utils';
+
+const PROJECTS_FIELDS = {
+    "Created At": ["info", "createdAt"],
+    "Last Changed": ["info", "modifiedAt"],
+    "Last Viewed": ["info", "viewedAt"],
+    "Owner": "owner",
+    "Project Name": "name"
+};
 
 export default class ProjectsTable extends React.Component {
 
@@ -34,15 +42,24 @@ export default class ProjectsTable extends React.Component {
     }
 
     handleOrderEntries(event) {
-        // Release focus (surrounding box)
-        $(event.target).parent().blur();
+        let sortBy = PROJECTS_FIELDS[event.target.value];
 
-        this.setState({
-            projects: this.state.sortedForward ?
-                this.state.projects.sort(sortObjectArrayByField('name')).reverse() :
-                this.state.projects.sort(sortObjectArrayByField('name')),
-            sortedForward: !this.state.sortedForward
-        });
+        if (typeof sortBy === 'string') {
+            this.setState({
+                projects: this.state.sortedForward ?
+                    this.state.projects.sort(sortObjectArrayByField(sortBy)).reverse() :
+                    this.state.projects.sort(sortObjectArrayByField(sortBy)),
+                sortedForward: !this.state.sortedForward
+            });
+        } else if (Array.isArray(sortBy)) {
+            this.setState({
+                projects: this.state.sortedForward ?
+                    this.state.projects.sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])).reverse() :
+                    this.state.projects.sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])),
+                sortedForward: !this.state.sortedForward
+            });
+        }
+
     }
 
     render() {
