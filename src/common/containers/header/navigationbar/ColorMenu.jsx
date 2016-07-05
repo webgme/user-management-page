@@ -6,8 +6,8 @@
 // Libraries
 import { connect } from 'react-redux';
 // Self-defined
-import ColorMenu from '../../../components/header/navigationbar/ColorMenu';
-import { setThemeColor } from '../../../actions';
+import ColorMenu from '../../../components/header/navigation_bar/ColorMenu';
+import { setThemeColor } from '../../../actions/themeColor';
 import { THEME_COLORS } from '../../../../client/utils/constants';
 
 const mapStateToProps = (state) => {

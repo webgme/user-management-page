@@ -7,9 +7,11 @@
 import { combineReducers } from 'redux';
 // Self-defined
 import themeColor from './themeColor';
+import user from './user';
 
 const reducers = combineReducers({
-    themeColor
+    themeColor,
+    user
 });
 
 export default reducers;

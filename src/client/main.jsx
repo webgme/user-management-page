@@ -12,7 +12,9 @@ import { Provider } from 'react-redux';
 import { browserHistory, Router } from 'react-router';
 // Self-defined
 import MainRoutes from './routes/MainRoutes';
-import store from '../common/store';
+import configureStore from '../common/store';
+
+const store = configureStore();
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');

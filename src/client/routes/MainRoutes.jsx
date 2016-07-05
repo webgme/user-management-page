@@ -11,7 +11,7 @@ import { IndexRedirect, Route } from 'react-router';
 // Self-defined
 import App from '../../common/containers/App';
 import ContentWrapper from '../../common/components/content/ContentWrapper';
-import HomePage from '../../common/components/content/pages/HomePage';
+import HomePage from '../../common/containers/content/pages/HomePage';
 import OrganizationPage from '../../common/components/content/pages/OrganizationPage';
 import OrganizationsPage from '../../common/components/content/pages/OrganizationsPage';
 import ProfilePage from '../../common/components/content/pages/ProfilePage';
