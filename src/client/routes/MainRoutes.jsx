@@ -1,0 +1,48 @@
+/* global document */
+
+/**
+ * Routes for main app
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
+// Libraries
+import React from 'react';
+import { IndexRedirect, Route } from 'react-router';
+// Self-defined
+import App from '../../common/containers/App';
+import ContentWrapper from '../../common/components/content/ContentWrapper';
+import HomePage from '../../common/components/content/pages/HomePage';
+import OrganizationPage from '../../common/components/content/pages/OrganizationPage';
+import OrganizationsPage from '../../common/components/content/pages/OrganizationsPage';
+import ProfilePage from '../../common/components/content/pages/ProfilePage';
+import ProjectPage from '../../common/components/content/pages/ProjectPage';
+import ProjectsPage from '../../common/components/content/pages/ProjectsPage';
+
+const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
+
+export default (
+
+    <Route path={basePath} component={App} basePath={basePath}>
+
+        <IndexRedirect to="home"/>
+
+        <Route component={ContentWrapper}>
+
+            <Route path="home" component={HomePage}/>
+
+            <Route path="organizations" component={OrganizationsPage}/>
+
+            <Route path="organizations/:organizationId" component={OrganizationPage}/>
+
+            <Route path="profile" component={ProfilePage}/>
+
+            <Route path="projects" component={ProjectsPage}/>
+
+            {/* Singular project needs same space so not a sub-component*/}
+            <Route path="projects/:ownerId/:projectName" component={ProjectPage}/>
+
+        </Route>
+
+    </Route>
+
+);
