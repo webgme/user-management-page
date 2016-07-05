@@ -9,7 +9,8 @@
 import Link from 'react-router/lib/Link';
 import React from 'react';
 // Self defined
-import ColorMenu from './navigationbar/ColorMenu';
+// import ColorMenu from './navigationbar/ColorMenu';
+import ColorMenu from '../../containers/header/navigationbar/ColorMenu';
 // import SettingsMenu from './navigationbar/SettingsMenu';
 import UserMenu from './navigationbar/UserMenu';
 import {capitalizeFirstLetter} from '../../../client/utils/utils';
@@ -114,10 +115,10 @@ export default class Header extends React.Component {
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
 
-                        <ColorMenu onChangeThemeColor={this.props.onChangeThemeColor}/>
+                        <ColorMenu />
 
                         <UserMenu restClient={this.props.restClient}
-                                  basePath={this.props.basePath}/>
+                                  basePath={this.props.basePath} />
 
                         {/* <SettingsMenu/> */}
 

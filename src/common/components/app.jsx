@@ -23,7 +23,7 @@ export default class App extends Component {
 
     render() {
 
-        const { onChangeThemeColor, themeColor } = this.props;
+        const { themeColor } = this.props;
 
         // Passing props through the route
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
@@ -33,21 +33,22 @@ export default class App extends Component {
             }));
 
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
-        return <div className={`wrapper skin-${themeColor}`}>
+        return (
+            <div className={`wrapper skin-${themeColor}`}>
 
-            <Header restClient={this.restClient}
-                    onChangeThemeColor={(event) => onChangeThemeColor(event)}
-                    basePath={this.props.route.basePath}/>
+                <Header restClient={this.restClient}
+                        basePath={this.props.route.basePath}/>
 
-            <SideBar restClient={this.restClient}
-                     location={this.props.location}
-                     basePath={this.props.route.basePath}/>
+                <SideBar restClient={this.restClient}
+                         location={this.props.location}
+                         basePath={this.props.route.basePath}/>
 
-            {ContentWrapperWithRestClient}
+                {ContentWrapperWithRestClient}
 
-            <Footer/>
+                <Footer/>
 
-        </div>;
+            </div>
+        );
     }
 
 }

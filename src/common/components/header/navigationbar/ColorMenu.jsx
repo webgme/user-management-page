@@ -32,6 +32,8 @@ export default class ColorMenu extends React.Component {
 
     render() {
 
+        const { onChangeThemeColor } = this.props;
+
         let colorOptions = ['blue', 'green', 'purple', 'red', 'yellow'];
         let formattedColors = [];
         colorOptions.forEach((color, index) => {
@@ -42,7 +44,7 @@ export default class ColorMenu extends React.Component {
                 backgroundColor: THEME_COLORS[color]
             };
             formattedColors.push(
-                <li id={color} key={index} onClick={this.props.onChangeThemeColor}>
+                <li id={color} key={index} onClick={onChangeThemeColor}>
                     <a href="#" style={{padding: "6px 10px"}}>
                         <div className="pull-left">
                             <div className="color-box" style={colorBoxStyle}></div>
