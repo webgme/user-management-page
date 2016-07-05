@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { fetchProjectsIfNeeded } from '../../../actions/projects';
 
 const STYLE = {
     profileBox: {
@@ -30,19 +31,21 @@ class HomePage extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(fetchUserIfNeeded());
+        dispatch(fetchProjectsIfNeeded());
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.user !== this.props.user) {
+        if (nextProps.user !== this.props.user || nextProps.projects !== this.props.projects) {
             const { dispatch } = nextProps;
             dispatch(fetchUserIfNeeded());
         }
     }
 
     render() {
-        const { user } = this.props;
+        const { user, projects } = this.props;
+
         let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
-        // numViewableProjects = TODO: add this after adding project to store
+            numViewableProjects = projects.length,
             numOrganizations = user.orgs ? user.orgs.length : 0; // TODO: check for admin
 
         return (
@@ -51,7 +54,7 @@ class HomePage extends Component {
                 <div className="row">
                     <div className="small-box bg-aqua col-sm-6">
                         <div className="inner">
-                            <h3 style={STYLE.widgetBox}>{'Fix after store has projects'}</h3>
+                            <h3 style={STYLE.widgetBox}>{numViewableProjects}</h3>
                             <p>Total Project(s)</p>
                         </div>
                         <div className="icon">
@@ -94,10 +97,10 @@ class HomePage extends Component {
                                 <b>Owned Projects</b> <a className="pull-right">{numOwnedProjects}</a>
                             </li>
                             <li className="list-group-item">
-                                <b>Viewable Projects</b> <a className="pull-right">{'Need to fix this'}</a>
+                                <b>Viewable Projects</b> <a className="pull-right">{numViewableProjects}</a>
                             </li>
                             <li className="list-group-item">
-                                <b>Organizations</b> <a className="pull-right">{'Also need to fix this'}</a>
+                                <b>Organizations</b> <a className="pull-right">{numOrganizations}</a>
                             </li>
                         </ul>
                     </div>
@@ -111,13 +114,15 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    projects: PropTypes.array.isRequired,
     user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
     return {
+        projects: state.projects.projects,
         user: state.user.user
     };
 };
 
-export default connect(mapStateToProps)(HomePage)
+export default connect(mapStateToProps)(HomePage);

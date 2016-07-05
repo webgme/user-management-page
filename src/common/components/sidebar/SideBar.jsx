@@ -4,36 +4,19 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined components
 import SideBarMenu from './SideBarMenu';
-import SideBarUserPanel from './SideBarUserPanel';
+import SideBarUserPanel from '../../containers/sidebar/SideBarUserPanel';
 
-export default class SideBar extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class SideBar extends Component {
 
     render() {
         return <aside className="main-sidebar">
 
             <section className="sidebar">
 
-                <SideBarUserPanel restClient={this.props.restClient}
-                                  basePath={this.props.basePath}/>
-
-                {/* Removing sidebar for now */}
-                {/* <form action="#" method="get" className="sidebar-form">
-                    <div className="input-group">
-                        <input type="text" name="q" className="form-control" placeholder="Search..."/>
-                    <span className="input-group-btn">
-                        <button type="submit" name="search" id="search-btn" className="btn btn-flat">
-                            <i className="fa fa-search"/>
-                        </button>
-                    </span>
-                    </div>
-                </form>*/}
+                <SideBarUserPanel basePath={this.props.basePath}/>
 
                 <SideBarMenu location={this.props.location}
                              basePath={this.props.basePath}/>

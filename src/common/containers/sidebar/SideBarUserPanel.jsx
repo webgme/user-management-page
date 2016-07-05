@@ -1,14 +1,16 @@
 /* global window */
 
 /**
- * Sidebar user section
+ * Sidebar user panel container
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
-import browserHistory from 'react-router/lib/browserHistory';
-import React from 'react';
-import withRouter from 'react-router/lib/withRouter';
+import React, { Component, PropTypes } from 'react';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+// Self-defined
+import { fetchUserIfNeeded } from '../../actions/user';
 
 const STYLING = {
     status: {
@@ -34,23 +36,18 @@ const STYLING = {
     }
 };
 
-class SideBarUserPanel extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {}
-        };
-        this.goToEditor = this.goToEditor.bind(this);
-    }
+class SideBarUserPanel extends Component {
 
     componentDidMount() {
-        this.props.restClient.user.getCurrentUser()
-            .then(user => {
-                this.setState({
-                    user: user
-                });
-            });
+        const { dispatch } = this.props;
+        dispatch(fetchUserIfNeeded());
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.user !== this.props.user) {
+            const { dispatch } = nextProps;
+            dispatch(fetchUserIfNeeded());
+        }
     }
 
     goToEditor() {
@@ -59,6 +56,7 @@ class SideBarUserPanel extends React.Component {
     }
 
     render() {
+        const { user } = this.props;
 
         return <div className="user-panel" style={STYLING.panel}>
             <div className="pull-left image" style={{cursor: "pointer"}}>
@@ -69,7 +67,7 @@ class SideBarUserPanel extends React.Component {
                      style={STYLING.imageIcon}/>
             </div>
             <div className="pull-left info">
-                <p style={STYLING.name}>&nbsp;{this.state.user._id}&nbsp;</p>
+                <p style={STYLING.name}>&nbsp;{user._id}&nbsp;</p>
                 <span style={STYLING.status}><i className="fa fa-circle text-success"/> Online</span>
             </div>
         </div>;
@@ -77,4 +75,14 @@ class SideBarUserPanel extends React.Component {
 
 }
 
-export default withRouter(SideBarUserPanel);
+SideBarUserPanel.propTypes = {
+    user: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user.user
+    };
+};
+
+export default connect(mapStateToProps)(SideBarUserPanel);

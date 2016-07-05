@@ -10,9 +10,9 @@ import Link from 'react-router/lib/Link';
 import React from 'react';
 // Self defined
 // import ColorMenu from './navigation_bar/ColorMenu';
-import ColorMenu from '../../containers/header/navigationbar/ColorMenu';
+import ColorMenu from '../../containers/header/navigation_bar/ColorMenu';
 // import SettingsMenu from './navigation_bar/SettingsMenu';
-import UserMenu from './navigation_bar/UserMenu';
+import UserMenu from '../../containers/header/navigation_bar/UserMenu';
 import {capitalizeFirstLetter} from '../../../client/utils/utils';
 
 const STYLING = {
