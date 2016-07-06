@@ -16,7 +16,6 @@ export default class ProjectDataTableEntry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            authorization: false,
             hover: false,
             showModal: false
         };
@@ -24,15 +23,6 @@ export default class ProjectDataTableEntry extends React.Component {
         this.confirm = this.confirm.bind(this);
         this.open = this.open.bind(this);
         this.toggleHover = this.toggleHover.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.restClient.canUserAuthorize(this.props.ownerId)
-            .then(authorization => {
-                this.setState({
-                    authorization: authorization
-                });
-            });
     }
 
     close() {
@@ -112,7 +102,7 @@ export default class ProjectDataTableEntry extends React.Component {
             <td>
                 {this.props.rights}
                 {/* Only the owner(s) can see the remove option */}
-                {this.state.authorization ?
+                {this.props.authorization ?
                     this.props.ownerId === this.props.name ?
                         <OverlayTrigger overlay={<Popover id="1"><strong>You are the owner</strong></Popover>}
                                         placement="top"

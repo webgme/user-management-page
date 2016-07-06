@@ -4,7 +4,7 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined
 import DataTable from './DataTable';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
@@ -21,11 +21,12 @@ const FIELDS = {
     }
 };
 
-export default class ProjectCollaboratorTable extends React.Component {
+export default class ProjectCollaboratorTable extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            authorization: false,
             organizationCollaborators: [],
             organizationsSortedForward: true,
             userCollaborators: [],
@@ -33,6 +34,7 @@ export default class ProjectCollaboratorTable extends React.Component {
         };
 
         // Data retrieval
+        this.retrieveCanUserAuthorize = this.retrieveCanUserAuthorize.bind(this);
         this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         // Event handlers
         this.onOrderOrganizationEntries = this.onOrderOrganizationEntries.bind(this);
@@ -41,6 +43,7 @@ export default class ProjectCollaboratorTable extends React.Component {
     }
 
     componentDidMount() {
+        this.retrieveCanUserAuthorize();
         this.retrieveCollaborators();
     }
 
@@ -48,6 +51,15 @@ export default class ProjectCollaboratorTable extends React.Component {
         if (nextProps.refreshTable !== this.props.refreshTable) {
             this.retrieveCollaborators();
         }
+    }
+
+    retrieveCanUserAuthorize() {
+        this.props.restClient.canUserAuthorize(this.props.ownerId)
+            .then(authorization => {
+                this.setState({
+                    authorization: authorization
+                });
+            });
     }
 
     retrieveCollaborators() {
@@ -182,7 +194,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                                sortable={true}
                                sortedForward={this.state.usersSortedForward}
                                tableName="Collaborators">
-                        <ProjectDataTableEntry/>
+                        <ProjectDataTableEntry authorization={this.state.authorization} />
                     </DataTable>
 
                     <DataTable categories={dataTableData.categories.organizations}
@@ -200,7 +212,7 @@ export default class ProjectCollaboratorTable extends React.Component {
                                sortable={true}
                                sortedForward={this.state.organizationsSortedForward}
                                tableName="Collaborators">
-                        <ProjectDataTableEntry/>
+                        <ProjectDataTableEntry authorization={this.state.authorization} />
                     </DataTable>
 
                 </div>

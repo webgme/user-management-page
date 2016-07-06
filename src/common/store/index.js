@@ -9,7 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 // Self-defined
 import reducers from '../reducers';
 
-export default function configureStore(preloadedState) {
+function configureStore(preloadedState) {
     const store = createStore(
         reducers,
         preloadedState,
@@ -18,3 +18,5 @@ export default function configureStore(preloadedState) {
 
     return store;
 }
+
+export default configureStore;

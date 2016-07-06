@@ -17,7 +17,7 @@ function RestClient(baseUrl = '/api/', debugMode = false) {
 
     this.organizations = new OrganizationsClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);
-    this.user = new UserClient(baseUrl, debugMode);
+    this.user = new UserClient(baseUrl);
     this.users = new UsersClient(baseUrl);
 
     /**
@@ -29,24 +29,15 @@ function RestClient(baseUrl = '/api/', debugMode = false) {
         let authorization = false;
 
         return this.user.getCurrentUser()
-            .then(currentUser => {
-                if (currentUser._id === ownerId) {
+            .then(user => {
+                if (user._id === ownerId) {
                     authorization = true;
                 } else { // Check if owner is an organization and current user is an admin
-                    let findAdminArray = [];
-                    currentUser.orgs.forEach(orgName =>
-                        findAdminArray.push(this.organizations.getOrganization(orgName))
-                    );
-                    return Promise.all(findAdminArray)
-                        .then(adminsOfOrganizationsUserIsIn => {
-                            adminsOfOrganizationsUserIsIn.forEach(organizationData => {
-                                if (ownerId === organizationData._id &&
-                                    organizationData.admins.indexOf(currentUser._id) !== -1) {
-                                    authorization = true;
-                                }
+                    return this.organizations.getAllOrganizations()
+                        .then((orgs) => {
+                            authorization = orgs.some((org) => {
+                                return org._id === ownerId && org.admins.indexOf(user._id) !== -1;
                             });
-                            // Done checking all organizations in and if owner is self
-                            return authorization;
                         });
                 }
                 return authorization;
