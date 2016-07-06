@@ -54,7 +54,7 @@ export default class ProjectCollaboratorTable extends React.Component {
         let projectId = `${this.props.ownerId}+${this.props.projectName}`;
 
         Promise.all([
-            this.props.estClient.users.getUsersWithAccessToProject(projectId),
+            this.props.restClient.users.getUsersWithAccessToProject(projectId),
             this.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId),
             this.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
         ]).then(([usersWithAccess, usersInOrganizationsWithAccess, organizationsWithAccess]) => {
