@@ -13,6 +13,10 @@ export const REQUEST_PROJECTS_FAILURE = 'REQUEST_PROJECTS_FAILURE';
 export const REQUEST_PROJECTS_SUCCESS = 'REQUEST_PROJECTS_SUCCESS';
 export const RECEIVE_PROJECTS = 'RECEIVE_PROJECTS';
 
+export const REVERSE_SORT = 'REVERSE_SORT';
+export const SORT_BY = 'SORT_BY';
+export const SORT_FORWARD = 'SORT_FORWARD';
+
 export const requestProjects = () => {
     return {
         type: REQUEST_PROJECTS
@@ -27,10 +31,10 @@ export const receiveProjects = (projects) => {
 };
 
 const shouldFetchProjects = (state) => {
-    const { projects, isFetching } = state.projects;
+    const { isFetching, projects } = state.projects;
 
     let shouldFetch = true;
-    if (projects.length > 0 || isFetching) {
+    if (isFetching || projects.length > 0) {
         shouldFetch = false;
     } else {
         shouldFetch = true;
@@ -54,5 +58,24 @@ export const fetchProjectsIfNeeded = () => {
         if (shouldFetchProjects(getState())) {
             return dispatch(fetchProjects());
         }
+    };
+};
+
+export const reverseSort = () => {
+    return {
+        type: REVERSE_SORT
+    };
+};
+
+export const sortBy = (sortBy) => {
+    return {
+        type: SORT_BY,
+        sortBy
+    };
+};
+
+export const sortForward = () => {
+    return {
+        type: SORT_FORWARD
     };
 };
