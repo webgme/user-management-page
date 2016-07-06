@@ -8,7 +8,8 @@
 // Libraries
 import React from 'react';
 // Self defined
-import OrganizationsDataTable from '../widgets/data_tables/OrganizationsTable';
+// import OrganizationsDataTable from '../widgets/data_tables/OrganizationsTable';
+import OrganizationsTable from '../../../containers/content/pages/widgets/data_tables/OrganizationsTable';
 import {verifyUserOrOrganizationId} from '../../../../client/utils/loginUtils';
 
 const STYLE = {
@@ -107,7 +108,7 @@ export default class OrganizationsPage extends React.Component {
 
             <div className="box box-primary">
 
-                <OrganizationsDataTable basePath={this.props.basePath}
+                <OrganizationsTable basePath={this.props.basePath}
                                         checkOrganizationName={this.checkOrganizationName}
                                         closeCreateOrganization={this.closeCreateOrganization}
                                         createOrganization={this.createOrganization}
@@ -118,7 +119,7 @@ export default class OrganizationsPage extends React.Component {
                                         refreshTable={this.state.refreshTable}
                                         restClient={this.props.restClient}
                                         showCreateOrganizationModal={this.state.showCreateOrganizationModal}
-                                        validOrganizationName={this.state.validOrganizationName}/>
+                                        validOrganizationName={this.state.validOrganizationName} />
 
             </div>
 

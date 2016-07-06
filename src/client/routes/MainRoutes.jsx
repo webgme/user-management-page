@@ -14,7 +14,7 @@ import ContentWrapper from '../../common/components/content/ContentWrapper';
 import HomePage from '../../common/containers/content/pages/HomePage';
 import OrganizationPage from '../../common/components/content/pages/OrganizationPage';
 import OrganizationsPage from '../../common/components/content/pages/OrganizationsPage';
-import ProfilePage from '../../common/components/content/pages/ProfilePage';
+import ProfilePage from '../../common/containers/content/pages/ProfilePage';
 import ProjectPage from '../../common/components/content/pages/ProjectPage';
 import ProjectsPage from '../../common/components/content/pages/ProjectsPage';
 

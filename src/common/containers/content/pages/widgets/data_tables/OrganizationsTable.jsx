@@ -6,14 +6,16 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 // Self-defined
-import CustomModal from '../CustomModal';
-import DataTable from './DataTable';
-import LoginField from '../LoginField';
-import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
-import {sortObjectArrayByField} from '../../../../../client/utils/utils';
+import CustomModal from '../../../../../components/content/widgets/CustomModal';
+import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
+import LoginField from '../../../../../components/content/widgets/LoginField';
+import OrganizationsDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry';
+import {sortObjectArrayByField} from '../../../../../../client/utils/utils';
+import { fetchUserIfNeeded } from '../../../../../actions/user';
 
 const STYLE = {
     createOrganizationModal: {
@@ -26,7 +28,7 @@ const STYLE = {
     }
 };
 
-export default class OrganizationsTable extends React.Component {
+class OrganizationsTable extends Component {
 
     constructor(props) {
         super(props);
@@ -41,6 +43,9 @@ export default class OrganizationsTable extends React.Component {
     }
 
     componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(fetchUserIfNeeded());
+
         this.retrieveOrganizations();
     }
 
@@ -51,22 +56,17 @@ export default class OrganizationsTable extends React.Component {
     }
 
     retrieveOrganizations() {
-        let currentUserId;
+        const {user} = this.props;
 
-        // TODO: change this workaround after a solidified position is made on admins in orgs
-        Promise.all([
-            this.props.restClient.user.getCurrentUser(),
-            this.props.restClient.organizations.getAllOrganizations()
-        ])
-            .then(([currentUser, allOrganizations]) => {
-                currentUserId = currentUser._id;
-                let organizations = currentUser.orgs.map(organizationName => {
+        this.props.restClient.organizations.getAllOrganizations()
+            .then((allOrganizations) => {
+                let organizations = user.orgs.map(organizationName => {
                     return {name: organizationName};
                 });
 
                 // Also adds the organizations user is an admin of (to even view the project in the list)
                 allOrganizations.forEach(oneOrganization => {
-                    let isAdmin = oneOrganization.admins.indexOf(currentUserId) !== -1,
+                    let isAdmin = oneOrganization.admins.indexOf(user._id) !== -1,
                         inListAlready = organizations.indexOf(oneOrganization._id) === -1;
 
                     if (isAdmin && !inListAlready) {
@@ -153,10 +153,22 @@ export default class OrganizationsTable extends React.Component {
                                 invalidMessage={this.props.createOrganizationInvalidMessage}
                                 valid={this.props.validOrganizationName}
                                 value={this.props.newOrganizationName}
-                                warning={!this.props.validOrganizationName}/>
+                                warning={!this.props.validOrganizationName} />
                 </CustomModal>
 
             </div>
         );
     }
 }
+
+OrganizationsTable.propTypes = {
+    user: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user.user
+    };
+};
+
+export default connect(mapStateToProps)(OrganizationsTable);

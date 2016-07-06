@@ -25,7 +25,7 @@ function RestClient(baseUrl = '/api/', debugMode = false) {
      * @param {string} ownerId - id of owner
      * @return {Promise.<boolean>} - Boolean on if authorized!
      */
-    this.canUserAuthorize = ownerId => {
+    this.canUserAuthorize = (ownerId) => {
         let authorization = false;
 
         return this.user.getCurrentUser()
@@ -33,11 +33,11 @@ function RestClient(baseUrl = '/api/', debugMode = false) {
                 if (currentUser._id === ownerId) {
                     authorization = true;
                 } else { // Check if owner is an organization and current user is an admin
-                    let findAdminPromiseArray = [];
+                    let findAdminArray = [];
                     currentUser.orgs.forEach(orgName =>
-                        findAdminPromiseArray.push(this.organizations.getOrganization(orgName))
+                        findAdminArray.push(this.organizations.getOrganization(orgName))
                     );
-                    return Promise.all(findAdminPromiseArray)
+                    return Promise.all(findAdminArray)
                         .then(adminsOfOrganizationsUserIsIn => {
                             adminsOfOrganizationsUserIsIn.forEach(organizationData => {
                                 if (ownerId === organizationData._id &&
