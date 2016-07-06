@@ -7,7 +7,7 @@ import BaseClient from './baseClient';
 
 export default class UserClient extends BaseClient {
 
-    constructor(baseUrl) {
+    constructor(baseUrl = '/api/') {
         super(baseUrl);
     }
 

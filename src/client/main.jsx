@@ -1,25 +1,22 @@
-/**
- * Entry point for webpack, contains all client-side routing
- * @author patrickkerrypei / https://github.com/patrickkerrypei
- */
 /* global document, require */
 
+/**
+ * Entry point for webpack
+ * @author patrickkerrypei / https://github.com/patrickkerrypei
+ */
+
 // Libraries
-import browserHistory from 'react-router/lib/browserHistory';
-import IndexRedirect from 'react-router/lib/IndexRedirect';
-import React from 'react/lib/React';
-import {render} from 'react/lib/ReactMount';
-import Route from 'react-router/lib/Route';
-import Router from 'react-router/lib/Router';
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { browserHistory, Router } from 'react-router';
 // Self-defined
-import App from './modules/app';
-import ContentWrapper from './modules/content/ContentWrapper';
-import HomePage from './modules/content/pages/HomePage';
-import OrganizationPage from './modules/content/pages/OrganizationPage';
-import OrganizationsPage from './modules/content/pages/OrganizationsPage';
-import ProfilePage from './modules/content/pages/ProfilePage';
-import ProjectPage from './modules/content/pages/ProjectPage';
-import ProjectsPage from './modules/content/pages/ProjectsPage';
+import MainRoutes from './routes/MainRoutes';
+import configureStore from '../common/store';
+
+// Preload store with basePath
+const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
+const store = configureStore({ basePath });
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
@@ -30,35 +27,12 @@ require('react-select/examples/src/example.less');
 require('chart.js');
 require('react-chartjs');
 
-let basePath = document.getElementById('baseUrlHolder').getAttribute('data');
-
 render((
 
-    <Router history={browserHistory}>
+    <Provider store={store}>
 
-        <Route path={basePath} component={App} basePath={basePath}>
+        <Router history={browserHistory} routes={MainRoutes} />
 
-            <IndexRedirect to="home"/>
-
-            <Route component={ContentWrapper}>
-
-                <Route path="home" component={HomePage}/>
-
-                <Route path="organizations" component={OrganizationsPage}/>
-
-                <Route path="organizations/:organizationId" component={OrganizationPage}/>
-
-                <Route path="profile" component={ProfilePage}/>
-
-                <Route path="projects" component={ProjectsPage}/>
-
-                {/* Singular project needs same space so not a sub-component*/}
-                <Route path="projects/:ownerId/:projectName" component={ProjectPage}/>
-
-            </Route>
-
-        </Route>
-
-    </Router>
+    </Provider>
 
 ), document.getElementById('mainEntry'));
