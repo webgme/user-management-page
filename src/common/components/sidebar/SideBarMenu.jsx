@@ -4,8 +4,8 @@
  */
 
 // Libraries
-import Link from 'react-router/lib/Link';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 const STYLING = {
     sidebarCategoryStyle: {
@@ -15,13 +15,10 @@ const STYLING = {
     }
 };
 
-export default class SideBarMenu extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class SideBarMenu extends Component {
 
     render() {
+        const { basePath } = this.props;
 
         return (
 
@@ -30,25 +27,25 @@ export default class SideBarMenu extends React.Component {
             <li className="header">Site Navigation</li>
 
             <li className={/home$/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to={`${this.props.basePath}home`} style={{textDecoration: "none"}}>
+                <Link to={`${basePath}home`} style={{textDecoration: "none"}}>
                     <i className="fa fa-home"/><span>Home</span>
                 </Link>
             </li>
 
             <li className={/profile$/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to={`${this.props.basePath}profile`} style={{textDecoration: "none"}}>
+                <Link to={`${basePath}profile`} style={{textDecoration: "none"}}>
                     <i className="fa fa-user"/><span>My Profile</span>
                 </Link>
             </li>
 
             <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to={`${this.props.basePath}projects`} style={{textDecoration: "none"}}>
+                <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
                     <i className="fa fa-cubes"/><span>My Projects</span>
                 </Link>
             </li>
 
             <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
-                <Link to={`${this.props.basePath}organizations`} style={{textDecoration: "none"}}>
+                <Link to={`${basePath}organizations`} style={{textDecoration: "none"}}>
                     <i className="fa fa-university"/><span>My Organizations</span>
                 </Link>
             </li>
@@ -70,3 +67,7 @@ export default class SideBarMenu extends React.Component {
     }
 
 }
+
+SideBarMenu.propTypes = {
+    basePath: PropTypes.string.isRequired
+};

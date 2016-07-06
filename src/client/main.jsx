@@ -14,7 +14,9 @@ import { browserHistory, Router } from 'react-router';
 import MainRoutes from './routes/MainRoutes';
 import configureStore from '../common/store';
 
-const store = configureStore();
+// Preload store with basePath
+const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
+const store = configureStore({ basePath });
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');

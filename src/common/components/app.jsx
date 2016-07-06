@@ -22,7 +22,6 @@ export default class App extends Component {
     }
 
     render() {
-
         const { themeColor } = this.props;
 
         // Passing props through the route

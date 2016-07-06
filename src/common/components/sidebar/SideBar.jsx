@@ -6,23 +6,26 @@
 // Libraries
 import React, { Component } from 'react';
 // Self-defined components
-import SideBarMenu from './SideBarMenu';
+import SideBarMenu from '../../containers/sidebar/SideBarMenu';
 import SideBarUserPanel from '../../containers/sidebar/SideBarUserPanel';
 
 export default class SideBar extends Component {
 
     render() {
-        return <aside className="main-sidebar">
 
-            <section className="sidebar">
+        return (
+            <aside className="main-sidebar">
 
-                <SideBarUserPanel basePath={this.props.basePath}/>
+                <section className="sidebar">
 
-                <SideBarMenu location={this.props.location}
-                             basePath={this.props.basePath}/>
+                    <SideBarUserPanel/>
 
-            </section>
-        </aside>;
+                    <SideBarMenu location={this.props.location}/>
+
+                </section>
+
+            </aside>
+        );
     }
 
 }
