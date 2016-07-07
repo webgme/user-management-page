@@ -56,13 +56,13 @@ class OrganizationsTable extends Component {
     }
 
     retrieveOrganizations() {
-        const {user} = this.props;
+        const { user } = this.props;
 
         this.props.restClient.organizations.getAllOrganizations()
             .then((allOrganizations) => {
-                let organizations = user.orgs.map(organizationName => {
+                let organizations = user.orgs ? user.orgs.map(organizationName => {
                     return {name: organizationName};
-                });
+                }) : [];
 
                 // Also adds the organizations user is an admin of (to even view the project in the list)
                 allOrganizations.forEach(oneOrganization => {

@@ -104,26 +104,28 @@ export default class OrganizationsPage extends React.Component {
     }
 
     render() {
-        return <section className="content">
+        return (
+            <section className="content">
 
             <div className="box box-primary">
 
                 <OrganizationsTable basePath={this.props.basePath}
-                                        checkOrganizationName={this.checkOrganizationName}
-                                        closeCreateOrganization={this.closeCreateOrganization}
-                                        createOrganization={this.createOrganization}
-                                        createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
-                                        newOrganizationName={this.state.newOrganizationName}
-                                        onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
-                                        openCreateOrganization={this.openCreateOrganization}
-                                        refreshTable={this.state.refreshTable}
-                                        restClient={this.props.restClient}
-                                        showCreateOrganizationModal={this.state.showCreateOrganizationModal}
-                                        validOrganizationName={this.state.validOrganizationName} />
+                                    checkOrganizationName={this.checkOrganizationName}
+                                    closeCreateOrganization={this.closeCreateOrganization}
+                                    createOrganization={this.createOrganization}
+                                    createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
+                                    newOrganizationName={this.state.newOrganizationName}
+                                    onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
+                                    openCreateOrganization={this.openCreateOrganization}
+                                    refreshTable={this.state.refreshTable}
+                                    restClient={this.props.restClient}
+                                    showCreateOrganizationModal={this.state.showCreateOrganizationModal}
+                                    validOrganizationName={this.state.validOrganizationName}/>
 
             </div>
 
-        </section>;
+        </section>
+        );
     }
 
 }

@@ -4,15 +4,11 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self defined
-import ProjectsTable from '../widgets/data_tables/ProjectsTable';
+import ProjectsTable from '../../../containers/content/pages/widgets/data_tables/ProjectsTable';
 
-export default class ProjectsPage extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class ProjectsPage extends Component {
 
     render() {
         return <section className="content">

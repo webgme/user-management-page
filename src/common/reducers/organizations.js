@@ -5,10 +5,12 @@
 
 import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS} from '../actions/organizations';
 
-const user = (state = {
+const initialState = {
     isFetching: false,
     organizations: []
-}, action) => {
+};
+
+const user = (state = initialState, action) => {
     switch (action.type) {
         case REQUEST_ORGANIZATIONS:
             return Object.assign({}, state, {

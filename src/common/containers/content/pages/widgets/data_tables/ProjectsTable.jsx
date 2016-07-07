@@ -24,10 +24,6 @@ class ProjectsTable extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            sortedForward: true,
-            projects: []
-        };
         // Event handlers
         this.handleOrderEntries = this.handleOrderEntries.bind(this);
     }
@@ -42,34 +38,23 @@ class ProjectsTable extends Component {
 
         if (nextProps.projects !== this.props.projects) {
             dispatch(fetchProjectsIfNeeded());
-        // Indicates user is sorting by a different field, so reset sort order
-        } else if (nextProps.sortBy !== this.props.sortBy) {
+            // Indicates user is sorting by a different field, so reset sort order
+        } else if (nextProps.sortBy !== this.props.sortBy || nextProps.sortedForward !== this.props.sortedForward) {
             dispatch(sortForward());
         }
     }
 
     handleOrderEntries(event) {
-        let sortBy = PROJECTS_FIELDS[event.target.value];
+        const { dispatch } = this.props;
+        let sortCategory = PROJECTS_FIELDS[event.target.value];
 
-        if (typeof sortBy === 'string') {
-            this.setState({
-                projects: this.state.sortedForward ?
-                    this.state.projects.sort(sortObjectArrayByField(sortBy)).reverse() :
-                    this.state.projects.sort(sortObjectArrayByField(sortBy)),
-                sortedForward: !this.state.sortedForward
-            });
-        } else if (Array.isArray(sortBy)) {
-            this.setState({
-                projects: this.state.sortedForward ?
-                    this.state.projects.sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])).reverse() :
-                    this.state.projects.sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])),
-                sortedForward: !this.state.sortedForward
-            });
-        }
-
+        dispatch(reverseSort());
+        dispatch(sortBy(sortCategory));
     }
 
     render() {
+
+        const { projects, sortedForward } = this.props;
 
         let categories = [
             {id: 1, name: 'Owner'},
@@ -80,6 +65,7 @@ class ProjectsTable extends Component {
         ];
 
         return (
+
             <div>
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
@@ -92,12 +78,12 @@ class ProjectsTable extends Component {
                 <DataTable basePath={this.props.basePath}
                            categories={categories}
                            content="Projects"
-                           entries={this.state.projects}
+                           entries={projects}
                            iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}
                            restClient={this.props.restClient}
                            sortable={true}
-                           sortedForward={this.state.sortedForward}
+                           sortedForward={sortedForward}
                            tableName="Projects">
                     <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
                 </DataTable>
@@ -116,26 +102,18 @@ const mapStateToProps = (state) => {
     if (typeof sortBy === 'string') {
         return {
             projects: sortedForward ?
-                projects.sort(sortObjectArrayByField(sortBy)).reverse() :
-                projects.sort(sortObjectArrayByField(sortBy))
+                projects.slice().sort(sortObjectArrayByField(sortBy)) :
+                projects.slice().sort(sortObjectArrayByField(sortBy)).reverse(),
+            sortedForward
         };
     } else if (Array.isArray(sortBy)) {
         return {
             projects: sortedForward ?
-                projects.sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])).reverse() :
-                projects.sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1]))
+                projects.slice().sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])) :
+                projects.slice().sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])).reverse(),
+            sortedForward
         };
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        handleOrderEntries: (event) => {
-            let newSortBy = PROJECTS_FIELDS[event.target.value];
-
-            dispatch(sortBy(newSortBy));
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectsTable);
+export default connect(mapStateToProps)(ProjectsTable);

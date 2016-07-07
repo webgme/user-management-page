@@ -34,7 +34,7 @@ const user = (state = initialState, action) => {
             });
         case SORT_FORWARD:
             return Object.assign({}, state, {
-                sortForward: false
+                sortedForward: false
             });
         default:
             return state;
