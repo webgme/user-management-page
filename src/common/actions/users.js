@@ -36,7 +36,6 @@ const shouldFetchUsers = (state) => {
         shouldFetch = true;
     }
 
-    console.log('fetchUsers?', shouldFetch);
     return shouldFetch;
 };
 

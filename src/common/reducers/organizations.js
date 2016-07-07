@@ -10,7 +10,8 @@ const initialState = {
     isFetching: false,
     organizations: [],
     sortCategory: 'name',
-    sortedForward: true
+    sortedForward: true,
+    trulyEmpty: false
 };
 
 const user = (state = initialState, action) => {
@@ -22,7 +23,8 @@ const user = (state = initialState, action) => {
         case RECEIVE_ORGANIZATIONS:
             return Object.assign({}, state, {
                 isFetching: false,
-                organizations: action.organizations
+                organizations: action.organizations,
+                trulyEmpty: action.organizations.length === 0
             });
         case REVERSE_SORT:
             return Object.assign({}, state, {

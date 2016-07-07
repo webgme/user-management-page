@@ -76,7 +76,7 @@ export function getOrganizationsWithAccessToProject(orgs, projectId) {
                 orgsRightsOrigin += 'Delete ';
             }
 
-            orgToRights[org._id] = org.projects[projectId];
+            orgToRights[org._id] = JSON.parse(JSON.stringify(org.projects[projectId]));
             orgToRights[org._id].orgsRightsOrigin = orgToRights[org._id].orgsRightsOrigin ? orgToRights[org._id].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin];
         }
     });

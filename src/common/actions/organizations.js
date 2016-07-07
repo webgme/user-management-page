@@ -31,16 +31,15 @@ export const receiveOrganizations = (organizations) => {
 };
 
 const shouldFetchOrganizations = (state) => {
-    const { organizations, isFetching } = state.organizations;
+    const { organizations, isFetching, trulyEmpty } = state.organizations;
 
     let shouldFetch = true;
-    if (isFetching || organizations.length > 0) {
+    if (isFetching || trulyEmpty || organizations.length > 0) {
         shouldFetch = false;
     } else {
         shouldFetch = true;
     }
 
-    console.log('fetchOrganizations?', shouldFetch);
     return shouldFetch;
 };
 

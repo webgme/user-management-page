@@ -56,13 +56,14 @@ class ProjectCollaboratorTable extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('WillReceiveProps!');
-        console.log('this.props: ', this.props);
-        console.log('nextProps:', nextProps);
         const { dispatch } = nextProps;
 
-        dispatch(fetchOrganizationsIfNeeded());
-        dispatch(fetchUsersIfNeeded());
+        if (JSON.stringify(nextProps.users) !== JSON.stringify(this.props.users)) {
+            dispatch(fetchUsersIfNeeded());
+        }
+        if (JSON.stringify(nextProps.organizations) !== JSON.stringify(this.props.organizations)) {
+            dispatch(fetchOrganizationsIfNeeded());
+        }
 
         this.retrieveCollaborators();
     }
@@ -180,7 +181,6 @@ class ProjectCollaboratorTable extends Component {
                     <DataTable categories={dataTableData.categories.users}
                                categoryStyle={{width: "50%"}}
                                content="Users"
-                               display={this.state.display}
                                entries={this.state.userCollaborators}
                                handleRevoke={this.onRevoke}
                                iconClass={null}
@@ -197,7 +197,6 @@ class ProjectCollaboratorTable extends Component {
                     <DataTable categories={dataTableData.categories.organizations}
                                categoryStyle={{width: "50%"}}
                                content="Organizations"
-                               display={this.state.display}
                                entries={this.state.organizationCollaborators}
                                handleRevoke={this.onRevoke}
                                iconClass={null}
@@ -230,7 +229,9 @@ const mapStateToProps = (state, ownProps) => {
         organizationsWithAccess = getOrganizationsWithAccessToProject(organizations, projectId);
 
     return {
+        organizations,
         organizationsWithAccess,
+        users,
         usersInOrganizationsWithAccess,
         usersWithAccess
     };
