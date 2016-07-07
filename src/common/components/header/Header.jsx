@@ -117,8 +117,7 @@ export default class Header extends React.Component {
 
                         <ColorMenu />
 
-                        <UserMenu restClient={this.props.restClient}
-                                  basePath={this.props.basePath} />
+                        <UserMenu basePath={this.props.basePath} />
 
                         {/* <SettingsMenu/> */}
 

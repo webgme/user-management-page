@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import CustomModal from '../../../../../components/content/widgets/CustomModal';
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import LoginField from '../../../../../components/content/widgets/LoginField';
-import OrganizationsDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry';
+import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
 import { fetchOrganizationsIfNeeded, reverseSort, sortBy, sortForward } from '../../../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../../../actions/user';
 import {sortObjectArrayByField} from '../../../../../../client/utils/utils';
@@ -93,13 +93,11 @@ class OrganizationsTable extends Component {
                 </div>
 
                 {/* Body */}
-                <DataTable basePath={this.props.basePath}
-                           categories={categories}
+                <DataTable categories={categories}
                            content="Organizations"
                            entries={organizations}
                            iconClass="fa fa-institution"
                            orderEntries={this.handleOrderEntries}
-                           restClient={this.restClient}
                            sortable={true}
                            sortedForward={sortedForward}
                            tableName="Organizations">

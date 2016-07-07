@@ -133,7 +133,6 @@ export default class OrganizationTable extends React.Component {
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
                            projectName={this.props.projectName}
-                           restClient={this.props.restClient}
                            sortable={true}
                            tableName="Members">
                     <OrganizationDataTableEntry/>
@@ -145,7 +144,6 @@ export default class OrganizationTable extends React.Component {
                            orderEntries={this.handleOrderEntries}
                            ownerId={this.props.ownerId}
                            projectName={this.props.projectName}
-                           restClient={this.props.restClient}
                            sortable={true}
                            sortedForward={this.state.sortedForward}
                            tableName="Admins">

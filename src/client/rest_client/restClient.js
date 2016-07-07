@@ -26,21 +26,19 @@ function RestClient(baseUrl = '/api/', debugMode = false) {
      * @return {Promise.<boolean>} - Boolean on if authorized!
      */
     this.canUserAuthorize = (ownerId) => {
-        let authorization = false;
 
         return this.user.getCurrentUser()
             .then(user => {
                 if (user._id === ownerId) {
-                    authorization = true;
+                    return true;
                 } else { // Check if owner is an organization and current user is an admin
                     return this.organizations.getAllOrganizations()
                         .then((orgs) => {
-                            authorization = orgs.some((org) => {
+                            return orgs.some((org) => {
                                 return org._id === ownerId && org.admins.indexOf(user._id) !== -1;
                             });
                         });
                 }
-                return authorization;
             });
     };
 }

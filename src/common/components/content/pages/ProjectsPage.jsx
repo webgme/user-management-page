@@ -11,16 +11,17 @@ import ProjectsTable from '../../../containers/content/pages/widgets/data_tables
 export default class ProjectsPage extends Component {
 
     render() {
-        return <section className="content">
+        return (
+            <section className="content">
 
-            <div className="box box-primary">
+                <div className="box box-primary">
 
-                <ProjectsTable basePath={this.props.basePath}
-                               restClient={this.props.restClient}/>
+                    <ProjectsTable />
 
-            </div>
+                </div>
 
-        </section>;
+            </section>
+        );
     }
 
 }

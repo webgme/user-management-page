@@ -189,7 +189,6 @@ export default class ProjectCollaboratorTable extends Component {
                                orderEntries={this.onOrderUserEntries}
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
-                               restClient={this.props.restClient}
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={this.state.usersSortedForward}
@@ -207,7 +206,6 @@ export default class ProjectCollaboratorTable extends Component {
                                orderEntries={this.onOrderOrganizationEntries}
                                ownerId={this.props.ownerId}
                                projectName={this.props.projectName}
-                               restClient={this.props.restClient}
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={this.state.organizationsSortedForward}

@@ -3,13 +3,9 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class TasksMenu extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class TasksMenu extends Component {
 
     render() {
         return <li className="dropdown tasks-menu">

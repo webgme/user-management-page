@@ -93,12 +93,10 @@ export default class DataTable extends React.Component {
             let properties = {};
             Object.keys(entriesList[i]).forEach(prop => {
                 properties[prop] = entriesList[i][prop];
-                properties.basePath = this.props.basePath;
                 properties.handleRevoke = this.props.handleRevoke;
                 properties.key = i;
                 properties.ownerId = this.props.ownerId;
                 properties.projectName = this.props.projectName;
-                properties.restClient = this.props.restClient;
             });
             formattedEntries.push(React.cloneElement(this.props.children, properties));
         }

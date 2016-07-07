@@ -108,8 +108,7 @@ export default class OrganizationsPage extends Component {
 
             <div className="box box-primary">
 
-                <OrganizationsTable basePath={this.props.basePath}
-                                    checkOrganizationName={this.checkOrganizationName}
+                <OrganizationsTable checkOrganizationName={this.checkOrganizationName}
                                     closeCreateOrganization={this.closeCreateOrganization}
                                     createOrganization={this.createOrganization}
                                     createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
@@ -117,7 +116,6 @@ export default class OrganizationsPage extends Component {
                                     onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
                                     openCreateOrganization={this.openCreateOrganization}
                                     refreshTable={this.state.refreshTable}
-                                    restClient={this.props.restClient}
                                     showCreateOrganizationModal={this.state.showCreateOrganizationModal}
                                     validOrganizationName={this.state.validOrganizationName}/>
 

@@ -4,7 +4,7 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined
 import { capitalizeFirstLetter } from '../../../../client/utils/utils';
 import { THEME_COLORS } from '../../../../client/utils/constants';
@@ -24,11 +24,7 @@ const STYLE = {
     }
 };
 
-export default class ColorMenu extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class ColorMenu extends Component {
 
     render() {
 

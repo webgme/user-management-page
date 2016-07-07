@@ -8,7 +8,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import ProjectsDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/ProjectsDataTableEntry';
+import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
 import {sortObjectArrayByField, sortObjectArrayByNestedDateField} from '../../../../../../client/utils/utils';
 import { fetchProjectsIfNeeded, reverseSort, sortBy, sortForward } from '../../../../../actions/projects';
 
@@ -75,13 +75,11 @@ class ProjectsTable extends Component {
                 </div>
 
                 {/* Body */}
-                <DataTable basePath={this.props.basePath}
-                           categories={categories}
+                <DataTable categories={categories}
                            content="Projects"
                            entries={projects}
                            iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}
-                           restClient={this.props.restClient}
                            sortable={true}
                            sortedForward={sortedForward}
                            tableName="Projects">

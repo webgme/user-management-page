@@ -4,14 +4,16 @@
  */
 
 // Libraries
-import Link from 'react-router/lib/Link';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
-export default class OrganizationsDataTableEntry extends React.Component {
+export default class OrganizationsDataTableEntry extends Component {
 
     render() {
 
-        let buildLink = `${this.props.basePath}organizations/${this.props.name}`;
+        const { basePath } = this.props;
+
+        const buildLink = `${basePath}organizations/${this.props.name}`;
 
         return <tr role="row" className="odd">
             <td className="sorting_1">
@@ -20,3 +22,7 @@ export default class OrganizationsDataTableEntry extends React.Component {
         </tr>;
     }
 }
+
+OrganizationsDataTableEntry.propTypes = {
+    basePath: PropTypes.string.isRequired
+};

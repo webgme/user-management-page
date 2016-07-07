@@ -11,9 +11,6 @@ import Header from './header/Header';
 import RestClient from '../../client/rest_client/restClient';
 import SideBar from './sidebar/SideBar';
 
-/**
- * This is the main layout of the web-page.
- */
 export default class App extends Component {
 
     constructor(props) {
@@ -35,12 +32,9 @@ export default class App extends Component {
         return (
             <div className={`wrapper skin-${themeColor}`}>
 
-                <Header restClient={this.restClient}
-                        basePath={this.props.route.basePath}/>
+                <Header basePath={this.props.route.basePath} />
 
-                <SideBar restClient={this.restClient}
-                         location={this.props.location}
-                         basePath={this.props.route.basePath}/>
+                <SideBar location={this.props.location} />
 
                 {ContentWrapperWithRestClient}
 
