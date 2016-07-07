@@ -4,11 +4,17 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 // Self-defined
 import DataTable from './DataTable';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../../client/utils/utils';
+import { getOrganizationsWithAccessToProject,
+         getUsersWithAccessToProject,
+         getUsersInOrganizationsWithAccessToProject } from '../../../../../client/utils/restUtils';
+import { fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
+import { fetchUsersIfNeeded } from '../../../../actions/users';
 
 const FIELDS = {
     USER: {
@@ -21,12 +27,11 @@ const FIELDS = {
     }
 };
 
-export default class ProjectCollaboratorTable extends Component {
+class ProjectCollaboratorTable extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            authorization: false,
             organizationCollaborators: [],
             organizationsSortedForward: true,
             userCollaborators: [],
@@ -34,7 +39,6 @@ export default class ProjectCollaboratorTable extends Component {
         };
 
         // Data retrieval
-        this.retrieveCanUserAuthorize = this.retrieveCanUserAuthorize.bind(this);
         this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         // Event handlers
         this.onOrderOrganizationEntries = this.onOrderOrganizationEntries.bind(this);
@@ -43,81 +47,75 @@ export default class ProjectCollaboratorTable extends Component {
     }
 
     componentDidMount() {
-        this.retrieveCanUserAuthorize();
+        const { dispatch } = this.props;
+
+        dispatch(fetchOrganizationsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
+
         this.retrieveCollaborators();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.refreshTable !== this.props.refreshTable) {
-            this.retrieveCollaborators();
-        }
-    }
+        console.log('WillReceiveProps!');
+        console.log('this.props: ', this.props);
+        console.log('nextProps:', nextProps);
+        const { dispatch } = nextProps;
 
-    retrieveCanUserAuthorize() {
-        this.props.restClient.canUserAuthorize(this.props.ownerId)
-            .then(authorization => {
-                this.setState({
-                    authorization: authorization
-                });
-            });
+        dispatch(fetchOrganizationsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
+
+        this.retrieveCollaborators();
     }
 
     retrieveCollaborators() {
-        let projectId = `${this.props.ownerId}+${this.props.projectName}`;
 
-        Promise.all([
-            this.props.restClient.users.getUsersWithAccessToProject(projectId),
-            this.props.restClient.organizations.getUsersInOrganizationsWithAccessToProject(projectId),
-            this.props.restClient.organizations.getOrganizationsWithAccessToProject(projectId)
-        ]).then(([usersWithAccess, usersInOrganizationsWithAccess, organizationsWithAccess]) => {
+        let { organizationsWithAccess, usersInOrganizationsWithAccess, usersWithAccess } = this.props;
 
-            // Union of rights if in organization
-            if (isEmpty(usersInOrganizationsWithAccess)) {
-                // Do nothing because then usersWithAccess is just self and does not need to be modified
-            } else {
-                Object.keys(usersInOrganizationsWithAccess).forEach(user => {
-                    if (usersWithAccess[user]) {
-                        usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
-                        usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
-                        usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
-                        usersWithAccess[user].orgsRightsOrigin = usersInOrganizationsWithAccess[user].orgsRightsOrigin;
-                    } else {
-                        usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
-                    }
-                });
-            }
-
-            let userCollaborators = [];
-            let organizationCollaborators = [];
-            Object.keys(usersWithAccess).forEach(user => {
-                userCollaborators.push({
-                    inOrg: usersWithAccess[user].inOrg,
-                    name: user,
-                    orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
-                    rights: usersWithAccess[user].delete ? 'Read Write Delete' :
-                            usersWithAccess[user].write ? 'Read Write' :
-                            usersWithAccess[user].read ? 'Read' : '',
-                    userRightsOrigin: usersWithAccess[user].userRightsOrigin
-                });
+        // Union of rights if in organization
+        if (isEmpty(usersInOrganizationsWithAccess)) {
+            // Do nothing because then usersWithAccess is just self and does not need to be modified
+        } else {
+            Object.keys(usersInOrganizationsWithAccess).forEach(user => {
+                if (usersWithAccess[user]) {
+                    usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
+                    usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
+                    usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
+                    usersWithAccess[user].orgsRightsOrigin = usersInOrganizationsWithAccess[user].orgsRightsOrigin;
+                } else {
+                    usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
+                }
             });
+        }
 
-            Object.keys(organizationsWithAccess).forEach(organization => {
-                organizationCollaborators.push({
-                    inOrg: organizationsWithAccess[organization].inOrg,
-                    isOrg: true,
-                    name: organization,
-                    orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
-                    rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' :
-                            organizationsWithAccess[organization].write ? 'Read Write' :
-                            organizationsWithAccess[organization].read ? 'Read' : ''
-                });
+        let userCollaborators = [];
+        let organizationCollaborators = [];
+        Object.keys(usersWithAccess).forEach(user => {
+            userCollaborators.push({
+                inOrg: usersWithAccess[user].inOrg,
+                name: user,
+                orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
+                rights: usersWithAccess[user].delete ? 'Read Write Delete' :
+                        usersWithAccess[user].write ? 'Read Write' :
+                        usersWithAccess[user].read ? 'Read' : '',
+                userRightsOrigin: usersWithAccess[user].userRightsOrigin
             });
+        });
 
-            this.setState({
-                userCollaborators: userCollaborators.sort(sortObjectArrayByField('name')),
-                organizationCollaborators: organizationCollaborators.sort(sortObjectArrayByField('name'))
+        Object.keys(organizationsWithAccess).forEach(organization => {
+            organizationCollaborators.push({
+                inOrg: organizationsWithAccess[organization].inOrg,
+                isOrg: true,
+                name: organization,
+                orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
+                rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' :
+                        organizationsWithAccess[organization].write ? 'Read Write' :
+                        organizationsWithAccess[organization].read ? 'Read' : ''
             });
+        });
 
+        this.setState({
+            userCollaborators: userCollaborators.sort(sortObjectArrayByField('name')),
+            organizationCollaborators: organizationCollaborators.sort(sortObjectArrayByField('name'))
         });
     }
 
@@ -193,7 +191,7 @@ export default class ProjectCollaboratorTable extends Component {
                                sortable={true}
                                sortedForward={this.state.usersSortedForward}
                                tableName="Collaborators">
-                        <ProjectDataTableEntry authorization={this.state.authorization} />
+                        <ProjectDataTableEntry authorization={this.props.authorization} />
                     </DataTable>
 
                     <DataTable categories={dataTableData.categories.organizations}
@@ -210,7 +208,7 @@ export default class ProjectCollaboratorTable extends Component {
                                sortable={true}
                                sortedForward={this.state.organizationsSortedForward}
                                tableName="Collaborators">
-                        <ProjectDataTableEntry authorization={this.state.authorization} />
+                        <ProjectDataTableEntry authorization={this.props.authorization} />
                     </DataTable>
 
                 </div>
@@ -220,3 +218,22 @@ export default class ProjectCollaboratorTable extends Component {
     }
 }
 
+const mapStateToProps = (state, ownProps) => {
+    const { organizations } = state.organizations;
+    const { users } = state.users;
+
+    const {ownerId, projectName} = ownProps;
+    const projectId = `${ownerId}+${projectName}`;
+
+    let usersWithAccess = getUsersWithAccessToProject(users, projectId),
+        usersInOrganizationsWithAccess = getUsersInOrganizationsWithAccessToProject(organizations, projectId),
+        organizationsWithAccess = getOrganizationsWithAccessToProject(organizations, projectId);
+
+    return {
+        organizationsWithAccess,
+        usersInOrganizationsWithAccess,
+        usersWithAccess
+    };
+};
+
+export default connect(mapStateToProps)(ProjectCollaboratorTable);

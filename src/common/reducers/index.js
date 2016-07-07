@@ -11,13 +11,15 @@ import organizations from './organizations';
 import projects from './projects';
 import themeColor from './themeColor';
 import user from './user';
+import users from './users';
 
 const reducers = combineReducers({
     basePath,
     organizations,
     projects,
     themeColor,
-    user
+    user,
+    users
 });
 
 export default reducers;

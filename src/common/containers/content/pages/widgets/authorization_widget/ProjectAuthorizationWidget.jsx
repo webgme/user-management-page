@@ -4,12 +4,15 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 // Self defined
-import AuthorizationWidget from './AuthorizationWidget';
-import {multiselectFormat, sortObjectArrayByField} from '../../../../../client/utils/utils';
+import AuthorizationWidget from '../../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
+import { multiselectFormat, sortObjectArrayByField } from '../../../../../../client/utils/utils';
+import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
+import { fetchUsersIfNeeded } from '../../../../../actions/users';
 
-export default class ProjectAuthorizationWidget extends React.Component {
+class ProjectAuthorizationWidget extends Component {
 
     constructor(props) {
         super(props);
@@ -18,8 +21,6 @@ export default class ProjectAuthorizationWidget extends React.Component {
             multiselectOptions: [],
             valuesInMultiselect: ''
         };
-        // Data Retrieval
-        this.retrieveMultiselectOptions = this.retrieveMultiselectOptions.bind(this);
         // Event Handlers
         this.handleAuthorizationChange = this.handleAuthorizationChange.bind(this);
         this.handleMultiselectChange = this.handleMultiselectChange.bind(this);
@@ -27,18 +28,25 @@ export default class ProjectAuthorizationWidget extends React.Component {
     }
 
     componentDidMount() {
-        this.retrieveMultiselectOptions();
+        const { dispatch, organizations, users} = this.props;
+        dispatch(fetchOrganizationsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
+
+        let multiselectOptions = multiselectFormat(users.concat(organizations).sort(sortObjectArrayByField('_id')));
+        this.setState({
+            multiselectOptions
+        });
     }
 
-    retrieveMultiselectOptions() {
-        Promise.all([
-            this.props.restClient.users.getAllUsers(),
-            this.props.restClient.organizations.getAllOrganizations()
-        ]).then(([allUsers, allOrganizations]) => {
-            let usersAndOrganizations = allUsers.concat(allOrganizations);
-            this.setState({
-                multiselectOptions: multiselectFormat(usersAndOrganizations.sort(sortObjectArrayByField('_id')))
-            });
+    componentWillReceiveProps(nextProps) {
+        const { dispatch, organizations, users } = nextProps;
+
+        dispatch(fetchOrganizationsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
+
+        let multiselectOptions = multiselectFormat(users.concat(organizations).sort(sortObjectArrayByField('_id')));
+        this.setState({
+            multiselectOptions
         });
     }
 
@@ -93,7 +101,7 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
-                this.props.refreshTable();
+                // this.props.refreshTable();
             })
             .catch(err => {
                 console.error(err); // eslint-disable-line no-console
@@ -137,7 +145,8 @@ export default class ProjectAuthorizationWidget extends React.Component {
 
         return (
 
-            <AuthorizationWidget boxSize="12"
+            <AuthorizationWidget authorization={this.props.authorization}
+                                 boxSize="12"
                                  disableLast={true}
                                  handleMultiselectChange={this.handleMultiselectChange}
                                  label={"Authorize Users or Organizations"}
@@ -148,8 +157,25 @@ export default class ProjectAuthorizationWidget extends React.Component {
                                  selectableButtons={authorizationWidgetData.selectableButtons}
                                  selectableButtonsChange={this.handleAuthorizationChange}
                                  submitButtons={authorizationWidgetData.submitButtons}
-                                 valuesInMultiselect={this.state.valuesInMultiselect}/>
+                                 valuesInMultiselect={this.state.valuesInMultiselect} />
         );
     }
 
 }
+
+ProjectAuthorizationWidget.propTypes = {
+    organizations: PropTypes.array.isRequired,
+    users: PropTypes.array.isRequired
+};
+
+const mapStateToProps = (state) => {
+    const { organizations } = state.organizations;
+    const { users } = state.users;
+
+    return {
+        organizations,
+        users
+    };
+};
+
+export default connect(mapStateToProps)(ProjectAuthorizationWidget);

@@ -23,24 +23,6 @@ const STYLING = {
 
 export default class AuthorizationWidget extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            authorization: false
-        };
-    }
-
-    componentWillMount() {
-        console.log('this.props.ownerId: ', this.props.ownerId);
-        this.props.restClient.canUserAuthorize(this.props.ownerId)
-            .then(authorization => {
-                console.log('Authorization returned: ', authorization);
-                this.setState({
-                    authorization: authorization
-                });
-            });
-    }
-
     render() {
 
         // Selectable buttons
@@ -72,7 +54,7 @@ export default class AuthorizationWidget extends React.Component {
         });
 
         return (
-            this.state.authorization ?
+            this.props.authorization ?
                 <div className="row">
                     <div className={`col-md-${this.props.boxSize}`}>
                         <div className="box">

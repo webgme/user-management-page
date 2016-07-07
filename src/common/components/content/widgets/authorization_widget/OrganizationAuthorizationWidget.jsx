@@ -112,7 +112,8 @@ export default class OrganizationAuthorizationWidget extends React.Component {
         };
 
         return (
-        <AuthorizationWidget boxSize="6"
+        <AuthorizationWidget authorization={this.props.authorization}
+                             boxSize="6"
                              handleMultiselectChange={this.handleMultiselectChange}
                              label={this.props.display === 1 ? "Add or Remove Members" : "Add or Remove Admins"}
                              multiselectOptions={this.state.multiselectOptions}

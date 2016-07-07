@@ -34,12 +34,13 @@ const shouldFetchOrganizations = (state) => {
     const { organizations, isFetching } = state.organizations;
 
     let shouldFetch = true;
-    if (organizations.length > 0 || isFetching) {
+    if (isFetching || organizations.length > 0) {
         shouldFetch = false;
     } else {
         shouldFetch = true;
     }
 
+    console.log('fetchOrganizations?', shouldFetch);
     return shouldFetch;
 };
 

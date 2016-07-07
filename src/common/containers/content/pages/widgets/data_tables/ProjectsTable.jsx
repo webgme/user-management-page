@@ -36,7 +36,8 @@ class ProjectsTable extends Component {
     componentWillReceiveProps(nextProps) {
         const { dispatch } = nextProps;
 
-        if (nextProps.projects !== this.props.projects) {
+        // TODO: how to compare and know when to update
+        if (nextProps.projects.length !== this.props.projects.length) {
             dispatch(fetchProjectsIfNeeded());
             // Indicates user is sorting by a different field, so reset sort order
         } else if (nextProps.sortBy !== this.props.sortBy || nextProps.sortedForward !== this.props.sortedForward) {
@@ -65,6 +66,7 @@ class ProjectsTable extends Component {
         ];
 
         return (
+
 
             <div>
                 {/* Header */}

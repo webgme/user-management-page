@@ -94,43 +94,4 @@ export default class UsersClient extends BaseClient {
         return super.delete(['users', username, 'data']);
     }
 
-    // Non REST native Helper methods:
-    /**
-     * Maps usernames of users with access to a specified project to their respective rights
-     * @param {string} projectId - Id of project
-     * @return {Promise<{map}>} map of users to their rights to a specified projects
-     */
-    getUsersWithAccessToProject(projectId) {
-        let userMap = {};
-        return this.getAllUsers()
-            .then(users => {
-                users.forEach(user => {
-                    if (user.projects.hasOwnProperty(projectId)) {
-
-                        // Building rights string
-                        let userRightsOrigin = '';
-                        if (user.projects[projectId].read) {
-                            userRightsOrigin += 'Read ';
-                        }
-                        if (user.projects[projectId].write) {
-                            userRightsOrigin += 'Write ';
-                        }
-                        if (user.projects[projectId].delete) {
-                            userRightsOrigin += 'Delete ';
-                        }
-
-                        userMap[user._id] = {
-                            read: user.projects[projectId].read,
-                            write: user.projects[projectId].write,
-                            delete: user.projects[projectId].delete,
-                            inOrg: false,
-                            userRightsOrigin: [userRightsOrigin],
-                            orgsRightsOrigin: []
-                        };
-                    }
-                });
-                return userMap;
-            });
-    }
-
 }
