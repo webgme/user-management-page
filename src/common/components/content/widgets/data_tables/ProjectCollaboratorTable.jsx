@@ -13,8 +13,8 @@ import {isEmpty, sortObjectArrayByField} from '../../../../../client/utils/utils
 import { getOrganizationsWithAccessToProject,
          getUsersWithAccessToProject,
          getUsersInOrganizationsWithAccessToProject } from '../../../../../client/utils/restUtils';
-import { fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
-import { fetchUsersIfNeeded } from '../../../../actions/users';
+import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
+import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
 
 const FIELDS = {
     USER: {
@@ -59,10 +59,10 @@ class ProjectCollaboratorTable extends Component {
         const { dispatch } = nextProps;
 
         if (JSON.stringify(nextProps.users) !== JSON.stringify(this.props.users)) {
-            dispatch(fetchUsersIfNeeded());
+            dispatch(fetchUsers());
         }
         if (JSON.stringify(nextProps.organizations) !== JSON.stringify(this.props.organizations)) {
-            dispatch(fetchOrganizationsIfNeeded());
+            dispatch(fetchOrganizations());
         }
 
         this.retrieveCollaborators();
@@ -143,11 +143,13 @@ class ProjectCollaboratorTable extends Component {
     }
 
     onRevoke(event) {
+        const { dispatch } = this.props;
+
         this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
                                                              this.props.projectName,
                                                              event.target.id)
             .then(() => {
-                this.retrieveCollaborators(); // Re-render after revoking rights
+                dispatch(fetchUsers()); // Re-render after revoking rights
             });
     }
 

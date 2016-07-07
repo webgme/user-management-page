@@ -30,13 +30,6 @@ class ProjectPage extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = nextProps;
-
-        dispatch(fetchOrganizationsIfNeeded());
-        dispatch(fetchUserIfNeeded());
-    }
-
     render() {
 
         const { authorization } = this.props;
@@ -67,7 +60,7 @@ class ProjectPage extends Component {
                         <ProjectCollaboratorTable authorization={authorization}
                                                   ownerId={ownerId}
                                                   projectName={projectName}
-                                                  restClient={this.props.restClient}/>
+                                                  restClient={this.props.restClient} />
 
                     </div>
 
@@ -76,14 +69,14 @@ class ProjectPage extends Component {
                         <ProjectAuthorizationWidget authorization={authorization}
                                                     ownerId={ownerId}
                                                     projectName={projectName}
-                                                    restClient={this.props.restClient}/>
+                                                    restClient={this.props.restClient} />
 
                         <div className="row">
                             <CollaboratorsCommitsBarChart options={{}}
                                                           ownerId={ownerId}
                                                           projectName={projectName}
                                                           restClient={this.props.restClient}
-                                                          title="Latest Commits"/>
+                                                          title="Latest Commits" />
                         </div>
 
                     </div>

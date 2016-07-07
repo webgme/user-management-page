@@ -43,7 +43,7 @@ const shouldFetchOrganizations = (state) => {
     return shouldFetch;
 };
 
-const fetchOrganizations = () => {
+export const fetchOrganizations = () => {
     return dispatch => {
         dispatch(requestOrganizations());
         return organizationsClient.getAllOrganizations()

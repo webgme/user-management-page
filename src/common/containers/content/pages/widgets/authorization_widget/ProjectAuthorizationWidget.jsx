@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import AuthorizationWidget from '../../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
 import { multiselectFormat, sortObjectArrayByField } from '../../../../../../client/utils/utils';
 import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
-import { fetchUsersIfNeeded } from '../../../../../actions/users';
+import { fetchUsers, fetchUsersIfNeeded } from '../../../../../actions/users';
 
 class ProjectAuthorizationWidget extends Component {
 
@@ -80,6 +80,7 @@ class ProjectAuthorizationWidget extends Component {
     }
 
     handleSubmitAuthorization(event) {
+        const { dispatch } = this.props;
         // Release focus
         event.target.blur();
 
@@ -107,7 +108,7 @@ class ProjectAuthorizationWidget extends Component {
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
-                // this.props.refreshTable();
+                dispatch(fetchUsers());
             })
             .catch(err => {
                 console.error(err); // eslint-disable-line no-console
