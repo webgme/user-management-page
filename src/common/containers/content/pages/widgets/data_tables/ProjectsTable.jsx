@@ -97,20 +97,20 @@ ProjectsTable.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    const { projects, sortBy, sortedForward } = state.projects;
+    const { projects, sortCategory, sortedForward } = state.projects;
 
-    if (typeof sortBy === 'string') {
+    if (typeof sortCategory === 'string') {
         return {
             projects: sortedForward ?
-                projects.slice().sort(sortObjectArrayByField(sortBy)) :
-                projects.slice().sort(sortObjectArrayByField(sortBy)).reverse(),
+                projects.slice().sort(sortObjectArrayByField(sortCategory)) :
+                projects.slice().sort(sortObjectArrayByField(sortCategory)).reverse(),
             sortedForward
         };
-    } else if (Array.isArray(sortBy)) {
+    } else if (Array.isArray(sortCategory)) {
         return {
             projects: sortedForward ?
-                projects.slice().sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])) :
-                projects.slice().sort(sortObjectArrayByNestedDateField(sortBy[0], sortBy[1])).reverse(),
+                projects.slice().sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])) :
+                projects.slice().sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])).reverse(),
             sortedForward
         };
     }

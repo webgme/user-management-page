@@ -6,9 +6,8 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self defined
-// import OrganizationsDataTable from '../widgets/data_tables/OrganizationsTable';
 import OrganizationsTable from '../../../containers/content/pages/widgets/data_tables/OrganizationsTable';
 import {verifyUserOrOrganizationId} from '../../../../client/utils/loginUtils';
 
@@ -20,7 +19,7 @@ const STYLE = {
     }
 };
 
-export default class OrganizationsPage extends React.Component {
+export default class OrganizationsPage extends Component {
 
     constructor(props) {
         super(props);

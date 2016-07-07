@@ -14,8 +14,9 @@ import CustomModal from '../../../../../components/content/widgets/CustomModal';
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import LoginField from '../../../../../components/content/widgets/LoginField';
 import OrganizationsDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry';
-import {sortObjectArrayByField} from '../../../../../../client/utils/utils';
+import { fetchOrganizationsIfNeeded, reverseSort, sortBy, sortForward } from '../../../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../../../actions/user';
+import {sortObjectArrayByField} from '../../../../../../client/utils/utils';
 
 const STYLE = {
     createOrganizationModal: {
@@ -28,71 +29,44 @@ const STYLE = {
     }
 };
 
+const ORGANIZATION_FIELDS = {
+    "Organization Name": "name"
+};
+
 class OrganizationsTable extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            organizations: [],
-            sortedForward: true
-        };
-        // Data retrieval
-        this.retrieveOrganizations = this.retrieveOrganizations.bind(this);
         // Event handlers
-        this.onOrderEntries = this.onOrderEntries.bind(this);
+        this.handleOrderEntries = this.handleOrderEntries.bind(this);
     }
 
     componentDidMount() {
         const { dispatch } = this.props;
+        dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUserIfNeeded());
-
-        this.retrieveOrganizations();
     }
 
     componentWillReceiveProps(nextProps) {
+        const { dispatch } = nextProps;
         if (nextProps.refreshTable !== this.props.refreshTable) {
-            this.retrieveOrganizations();
+            dispatch(fetchOrganizationsIfNeeded());
+        } else if (nextProps.sortBy !== this.props.sortBy || nextProps.sortedForward !== this.props.sortedForward) {
+            dispatch(sortForward());
         }
     }
 
-    retrieveOrganizations() {
-        const { user } = this.props;
+    handleOrderEntries(event) {
+        const { dispatch } = this.props;
+        let sortCategory = ORGANIZATION_FIELDS[event.target.value];
 
-        this.props.restClient.organizations.getAllOrganizations()
-            .then((allOrganizations) => {
-                let organizations = user.orgs ? user.orgs.map(organizationName => {
-                    return {name: organizationName};
-                }) : [];
-
-                // Also adds the organizations user is an admin of (to even view the project in the list)
-                allOrganizations.forEach(oneOrganization => {
-                    let isAdmin = oneOrganization.admins.indexOf(user._id) !== -1,
-                        inListAlready = organizations.indexOf(oneOrganization._id) === -1;
-
-                    if (isAdmin && !inListAlready) {
-                        organizations.push({
-                            name: oneOrganization._id
-                        });
-                    }
-                });
-
-                this.setState({
-                    organizations: organizations.sort(sortObjectArrayByField('name'))
-                });
-
-            });
-    }
-
-    onOrderEntries() {
-        this.setState({
-            organizations: this.state.sortedForward ?
-                this.state.organizations.sort(sortObjectArrayByField('name')).reverse() :
-                this.state.organizations.sort(sortObjectArrayByField('name')),
-            sortedForward: !this.state.sortedForward
-        });
+        dispatch(reverseSort());
+        dispatch(sortBy(sortCategory));
     }
 
     render() {
+
+        const { organizations, sortedForward } = this.props;
 
         let categories = [
             {id: 1, name: 'Organization Name'}
@@ -122,14 +96,14 @@ class OrganizationsTable extends Component {
                 <DataTable basePath={this.props.basePath}
                            categories={categories}
                            content="Organizations"
-                           entries={this.state.organizations}
+                           entries={organizations}
                            iconClass="fa fa-institution"
-                           orderEntries={this.onOrderEntries}
+                           orderEntries={this.handleOrderEntries}
                            restClient={this.restClient}
                            sortable={true}
-                           sortedForward={this.state.sortedForward}
+                           sortedForward={sortedForward}
                            tableName="Organizations">
-                    <OrganizationsDataTableEntry/>
+                    <OrganizationsDataTableEntry />
                 </DataTable>
 
                 {/* Create organization modal window */}
@@ -162,12 +136,26 @@ class OrganizationsTable extends Component {
 }
 
 OrganizationsTable.propTypes = {
+    organizations: PropTypes.array.isRequired,
     user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
+    const { organizations, sortCategory, sortedForward } = state.organizations;
+    const { user } = state.user;
+
+    let formattedOrganizations = [];
+    organizations.forEach(org => {
+        if (org.admins.indexOf(user._id) !== -1 || org.users.indexOf(user._id) !== -1) {
+            formattedOrganizations.push({name: org._id});
+        }
+    });
+
     return {
-        user: state.user.user
+        organizations: sortedForward ?
+            formattedOrganizations.sort(sortObjectArrayByField(sortCategory)) :
+            formattedOrganizations.sort(sortObjectArrayByField(sortCategory)).reverse(),
+        user: user
     };
 };
 

@@ -13,6 +13,10 @@ export const REQUEST_ORGANIZATIONS_FAILURE = 'REQUEST_ORGANIZATIONS_FAILURE';
 export const REQUEST_ORGANIZATIONS_SUCCESS = 'REQUEST_ORGANIZATIONS_SUCCESS';
 export const RECEIVE_ORGANIZATIONS = 'RECEIVE_ORGANIZATIONS';
 
+export const REVERSE_SORT = 'REVERSE_SORT';
+export const SORT_CATEGORY = 'SORT_CATEGORY';
+export const SORT_FORWARD = 'SORT_FORWARD';
+
 export const requestOrganizations = () => {
     return {
         type: REQUEST_ORGANIZATIONS
@@ -54,5 +58,24 @@ export const fetchOrganizationsIfNeeded = () => {
         if (shouldFetchOrganizations(getState())) {
             return dispatch(fetchOrganizations());
         }
+    };
+};
+
+export const reverseSort = () => {
+    return {
+        type: REVERSE_SORT
+    };
+};
+
+export const sortBy = (sortCategory) => {
+    return {
+        type: SORT_CATEGORY,
+        sortCategory
+    };
+};
+
+export const sortForward = () => {
+    return {
+        type: SORT_FORWARD
     };
 };

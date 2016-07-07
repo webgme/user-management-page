@@ -3,11 +3,14 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS} from '../actions/organizations';
+import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS,
+        REVERSE_SORT, SORT_CATEGORY, SORT_FORWARD } from '../actions/organizations';
 
 const initialState = {
     isFetching: false,
-    organizations: []
+    organizations: [],
+    sortCategory: 'name',
+    sortedForward: true
 };
 
 const user = (state = initialState, action) => {
@@ -20,6 +23,18 @@ const user = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isFetching: false,
                 organizations: action.organizations
+            });
+        case REVERSE_SORT:
+            return Object.assign({}, state, {
+                sortedForward: !state.sortedForward
+            });
+        case SORT_CATEGORY:
+            return Object.assign({}, state, {
+                sortCategory: action.sortCategory
+            });
+        case SORT_FORWARD:
+            return Object.assign({}, state, {
+                sortedForward: false
             });
         default:
             return state;

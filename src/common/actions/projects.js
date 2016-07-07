@@ -14,7 +14,7 @@ export const REQUEST_PROJECTS_SUCCESS = 'REQUEST_PROJECTS_SUCCESS';
 export const RECEIVE_PROJECTS = 'RECEIVE_PROJECTS';
 
 export const REVERSE_SORT = 'REVERSE_SORT';
-export const SORT_BY = 'SORT_BY';
+export const SORT_CATEGORY = 'SORT_CATEGORY';
 export const SORT_FORWARD = 'SORT_FORWARD';
 
 export const requestProjects = () => {
@@ -67,10 +67,10 @@ export const reverseSort = () => {
     };
 };
 
-export const sortBy = (sortBy) => {
+export const sortBy = (sortCategory) => {
     return {
-        type: SORT_BY,
-        sortBy
+        type: SORT_CATEGORY,
+        sortCategory
     };
 };
 
