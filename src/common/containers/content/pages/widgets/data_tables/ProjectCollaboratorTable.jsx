@@ -8,7 +8,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import ProjectDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/ProjectDataTableEntry';
+import ProjectDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/ProjectDataTableEntry'; // eslint-disable-line max-len
 import { sortWithChecks } from '../../../../../../client/utils/utils';
 import { retrieveCollaborators } from '../../../../../../client/utils/restUtils';
 import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';

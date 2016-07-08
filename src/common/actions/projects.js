@@ -27,10 +27,10 @@ export const receiveProjects = (projects) => {
 };
 
 const shouldFetchProjects = (state) => {
-    const { isFetching, projects } = state.projects;
+    const { hasFetched, isFetching } = state.projects;
 
     let shouldFetch = true;
-    if (isFetching || projects.length > 0) {
+    if (hasFetched || isFetching) {
         shouldFetch = false;
     } else {
         shouldFetch = true;

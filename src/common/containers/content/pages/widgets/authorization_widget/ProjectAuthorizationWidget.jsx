@@ -39,14 +39,7 @@ class ProjectAuthorizationWidget extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch, organizations, users } = nextProps;
-
-        if (JSON.stringify(nextProps.users) !== JSON.stringify(this.props.users)) {
-            dispatch(fetchUsersIfNeeded());
-        }
-        if (JSON.stringify(nextProps.organizations) !== JSON.stringify(this.props.organizations)) {
-            dispatch(fetchOrganizationsIfNeeded());
-        }
+        const { organizations, users } = nextProps;
 
         let multiselectOptions = multiselectFormat(users.concat(organizations).sort(sortObjectArrayByField('_id')));
         this.setState({
@@ -121,7 +114,7 @@ class ProjectAuthorizationWidget extends Component {
 
     render() {
 
-        let authorizationWidgetData = {
+        const authorizationWidgetData = {
             selectableButtons: [
                 {
                     selectableButtonChange: this.handleAuthorizationChange,

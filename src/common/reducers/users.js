@@ -13,15 +13,15 @@ const initialState = {
 
 const users = (state = initialState, action) => {
     switch (action.type) {
-        case REQUEST_USERS:
-            return Object.assign({}, state, {
-                isFetching: true
-            });
         case RECEIVE_USERS:
             return Object.assign({}, state, {
                 hasFetched: true,
                 isFetching: false,
                 users: action.users
+            });
+        case REQUEST_USERS:
+            return Object.assign({}, state, {
+                isFetching: true
             });
         default:
             return state;

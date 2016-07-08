@@ -6,6 +6,7 @@
 import { REQUEST_PROJECTS, RECEIVE_PROJECTS } from '../actions/projects';
 
 const initialState = {
+    hasFetched: false,
     isFetching: false,
     projects: []
 };
@@ -14,6 +15,7 @@ const user = (state = initialState, action) => {
     switch (action.type) {
         case RECEIVE_PROJECTS:
             return Object.assign({}, state, {
+                hasFetched: true,
                 isFetching: false,
                 projects: action.projects
             });

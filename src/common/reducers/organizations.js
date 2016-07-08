@@ -8,22 +8,20 @@ import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS } from '../actions/organiza
 const initialState = {
     hasFetched: false,
     isFetching: false,
-    organizations: [],
-    trulyEmpty: false
+    organizations: []
 };
 
 const user = (state = initialState, action) => {
     switch (action.type) {
+        case RECEIVE_ORGANIZATIONS:
+            return Object.assign({}, state, {
+                hasFetched: true,
+                isFetching: false,
+                organizations: action.organizations
+            });
         case REQUEST_ORGANIZATIONS:
             return Object.assign({}, state, {
                 isFetching: true
-            });
-        case RECEIVE_ORGANIZATIONS:
-            return Object.assign({}, state, {
-                isFetching: false,
-                hasFetched: true,
-                organizations: action.organizations,
-                trulyEmpty: action.organizations.length === 0
             });
         default:
             return state;

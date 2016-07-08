@@ -15,7 +15,7 @@ import { isEmpty } from './utils';
 export function canUserAuthorize(user, orgs, ownerId) {
     return user._id === ownerId ||
         orgs.some((org) => {
-            return org._id === ownerId && org.admins.indexOf(user._id) !== -1;
+            return org._id === ownerId || org.admins.indexOf(user._id) !== -1;
         });
 }
 
@@ -186,5 +186,33 @@ export function retrieveCollaborators(organizations, users, projectId) {
     return {
         userCollaborators,
         organizationCollaborators
+    };
+}
+
+/**
+ * Retrieve members and admins
+ * @param {Array} orgs - list of organizations
+ * @param {string} orgId - organization id
+ * @return {{members: Array, admins: Array}} data containing members and admins
+ */
+export function retrieveMembersAndAdmins(orgs, orgId) {
+    // Get the pertinent organization
+    let org = orgs.filter(org => {
+        return org._id === orgId;
+    })[0];
+
+    // Parse that org's data with error checking
+    return {
+        members: org ? org.users.map(user => {
+            return {
+                name: user,
+                admin: org.admins.indexOf(user) !== -1
+            };
+        }) : [],
+        admins: org ? org.admins.map(admin => {
+            return {
+                name: admin
+            };
+        }) : []
     };
 }

@@ -31,10 +31,10 @@ export const receiveOrganizations = (organizations) => {
 };
 
 const shouldFetchOrganizations = (state) => {
-    const { hasFetched, organizations, isFetching, trulyEmpty } = state.organizations;
+    const { hasFetched, isFetching } = state.organizations;
 
     let shouldFetch = true;
-    if (isFetching || hasFetched) {
+    if (hasFetched || isFetching) {
         shouldFetch = false;
     } else {
         shouldFetch = true;
