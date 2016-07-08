@@ -10,9 +10,9 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 // Self defined
-import CollaboratorsCommitsBarChart from '../widgets/charts/CollaboratorsCommitsBarChart';
-import ProjectAuthorizationWidget from '../../../containers/content/pages/widgets/authorization_widget/ProjectAuthorizationWidget';
-import ProjectCollaboratorTable from '../widgets/data_tables/ProjectCollaboratorTable';
+import CollaboratorsCommitsBarChart from '../../../components/content/widgets/charts/CollaboratorsCommitsBarChart';
+import ProjectAuthorizationWidget from './widgets/authorization_widget/ProjectAuthorizationWidget';
+import ProjectCollaboratorTable from './widgets/data_tables/ProjectCollaboratorTable';
 import { canUserAuthorize } from '../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../actions/user';

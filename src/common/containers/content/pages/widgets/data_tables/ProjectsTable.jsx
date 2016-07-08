@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import {sortObjectArrayByField, sortObjectArrayByNestedDateField} from '../../../../../../client/utils/utils';
+import { sortWithChecks } from '../../../../../../client/utils/utils'; // eslint-disable-line max-len
 import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
-import { reverseSort, sortBy, sortForward } from '../../../../../actions/tables';
+import { sortBy } from '../../../../../actions/tables';
 
 const PROJECTS_FIELDS = {
     "Created At": ["info", "createdAt"],
@@ -36,22 +36,17 @@ class ProjectsTable extends Component {
     }
 
     handleOrderEntries(event) {
-        const { dispatch, sortCategory } = this.props;
-        let newSortCategory = PROJECTS_FIELDS[event.target.value];
+        const { dispatch } = this.props;
+        const newSortCategory = PROJECTS_FIELDS[event.target.value];
 
-        if (sortCategory === newSortCategory) {
-            dispatch(reverseSort());
-        } else {
-            dispatch(sortForward());
-            dispatch(sortBy(newSortCategory));
-        }
+        dispatch(sortBy('projects', newSortCategory));
     }
 
     render() {
 
         const { projects, sortedForward } = this.props;
 
-        let categories = [
+        const categories = [
             {id: 1, name: 'Owner'},
             {id: 2, name: 'Project Name'},
             {id: 3, name: 'Last Viewed'},
@@ -94,25 +89,13 @@ ProjectsTable.propTypes = {
 
 const mapStateToProps = (state) => {
     const { projects } = state.projects;
-    const { sortCategory, sortedForward } = state.tables;
+    const { sortCategory, sortedForward } = state.tables.projects;
 
-    if (typeof sortCategory === 'string') {
-        return {
-            projects: sortedForward ?
-                projects.slice().sort(sortObjectArrayByField(sortCategory)) :
-                projects.slice().sort(sortObjectArrayByField(sortCategory)).reverse(),
-            sortCategory,
-            sortedForward
-        };
-    } else if (Array.isArray(sortCategory)) {
-        return {
-            projects: sortedForward ?
-                projects.slice().sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])) :
-                projects.slice().sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])).reverse(),
-            sortCategory,
-            sortedForward
-        };
-    }
+    return {
+        projects: sortWithChecks(projects.slice(), sortCategory, sortedForward),
+        sortCategory,
+        sortedForward
+    };
 };
 
 export default connect(mapStateToProps)(ProjectsTable);

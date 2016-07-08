@@ -15,7 +15,7 @@ import HomePage from '../../common/containers/content/pages/HomePage';
 import OrganizationPage from '../../common/components/content/pages/OrganizationPage';
 import OrganizationsPage from '../../common/components/content/pages/OrganizationsPage';
 import ProfilePage from '../../common/containers/content/pages/ProfilePage';
-import ProjectPage from '../../common/components/content/pages/ProjectPage';
+import ProjectPage from '../../common/containers/content/pages/ProjectPage';
 import ProjectsPage from '../../common/components/content/pages/ProjectsPage';
 
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');

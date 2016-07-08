@@ -4,14 +4,13 @@
  */
 
 // Libraries
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Popover from 'react-bootstrap/lib/Popover';
-import React from 'react';
+import React, { Component } from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 // Self-defined
 import CustomModal from '../../CustomModal';
 import {formatRightsOrigin} from '../../../../../../client/utils/utils';
 
-export default class ProjectDataTableEntry extends React.Component {
+export default class ProjectDataTableEntry extends Component {
 
     constructor(props) {
         super(props);

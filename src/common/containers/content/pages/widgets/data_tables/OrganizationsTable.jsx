@@ -14,9 +14,10 @@ import CustomModal from '../../../../../components/content/widgets/CustomModal';
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import LoginField from '../../../../../components/content/widgets/LoginField';
 import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
-import { fetchOrganizationsIfNeeded, reverseSort, sortBy, sortForward } from '../../../../../actions/organizations';
+import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
+import { sortBy } from '../../../../../actions/tables';
 import { fetchUserIfNeeded } from '../../../../../actions/user';
-import {sortObjectArrayByField} from '../../../../../../client/utils/utils';
+import { sortObjectArrayByField } from '../../../../../../client/utils/utils';
 
 const STYLE = {
     createOrganizationModal: {
@@ -43,32 +44,23 @@ class OrganizationsTable extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUserIfNeeded());
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = nextProps;
-        if (nextProps.refreshTable !== this.props.refreshTable) {
-            dispatch(fetchOrganizationsIfNeeded());
-        } else if (nextProps.sortBy !== this.props.sortBy || nextProps.sortedForward !== this.props.sortedForward) {
-            dispatch(sortForward());
-        }
-    }
-
     handleOrderEntries(event) {
         const { dispatch } = this.props;
-        let sortCategory = ORGANIZATION_FIELDS[event.target.value];
+        const newSortCategory = ORGANIZATION_FIELDS[event.target.value];
 
-        dispatch(reverseSort());
-        dispatch(sortBy(sortCategory));
+        dispatch(sortBy('organizations', newSortCategory));
     }
 
     render() {
 
         const { organizations, sortedForward } = this.props;
 
-        let categories = [
+        const categories = [
             {id: 1, name: 'Organization Name'}
         ];
 
@@ -139,7 +131,8 @@ OrganizationsTable.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    const { organizations, sortCategory, sortedForward } = state.organizations;
+    const { organizations } = state.organizations;
+    const { sortCategory, sortedForward } = state.tables.organizations;
     const { user } = state.user;
 
     let formattedOrganizations = [];
@@ -153,6 +146,8 @@ const mapStateToProps = (state) => {
         organizations: sortedForward ?
             formattedOrganizations.sort(sortObjectArrayByField(sortCategory)) :
             formattedOrganizations.sort(sortObjectArrayByField(sortCategory)).reverse(),
+        sortCategory,
+        sortedForward,
         user: user
     };
 };

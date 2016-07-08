@@ -3,26 +3,48 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import { REVERSE_SORT, SORT_CATEGORY, SORT_FORWARD } from '../actions/tables';
+import { SORT_CATEGORY } from '../actions/tables';
 
-const initialState = {
+const initialTableState = {
     sortCategory: 'name',
     sortedForward: true
 };
 
-const tables = (state = initialState, action) => {
+const table = (state = initialTableState, action) => {
     switch (action.type) {
-        case REVERSE_SORT:
-            return Object.assign({}, state, {
-                sortedForward: !state.sortedForward
-            });
+        case SORT_CATEGORY:
+            let newState = Object.assign({}, state);
+            if (state.sortCategory === action.sortCategory) {
+                Object.assign(newState, {
+                    sortedForward: !state.sortedForward
+                });
+            } else {
+                Object.assign(newState, {
+                    sortCategory: action.sortCategory,
+                    sortedForward: true
+                });
+            }
+            return newState;
+        default:
+            return state;
+    }
+};
+
+const initialTablesState = {
+    // Table from organization page
+    organizations: initialTableState,
+    // Tables from the collaborator table (project page)
+    projectUser: initialTableState,
+    projectOrg: initialTableState,
+    // Table from the projects page
+    projects: initialTableState
+};
+
+const tables = (state = initialTablesState, action) => {
+    switch (action.type) {
         case SORT_CATEGORY:
             return Object.assign({}, state, {
-                sortCategory: action.sortCategory
-            });
-        case SORT_FORWARD:
-            return Object.assign({}, state, {
-                sortedForward: true
+                [action.table]: table(state[action.table], action)
             });
         default:
             return state;

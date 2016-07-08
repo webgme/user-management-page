@@ -6,15 +6,14 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import React from 'react';
+import React, { Component } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
 // Self-defined
 import DataTable from './DataTable';
 import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
 import {isEmpty, sortObjectArrayByField} from '../../../../../client/utils/utils';
 
-export default class OrganizationTable extends React.Component {
+export default class OrganizationTable extends Component {
 
     constructor(props) {
         super(props);
@@ -70,8 +69,6 @@ export default class OrganizationTable extends React.Component {
     }
 
     handleOrderEntries(event) {
-        // Release focus (surrounding box)
-        $(event.target).parent().blur();
 
         if (this.props.display === 1) {
             this.setState({
