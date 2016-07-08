@@ -27,10 +27,10 @@ export const receiveUsers = (users) => {
 };
 
 const shouldFetchUsers = (state) => {
-    const { users, isFetching } = state.users;
+    const { users, isFetching, hasFetched } = state.users;
 
     let shouldFetch = true;
-    if (isFetching || users.length > 0) {
+    if (isFetching || hasFetched) {
         shouldFetch = false;
     } else {
         shouldFetch = true;

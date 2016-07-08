@@ -30,10 +30,8 @@ class ProjectAuthorizationWidget extends Component {
     componentDidMount() {
         const { dispatch, organizations, users} = this.props;
         dispatch(fetchOrganizationsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
 
-        if (users.length === 0) {
-            dispatch(fetchUsersIfNeeded());
-        }
         let multiselectOptions = multiselectFormat(users.concat(organizations).sort(sortObjectArrayByField('_id')));
         this.setState({
             multiselectOptions

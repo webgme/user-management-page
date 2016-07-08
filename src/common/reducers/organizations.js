@@ -7,6 +7,7 @@ import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS,
         REVERSE_SORT, SORT_CATEGORY, SORT_FORWARD } from '../actions/organizations';
 
 const initialState = {
+    hasFetched: false,
     isFetching: false,
     organizations: [],
     sortCategory: 'name',
@@ -23,6 +24,7 @@ const user = (state = initialState, action) => {
         case RECEIVE_ORGANIZATIONS:
             return Object.assign({}, state, {
                 isFetching: false,
+                hasFetched: true,
                 organizations: action.organizations,
                 trulyEmpty: action.organizations.length === 0
             });

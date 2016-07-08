@@ -80,6 +80,7 @@ class ProjectPage extends Component {
                         </div>
 
                     </div>
+
                 </div>
 
             </section>

@@ -27,6 +27,8 @@ require('react-select/examples/src/example.less');
 require('chart.js');
 require('react-chartjs');
 
+window.store = store;
+
 render((
 
     <Provider store={store}>

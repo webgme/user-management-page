@@ -9,10 +9,8 @@ import { connect } from 'react-redux';
 // Self-defined
 import DataTable from './DataTable';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
-import {isEmpty, sortObjectArrayByField} from '../../../../../client/utils/utils';
-import { getOrganizationsWithAccessToProject,
-         getUsersWithAccessToProject,
-         getUsersInOrganizationsWithAccessToProject } from '../../../../../client/utils/restUtils';
+import { sortObjectArrayByField} from '../../../../../client/utils/utils';
+import { retrieveCollaborators } from '../../../../../client/utils/restUtils';
 import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
 import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
 
@@ -32,14 +30,9 @@ class ProjectCollaboratorTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            organizationCollaborators: [],
             organizationsSortedForward: true,
-            userCollaborators: [],
             usersSortedForward: true
         };
-
-        // Data retrieval
-        this.retrieveCollaborators = this.retrieveCollaborators.bind(this);
         // Event handlers
         this.onOrderOrganizationEntries = this.onOrderOrganizationEntries.bind(this);
         this.onOrderUserEntries = this.onOrderUserEntries.bind(this);
@@ -51,73 +44,6 @@ class ProjectCollaboratorTable extends Component {
 
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUsersIfNeeded());
-
-        this.retrieveCollaborators();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = nextProps;
-
-        if (JSON.stringify(nextProps.users) !== JSON.stringify(this.props.users)) {
-            dispatch(fetchUsers());
-        }
-        if (JSON.stringify(nextProps.organizations) !== JSON.stringify(this.props.organizations)) {
-            dispatch(fetchOrganizations());
-        }
-
-        this.retrieveCollaborators();
-    }
-
-    retrieveCollaborators() {
-
-        let { organizationsWithAccess, usersInOrganizationsWithAccess, usersWithAccess } = this.props;
-
-        // Union of rights if in organization
-        if (isEmpty(usersInOrganizationsWithAccess)) {
-            // Do nothing because then usersWithAccess is just self and does not need to be modified
-        } else {
-            Object.keys(usersInOrganizationsWithAccess).forEach(user => {
-                if (usersWithAccess[user]) {
-                    usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
-                    usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
-                    usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
-                    usersWithAccess[user].orgsRightsOrigin = usersInOrganizationsWithAccess[user].orgsRightsOrigin;
-                } else {
-                    usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
-                }
-            });
-        }
-
-        let userCollaborators = [];
-        let organizationCollaborators = [];
-        Object.keys(usersWithAccess).forEach(user => {
-            userCollaborators.push({
-                inOrg: usersWithAccess[user].inOrg,
-                name: user,
-                orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
-                rights: usersWithAccess[user].delete ? 'Read Write Delete' :
-                        usersWithAccess[user].write ? 'Read Write' :
-                        usersWithAccess[user].read ? 'Read' : '',
-                userRightsOrigin: usersWithAccess[user].userRightsOrigin
-            });
-        });
-
-        Object.keys(organizationsWithAccess).forEach(organization => {
-            organizationCollaborators.push({
-                inOrg: organizationsWithAccess[organization].inOrg,
-                isOrg: true,
-                name: organization,
-                orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
-                rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' :
-                        organizationsWithAccess[organization].write ? 'Read Write' :
-                        organizationsWithAccess[organization].read ? 'Read' : ''
-            });
-        });
-
-        this.setState({
-            userCollaborators: userCollaborators.sort(sortObjectArrayByField('name')),
-            organizationCollaborators: organizationCollaborators.sort(sortObjectArrayByField('name'))
-        });
     }
 
     onOrderOrganizationEntries(event) {
@@ -150,10 +76,13 @@ class ProjectCollaboratorTable extends Component {
                                                              event.target.id)
             .then(() => {
                 dispatch(fetchUsers()); // Re-render after revoking rights
+                dispatch(fetchOrganizations()); // Re-render after revoking rights
             });
     }
 
     render() {
+
+        const { collaborators } = this.props;
 
         let dataTableData = {
             categories: {
@@ -183,7 +112,7 @@ class ProjectCollaboratorTable extends Component {
                     <DataTable categories={dataTableData.categories.users}
                                categoryStyle={{width: "50%"}}
                                content="Users"
-                               entries={this.state.userCollaborators}
+                               entries={collaborators.userCollaborators}
                                handleRevoke={this.onRevoke}
                                iconClass={null}
                                orderEntries={this.onOrderUserEntries}
@@ -191,7 +120,7 @@ class ProjectCollaboratorTable extends Component {
                                projectName={this.props.projectName}
                                showOtherTitle={true}
                                sortable={true}
-                               sortedForward={this.state.usersSortedForward}
+                               sortedForward={true}
                                tableName="Collaborators">
                         <ProjectDataTableEntry authorization={this.props.authorization} />
                     </DataTable>
@@ -199,7 +128,7 @@ class ProjectCollaboratorTable extends Component {
                     <DataTable categories={dataTableData.categories.organizations}
                                categoryStyle={{width: "50%"}}
                                content="Organizations"
-                               entries={this.state.organizationCollaborators}
+                               entries={collaborators.organizationCollaborators}
                                handleRevoke={this.onRevoke}
                                iconClass={null}
                                orderEntries={this.onOrderOrganizationEntries}
@@ -219,23 +148,34 @@ class ProjectCollaboratorTable extends Component {
     }
 }
 
+ProjectCollaboratorTable.propTypes = {
+    collaborators: PropTypes.shape({
+        userCollaborators: PropTypes.array.isRequired,
+        organizationCollaborators: PropTypes.array.isRequired
+    })
+};
+
 const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;
+    const orgsHasFetched = state.organizations.hasFetched;
     const { users } = state.users;
+    const usersHasFetched = state.users.hasFetched;
 
-    const {ownerId, projectName} = ownProps;
+    const { ownerId, projectName } = ownProps;
     const projectId = `${ownerId}+${projectName}`;
 
-    let usersWithAccess = getUsersWithAccessToProject(users, projectId),
-        usersInOrganizationsWithAccess = getUsersInOrganizationsWithAccessToProject(organizations, projectId),
-        organizationsWithAccess = getOrganizationsWithAccessToProject(organizations, projectId);
+    // Retrieving collaborators
+    let collaborators = {userCollaborators: [], organizationCollaborators: []};
+    if (orgsHasFetched && usersHasFetched) {
+        collaborators = retrieveCollaborators(organizations, users, projectId);
+    }
+
+    // Sorting collaborators
+    collaborators.userCollaborators.sort(sortObjectArrayByField('name'));
+    collaborators.organizationCollaborators.sort(sortObjectArrayByField('name'));
 
     return {
-        organizations,
-        organizationsWithAccess,
-        users,
-        usersInOrganizationsWithAccess,
-        usersWithAccess
+        collaborators
     };
 };
 

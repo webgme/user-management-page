@@ -10,7 +10,8 @@ import { connect } from 'react-redux';
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
 import {sortObjectArrayByField, sortObjectArrayByNestedDateField} from '../../../../../../client/utils/utils';
-import { fetchProjectsIfNeeded, reverseSort, sortBy, sortForward } from '../../../../../actions/projects';
+import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
+import { reverseSort, sortBy, sortForward } from '../../../../../actions/tables';
 
 const PROJECTS_FIELDS = {
     "Created At": ["info", "createdAt"],
@@ -30,27 +31,20 @@ class ProjectsTable extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchProjectsIfNeeded());
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = nextProps;
-
-        // TODO: how to compare and know when to update
-        if (nextProps.projects.length !== this.props.projects.length) {
-            dispatch(fetchProjectsIfNeeded());
-            // Indicates user is sorting by a different field, so reset sort order
-        } else if (nextProps.sortBy !== this.props.sortBy || nextProps.sortedForward !== this.props.sortedForward) {
-            dispatch(sortForward());
-        }
-    }
-
     handleOrderEntries(event) {
-        const { dispatch } = this.props;
-        let sortCategory = PROJECTS_FIELDS[event.target.value];
+        const { dispatch, sortCategory } = this.props;
+        let newSortCategory = PROJECTS_FIELDS[event.target.value];
 
-        dispatch(reverseSort());
-        dispatch(sortBy(sortCategory));
+        if (sortCategory === newSortCategory) {
+            dispatch(reverseSort());
+        } else {
+            dispatch(sortForward());
+            dispatch(sortBy(newSortCategory));
+        }
     }
 
     render() {
@@ -66,7 +60,6 @@ class ProjectsTable extends Component {
         ];
 
         return (
-
 
             <div>
                 {/* Header */}
@@ -87,23 +80,28 @@ class ProjectsTable extends Component {
                            tableName="Projects">
                     <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
                 </DataTable>
+
             </div>
         );
     }
 }
 
 ProjectsTable.propTypes = {
-    projects: PropTypes.array.isRequired
+    projects: PropTypes.array.isRequired,
+    sortCategory: PropTypes.string.isRequired,
+    sortedForward: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => {
-    const { projects, sortCategory, sortedForward } = state.projects;
+    const { projects } = state.projects;
+    const { sortCategory, sortedForward } = state.tables;
 
     if (typeof sortCategory === 'string') {
         return {
             projects: sortedForward ?
                 projects.slice().sort(sortObjectArrayByField(sortCategory)) :
                 projects.slice().sort(sortObjectArrayByField(sortCategory)).reverse(),
+            sortCategory,
             sortedForward
         };
     } else if (Array.isArray(sortCategory)) {
@@ -111,6 +109,7 @@ const mapStateToProps = (state) => {
             projects: sortedForward ?
                 projects.slice().sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])) :
                 projects.slice().sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])).reverse(),
+            sortCategory,
             sortedForward
         };
     }

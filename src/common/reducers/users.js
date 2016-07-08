@@ -6,6 +6,7 @@
 import { REQUEST_USERS, RECEIVE_USERS } from '../actions/users';
 
 const initialState = {
+    hasFetched: false,
     isFetching: false,
     users: []
 };
@@ -18,6 +19,7 @@ const users = (state = initialState, action) => {
             });
         case RECEIVE_USERS:
             return Object.assign({}, state, {
+                hasFetched: true,
                 isFetching: false,
                 users: action.users
             });

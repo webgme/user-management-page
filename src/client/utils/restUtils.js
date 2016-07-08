@@ -3,6 +3,8 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+import { isEmpty } from './utils';
+
 /**
  * Returns a boolean for if the current user can authorize others to the project
  * @param {Object} user - user object
@@ -77,7 +79,7 @@ export function getOrganizationsWithAccessToProject(orgs, projectId) {
             }
 
             orgToRights[org._id] = JSON.parse(JSON.stringify(org.projects[projectId]));
-            orgToRights[org._id].orgsRightsOrigin = orgToRights[org._id].orgsRightsOrigin ? orgToRights[org._id].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin];
+            orgToRights[org._id].orgsRightsOrigin = orgToRights[org._id].orgsRightsOrigin ? orgToRights[org._id].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin]; // eslint-disable-line max-len
         }
     });
     return orgToRights;
@@ -113,15 +115,76 @@ export function getUsersInOrganizationsWithAccessToProject(orgs, projectId) {
                         write: userToOrgsRights[user].write || org.projects[projectId].write,
                         delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
                         inOrg: true,
-                        orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin])
+                        orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) // eslint-disable-line max-len
                     };
                 } else {
                     userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));
                     userToOrgsRights[user].inOrg = true;
-                    userToOrgsRights[user].orgsRightsOrigin = userToOrgsRights[user].orgsRightsOrigin ? userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin];
+                    userToOrgsRights[user].orgsRightsOrigin = userToOrgsRights[user].orgsRightsOrigin ? userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin]; // eslint-disable-line max-len
                 }
             });
         }
     });
     return userToOrgsRights;
+}
+
+/**
+ * Retrieves collaborators of a specified project
+ * @param {Array} organizations - list of all orgs
+ * @param {Array} users - list of all users
+ * @param {string} projectId - projectId
+ * @return {{userCollaborators: Array.<Object>, organizationCollaborators: Array.<Object>}} - computed collaborators
+ */
+export function retrieveCollaborators(organizations, users, projectId) {
+
+    let usersWithAccess = getUsersWithAccessToProject(users, projectId),
+        usersInOrganizationsWithAccess = getUsersInOrganizationsWithAccessToProject(organizations, projectId),
+        organizationsWithAccess = getOrganizationsWithAccessToProject(organizations, projectId);
+
+    // Union of rights if in organization
+    if (isEmpty(usersInOrganizationsWithAccess)) {
+        // Do nothing because then usersWithAccess is just self and does not need to be modified
+    } else {
+        Object.keys(usersInOrganizationsWithAccess).forEach(user => {
+            if (usersWithAccess[user]) {
+                usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
+                usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
+                usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
+                usersWithAccess[user].orgsRightsOrigin = usersInOrganizationsWithAccess[user].orgsRightsOrigin;
+            } else {
+                usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));
+            }
+        });
+    }
+
+    let userCollaborators = [];
+    let organizationCollaborators = [];
+    Object.keys(usersWithAccess).forEach(user => {
+        userCollaborators.push({
+            inOrg: usersWithAccess[user].inOrg,
+            name: user,
+            orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
+            rights: usersWithAccess[user].delete ? 'Read Write Delete' :
+                    usersWithAccess[user].write ? 'Read Write' :
+                    usersWithAccess[user].read ? 'Read' : '',
+            userRightsOrigin: usersWithAccess[user].userRightsOrigin
+        });
+    });
+
+    Object.keys(organizationsWithAccess).forEach(organization => {
+        organizationCollaborators.push({
+            inOrg: organizationsWithAccess[organization].inOrg,
+            isOrg: true,
+            name: organization,
+            orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
+            rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' :
+                    organizationsWithAccess[organization].write ? 'Read Write' :
+                    organizationsWithAccess[organization].read ? 'Read' : ''
+        });
+    });
+
+    return {
+        userCollaborators,
+        organizationCollaborators
+    };
 }

@@ -23,15 +23,8 @@ class ProfilePage extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchUserIfNeeded());
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = nextProps;
-
-        if (nextProps.user !== this.props.user) {
-            dispatch(fetchUserIfNeeded());
-        }
     }
 
     render() {
