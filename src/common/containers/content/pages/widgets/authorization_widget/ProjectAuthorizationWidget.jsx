@@ -29,6 +29,7 @@ class ProjectAuthorizationWidget extends Component {
 
     componentDidMount() {
         const { dispatch, organizations, users} = this.props;
+
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUsersIfNeeded());
 
@@ -168,7 +169,9 @@ ProjectAuthorizationWidget.propTypes = {
 
 const mapStateToProps = (state) => {
     const { organizations } = state.organizations;
+    const orgsHasFetched = state.organizations.hasFetched;
     const { users } = state.users;
+    const usersHasFetched = state.users.hasFetched;
 
     return {
         organizations,

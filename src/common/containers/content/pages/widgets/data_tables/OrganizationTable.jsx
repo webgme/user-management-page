@@ -100,10 +100,11 @@ OrganizationTable.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
+    console.log('received new organizations');
     const { organizations } = state.organizations;
     const { organizationId } = ownProps;
 
-    const data = retrieveMembersAndAdmins(organizations, organizationId);
+    let data = retrieveMembersAndAdmins(organizations, organizationId);
 
     return {
         data

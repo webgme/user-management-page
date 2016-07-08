@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import AuthorizationWidget from '../../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
 import {multiselectFormat, sortObjectArrayByField} from '../../../../../../client/utils/utils';
 import { fetchUsers, fetchUsersIfNeeded } from '../../../../../actions/users';
+import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
 
 class OrganizationAuthorizationWidget extends Component {
 
@@ -72,6 +73,7 @@ class OrganizationAuthorizationWidget extends Component {
             .then(() => {
                 // Have to update the list after authorization rights change
                 dispatch(fetchUsers());
+                dispatch(fetchOrganizations());
             })
             .catch(err => {
                 console.error(err); // eslint-disable-line no-console
