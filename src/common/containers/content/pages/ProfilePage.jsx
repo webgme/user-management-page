@@ -8,16 +8,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defind
 import { fetchUserIfNeeded } from '../../../actions/user';
-
-const STYLE = {
-    profileBox: {
-        paddingLeft: "35%",
-        paddingRight: "35%"
-    },
-    profileBoxBorder: {
-        padding: "10px 10px"
-    }
-};
+// Style
+import { ProfilePage as STYLE } from '../../../../client/style';
 
 class ProfilePage extends Component {
 

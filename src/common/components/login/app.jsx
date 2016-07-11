@@ -3,11 +3,11 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined
 import LoginClient from '../../../client/rest_client/loginClient';
 
-export default class App extends React.Component {
+export default class App extends Component {
 
     constructor(props) {
         super(props);

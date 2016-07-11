@@ -10,21 +10,8 @@ import { Link } from 'react-router';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { fetchProjectsIfNeeded } from '../../../actions/projects';
-
-const STYLE = {
-    profileBox: {
-        paddingLeft: "10%",
-        paddingRight: "10%"
-    },
-    profileBoxBorder: {
-        margin: "auto",
-        padding: "10px 10px",
-        width: "40%"
-    },
-    widgetBox: {
-        color: "white"
-    }
-};
+// Style
+import { HomePage as STYLE } from '../../../../client/style';
 
 class HomePage extends Component {
 

@@ -4,14 +4,15 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import React, { Component } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import LineChart from 'react-chartjs/lib/line';
-import React from 'react';
 // Self-defined
-import {convertHexToRGBA, getPastWeeksDays, getRandomColorHex, isEmpty, shadeColor} from '../../../../utils/utils.js';
+import {convertHexToRGBA, getRandomColorHex, shadeColor,
+        getPastWeeksDays,
+        isEmpty } from '../../../../../client/utils/utils';
 
-export default class CommitsLineChart extends React.Component {
+export default class CommitsLineChart extends Component {
 
     constructor(props) {
         super(props);

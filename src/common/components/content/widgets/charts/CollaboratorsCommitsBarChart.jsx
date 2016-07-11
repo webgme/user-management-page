@@ -6,12 +6,12 @@
  */
 
 // Libraries:
+import React, { Component } from 'react';
 import BarChart from 'react-chartjs/lib/bar';
-import React from 'react';
 // Self defined:
 import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../../../client/utils/utils.js';
 
-export default class CollaboratorsCommitsBarGraph extends React.Component {
+export default class CollaboratorsCommitsBarGraph extends Component {
 
     constructor(props) {
         super(props);

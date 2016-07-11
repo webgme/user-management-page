@@ -6,18 +6,13 @@
  */
 
 // Libraries
-import browserHistory from 'react-router/lib/browserHistory';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Checkbox from 'react-bootstrap/lib/Checkbox';
-import Link from 'react-router/lib/Link';
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Popover from 'react-bootstrap/lib/Popover';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import { browserHistory, Link } from 'react-router';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 
-export default class LoginForm extends React.Component {
+export default class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -202,6 +197,6 @@ export default class LoginForm extends React.Component {
 }
 
 LoginForm.propTypes = {
-    basePath: React.PropTypes.string,
-    loginClient: React.PropTypes.object
+    basePath: PropTypes.string,
+    loginClient: PropTypes.object
 };

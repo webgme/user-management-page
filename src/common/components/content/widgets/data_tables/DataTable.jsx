@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined
 import DataTableCategory from './table_utilities/DataTableCategory';
 import DataTablePagination from './table_utilities/DataTablePagination';
 
-export default class DataTable extends React.Component {
+export default class DataTable extends Component {
 
     constructor(props) {
         super(props);

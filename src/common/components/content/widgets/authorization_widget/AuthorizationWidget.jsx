@@ -4,24 +4,14 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import React from 'react';
+import React, { Component } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
 // Self-defined
 import Multiselect from './Multiselect';
+// Style
+import { AuthorizationWidget as STYLE } from '../../../../../client/style';
 
-const STYLING = {
-    selectableButtonGroup: {
-        lineHeight: 3.6,
-        paddingTop: "15px"
-    },
-    submitButtonGroup: {
-        float: "right",
-        paddingRight: "15px"
-    }
-};
-
-export default class AuthorizationWidget extends React.Component {
+export default class AuthorizationWidget extends Component {
 
     render() {
 
@@ -72,7 +62,7 @@ export default class AuthorizationWidget extends React.Component {
                                             valuesInMultiselect={this.props.valuesInMultiselect}/>
                                     </div>
 
-                                    <div className="col-sm-6" style={STYLING.selectableButtonGroup}>
+                                    <div className="col-sm-6" style={STYLE.selectableButtonGroup}>
                                         <ButtonGroup>
                                             {selectableButtons}
                                         </ButtonGroup>
@@ -80,7 +70,7 @@ export default class AuthorizationWidget extends React.Component {
 
                                 </div>
 
-                                <div className="row" style={STYLING.submitButtonGroup}>
+                                <div className="row" style={STYLE.submitButtonGroup}>
                                     <ButtonGroup>
                                         {submitButtons}
                                     </ButtonGroup>

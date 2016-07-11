@@ -61,7 +61,7 @@ class ProjectPage extends Component {
                         <ProjectCollaboratorTable authorization={authorization}
                                                   ownerId={ownerId}
                                                   projectName={projectName}
-                                                  restClient={this.props.restClient} />
+                                                  restClient={restClient} />
 
                     </div>
 
@@ -70,13 +70,13 @@ class ProjectPage extends Component {
                         <ProjectAuthorizationWidget authorization={authorization}
                                                     ownerId={ownerId}
                                                     projectName={projectName}
-                                                    restClient={this.props.restClient} />
+                                                    restClient={restClient} />
 
                         <div className="row">
                             <CollaboratorsCommitsBarChart options={{}}
                                                           ownerId={ownerId}
                                                           projectName={projectName}
-                                                          restClient={this.props.restClient}
+                                                          restClient={restClient}
                                                           title="Latest Commits" />
                         </div>
 

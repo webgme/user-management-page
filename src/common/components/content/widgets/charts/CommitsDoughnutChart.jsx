@@ -4,14 +4,13 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import DoughnutChart from 'react-chartjs/lib/doughnut';
-import React from 'react';
+import React, { Component } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
 // Self-defined
-import {getRandomColorHex, isEmpty, shadeColor} from '../../../../utils/utils.js';
+import {getRandomColorHex, isEmpty, shadeColor} from '../../../../../client/utils/utils';
 
-export default class CommitsDoughnutChart extends React.Component {
+export default class CommitsDoughnutChart extends Component {
 
     constructor(props) {
         super(props);

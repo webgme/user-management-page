@@ -3,22 +3,12 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import React from 'react';
+// Libraries
+import React, { Component } from 'react';
+// Style
+import { Footer as STYLE } from '../../../client/style';
 
-const STYLE = {
-    mainFooter: {
-        fontSize: "12px",
-        padding: "0px"
-    },
-    footerLeft: {
-        paddingLeft: "10px"
-    },
-    footerRight: {
-        paddingRight: "10px"
-    }
-};
-
-export default class Footer extends React.Component {
+export default class Footer extends Component {
 
     constructor(props) {
         super(props);

@@ -4,11 +4,10 @@
  */
 
 // Libraries
-import Button from 'react-bootstrap/lib/Button';
-import Modal from 'react-bootstrap/lib/Modal';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 
-export default class CustomModal extends React.Component {
+export default class CustomModal extends Component {
 
     render() {
         return (
@@ -47,15 +46,15 @@ export default class CustomModal extends React.Component {
 }
 
 CustomModal.propTypes = {
-    cancelButtonMessage: React.PropTypes.string.isRequired,
-    cancelButtonStyle: React.PropTypes.string.isRequired,
-    closeHandler: React.PropTypes.func.isRequired,
-    confirmButtonMessage: React.PropTypes.string.isRequired,
-    confirmButtonStyle: React.PropTypes.string.isRequired,
-    confirmHandler: React.PropTypes.func.isRequired,
-    confirmId: React.PropTypes.string,
-    modalMessage: React.PropTypes.string,
-    showModal: React.PropTypes.bool.isRequired,
-    style: React.PropTypes.object,
-    title: React.PropTypes.string
+    cancelButtonMessage: PropTypes.string.isRequired,
+    cancelButtonStyle: PropTypes.string.isRequired,
+    closeHandler: PropTypes.func.isRequired,
+    confirmButtonMessage: PropTypes.string.isRequired,
+    confirmButtonStyle: PropTypes.string.isRequired,
+    confirmHandler: PropTypes.func.isRequired,
+    confirmId: PropTypes.string,
+    modalMessage: PropTypes.string,
+    showModal: PropTypes.bool.isRequired,
+    style: PropTypes.object,
+    title: PropTypes.string
 };

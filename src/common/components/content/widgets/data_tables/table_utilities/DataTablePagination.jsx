@@ -4,25 +4,11 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
+// Style
+import { DataTablePagination as STYLE } from '../../../../../../client/style';
 
-const STYLE = {
-    unselectable: {
-        WebkitUserSelect: "none",
-        KhtmlUserSelect: "none",
-        MozUserSelect: "none",
-        MsUserSelect: "none",
-        OUserSelect: "none",
-        userSelect: "none",
-        outlineStyle: "none",
-        WebkitTapHighlightColor: "transparent"}
-};
-
-export default class DataTableEntry extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class DataTableEntry extends Component {
 
     render() {
         return (

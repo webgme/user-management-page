@@ -6,38 +6,14 @@
  */
 
 // Libraries
-import Link from 'react-router/lib/Link';
 import React from 'react';
+import { Link } from 'react-router';
 // Self defined
-// import ColorMenu from './navigation_bar/ColorMenu';
 import ColorMenu from '../../containers/header/navigation_bar/ColorMenu';
 // import SettingsMenu from './navigation_bar/SettingsMenu';
 import UserMenu from '../../containers/header/navigation_bar/UserMenu';
-import {capitalizeFirstLetter} from '../../../client/utils/utils';
-
-const STYLING = {
-    breadCrumb: {
-        position: "absolute",
-        boxSizing: "border-box",
-        padding: "15px 15px",
-        listStyleType: "none",
-        display: "inline"
-    },
-    breadCrumbIcon: {
-        fontSize: "20px"
-    },
-    breadCrumbListItem: {
-        display: "inline",
-        color: "white"
-    },
-    breadCrumbLink: {
-        color: "white",
-        cursor: "pointer",
-        display: "inline",
-        fontSize: "13px",
-        textDecoration: "none"
-    }
-};
+import { capitalizeFirstLetter } from '../../../client/utils/utils';
+import { Header as STYLE } from '../../../client/style';
 
 export default class Header extends React.Component {
 
@@ -54,9 +30,9 @@ export default class Header extends React.Component {
 
         // Always have home
         breadcrumbs.push(
-            <li style={STYLING.breadCrumbListItem} key={0}>
-                <Link to={this.props.basePath} style={STYLING.breadCrumbLink}>
-                    <i className="fa fa-home" style={STYLING.breadCrumbIcon}/>
+            <li style={STYLE.breadCrumbListItem} key={0}>
+                <Link to={this.props.basePath} style={STYLE.breadCrumbLink}>
+                    <i className="fa fa-home" style={STYLE.breadCrumbIcon}/>
                 </Link>
             </li>
         );
@@ -65,23 +41,23 @@ export default class Header extends React.Component {
         rest.forEach((oneParam, index) => {
             if (index === 0) {
                 breadcrumbs.push(
-                    <li style={STYLING.breadCrumbListItem} key={index + 1}>
-                        <Link to={`${this.props.basePath}${oneParam}`} style={STYLING.breadCrumbLink}>
+                    <li style={STYLE.breadCrumbListItem} key={index + 1}>
+                        <Link to={`${this.props.basePath}${oneParam}`} style={STYLE.breadCrumbLink}>
                             {capitalizeFirstLetter(rest[index])}
                         </Link>
                     </li>
                 );
             } else if (index === rest.length - 1) {
                 breadcrumbs.push(
-                    <li style={STYLING.breadCrumbListItem} key={index + 1}>
-                        <Link to={`${this.props.basePath}${pathWithoutBase}`} style={STYLING.breadCrumbLink}>
+                    <li style={STYLE.breadCrumbListItem} key={index + 1}>
+                        <Link to={`${this.props.basePath}${pathWithoutBase}`} style={STYLE.breadCrumbLink}>
                             {capitalizeFirstLetter(rest[index])}
                         </Link>
                     </li>
                 );
             } else {
                 breadcrumbs.push(
-                    <li style={STYLING.breadCrumbListItem} key={index + 1}>
+                    <li style={STYLE.breadCrumbListItem} key={index + 1}>
                         {capitalizeFirstLetter(rest[index])}
                     </li>
                 );
@@ -90,7 +66,7 @@ export default class Header extends React.Component {
 
         for (let i = 1; i < breadcrumbs.length; i += 2) {
             breadcrumbs.splice(i, 0,
-                <span style={STYLING.breadCrumbLink} key={i + 100}>
+                <span style={STYLE.breadCrumbLink} key={i + 100}>
                     &nbsp;&nbsp;&nbsp; > &nbsp;&nbsp;&nbsp;
                 </span>);
         }
@@ -108,7 +84,7 @@ export default class Header extends React.Component {
                     <span className="sr-only">Toggle navigation</span>
                 </a>
 
-                <ol className="dropdown messages-menu" style={STYLING.breadCrumb}>
+                <ol className="dropdown messages-menu" style={STYLE.breadCrumb}>
                     {breadcrumbs}
                 </ol>
 

@@ -18,17 +18,8 @@ import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations
 import { sortBy } from '../../../../../actions/tables';
 import { fetchUserIfNeeded } from '../../../../../actions/user';
 import { sortObjectArrayByField } from '../../../../../../client/utils/utils';
-
-const STYLE = {
-    createOrganizationModal: {
-        paddingTop: "50%",
-        marginTop: "50%"
-    },
-    modalDialogTextField: {
-        marginLeft: "15px",
-        paddingRight: "15px"
-    }
-};
+// Style
+import { OrganizationsTable as STYLE } from '../../../../../../client/style';
 
 const ORGANIZATION_FIELDS = {
     "Organization Name": "name"

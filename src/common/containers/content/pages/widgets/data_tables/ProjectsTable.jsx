@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import { sortWithChecks } from '../../../../../../client/utils/utils'; // eslint-disable-line max-len
+import { sortWithChecks } from '../../../../../../client/utils/utils';
 import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
 import { sortBy } from '../../../../../actions/tables';
 

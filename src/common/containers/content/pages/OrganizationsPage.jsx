@@ -12,14 +12,8 @@ import { connect } from 'react-redux';
 import OrganizationsTable from './widgets/data_tables/OrganizationsTable';
 import { verifyUserOrOrganizationId } from '../../../../client/utils/loginUtils';
 import { fetchOrganizations } from '../../../actions/organizations';
-
-const STYLE = {
-    modalDialog: {
-        position: "absolute",
-        top: "15%",
-        left: "40%"
-    }
-};
+// Style
+import { OrganizationsPage as STYLE } from '../../../../client/style';
 
 class OrganizationsPage extends Component {
 

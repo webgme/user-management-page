@@ -4,9 +4,9 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
-export default class LoginField extends React.Component {
+export default class LoginField extends Component {
 
     constructor(props) {
         super(props);
@@ -60,15 +60,15 @@ export default class LoginField extends React.Component {
 }
 
 LoginField.propTypes = {
-    autoFocus: React.PropTypes.bool,
-    hint: React.PropTypes.string.isRequired,
-    iconClass: React.PropTypes.string.isRequired,
-    indentStyle: React.PropTypes.object,
-    invalidMessage: React.PropTypes.string,
-    name: React.PropTypes.string,
-    onBlur: React.PropTypes.func,
-    onEnter: React.PropTypes.func,
-    onInputChange: React.PropTypes.func.isRequired,
-    valid: React.PropTypes.bool,
-    value: React.PropTypes.string.isRequired
+    autoFocus: PropTypes.bool,
+    hint: PropTypes.string.isRequired,
+    iconClass: PropTypes.string.isRequired,
+    indentStyle: PropTypes.object,
+    invalidMessage: PropTypes.string,
+    name: PropTypes.string,
+    onBlur: PropTypes.func,
+    onEnter: PropTypes.func,
+    onInputChange: PropTypes.func.isRequired,
+    valid: PropTypes.bool,
+    value: PropTypes.string.isRequired
 };
