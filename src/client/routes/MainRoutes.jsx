@@ -18,6 +18,7 @@ import ProfilePage from '../../common/containers/content/pages/ProfilePage';
 import ProjectPage from '../../common/containers/content/pages/ProjectPage';
 import ProjectsPage from '../../common/components/content/pages/ProjectsPage';
 import ProjectsByOwnerPage from '../../common/components/content/pages/ProjectsByOwnerPage';
+import UsersPage from '../../common/components/content/pages/UsersPage';
 
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 
@@ -43,6 +44,8 @@ export default (
 
             {/* Singular project needs same space so not a sub-component*/}
             <Route path="projects/:ownerId/:projectName" component={ProjectPage} />
+
+            <Route path="users" component={UsersPage} />
 
         </Route>
 

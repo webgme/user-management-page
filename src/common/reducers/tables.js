@@ -37,7 +37,9 @@ const initialTablesState = {
     projectUser: initialTableState,
     projectOrg: initialTableState,
     // Table from the projects page
-    projects: initialTableState
+    projects: initialTableState,
+    // Table from users page
+    users: initialTableState
 };
 
 const tables = (state = initialTablesState, action) => {

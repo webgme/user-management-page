@@ -80,8 +80,7 @@ class OrganizationTable extends Component {
                            iconClass="fa fa-university"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
-                           sortedForward={true}
-                           tableName="Members">
+                           sortedForward={true}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
@@ -91,8 +90,7 @@ class OrganizationTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            restClient={this.props.restClient}
                            sortable={true}
-                           sortedForward={true}
-                           tableName="Admins">
+                           sortedForward={true}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
 

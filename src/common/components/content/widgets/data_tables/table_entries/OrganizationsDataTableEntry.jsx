@@ -11,15 +11,17 @@ export default class OrganizationsDataTableEntry extends Component {
 
     render() {
 
-        const { basePath } = this.props;
+        const {basePath} = this.props;
 
         const buildLink = `${basePath}organizations/${this.props.name}`;
 
-        return <tr role="row" className="odd">
-            <td className="sorting_1">
-                <Link to={buildLink}>{this.props.name}</Link>
-            </td>
-        </tr>;
+        return (
+            <tr role="row" className="odd">
+                <td className="sorting_1">
+                    <Link to={buildLink}>{this.props.name}</Link>
+                </td>
+            </tr>
+        );
     }
 }
 

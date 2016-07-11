@@ -67,8 +67,8 @@ function initialize(middlewareOpts) {
         });
     });
 
-    const ROUTES = ['/', '/home', '/projects', '/profile', '/organizations',
-        /\/projects\/\w+$/, /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
+    const ROUTES = ['/', '/home', '/profile', '/projects', /\/projects\/\w+$/, /\/projects\/\w+\/\w+$/,
+        '/organizations', /\/organizations\/\w+$/, /\/users$/];
 
     router.get(ROUTES, ensureAuthenticated, function(req, res) {
 

@@ -82,8 +82,7 @@ class OrganizationsTable extends Component {
                            iconClass="fa fa-institution"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
-                           sortedForward={sortedForward}
-                           tableName="Organizations">
+                           sortedForward={sortedForward}>
                     <OrganizationsDataTableEntry />
                 </DataTable>
 

@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 // Self-defined
 import DataTableCategory from './table_utilities/DataTableCategory';
 import DataTablePagination from './table_utilities/DataTablePagination';
+// Style
+import { DataTable as STYLE } from '../../../../../client/style';
 
 export default class DataTable extends Component {
 
@@ -117,14 +119,7 @@ export default class DataTable extends Component {
                        data-dt-idx={i}
                        href="#"
                        onClick={this.handlePagination}
-                       style={{WebkitUserSelect: "none",
-                               KhtmlUserSelect: "none",
-                               MozUserSelect: "none",
-                               MsUserSelect: "none",
-                               OUserSelect: "none",
-                               userSelect: "none",
-                               outlineStyle: "none",
-                               WebkitTapHighlightColor: "transparent"}}
+                       style={STYLE.paginationButtons}
                        tabIndex="0">{i}</a>
                 </li>);
         }

@@ -109,8 +109,7 @@ class ProjectCollaboratorTable extends Component {
                                projectName={projectName}
                                showOtherTitle={true}
                                sortable={true}
-                               sortedForward={userSortedForward}
-                               tableName="Collaborators">
+                               sortedForward={userSortedForward}>
                         <ProjectDataTableEntry authorization={authorization} />
                     </DataTable>
 
@@ -125,8 +124,7 @@ class ProjectCollaboratorTable extends Component {
                                projectName={projectName}
                                showOtherTitle={true}
                                sortable={true}
-                               sortedForward={orgSortedForward}
-                               tableName="Collaborators">
+                               sortedForward={orgSortedForward}>
                         <ProjectDataTableEntry authorization={authorization} />
                     </DataTable>
 

@@ -74,8 +74,7 @@ class ProjectsTable extends Component {
                            iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
-                           sortedForward={sortedForward}
-                           tableName={`Projects By ${user._id}`}>
+                           sortedForward={sortedForward}>
                     <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
                 </DataTable>
 
