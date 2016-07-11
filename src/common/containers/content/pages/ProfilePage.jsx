@@ -8,30 +8,15 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defind
 import { fetchUserIfNeeded } from '../../../actions/user';
-
-const STYLE = {
-    profileBox: {
-        paddingLeft: "35%",
-        paddingRight: "35%"
-    },
-    profileBoxBorder: {
-        padding: "10px 10px"
-    }
-};
+// Style
+import { ProfilePage as STYLE } from '../../../../client/style';
 
 class ProfilePage extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchUserIfNeeded());
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = nextProps;
-
-        if (nextProps.user !== this.props.user) {
-            dispatch(fetchUserIfNeeded());
-        }
     }
 
     render() {
@@ -71,8 +56,10 @@ ProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+    const { user } = state.user;
+
     return {
-        user: state.user.user
+        user
     };
 };
 

@@ -11,30 +11,8 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 // Self-defined
 import { fetchUserIfNeeded } from '../../actions/user';
-
-const STYLING = {
-    status: {
-        color: "#BAB8B8",
-        fontSize: "13px",
-        lineHeight: "15px",
-        paddingLeft: "23px"
-    },
-    name: {
-        color: "#ECF0F1",
-        fontSize: "14px",
-        fontWeight: "light",
-        paddingLeft: "20px",
-        paddingTop: "5px"
-    },
-    panel: {
-        padding: "15px"
-    },
-    imageIcon: {
-        borderRadius: 0,
-        maxWidth: "50px",
-        paddingTop: "8px"
-    }
-};
+// Style
+import { SideBarUserPanel as STYLE } from '../../../client/style';
 
 class SideBarUserPanel extends Component {
 
@@ -58,17 +36,17 @@ class SideBarUserPanel extends Component {
     render() {
         const { user } = this.props;
 
-        return <div className="user-panel" style={STYLING.panel}>
+        return <div className="user-panel" style={STYLE.panel}>
             <div className="pull-left image" style={{cursor: "pointer"}}>
                 <img alt="User Image"
                      className="img-circle"
                      onClick={this.goToEditor}
                      src="/img/gme-logo.png"
-                     style={STYLING.imageIcon}/>
+                     style={STYLE.imageIcon}/>
             </div>
             <div className="pull-left info">
-                <p style={STYLING.name}>&nbsp;{user._id}&nbsp;</p>
-                <span style={STYLING.status}><i className="fa fa-circle text-success"/> Online</span>
+                <p style={STYLE.name}>&nbsp;{user._id}&nbsp;</p>
+                <span style={STYLE.status}><i className="fa fa-circle text-success"/> Online</span>
             </div>
         </div>;
     }

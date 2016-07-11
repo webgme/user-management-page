@@ -3,13 +3,9 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class SettingsMenu extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class SettingsMenu extends Component {
 
     render() {
         return <li className="nondropdown settings-menu">

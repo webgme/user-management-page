@@ -1,25 +1,25 @@
 /**
- * Reducers for userClient
+ * Reducers for usersClient
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import {REQUEST_USER, RECEIVE_USER} from '../actions/user';
+import { REQUEST_USERS, RECEIVE_USERS } from '../actions/users';
 
 const initialState = {
     hasFetched: false,
     isFetching: false,
-    user: {}
+    users: []
 };
 
-const user = (state = initialState, action) => {
+const users = (state = initialState, action) => {
     switch (action.type) {
-        case RECEIVE_USER:
+        case RECEIVE_USERS:
             return Object.assign({}, state, {
                 hasFetched: true,
                 isFetching: false,
-                user: action.user
+                users: action.users
             });
-        case REQUEST_USER:
+        case REQUEST_USERS:
             return Object.assign({}, state, {
                 isFetching: true
             });
@@ -28,4 +28,4 @@ const user = (state = initialState, action) => {
     }
 };
 
-export default user;
+export default users;

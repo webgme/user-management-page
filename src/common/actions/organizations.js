@@ -13,6 +13,10 @@ export const REQUEST_ORGANIZATIONS_FAILURE = 'REQUEST_ORGANIZATIONS_FAILURE';
 export const REQUEST_ORGANIZATIONS_SUCCESS = 'REQUEST_ORGANIZATIONS_SUCCESS';
 export const RECEIVE_ORGANIZATIONS = 'RECEIVE_ORGANIZATIONS';
 
+export const REVERSE_SORT = 'REVERSE_SORT';
+export const SORT_CATEGORY = 'SORT_CATEGORY';
+export const SORT_FORWARD = 'SORT_FORWARD';
+
 export const requestOrganizations = () => {
     return {
         type: REQUEST_ORGANIZATIONS
@@ -22,15 +26,15 @@ export const requestOrganizations = () => {
 export const receiveOrganizations = (organizations) => {
     return {
         type: RECEIVE_ORGANIZATIONS,
-        organizations: organizations
+        organizations
     };
 };
 
 const shouldFetchOrganizations = (state) => {
-    const { organizations, isFetching } = state.organizations;
+    const { hasFetched, isFetching } = state.organizations;
 
     let shouldFetch = true;
-    if (organizations.length > 0 || isFetching) {
+    if (hasFetched || isFetching) {
         shouldFetch = false;
     } else {
         shouldFetch = true;
@@ -39,7 +43,7 @@ const shouldFetchOrganizations = (state) => {
     return shouldFetch;
 };
 
-const fetchOrganizations = () => {
+export const fetchOrganizations = () => {
     return dispatch => {
         dispatch(requestOrganizations());
         return organizationsClient.getAllOrganizations()

@@ -227,3 +227,22 @@ export function formatRightsOrigin(arr) {
 
     return result;
 }
+
+/**
+ * Custom sort method for table sorting
+ * @param {Array} arr - input array
+ * @param {string|Array} sortCategory - sortCategory
+ * @param {boolean} sortedForward - sortedForward
+ * @return {Array} - custom sorted array
+ */
+export function sortWithChecks(arr, sortCategory, sortedForward) {
+    if (typeof sortCategory === 'string') {
+        return sortedForward ?
+            arr.sort(sortObjectArrayByField(sortCategory)) :
+            arr.sort(sortObjectArrayByField(sortCategory)).reverse();
+    } else if (Array.isArray(sortCategory)) {
+        return sortedForward ?
+            arr.sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])) :
+            arr.sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])).reverse();
+    }
+}

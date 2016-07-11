@@ -4,13 +4,9 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
-export default class DataTableCategories extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class DataTableCategories extends Component {
 
     render() {
 
@@ -41,5 +37,5 @@ export default class DataTableCategories extends React.Component {
 }
 
 DataTableCategories.propTypes = {
-    name: React.PropTypes.string
+    name: PropTypes.string
 };

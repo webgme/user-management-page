@@ -6,16 +6,14 @@
  */
 
 // Libraries
-import browserHistory from 'react-router/lib/browserHistory';
-import Button from 'react-bootstrap/lib/Button';
-import Checkbox from 'react-bootstrap/lib/Checkbox';
-import Link from 'react-router/lib/Link';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Button } from 'react-bootstrap';
+import { browserHistory, Link } from 'react-router';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 import {verifyEmail, verifyPassword, verifyUserOrOrganizationId} from '../../../client/utils/utils';
 
-export default class RegisterForm extends React.Component {
+export default class RegisterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -300,6 +298,6 @@ export default class RegisterForm extends React.Component {
 }
 
 RegisterForm.propTypes = {
-    basePath: React.PropTypes.string,
-    loginClient: React.PropTypes.object
+    basePath: PropTypes.string,
+    loginClient: PropTypes.object
 };

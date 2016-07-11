@@ -6,21 +6,16 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 // Self defined
-// import OrganizationsDataTable from '../widgets/data_tables/OrganizationsTable';
-import OrganizationsTable from '../../../containers/content/pages/widgets/data_tables/OrganizationsTable';
-import {verifyUserOrOrganizationId} from '../../../../client/utils/loginUtils';
+import OrganizationsTable from './widgets/data_tables/OrganizationsTable';
+import { verifyUserOrOrganizationId } from '../../../../client/utils/loginUtils';
+import { fetchOrganizations } from '../../../actions/organizations';
+// Style
+import { OrganizationsPage as STYLE } from '../../../../client/style';
 
-const STYLE = {
-    modalDialog: {
-        position: "absolute",
-        top: "15%",
-        left: "40%"
-    }
-};
-
-export default class OrganizationsPage extends React.Component {
+class OrganizationsPage extends Component {
 
     constructor(props) {
         super(props);
@@ -28,7 +23,6 @@ export default class OrganizationsPage extends React.Component {
             createOrganizationInvalidMessage: 'Organization name must only contain letters, numbers, and' +
                                               ' the underscore and must be at least 3 characters long',
             newOrganizationName: '',
-            refreshTable: false,
             showCreateOrganizationModal: false,
             validOrganizationName: true
         };
@@ -38,7 +32,6 @@ export default class OrganizationsPage extends React.Component {
         this.createOrganization = this.createOrganization.bind(this);
         this.onCreateOrganizationNameChange = this.onCreateOrganizationNameChange.bind(this);
         this.openCreateOrganization = this.openCreateOrganization.bind(this);
-        this.refreshTable = this.refreshTable.bind(this);
     }
 
     checkOrganizationName() {
@@ -56,6 +49,8 @@ export default class OrganizationsPage extends React.Component {
     }
 
     createOrganization() {
+        const { dispatch } = this.props;
+
         Promise.resolve(this.checkOrganizationName())
             .then(() => {
                 if (this.state.validOrganizationName) {
@@ -63,9 +58,10 @@ export default class OrganizationsPage extends React.Component {
                         .then(() => {
                             this.setState({
                                 newOrganizationName: '',
-                                refreshTable: !this.state.refreshTable,
                                 showCreateOrganizationModal: false
                             });
+                            // Refresh table
+                            dispatch(fetchOrganizations());
                         })
                         .catch(err => {
                             if (err.status === 400) {
@@ -97,33 +93,28 @@ export default class OrganizationsPage extends React.Component {
             });
     }
 
-    refreshTable() {
-        this.setState({
-            refreshTable: !this.state.refreshTable
-        });
-    }
-
     render() {
-        return <section className="content">
+        return (
+            <section className="content">
 
             <div className="box box-primary">
 
-                <OrganizationsTable basePath={this.props.basePath}
-                                        checkOrganizationName={this.checkOrganizationName}
-                                        closeCreateOrganization={this.closeCreateOrganization}
-                                        createOrganization={this.createOrganization}
-                                        createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
-                                        newOrganizationName={this.state.newOrganizationName}
-                                        onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
-                                        openCreateOrganization={this.openCreateOrganization}
-                                        refreshTable={this.state.refreshTable}
-                                        restClient={this.props.restClient}
-                                        showCreateOrganizationModal={this.state.showCreateOrganizationModal}
-                                        validOrganizationName={this.state.validOrganizationName} />
+                <OrganizationsTable checkOrganizationName={this.checkOrganizationName}
+                                    closeCreateOrganization={this.closeCreateOrganization}
+                                    createOrganization={this.createOrganization}
+                                    createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
+                                    newOrganizationName={this.state.newOrganizationName}
+                                    onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
+                                    openCreateOrganization={this.openCreateOrganization}
+                                    showCreateOrganizationModal={this.state.showCreateOrganizationModal}
+                                    validOrganizationName={this.state.validOrganizationName}/>
 
             </div>
 
-        </section>;
+        </section>
+        );
     }
 
 }
+
+export default connect()(OrganizationsPage);

@@ -6,14 +6,8 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-
-const STYLING = {
-    sidebarCategoryStyle: {
-        lineHeight: "30px",
-        fontFamily: `"Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif`,
-        color: "#E7E7E7"
-    }
-};
+// Style
+import { SideBarMenu as STYLE } from '../../../client/style';
 
 export default class SideBarMenu extends Component {
 
@@ -22,7 +16,7 @@ export default class SideBarMenu extends Component {
 
         return (
 
-        <ul className="sidebar-menu" style={STYLING.sidebarCategoryStyle}>
+        <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
 

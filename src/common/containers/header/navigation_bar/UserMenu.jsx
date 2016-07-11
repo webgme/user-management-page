@@ -9,34 +9,13 @@ import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
-
-const STYLING = {
-    logoutButtonPadding: {
-        padding: "9px 100px"
-    },
-    logoutButtonBorder: {
-        borderColor: "#777777"
-    },
-    logoutAreaBorder: {
-        padding: "2px"
-    },
-    userHeader: {
-        height: "145px"
-    }
-};
+import { UserMenu as STYLE } from '../../../../client/style';
 
 class UserMenu extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(fetchUserIfNeeded());
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.user !== this.props.user) {
-            const { dispatch } = nextProps;
-            dispatch(fetchUserIfNeeded());
-        }
     }
 
     render() {
@@ -49,16 +28,16 @@ class UserMenu extends Component {
                     <span className="hidden-xs">&nbsp;{user._id}&nbsp;</span>
                 </a>
                 <ul className="dropdown-menu">
-                    <li className="user-header" style={STYLING.userHeader}>
+                    <li className="user-header" style={STYLE.userHeader}>
                         <img src="/img/gme-logo.png" className="img-circle" alt="User Image"/>
                         <p>
                             {user._id}
                         </p>
                     </li>
-                    <li className="user-footer" style={STYLING.logoutAreaBorder}>
-                        <div className="col-xs-4 text-center" style={STYLING.logoutButtonPadding}>
+                    <li className="user-footer" style={STYLE.logoutAreaBorder}>
+                        <div className="col-xs-4 text-center" style={STYLE.logoutButtonPadding}>
                             <a href="/logout">
-                                <Button style={STYLING.logoutButtonBorder}>Sign Out</Button>
+                                <Button style={STYLE.logoutButtonBorder}>Sign Out</Button>
                             </a>
                         </div>
                     </li>
@@ -74,8 +53,10 @@ UserMenu.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+    const { user } = state.user;
+
     return {
-        user: state.user.user
+        user
     };
 };
 

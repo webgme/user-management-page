@@ -22,15 +22,15 @@ export const requestUser = () => {
 export const receiveUser = (user) => {
     return {
         type: RECEIVE_USER,
-        user: user
+        user
     };
 };
 
 const shouldFetchUser = (state) => {
-    const { user, isFetching } = state.user;
+    const { hasFetched, isFetching } = state.user;
 
     let shouldFetch = true;
-    if (Object.keys(user).length > 0 || isFetching) {
+    if (hasFetched || isFetching) {
         shouldFetch = false;
     } else {
         shouldFetch = true;

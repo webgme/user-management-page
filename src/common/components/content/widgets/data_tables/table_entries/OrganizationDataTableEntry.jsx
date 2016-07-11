@@ -4,9 +4,9 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class OrganizationDataTableEntry extends React.Component {
+export default class OrganizationDataTableEntry extends Component {
 
     render() {
         return <tr role="row" className="odd">

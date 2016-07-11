@@ -4,39 +4,20 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined
 import { capitalizeFirstLetter } from '../../../../client/utils/utils';
 import { THEME_COLORS } from '../../../../client/utils/constants';
+import { ColorMenu as STYLE } from '../../../../client/style';
 
-const STYLE = {
-    colorMenu: {
-        paddingLeft: "10%"
-    },
-    dropdownMenu: {
-        width: "150px"
-    },
-    menuHeader: {
-        paddingTop: "-6px",
-        paddingRight: "13px",
-        paddingBottom: "-6px",
-        paddingLeft: "20px"
-    }
-};
-
-export default class ColorMenu extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class ColorMenu extends Component {
 
     render() {
 
         const { onChangeThemeColor } = this.props;
 
-        let colorOptions = ['blue', 'green', 'purple', 'red', 'yellow'];
         let formattedColors = [];
-        colorOptions.forEach((color, index) => {
+        Object.keys(THEME_COLORS).forEach((color, index) => {
             let colorBoxStyle = {
                 width: 10,
                 height: 10,

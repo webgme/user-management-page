@@ -4,18 +4,13 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class ContentWrapper extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+export default class ContentWrapper extends Component {
 
     render() {
 
         let PageWithRestClient = React.cloneElement(this.props.children, {
-            basePath: this.props.basePath,
             restClient: this.props.restClient
         });
 

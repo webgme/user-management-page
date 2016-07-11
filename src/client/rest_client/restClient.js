@@ -11,47 +11,13 @@ import UsersClient from './usersClient';
 /**
  * Single rest clients that contains user, users, projects, and orgs clients
  * @param {string} baseUrl - the base url
- * @param {boolean} debugMode - whether or not in debugMode(mocking data)
  */
-function RestClient(baseUrl = '/api/', debugMode = false) {
+function RestClient(baseUrl = '/api/') {
 
     this.organizations = new OrganizationsClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);
-    this.user = new UserClient(baseUrl, debugMode);
+    this.user = new UserClient(baseUrl);
     this.users = new UsersClient(baseUrl);
-
-    /**
-     * Returns a boolean for if the current user can authorize others to the project
-     * @param {string} ownerId - id of owner
-     * @return {Promise.<boolean>} - Boolean on if authorized!
-     */
-    this.canUserAuthorize = (ownerId) => {
-        let authorization = false;
-
-        return this.user.getCurrentUser()
-            .then(currentUser => {
-                if (currentUser._id === ownerId) {
-                    authorization = true;
-                } else { // Check if owner is an organization and current user is an admin
-                    let findAdminArray = [];
-                    currentUser.orgs.forEach(orgName =>
-                        findAdminArray.push(this.organizations.getOrganization(orgName))
-                    );
-                    return Promise.all(findAdminArray)
-                        .then(adminsOfOrganizationsUserIsIn => {
-                            adminsOfOrganizationsUserIsIn.forEach(organizationData => {
-                                if (ownerId === organizationData._id &&
-                                    organizationData.admins.indexOf(currentUser._id) !== -1) {
-                                    authorization = true;
-                                }
-                            });
-                            // Done checking all organizations in and if owner is self
-                            return authorization;
-                        });
-                }
-                return authorization;
-            });
-    };
 }
 
 module.exports = RestClient;

@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 // Self-defined
 import DataTableCategory from './table_utilities/DataTableCategory';
 import DataTablePagination from './table_utilities/DataTablePagination';
 
-export default class DataTable extends React.Component {
+export default class DataTable extends Component {
 
     constructor(props) {
         super(props);
@@ -93,12 +93,10 @@ export default class DataTable extends React.Component {
             let properties = {};
             Object.keys(entriesList[i]).forEach(prop => {
                 properties[prop] = entriesList[i][prop];
-                properties.basePath = this.props.basePath;
                 properties.handleRevoke = this.props.handleRevoke;
                 properties.key = i;
                 properties.ownerId = this.props.ownerId;
                 properties.projectName = this.props.projectName;
-                properties.restClient = this.props.restClient;
             });
             formattedEntries.push(React.cloneElement(this.props.children, properties));
         }

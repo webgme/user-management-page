@@ -10,39 +10,20 @@ import { Link } from 'react-router';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { fetchProjectsIfNeeded } from '../../../actions/projects';
-
-const STYLE = {
-    profileBox: {
-        paddingLeft: "10%",
-        paddingRight: "10%"
-    },
-    profileBoxBorder: {
-        margin: "auto",
-        padding: "10px 10px",
-        width: "40%"
-    },
-    widgetBox: {
-        color: "white"
-    }
-};
+// Style
+import { HomePage as STYLE } from '../../../../client/style';
 
 class HomePage extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchUserIfNeeded());
         dispatch(fetchProjectsIfNeeded());
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.user !== this.props.user || nextProps.projects !== this.props.projects) {
-            const { dispatch } = nextProps;
-            dispatch(fetchUserIfNeeded());
-        }
-    }
-
     render() {
-        const { user, projects } = this.props;
+        const { basePath, projects, user } = this.props;
 
         let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
             numViewableProjects = projects.length,
@@ -60,7 +41,7 @@ class HomePage extends Component {
                         <div className="icon">
                             <i className="fa fa-cubes"/>
                         </div>
-                        <Link to={`${this.props.basePath}projects`}
+                        <Link to={`${basePath}projects`}
                               className="small-box-footer">
                             Show Projects <i className="fa fa-arrow-circle-right"/>
                         </Link>
@@ -74,7 +55,7 @@ class HomePage extends Component {
                         <div className="icon">
                             <i className="fa fa-institution"/>
                         </div>
-                        <Link to={`${this.props.basePath}organizations`}
+                        <Link to={`${basePath}organizations`}
                               className="small-box-footer">
                             Show Organizations <i className="fa fa-arrow-circle-right"/>
                         </Link>
@@ -113,15 +94,21 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
+    basePath: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     projects: PropTypes.array.isRequired,
     user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
+    const { basePath } = state;
+    const { projects } = state.projects;
+    const { user } = state.user;
+
     return {
-        projects: state.projects.projects,
-        user: state.user.user
+        basePath,
+        projects,
+        user
     };
 };
 

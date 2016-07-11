@@ -4,10 +4,12 @@
  */
 
 // Libraries
-import React from 'react';
-import Select from 'react-select/lib/Select';
+import React, { Component } from 'react';
+import Select from 'react-select';
+// Style
+import { Multiselect as STYLE } from '../../../../../client/style';
 
-export default class MultiSelectField extends React.Component {
+export default class MultiSelect extends Component {
 
     constructor(props) {
         super(props);
@@ -25,7 +27,7 @@ export default class MultiSelectField extends React.Component {
     render() {
 
         return (
-            <div className="section" style={{marginBottom: "10px"}}>
+            <div className="section" style={STYLE}>
                 <h3 className="section-heading">{this.props.label}</h3>
                 <Select multi
                         onChange={this.handleSelectChange}
