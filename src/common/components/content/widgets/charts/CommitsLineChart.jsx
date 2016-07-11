@@ -6,7 +6,7 @@
 // Libraries
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import LineChart from 'react-chartjs/lib/line';
+import { Line as LineChart } from 'react-chartjs';
 // Self-defined
 import {convertHexToRGBA, getRandomColorHex, shadeColor,
         getPastWeeksDays,

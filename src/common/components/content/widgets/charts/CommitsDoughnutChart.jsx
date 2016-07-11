@@ -4,9 +4,9 @@
  */
 
 // Libraries
-import DoughnutChart from 'react-chartjs/lib/doughnut';
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { Doughnut as DoughnutChart } from 'react-chartjs';
 // Self-defined
 import {getRandomColorHex, isEmpty, shadeColor} from '../../../../../client/utils/utils';
 

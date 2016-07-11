@@ -7,7 +7,7 @@
 
 // Libraries:
 import React, { Component } from 'react';
-import BarChart from 'react-chartjs/lib/bar';
+import { Bar as BarChart } from 'react-chartjs';
 // Self defined:
 import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../../../client/utils/utils.js';
 

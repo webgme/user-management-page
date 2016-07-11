@@ -7,7 +7,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 // Style
-import { SideBarMenu as STYLING } from '../../../client/style';
+import { SideBarMenu as STYLE } from '../../../client/style';
 
 export default class SideBarMenu extends Component {
 
@@ -16,7 +16,7 @@ export default class SideBarMenu extends Component {
 
         return (
 
-        <ul className="sidebar-menu" style={STYLING.sidebarCategoryStyle}>
+        <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
 

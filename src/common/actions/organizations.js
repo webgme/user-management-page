@@ -60,22 +60,3 @@ export const fetchOrganizationsIfNeeded = () => {
         }
     };
 };
-
-export const reverseSort = () => {
-    return {
-        type: REVERSE_SORT
-    };
-};
-
-export const sortBy = (sortCategory) => {
-    return {
-        type: SORT_CATEGORY,
-        sortCategory
-    };
-};
-
-export const sortForward = () => {
-    return {
-        type: SORT_FORWARD
-    };
-};
