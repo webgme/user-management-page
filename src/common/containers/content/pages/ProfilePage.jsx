@@ -6,7 +6,8 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-// Self-defind
+// Self-defined
+import EditableBox from '../../../components/content/widgets/EditableBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
@@ -32,15 +33,12 @@ class ProfilePage extends Component {
                     <p className="text-muted text-center">WebGME</p>
 
                     <ul className="list-group list-group-unbordered">
-                        <li className="list-group-item">
-                            <b>UserID:</b> <a className="pull-right">&nbsp;{user._id}&nbsp;</a>
-                        </li>
-                        <li className="list-group-item">
-                            <b>Email</b> <a className="pull-right">&nbsp;{user.email}&nbsp;</a>
-                        </li>
-                        <li className="list-group-item">
-                            <b>Site Admin</b> <a className="pull-right">{user.siteAdmin ? 'Yes' : 'No'}</a>
-                        </li>
+                        <EditableBox label={"UserID"}
+                                     text={user._id ? user._id : ''} />
+                        <EditableBox label={"Email"}
+                                     text={user.email ? user.email : ''} />
+                        <EditableBox label={"Site Admin"}
+                                     text={user.siteAdmin ? 'Yes' : 'No'} />
                     </ul>
 
                 </div>

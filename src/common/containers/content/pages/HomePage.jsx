@@ -63,7 +63,8 @@ class HomePage extends Component {
 
                 </div>
 
-                <div className="box box-primary" style={STYLE.profileBoxBorder}>
+                <div className="col-md-6 col-md-offset-3">
+                <div className="box box-primary">
                     <div className="box-body box-profile">
                         <img className="profile-user-img img-responsive img-circle"
                              src="/img/gme-logo.png"
@@ -86,6 +87,7 @@ class HomePage extends Component {
                         </ul>
                     </div>
                 </div>
+                    </div>
 
             </section>
         );

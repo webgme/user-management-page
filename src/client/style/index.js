@@ -54,6 +54,14 @@ export const DataTablePagination = {
         WebkitTapHighlightColor: "transparent"}
 };
 
+export const EditableBox = {
+    text: {
+        position: "absolute",
+        top: "50%",
+        transform: "translate(0, -50%)"
+    }
+};
+
 export const Footer = {
     mainFooter: {
         fontSize: "12px",
@@ -95,11 +103,6 @@ export const HomePage = {
     profileBox: {
         paddingLeft: "10%",
         paddingRight: "10%"
-    },
-    profileBoxBorder: {
-        margin: "auto",
-        padding: "10px 10px",
-        width: "40%"
     },
     widgetBox: {
         color: "white"
