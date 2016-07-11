@@ -34,6 +34,7 @@ class ProjectPage extends Component {
 
         const { authorization } = this.props;
         const { ownerId, projectName } = this.props.params;
+        const { restClient } = this.props;
 
         return (
             <section className="content">
@@ -98,7 +99,7 @@ const mapStateToProps = (state, ownProps) => {
     const { user } = state.user;
     const { ownerId } = ownProps.params;
 
-    let authorization = canUserAuthorize(user, organizations, ownerId);
+    const authorization = canUserAuthorize(user, organizations, ownerId);
 
     return {
         authorization

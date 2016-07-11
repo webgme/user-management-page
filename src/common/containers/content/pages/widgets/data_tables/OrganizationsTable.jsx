@@ -148,7 +148,7 @@ const mapStateToProps = (state) => {
             formattedOrganizations.sort(sortObjectArrayByField(sortCategory)).reverse(),
         sortCategory,
         sortedForward,
-        user: user
+        user
     };
 };
 

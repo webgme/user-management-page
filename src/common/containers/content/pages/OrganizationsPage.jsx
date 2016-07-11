@@ -7,9 +7,11 @@
 
 // Libraries
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 // Self defined
-import OrganizationsTable from '../../../containers/content/pages/widgets/data_tables/OrganizationsTable';
-import {verifyUserOrOrganizationId} from '../../../../client/utils/loginUtils';
+import OrganizationsTable from './widgets/data_tables/OrganizationsTable';
+import { verifyUserOrOrganizationId } from '../../../../client/utils/loginUtils';
+import { fetchOrganizations } from '../../../actions/organizations';
 
 const STYLE = {
     modalDialog: {
@@ -19,7 +21,7 @@ const STYLE = {
     }
 };
 
-export default class OrganizationsPage extends Component {
+class OrganizationsPage extends Component {
 
     constructor(props) {
         super(props);
@@ -27,7 +29,6 @@ export default class OrganizationsPage extends Component {
             createOrganizationInvalidMessage: 'Organization name must only contain letters, numbers, and' +
                                               ' the underscore and must be at least 3 characters long',
             newOrganizationName: '',
-            refreshTable: false,
             showCreateOrganizationModal: false,
             validOrganizationName: true
         };
@@ -37,7 +38,6 @@ export default class OrganizationsPage extends Component {
         this.createOrganization = this.createOrganization.bind(this);
         this.onCreateOrganizationNameChange = this.onCreateOrganizationNameChange.bind(this);
         this.openCreateOrganization = this.openCreateOrganization.bind(this);
-        this.refreshTable = this.refreshTable.bind(this);
     }
 
     checkOrganizationName() {
@@ -55,6 +55,8 @@ export default class OrganizationsPage extends Component {
     }
 
     createOrganization() {
+        const { dispatch } = this.props;
+
         Promise.resolve(this.checkOrganizationName())
             .then(() => {
                 if (this.state.validOrganizationName) {
@@ -62,9 +64,10 @@ export default class OrganizationsPage extends Component {
                         .then(() => {
                             this.setState({
                                 newOrganizationName: '',
-                                refreshTable: !this.state.refreshTable,
                                 showCreateOrganizationModal: false
                             });
+                            // Refresh table
+                            dispatch(fetchOrganizations());
                         })
                         .catch(err => {
                             if (err.status === 400) {
@@ -96,12 +99,6 @@ export default class OrganizationsPage extends Component {
             });
     }
 
-    refreshTable() {
-        this.setState({
-            refreshTable: !this.state.refreshTable
-        });
-    }
-
     render() {
         return (
             <section className="content">
@@ -115,7 +112,6 @@ export default class OrganizationsPage extends Component {
                                     newOrganizationName={this.state.newOrganizationName}
                                     onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
                                     openCreateOrganization={this.openCreateOrganization}
-                                    refreshTable={this.state.refreshTable}
                                     showCreateOrganizationModal={this.state.showCreateOrganizationModal}
                                     validOrganizationName={this.state.validOrganizationName}/>
 
@@ -126,3 +122,5 @@ export default class OrganizationsPage extends Component {
     }
 
 }
+
+export default connect()(OrganizationsPage);

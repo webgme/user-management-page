@@ -22,7 +22,7 @@ export const requestUsers = () => {
 export const receiveUsers = (users) => {
     return {
         type: RECEIVE_USERS,
-        users: users
+        users
     };
 };
 

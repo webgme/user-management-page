@@ -15,7 +15,7 @@ import { sortObjectArrayByField} from '../../../../../../client/utils/utils';
 import { retrieveMembersAndAdmins } from '../../../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
 
-export default class OrganizationTable extends Component {
+class OrganizationTable extends Component {
 
     constructor(props) {
         super(props);
@@ -85,6 +85,17 @@ export default class OrganizationTable extends Component {
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
+                <DataTable categories={dataTableData.categories.admins}
+                           entries={data.admins}
+                           iconClass="fa fa-university"
+                           orderEntries={this.handleOrderEntries}
+                           restClient={this.props.restClient}
+                           sortable={true}
+                           sortedForward={true}
+                           tableName="Admins">
+                    <OrganizationDataTableEntry/>
+                </DataTable>
+
             </div>
 
         </div>
@@ -100,11 +111,10 @@ OrganizationTable.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('received new organizations');
     const { organizations } = state.organizations;
     const { organizationId } = ownProps;
 
-    let data = retrieveMembersAndAdmins(organizations, organizationId);
+    const data = retrieveMembersAndAdmins(organizations, organizationId);
 
     return {
         data

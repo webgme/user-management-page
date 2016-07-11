@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import AuthorizationWidget from '../../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
 import {multiselectFormat, sortObjectArrayByField} from '../../../../../../client/utils/utils';
 import { fetchUsers, fetchUsersIfNeeded } from '../../../../../actions/users';
-import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
+import { fetchOrganizations } from '../../../../../actions/organizations';
 
 class OrganizationAuthorizationWidget extends Component {
 

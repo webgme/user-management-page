@@ -64,8 +64,10 @@ ProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+    const { user } = state.user;
+
     return {
-        user: state.user.user
+        user
     };
 };
 

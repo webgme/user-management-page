@@ -22,7 +22,7 @@ export const requestProjects = () => {
 export const receiveProjects = (projects) => {
     return {
         type: RECEIVE_PROJECTS,
-        projects: projects
+        projects
     };
 };
 

@@ -26,7 +26,7 @@ export const requestOrganizations = () => {
 export const receiveOrganizations = (organizations) => {
     return {
         type: RECEIVE_ORGANIZATIONS,
-        organizations: organizations
+        organizations
     };
 };
 

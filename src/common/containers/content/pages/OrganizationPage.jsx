@@ -7,8 +7,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self defined
-import OrganizationAuthorizationWidget from '../../../containers/content/pages/widgets/authorization_widget/OrganizationAuthorizationWidget';
-import OrganizationTable from '../../../containers/content/pages/widgets/data_tables/OrganizationTable';
+import OrganizationAuthorizationWidget from './widgets/authorization_widget/OrganizationAuthorizationWidget';
+import OrganizationTable from './widgets/data_tables/OrganizationTable';
 import { canUserAuthorize } from '../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -62,7 +62,7 @@ const mapStateToProps = (state, ownProps) => {
     const { user } = state.user;
     const { ownerId } = ownProps.params;
 
-    let authorization = canUserAuthorize(user, organizations, ownerId);
+    const authorization = canUserAuthorize(user, organizations, ownerId);
 
     return {
         authorization
