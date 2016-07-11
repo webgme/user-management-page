@@ -9,8 +9,12 @@ import { connect } from 'react-redux';
 import ProjectsDataTableEntry from '../../../../../../components/content/widgets/data_tables/table_entries/ProjectsDataTableEntry'; // eslint-disable-line max-len
 
 const mapStateToProps = (state) => {
+    const { basePath } = state;
+    const { user } = state.user;
+
     return {
-        basePath: state.basePath
+        basePath,
+        user
     };
 };
 

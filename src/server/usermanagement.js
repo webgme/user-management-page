@@ -68,7 +68,7 @@ function initialize(middlewareOpts) {
     });
 
     const ROUTES = ['/', '/home', '/projects', '/profile', '/organizations',
-        /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
+        /\/projects\/\w+$/, /\/projects\/\w+\/\w+$/, /\/organizations\/\w+$/];
 
     router.get(ROUTES, ensureAuthenticated, function(req, res) {
 

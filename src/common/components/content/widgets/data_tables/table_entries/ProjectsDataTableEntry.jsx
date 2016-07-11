@@ -8,20 +8,31 @@ import React, { Component, PropTypes } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
 // Self-defined
-import {timeAgo} from '../../../../../../client/utils/utils';
+import { fetchUserIfNeeded } from '../../../../../actions/user';
+import { timeAgo } from '../../../../../../client/utils/utils';
 
 export default class ProjectsDataTableEntry extends Component {
 
+    componentDidMount() {
+        const { dispatch } = this.props;
+
+        dispatch(fetchUserIfNeeded());
+    }
+
     render() {
         const { basePath } = this.props;
+        const { user } = this.props;
 
-        let buildLink = `${basePath}projects/${this.props.owner}/${this.props.name}`;
+        const buildLink = `${basePath}projects/${this.props.owner}/${this.props.name}`;
 
         return (
             <tr role="row" className="odd">
 
                 <td style={this.props.columnStyle}>
-                    {this.props.owner}
+                    {this.props.owner === user._id ?
+                        <Link to={`${basePath}projects/${this.props.owner}`}>{this.props.owner}</Link> :
+                        <span>{this.props.owner}</span>
+                    }
                 </td>
 
                 <td className="sorting_1">
@@ -84,7 +95,8 @@ ProjectsDataTableEntry.propTypes = {
         viewedAt: PropTypes.Date
     }),
     name: PropTypes.string,
-    owner: PropTypes.string
+    owner: PropTypes.string,
+    user: PropTypes.object.isRequired
 };
 
 ProjectsDataTableEntry.defaultProps = {
