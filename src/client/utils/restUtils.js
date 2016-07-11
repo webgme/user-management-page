@@ -13,7 +13,7 @@ import { isEmpty } from './utils';
  * @return {boolean} - Boolean on if authorized!
  */
 export function canUserAuthorize(user, orgs, ownerId) {
-    return user._id === ownerId ||
+    return user.siteAdmin || user._id === ownerId ||
         orgs.some((org) => {
             return org._id === ownerId || org.admins.indexOf(user._id) !== -1;
         });
