@@ -8,7 +8,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import UsersDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/UsersDataTableEntry';
+import UsersDataTableEntry from './table_entries/UsersDataTableEntry';
 import { sortWithChecks } from '../../../../../../client/utils/utils';
 import { fetchUsersIfNeeded } from '../../../../../actions/users';
 import { sortBy } from '../../../../../actions/tables';
@@ -59,7 +59,7 @@ class UsersTable extends Component {
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
-                        <i className="fa fa-cubes"/> {` Users`}
+                        <i className="fa fa-users"/> {` Users`}
                     </h3>
                 </div>
 
@@ -67,7 +67,7 @@ class UsersTable extends Component {
                 <DataTable categories={categories}
                            content="Users"
                            entries={users}
-                           iconClass="fa fa-cube"
+                           iconClass="fa fa-users"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
@@ -96,9 +96,9 @@ const mapStateToProps = (state) => {
     });
 
     return {
-        users: sortWithChecks(formattedUsers, sortCategory, sortedForward),
         sortCategory,
-        sortedForward
+        sortedForward,
+        users: sortWithChecks(formattedUsers, sortCategory, sortedForward)
     };
 };
 

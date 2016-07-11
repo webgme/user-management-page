@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 export default class UsersDataTableEntry extends Component {
 
@@ -12,6 +13,7 @@ export default class UsersDataTableEntry extends Component {
 
         const { name, description } = this.props.data;
         const { siteAdmin, _id} = this.props;
+        const { basePath } = this.props;
 
         return (
             <tr role="row" className="odd">
@@ -21,7 +23,7 @@ export default class UsersDataTableEntry extends Component {
                 </td>
 
                 <td>
-                    {_id}
+                    <Link to={`${basePath}users/${_id}`}>{_id}</Link>
                 </td>
 
                 <td>
@@ -37,3 +39,6 @@ export default class UsersDataTableEntry extends Component {
     }
 }
 
+UsersDataTableEntry.propTypes = {
+    basePath: PropTypes.string.isRequired
+};

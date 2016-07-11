@@ -15,7 +15,6 @@ export default class SideBarMenu extends Component {
         const { basePath } = this.props;
 
         return (
-
         <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
@@ -34,13 +33,19 @@ export default class SideBarMenu extends Component {
 
             <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-cubes"/><span>My Projects</span>
+                    <i className="fa fa-cubes"/><span>Projects</span>
                 </Link>
             </li>
 
             <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${basePath}organizations`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-university"/><span>My Organizations</span>
+                    <i className="fa fa-university"/><span>Organizations</span>
+                </Link>
+            </li>
+
+            <li className={/users/.test(this.props.location.pathname) ? 'active' : ''}>
+                <Link to={`${basePath}users`} style={{textDecoration: "none"}}>
+                    <i className="fa fa-users"/><span>Users</span>
                 </Link>
             </li>
 

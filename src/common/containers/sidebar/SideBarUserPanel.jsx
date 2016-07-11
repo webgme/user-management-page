@@ -21,13 +21,6 @@ class SideBarUserPanel extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.user !== this.props.user) {
-            const { dispatch } = nextProps;
-            dispatch(fetchUserIfNeeded());
-        }
-    }
-
     goToEditor() {
         browserHistory.push('/');
         window.location.reload();
