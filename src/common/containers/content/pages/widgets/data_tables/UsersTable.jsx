@@ -14,11 +14,10 @@ import { fetchUsersIfNeeded } from '../../../../../actions/users';
 import { sortBy } from '../../../../../actions/tables';
 
 const USERS_FIELDS = {
-    "Created At": ["info", "createdAt"],
-    "Last Changed": ["info", "modifiedAt"],
-    "Last Viewed": ["info", "viewedAt"],
-    "Owner": "owner",
-    "Project Name": "name"
+    Name: ["data", "name"],
+    UserId: "_id",
+    SiteAdmin: "siteAdmin",
+    Description: ["data", "description"]
 };
 
 class UsersTable extends Component {
@@ -80,7 +79,10 @@ class UsersTable extends Component {
 }
 
 UsersTable.propTypes = {
-    sortCategory: PropTypes.string.isRequired,
+    sortCategory: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.array
+    ]).isRequired,
     sortedForward: PropTypes.bool.isRequired,
     users: PropTypes.array.isRequired
 };

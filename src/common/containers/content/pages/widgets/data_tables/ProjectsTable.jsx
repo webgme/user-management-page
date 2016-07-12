@@ -82,7 +82,10 @@ class ProjectsTable extends Component {
 
 ProjectsTable.propTypes = {
     projects: PropTypes.array.isRequired,
-    sortCategory: PropTypes.string.isRequired,
+    sortCategory: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.array
+    ]).isRequired,
     sortedForward: PropTypes.bool.isRequired
 };
 
