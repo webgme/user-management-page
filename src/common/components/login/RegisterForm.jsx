@@ -73,7 +73,6 @@ export default class RegisterForm extends Component {
                 userId: verifyUserOrOrganizationId(this.state.userId)
             }
         });
-
     }
 
     checkEmail() {

@@ -20,16 +20,15 @@ class ProfilePage extends Component {
         super(props);
         this.state = {
             confirmPassword: '',
-            email: this.props.user.email,
+            email: '',
             invalidMessage: {
                 confirmPassword: "Passwords must match",
                 email: "Invalid email",
                 password: "Password must be at least 3 characters long and must not be " +
-                          "a poor password such as 'password'",
-                userId: "Username must only contain letters, numbers, and the underscore" +
-                        " and must be at least 3 characters long"
+                          "a poor password such as 'password'"
             },
             password: '',
+            siteAdmin: this.props.user.siteAdmin || false,
             validCredentials: {
                 confirmPassword: true,
                 email: true,
@@ -37,12 +36,14 @@ class ProfilePage extends Component {
             }
         };
         // Event handlers
+        this.checkAllFields = this.checkAllFields.bind(this);
         this.checkConfirmPassword = this.checkConfirmPassword.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
         this.checkPassword = this.checkPassword.bind(this);
         this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onSiteAdminChange = this.onSiteAdminChange.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
     }
 
@@ -54,7 +55,18 @@ class ProfilePage extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            email: nextProps.user.email
+            email: nextProps.user.email,
+            siteAdmin: nextProps.user.siteAdmin
+        });
+    }
+
+    checkAllFields() {
+        this.setState({
+            validCredentials: {
+                confirmPassword: this.state.password === this.state.confirmPassword,
+                email: verifyEmail(this.state.email),
+                password: verifyPassword(this.state.password)
+            }
         });
     }
 
@@ -64,8 +76,7 @@ class ProfilePage extends Component {
                 confirmPassword: this.state.validCredentials.password &&
                                  this.state.password === this.state.confirmPassword,
                 email: this.state.validCredentials.email,
-                password: this.state.validCredentials.password,
-                userId: this.state.validCredentials.userId
+                password: this.state.validCredentials.password
             }
         });
     }
@@ -75,8 +86,7 @@ class ProfilePage extends Component {
             validCredentials: {
                 confirmPassword: this.state.validCredentials.confirmPassword,
                 email: verifyEmail(this.state.email),
-                password: this.state.validCredentials.password,
-                userId: this.state.validCredentials.userId
+                password: this.state.validCredentials.password
             }
         });
     }
@@ -86,8 +96,7 @@ class ProfilePage extends Component {
             validCredentials: {
                 confirmPassword: this.state.validCredentials.confirmPassword,
                 email: this.state.validCredentials.email,
-                password: verifyPassword(this.state.password),
-                userId: this.state.validCredentials.userId
+                password: verifyPassword(this.state.password)
             }
         });
     }
@@ -110,9 +119,58 @@ class ProfilePage extends Component {
         });
     }
 
+    onSiteAdminChange(event) {
+        this.setState({
+            siteAdmin: event.target.id === 'Yes'
+        });
+    }
+
     onUpdate(event) {
         event.preventDefault();
 
+        const { dispatch } = this.props;
+
+        let allValid = true;
+
+        Promise.resolve(this.checkAllFields())
+            .then(() => {
+                Object.keys(this.state.validCredentials).forEach(key => {
+                    if (!this.state.validCredentials[key]) {
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    this.props.restClient.user.updateCurrentUser({
+                        email: this.state.email,
+                        password: this.state.password,
+                        siteAdmin: this.state.siteAdmin
+                    })
+                        .then(() => {
+                            this.setState({
+                                password: '',
+                                confirmPassword: '',
+                                validCredentials: {
+                                    confirmPassword: this.state.password === this.state.confirmPassword,
+                                    email: true,
+                                    password: true
+                                }
+                            });
+                            // Refresh user
+                            dispatch(fetchUser());
+                        })
+                        .catch((err) => {
+                            console.error('Error:', err); // eslint-disable-line no-console
+                        });
+                } else {
+                    // Reset fields
+                    this.setState({
+                        confirmPassword: '',
+                        email: this.state.validCredentials.email ? this.state.email : '',
+                        password: ''
+                    });
+                }
+            });
     }
 
     render() {
@@ -151,8 +209,13 @@ class ProfilePage extends Component {
 
                                     <div className="col-md-4" style={{float: "right"}}>
                                         <ButtonGroup>
-                                            <Button bsStyle="default" disabled>Yes</Button>
-                                            <Button bsStyle="primary">No</Button>
+                                            <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
+                                                    disabled={!user.siteAdmin}
+                                                    onClick={this.onSiteAdminChange}
+                                                    id="Yes">Yes</Button>
+                                            <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
+                                                    onClick={this.onSiteAdminChange}
+                                                    id="No">No</Button>
                                         </ButtonGroup>
                                     </div>
 

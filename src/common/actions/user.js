@@ -39,7 +39,7 @@ const shouldFetchUser = (state) => {
     return shouldFetch;
 };
 
-const fetchUser = () => {
+export const fetchUser = () => {
     return dispatch => {
         dispatch(requestUser());
         return userClient.getCurrentUser()
