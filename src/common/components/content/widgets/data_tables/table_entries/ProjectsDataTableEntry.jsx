@@ -21,7 +21,6 @@ export default class ProjectsDataTableEntry extends Component {
 
     render() {
         const { basePath } = this.props;
-        const { user } = this.props;
 
         const buildLink = `${basePath}projects/${this.props.owner}/${this.props.name}`;
 
@@ -92,8 +91,7 @@ ProjectsDataTableEntry.propTypes = {
         viewedAt: PropTypes.Date
     }),
     name: PropTypes.string,
-    owner: PropTypes.string,
-    user: PropTypes.object.isRequired
+    owner: PropTypes.string
 };
 
 ProjectsDataTableEntry.defaultProps = {

@@ -10,11 +10,9 @@ import ProjectsDataTableEntry from '../../../../../../components/content/widgets
 
 const mapStateToProps = (state) => {
     const { basePath } = state;
-    const { user } = state.user;
 
     return {
-        basePath,
-        user
+        basePath
     };
 };
 
