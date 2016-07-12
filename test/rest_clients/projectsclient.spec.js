@@ -15,6 +15,7 @@ describe('Projects Rest Client', function() {
         gmeAuth;
     this.timeout(5000);
 
+    gmeConfig.server.port += 2;
     before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
             .then(function(gmeAuth_) {
