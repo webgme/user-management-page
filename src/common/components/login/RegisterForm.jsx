@@ -11,7 +11,7 @@ import { Button } from 'react-bootstrap';
 import { browserHistory, Link } from 'react-router';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
-import {verifyEmail, verifyPassword, verifyUserOrOrganizationId} from '../../../client/utils/utils';
+import {verifyEmail, verifyPassword, verifyUserOrOrganizationId} from '../../../client/utils/loginUtils';
 
 export default class RegisterForm extends Component {
     constructor(props) {

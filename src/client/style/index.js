@@ -139,6 +139,9 @@ export const ProfilePage = {
     },
     profileBoxBorder: {
         padding: "10px 10px"
+    },
+    updateButton: {
+        float: "right"
     }
 };
 

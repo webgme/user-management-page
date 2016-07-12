@@ -16,32 +16,35 @@ export default class EditableBox extends Component {
             editable: false
         };
         // Event handlers
+        this.checkEnter = this.checkEnter.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    handleEdit(event) {
+    checkEnter(event) {
+        if (event.which === 13) {
+            this.handleClose();
+        }
+    }
+
+    handleEdit() {
         this.setState({
             editable: true
         });
     }
 
-    handleClose(event) {
+    handleClose() {
         this.setState({
             editable: false
         });
-    }
-
-    handleInputChange(event) {
-
     }
 
     render() {
         const {label, text} = this.props;
 
         return (
-            <li className="list-group-item" style={{padding: "18px 18px"}}>
+            <li className="list-group-item" onClick={this.handleEdit}
+                style={{padding: "18px 18px"}}>
 
                 <div className="col-md-6">
                     <b style={STYLE.text}>{label}</b>
@@ -51,13 +54,14 @@ export default class EditableBox extends Component {
                         <input autoFocus={true}
                                className="form-control pull-right"
                                onBlur={this.handleClose}
-                               onChange={this.props.onInputChange}
+                               onChange={this.props.onChange}
                                onKeyUp={this.checkEnter}
                                placeholder={text}
+                               readOnly={this.props.readOnly}
                                style={STYLE.text}
                                type={"text"}
                                value={text}/> :
-                        <a className="pull-right" onClick={this.handleEdit} style={STYLE.text}>
+                        <a className="pull-right" style={STYLE.text}>
                             &nbsp;{text}&nbsp;
                         </a>}
                 </div>

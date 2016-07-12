@@ -40,6 +40,7 @@ export default class LoginField extends Component {
                            onChange={this.props.onInputChange}
                            onKeyUp={this.checkEnter}
                            placeholder={this.props.hint}
+                           readOnly={this.props.readOnly}
                            required="required"
                            type={this.props.textType || "text"}
                            value={this.props.value}/>
@@ -61,14 +62,15 @@ export default class LoginField extends Component {
 
 LoginField.propTypes = {
     autoFocus: PropTypes.bool,
-    hint: PropTypes.string.isRequired,
+    hint: PropTypes.string,
     iconClass: PropTypes.string.isRequired,
     indentStyle: PropTypes.object,
     invalidMessage: PropTypes.string,
     name: PropTypes.string,
     onBlur: PropTypes.func,
     onEnter: PropTypes.func,
-    onInputChange: PropTypes.func.isRequired,
+    onInputChange: PropTypes.func,
+    readOnly: PropTypes.bool,
     valid: PropTypes.bool,
     value: PropTypes.string.isRequired
 };
