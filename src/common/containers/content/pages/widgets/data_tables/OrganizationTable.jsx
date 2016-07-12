@@ -10,7 +10,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import OrganizationDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationDataTableEntry';
+import OrganizationDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationDataTableEntry'; // eslint-disable-line max-len
 import { sortObjectArrayByField} from '../../../../../../client/utils/utils';
 import { retrieveMembersAndAdmins } from '../../../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';

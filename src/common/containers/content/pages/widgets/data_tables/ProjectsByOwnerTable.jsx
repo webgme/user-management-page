@@ -1,3 +1,5 @@
+/* global window */
+
 /**
  * Container widget for the projects data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -9,10 +11,10 @@ import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import { sortWithChecks } from '../../../../../../client/utils/utils';
 import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
 import { fetchUserIfNeeded } from '../../../../../actions/user';
 import { sortBy } from '../../../../../actions/tables';
+import { sortWithChecks } from '../../../../../../client/utils/utils';
 
 const PROJECTS_FIELDS = {
     "Created At": ["info", "createdAt"],
@@ -47,7 +49,6 @@ class ProjectsTable extends Component {
     render() {
 
         const { projects, sortedForward } = this.props;
-        const { user } = this.props;
 
         const categories = [
             {id: 1, name: 'Owner'},
@@ -57,13 +58,15 @@ class ProjectsTable extends Component {
             {id: 5, name: 'Created At'}
         ];
 
+        const ownerId = window.location.pathname.split('/').slice(-1)[0];
+
         return (
 
             <div>
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
-                        <i className="fa fa-cubes"/> {` Projects By ${user._id}`}
+                        <i className="fa fa-cubes"/> {` Projects By ${ownerId}`}
                     </h3>
                 </div>
 
@@ -86,24 +89,23 @@ class ProjectsTable extends Component {
 ProjectsTable.propTypes = {
     projects: PropTypes.array.isRequired,
     sortCategory: PropTypes.string.isRequired,
-    sortedForward: PropTypes.bool.isRequired,
-    user: PropTypes.object.isRequired
+    sortedForward: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => {
     const { projects } = state.projects;
-    const { user } = state.user;
     const { sortCategory, sortedForward } = state.tables.projects;
 
+    const ownerId = window.location.pathname.split('/').slice(-1)[0];
+
     let projectsByOwner = projects.slice().filter(project => {
-        return project.owner === user._id;
+        return project.owner === ownerId;
     });
 
     return {
         projects: sortWithChecks(projectsByOwner, sortCategory, sortedForward),
         sortCategory,
-        sortedForward,
-        user
+        sortedForward
     };
 };
 

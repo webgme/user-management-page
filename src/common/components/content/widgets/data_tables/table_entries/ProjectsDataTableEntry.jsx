@@ -29,10 +29,7 @@ export default class ProjectsDataTableEntry extends Component {
             <tr role="row" className="odd">
 
                 <td style={this.props.columnStyle}>
-                    {this.props.owner === user._id ?
-                        <Link to={`${basePath}projects/${this.props.owner}`}>{this.props.owner}</Link> :
-                        <span>{this.props.owner}</span>
-                    }
+                    <Link to={`${basePath}projects/${this.props.owner}`}>{this.props.owner}</Link>
                 </td>
 
                 <td className="sorting_1">
