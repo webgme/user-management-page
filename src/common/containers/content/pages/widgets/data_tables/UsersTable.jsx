@@ -1,5 +1,5 @@
 /**
- * Container widget for the projects data table
+ * Container widget for the users data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
@@ -8,20 +8,19 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
+import UsersDataTableEntry from './table_entries/UsersDataTableEntry';
 import { sortWithChecks } from '../../../../../../client/utils/utils';
-import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
+import { fetchUsersIfNeeded } from '../../../../../actions/users';
 import { sortBy } from '../../../../../actions/tables';
 
-const PROJECTS_FIELDS = {
-    "Created At": ["info", "createdAt"],
-    "Last Changed": ["info", "modifiedAt"],
-    "Last Viewed": ["info", "viewedAt"],
-    "Owner": "owner",
-    "Project Name": "name"
+const USERS_FIELDS = {
+    Name: ["data", "name"],
+    UserId: "_id",
+    SiteAdmin: "siteAdmin",
+    Description: ["data", "description"]
 };
 
-class ProjectsTable extends Component {
+class UsersTable extends Component {
 
     constructor(props) {
         super(props);
@@ -32,26 +31,25 @@ class ProjectsTable extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
 
-        dispatch(fetchProjectsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
     }
 
     handleOrderEntries(event) {
         const { dispatch } = this.props;
-        const newSortCategory = PROJECTS_FIELDS[event.target.value];
+        const newSortCategory = USERS_FIELDS[event.target.value];
 
-        dispatch(sortBy('projects', newSortCategory));
+        dispatch(sortBy('users', newSortCategory));
     }
 
     render() {
 
-        const { projects, sortedForward } = this.props;
+        const { sortedForward, users } = this.props;
 
         const categories = [
-            {id: 1, name: 'Owner'},
-            {id: 2, name: 'Project Name'},
-            {id: 3, name: 'Last Viewed'},
-            {id: 4, name: 'Last Changed'},
-            {id: 5, name: 'Created At'}
+            {id: 1, name: 'Name'},
+            {id: 2, name: 'UserId'},
+            {id: 3, name: 'SiteAdmin'},
+            {id: 4, name: 'Description'}
         ];
 
         return (
@@ -60,19 +58,19 @@ class ProjectsTable extends Component {
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
-                        <i className="fa fa-cubes"/> {` Projects`}
+                        <i className="fa fa-users"/> {` Users`}
                     </h3>
                 </div>
 
                 {/* Body */}
                 <DataTable categories={categories}
-                           content="Projects"
-                           entries={projects}
-                           iconClass="fa fa-cube"
+                           content="Users"
+                           entries={users}
+                           iconClass="fa fa-users"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
-                    <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
+                    <UsersDataTableEntry columnStyle={{width: "13%"}}/>
                 </DataTable>
 
             </div>
@@ -80,24 +78,30 @@ class ProjectsTable extends Component {
     }
 }
 
-ProjectsTable.propTypes = {
-    projects: PropTypes.array.isRequired,
+UsersTable.propTypes = {
     sortCategory: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.array
     ]).isRequired,
-    sortedForward: PropTypes.bool.isRequired
+    sortedForward: PropTypes.bool.isRequired,
+    users: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => {
-    const { projects } = state.projects;
-    const { sortCategory, sortedForward } = state.tables.projects;
+    const { users } = state.users;
+    const { sortCategory, sortedForward } = state.tables.users;
+
+    let formattedUsers = users.map(user => {
+        return Object.assign(user, {
+            name: user._id
+        });
+    });
 
     return {
-        projects: sortWithChecks(projects.slice(), sortCategory, sortedForward),
         sortCategory,
-        sortedForward
+        sortedForward,
+        users: sortWithChecks(formattedUsers, sortCategory, sortedForward)
     };
 };
 
-export default connect(mapStateToProps)(ProjectsTable);
+export default connect(mapStateToProps)(UsersTable);

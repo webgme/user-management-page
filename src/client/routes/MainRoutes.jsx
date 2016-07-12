@@ -17,6 +17,8 @@ import OrganizationsPage from '../../common/containers/content/pages/Organizatio
 import ProfilePage from '../../common/containers/content/pages/ProfilePage';
 import ProjectPage from '../../common/containers/content/pages/ProjectPage';
 import ProjectsPage from '../../common/components/content/pages/ProjectsPage';
+import ProjectsByOwnerPage from '../../common/components/content/pages/ProjectsByOwnerPage';
+import UsersPage from '../../common/components/content/pages/UsersPage';
 
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 
@@ -24,22 +26,26 @@ export default (
 
     <Route path={basePath} component={App} basePath={basePath}>
 
-        <IndexRedirect to="home"/>
+        <IndexRedirect to="home" />
 
         <Route component={ContentWrapper}>
 
-            <Route path="home" component={HomePage}/>
+            <Route path="home" component={HomePage} />
 
-            <Route path="organizations" component={OrganizationsPage}/>
+            <Route path="organizations" component={OrganizationsPage} />
 
-            <Route path="organizations/:organizationId" component={OrganizationPage}/>
+            <Route path="organizations/:organizationId" component={OrganizationPage} />
 
-            <Route path="profile" component={ProfilePage}/>
+            <Route path="profile" component={ProfilePage} />
 
-            <Route path="projects" component={ProjectsPage}/>
+            <Route path="projects" component={ProjectsPage} />
+
+            <Route path="projects/:ownerId" component={ProjectsByOwnerPage} />
 
             {/* Singular project needs same space so not a sub-component*/}
-            <Route path="projects/:ownerId/:projectName" component={ProjectPage}/>
+            <Route path="projects/:ownerId/:projectName" component={ProjectPage} />
+
+            <Route path="users" component={UsersPage} />
 
         </Route>
 

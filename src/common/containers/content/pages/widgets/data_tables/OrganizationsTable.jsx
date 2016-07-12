@@ -82,8 +82,7 @@ class OrganizationsTable extends Component {
                            iconClass="fa fa-institution"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
-                           sortedForward={sortedForward}
-                           tableName="Organizations">
+                           sortedForward={sortedForward}>
                     <OrganizationsDataTableEntry />
                 </DataTable>
 
@@ -128,7 +127,8 @@ const mapStateToProps = (state) => {
 
     let formattedOrganizations = [];
     organizations.forEach(org => {
-        if (org.admins.indexOf(user._id) !== -1 || org.users.indexOf(user._id) !== -1) {
+        if (org.admins.indexOf(user._id) !== -1 || org.users.indexOf(user._id) !== -1 ||
+            user.siteAdmin) {
             formattedOrganizations.push({name: org._id});
         }
     });

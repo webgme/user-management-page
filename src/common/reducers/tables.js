@@ -6,9 +6,13 @@
 import { SORT_CATEGORY } from '../actions/tables';
 
 const initialTableState = {
-    sortCategory: 'name',
-    sortedForward: true
-};
+        sortCategory: 'name',
+        sortedForward: true
+    },
+    initialUsersTableState = {
+        sortCategory: '_id',
+        sortedForward: true
+    };
 
 const table = (state = initialTableState, action) => {
     switch (action.type) {
@@ -37,7 +41,9 @@ const initialTablesState = {
     projectUser: initialTableState,
     projectOrg: initialTableState,
     // Table from the projects page
-    projects: initialTableState
+    projects: initialTableState,
+    // Table from users page
+    users: initialUsersTableState
 };
 
 const tables = (state = initialTablesState, action) => {

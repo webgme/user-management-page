@@ -10,7 +10,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import OrganizationDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationDataTableEntry';
+import OrganizationDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationDataTableEntry'; // eslint-disable-line max-len
 import { sortObjectArrayByField} from '../../../../../../client/utils/utils';
 import { retrieveMembersAndAdmins } from '../../../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
@@ -80,8 +80,7 @@ class OrganizationTable extends Component {
                            iconClass="fa fa-university"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
-                           sortedForward={true}
-                           tableName="Members">
+                           sortedForward={true}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
 
@@ -91,8 +90,7 @@ class OrganizationTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            restClient={this.props.restClient}
                            sortable={true}
-                           sortedForward={true}
-                           tableName="Admins">
+                           sortedForward={true}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
 

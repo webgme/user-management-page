@@ -22,46 +22,34 @@ export default class Header extends React.Component {
     }
 
     render() {
+        const { basePath } = this.props;
 
         let breadcrumbs = [],
             location = window.location.pathname,
-            pathWithoutBase = location.replace(this.props.basePath, ''),
+            pathWithoutBase = location.replace(basePath, ''),
             parameters = pathWithoutBase.split('/');
 
         // Always have home
         breadcrumbs.push(
             <li style={STYLE.breadCrumbListItem} key={0}>
-                <Link to={this.props.basePath} style={STYLE.breadCrumbLink}>
+                <Link to={basePath} style={STYLE.breadCrumbLink}>
                     <i className="fa fa-home" style={STYLE.breadCrumbIcon}/>
                 </Link>
             </li>
         );
 
         let rest = parameters[0] === 'home' ? parameters.slice(1) : parameters;
+        let cumulative = '';
         rest.forEach((oneParam, index) => {
-            if (index === 0) {
-                breadcrumbs.push(
-                    <li style={STYLE.breadCrumbListItem} key={index + 1}>
-                        <Link to={`${this.props.basePath}${oneParam}`} style={STYLE.breadCrumbLink}>
-                            {capitalizeFirstLetter(rest[index])}
-                        </Link>
-                    </li>
-                );
-            } else if (index === rest.length - 1) {
-                breadcrumbs.push(
-                    <li style={STYLE.breadCrumbListItem} key={index + 1}>
-                        <Link to={`${this.props.basePath}${pathWithoutBase}`} style={STYLE.breadCrumbLink}>
-                            {capitalizeFirstLetter(rest[index])}
-                        </Link>
-                    </li>
-                );
-            } else {
-                breadcrumbs.push(
-                    <li style={STYLE.breadCrumbListItem} key={index + 1}>
-                        {capitalizeFirstLetter(rest[index])}
-                    </li>
-                );
-            }
+            breadcrumbs.push(
+                <li style={STYLE.breadCrumbListItem} key={index + 1}>
+                    <Link to={`${basePath}${cumulative}${oneParam}`} style={STYLE.breadCrumbLink}>
+                        {index === 0 ? capitalizeFirstLetter(rest[index]) :
+                                       rest[index]}
+                    </Link>
+                </li>
+            );
+            cumulative += oneParam + '/';
         });
 
         for (let i = 1; i < breadcrumbs.length; i += 2) {
@@ -73,7 +61,7 @@ export default class Header extends React.Component {
 
         return <header className="main-header">
 
-            <Link to={`${this.props.basePath}`} className="logo" style={{textDecoration: "none"}}>
+            <Link to={`${basePath}`} className="logo" style={{textDecoration: "none"}}>
                 <span className="logo-mini"><b>GME</b></span>
                 <span className="logo-lg"><b>GME</b>Profile</span>
             </Link>
@@ -93,7 +81,7 @@ export default class Header extends React.Component {
 
                         <ColorMenu />
 
-                        <UserMenu basePath={this.props.basePath} />
+                        <UserMenu basePath={basePath} />
 
                         {/* <SettingsMenu/> */}
 

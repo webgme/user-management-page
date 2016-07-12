@@ -8,20 +8,27 @@ import React, { Component, PropTypes } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
 // Self-defined
-import {timeAgo} from '../../../../../../client/utils/utils';
+import { fetchUserIfNeeded } from '../../../../../actions/user';
+import { timeAgo } from '../../../../../../client/utils/utils';
 
 export default class ProjectsDataTableEntry extends Component {
+
+    componentDidMount() {
+        const { dispatch } = this.props;
+
+        dispatch(fetchUserIfNeeded());
+    }
 
     render() {
         const { basePath } = this.props;
 
-        let buildLink = `${basePath}projects/${this.props.owner}/${this.props.name}`;
+        const buildLink = `${basePath}projects/${this.props.owner}/${this.props.name}`;
 
         return (
             <tr role="row" className="odd">
 
                 <td style={this.props.columnStyle}>
-                    {this.props.owner}
+                    <Link to={`${basePath}projects/${this.props.owner}`}>{this.props.owner}</Link>
                 </td>
 
                 <td className="sorting_1">

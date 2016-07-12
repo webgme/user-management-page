@@ -29,6 +29,19 @@ export const ColorMenu = {
     }
 };
 
+export const DataTable = {
+    paginationButtons: {
+        WebkitUserSelect: "none",
+        KhtmlUserSelect: "none",
+        MozUserSelect: "none",
+        MsUserSelect: "none",
+        OUserSelect: "none",
+        userSelect: "none",
+        outlineStyle: "none",
+        WebkitTapHighlightColor: "transparent"
+    }
+};
+
 export const DataTablePagination = {
     unselectable: {
         WebkitUserSelect: "none",
