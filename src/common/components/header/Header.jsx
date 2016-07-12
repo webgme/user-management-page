@@ -12,7 +12,6 @@ import { Link } from 'react-router';
 import ColorMenu from '../../containers/header/navigation_bar/ColorMenu';
 // import SettingsMenu from './navigation_bar/SettingsMenu';
 import UserMenu from '../../containers/header/navigation_bar/UserMenu';
-import { capitalizeFirstLetter } from '../../../client/utils/utils';
 import { Header as STYLE } from '../../../client/style';
 
 export default class Header extends React.Component {
@@ -44,7 +43,7 @@ export default class Header extends React.Component {
             breadcrumbs.push(
                 <li style={STYLE.breadCrumbListItem} key={index + 1}>
                     <Link to={`${basePath}${cumulative}${oneParam}`} style={STYLE.breadCrumbLink}>
-                        {capitalizeFirstLetter(rest[index])}
+                        {rest[index]}
                     </Link>
                 </li>
             );

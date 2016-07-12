@@ -61,7 +61,6 @@ class ProjectsTable extends Component {
         const ownerId = window.location.pathname.split('/').slice(-1)[0];
 
         return (
-
             <div>
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>

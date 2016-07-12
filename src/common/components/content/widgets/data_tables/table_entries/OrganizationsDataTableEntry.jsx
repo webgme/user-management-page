@@ -11,7 +11,7 @@ export default class OrganizationsDataTableEntry extends Component {
 
     render() {
 
-        const {basePath} = this.props;
+        const { basePath } = this.props;
 
         const buildLink = `${basePath}organizations/${this.props.name}`;
 
