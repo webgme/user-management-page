@@ -132,16 +132,19 @@ export const OrganizationsTable = {
     }
 };
 
-export const ProfilePage = {
-    profileBox: {
-        paddingLeft: "10%",
-        paddingRight: "10%"
-    },
+export const ProfileBox = {
     profileBoxBorder: {
         padding: "10px 10px"
     },
     updateButton: {
         float: "right"
+    }
+};
+
+export const ProfilePage = {
+    profileBox: {
+        paddingLeft: "10%",
+        paddingRight: "10%"
     }
 };
 
