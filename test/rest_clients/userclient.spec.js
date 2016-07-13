@@ -11,6 +11,7 @@ describe('User Rest Client', function() {
         rest,
         gmeAuth;
 
+    gmeConfig.server.port += 3;
     before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
             .then(function(gmeAuth_) {

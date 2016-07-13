@@ -12,6 +12,7 @@ describe('Organizations Rest Client', function() {
         rest,
         gmeAuth;
 
+    gmeConfig.server.port += 1;
     before(function(done) {
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
             .then(function(gmeAuth_) {
