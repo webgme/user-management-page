@@ -14,10 +14,6 @@ import { ProfilePage as STYLE } from '../../../../client/style';
 
 class ProfilePage extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         const { dispatch } = this.props;
 
