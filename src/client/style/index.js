@@ -134,8 +134,8 @@ export const OrganizationsTable = {
 
 export const ProfilePage = {
     profileBox: {
-        paddingLeft: "35%",
-        paddingRight: "35%"
+        paddingLeft: "10%",
+        paddingRight: "10%"
     },
     profileBoxBorder: {
         padding: "10px 10px"

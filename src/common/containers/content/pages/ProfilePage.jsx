@@ -20,7 +20,7 @@ class ProfilePage extends Component {
         super(props);
         this.state = {
             confirmPassword: '',
-            email: '',
+            email: this.props.user.email,
             invalidMessage: {
                 confirmPassword: "Passwords must match",
                 email: "Invalid email",
@@ -120,15 +120,19 @@ class ProfilePage extends Component {
     }
 
     onSiteAdminChange(event) {
+        // Release focus
+        event.target.blur();
+
         this.setState({
             siteAdmin: event.target.id === 'Yes'
         });
     }
 
     onUpdate(event) {
-        event.preventDefault();
+        // Release focus
+        event.target.blur();
 
-        const { dispatch } = this.props;
+        const { dispatch, user } = this.props;
 
         let allValid = true;
 
@@ -141,11 +145,14 @@ class ProfilePage extends Component {
                 });
 
                 if (allValid) {
-                    this.props.restClient.user.updateCurrentUser({
+                    let user = {
                         email: this.state.email,
-                        password: this.state.password,
-                        siteAdmin: this.state.siteAdmin
-                    })
+                        password: this.state.password
+                    };
+                    if (user.siteAdmin) {
+                        user.siteAdmin = this.state.siteAdmin;
+                    }
+                    this.props.restClient.user.updateCurrentUser(user)
                         .then(() => {
                             this.setState({
                                 password: '',
@@ -176,95 +183,99 @@ class ProfilePage extends Component {
     render() {
         const { user } = this.props;
 
-        return <section className="content" style={STYLE.profileBox}>
+        return (
+            <section className="content" style={STYLE.profileBox}>
 
-            <div className="box box-primary" style={STYLE.profileBoxBorder}>
-                <div className="box-body box-profile">
+                <div className="col-md-6 col-md-offset-3">
+                    <div className="box box-primary" style={STYLE.profileBoxBorder}>
+                        <div className="box-body box-profile">
 
-                    <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
+                            <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
 
-                    <p className="text-muted text-center">WebGME</p>
+                            <p className="text-muted text-center">WebGME</p>
 
-                    <ul className="list-group list-group-unbordered">
-                        {/* Username */}
-                        <LoginField iconClass="glyphicon glyphicon-user"
-                                    name="username"
-                                    readOnly={true}
-                                    valid={true}
-                                    value={`UserID: ${user._id ? user._id : ''}`}/>
-                        {/* Custom Site Admin */}
-                        <div>
-                            <div className={`input-group`}>
+                            <ul className="list-group list-group-unbordered">
+                                {/* Username */}
+                                <LoginField disabled={true}
+                                            iconClass="glyphicon glyphicon-user"
+                                            name="username"
+                                            readOnly={true}
+                                            valid={true}
+                                            value={`UserID: ${user._id ? user._id : ''}`}/>
+                                {/* Custom Site Admin */}
+                                <div>
+                                    <div className={`input-group`}>
 
                                 <span className="input-group-addon">
                                     <i className="glyphicon glyphicon-check"/>
                                 </span>
-                                <div className="row">
+                                        <div className="row">
 
-                                    <div className="col-md-8">
-                                        <input className="form-control"
-                                               readOnly={true}
-                                               value="Site Admin"/>
+                                            <div className="col-md-9">
+                                                <input className="form-control"
+                                                       value="Site Admin" disabled/>
+                                            </div>
+
+                                            <div className="col-md-3" style={{float: "right"}}>
+                                                <ButtonGroup>
+                                                    <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
+                                                            disabled={!user.siteAdmin}
+                                                            onClick={this.onSiteAdminChange}
+                                                            id="Yes">Yes</Button>
+                                                    <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
+                                                            onClick={this.onSiteAdminChange}
+                                                            id="No">No</Button>
+                                                </ButtonGroup>
+                                            </div>
+
+                                        </div>
                                     </div>
 
-                                    <div className="col-md-4" style={{float: "right"}}>
-                                        <ButtonGroup>
-                                            <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
-                                                    disabled={!user.siteAdmin}
-                                                    onClick={this.onSiteAdminChange}
-                                                    id="Yes">Yes</Button>
-                                            <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
-                                                    onClick={this.onSiteAdminChange}
-                                                    id="No">No</Button>
-                                        </ButtonGroup>
-                                    </div>
-
+                                    <br/>
                                 </div>
-                            </div>
+                                {/* Email */}
+                                <LoginField hint="Email"
+                                            iconClass="glyphicon glyphicon-envelope"
+                                            invalidMessage={this.state.invalidMessage.email}
+                                            onBlur={this.checkEmail}
+                                            onInputChange={this.onEmailChange}
+                                            valid={this.state.validCredentials.email}
+                                            value={this.state.email ? this.state.email : ''}/>
+                                {/* New Password */}
+                                <LoginField hint="New Password"
+                                            iconClass="glyphicon glyphicon-lock"
+                                            invalidMessage={this.state.invalidMessage.password}
+                                            name="password"
+                                            onBlur={this.checkPassword}
+                                            onInputChange={this.onPasswordChange}
+                                            textType="password"
+                                            valid={this.state.validCredentials.password}
+                                            value={this.state.password}/>
+                                {/* Confirm New Password */}
+                                <LoginField hint="Confirm New Password"
+                                            iconClass="glyphicon glyphicon-log-in"
+                                            invalidMessage={this.state.invalidMessage.confirmPassword}
+                                            name="confirm-password"
+                                            onBlur={this.checkConfirmPassword}
+                                            onInputChange={this.onConfirmPasswordChange}
+                                            textType="password"
+                                            valid={this.state.validCredentials.confirmPassword}
+                                            value={this.state.confirmPassword}/>
 
-                            <br/>
+                            </ul>
+
+                            <Button bsStyle="primary"
+                                    onClick={this.onUpdate}
+                                    style={STYLE.updateButton}>
+                                Update
+                            </Button>
+
                         </div>
-                        {/* Email */}
-                        <LoginField hint="Email"
-                                    iconClass="glyphicon glyphicon-envelope"
-                                    invalidMessage={this.state.invalidMessage.email}
-                                    onBlur={this.checkEmail}
-                                    onInputChange={this.onEmailChange}
-                                    valid={this.state.validCredentials.email}
-                                    value={this.state.email}/>
-                        {/* New Password */}
-                        <LoginField hint="New Password"
-                                    iconClass="glyphicon glyphicon-lock"
-                                    invalidMessage={this.state.invalidMessage.password}
-                                    name="password"
-                                    onBlur={this.checkPassword}
-                                    onInputChange={this.onPasswordChange}
-                                    textType="password"
-                                    valid={this.state.validCredentials.password}
-                                    value={this.state.password}/>
-                        {/* Confirm New Password */}
-                        <LoginField hint="Confirm New Password"
-                                    iconClass="glyphicon glyphicon-log-in"
-                                    invalidMessage={this.state.invalidMessage.confirmPassword}
-                                    name="confirm-password"
-                                    onBlur={this.checkConfirmPassword}
-                                    onInputChange={this.onConfirmPasswordChange}
-                                    textType="password"
-                                    valid={this.state.validCredentials.confirmPassword}
-                                    value={this.state.confirmPassword}/>
-
-                    </ul>
-
-                    <Button bsStyle="primary"
-                            onClick={this.onUpdate}
-                            style={STYLE.updateButton}>
-                        Update
-                    </Button>
-
+                    </div>
                 </div>
-            </div>
 
-        </section>;
+            </section>
+        );
     }
 
 }

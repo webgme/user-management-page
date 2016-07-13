@@ -35,6 +35,7 @@ export default class LoginField extends Component {
                     </span>
                     <input autoFocus={this.props.autoFocus}
                            className="form-control"
+                           disabled={this.props.disabled || false}
                            name={this.props.name}
                            onBlur={this.props.value !== '' ? this.props.onBlur : null}
                            onChange={this.props.onInputChange}
@@ -62,6 +63,7 @@ export default class LoginField extends Component {
 
 LoginField.propTypes = {
     autoFocus: PropTypes.bool,
+    disabled: PropTypes.bool,
     hint: PropTypes.string,
     iconClass: PropTypes.string.isRequired,
     indentStyle: PropTypes.object,
@@ -72,5 +74,5 @@ LoginField.propTypes = {
     onInputChange: PropTypes.func,
     readOnly: PropTypes.bool,
     valid: PropTypes.bool,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string
 };
