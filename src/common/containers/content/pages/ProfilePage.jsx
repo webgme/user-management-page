@@ -145,14 +145,14 @@ class ProfilePage extends Component {
                 });
 
                 if (allValid) {
-                    let user = {
+                    let updatedUser = {
                         email: this.state.email,
                         password: this.state.password
                     };
                     if (user.siteAdmin) {
-                        user.siteAdmin = this.state.siteAdmin;
+                        updatedUser.siteAdmin = this.state.siteAdmin;
                     }
-                    this.props.restClient.user.updateCurrentUser(user)
+                    this.props.restClient.user.updateCurrentUser(updatedUser)
                         .then(() => {
                             this.setState({
                                 password: '',
