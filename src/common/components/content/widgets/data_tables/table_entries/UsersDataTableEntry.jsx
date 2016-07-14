@@ -14,6 +14,7 @@ export default class UsersDataTableEntry extends Component {
         const { name, description } = this.props.data;
         const { siteAdmin, _id} = this.props;
         const { basePath } = this.props;
+        const { userId } = this.props;
 
         return (
             <tr role="row" className="odd">
@@ -23,7 +24,7 @@ export default class UsersDataTableEntry extends Component {
                 </td>
 
                 <td>
-                    <Link to={`${basePath}users/${_id}`}>{_id}</Link>
+                    <Link to={userId === _id ? `${basePath}profile` : `${basePath}users/${_id}`}>{_id}</Link>
                 </td>
 
                 <td>

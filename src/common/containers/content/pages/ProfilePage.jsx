@@ -6,7 +6,8 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-// Self-defind
+// Self-defined
+import ProfileBox from '../../../components/content/widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
@@ -20,33 +21,18 @@ class ProfilePage extends Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { dispatch, restClient, user } = this.props;
 
-        return <section className="content" style={STYLE.profileBox}>
+        return (
+            <section className="content" style={STYLE.profileBox}>
 
-            <div className="box box-primary" style={STYLE.profileBoxBorder}>
-                <div className="box-body box-profile">
+                <ProfileBox dispatch={dispatch}
+                            editable={true}
+                            restClient={restClient}
+                            user={user} />
 
-                    <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
-
-                    <p className="text-muted text-center">WebGME</p>
-
-                    <ul className="list-group list-group-unbordered">
-                        <li className="list-group-item">
-                            <b>UserID:</b> <a className="pull-right">&nbsp;{user._id}&nbsp;</a>
-                        </li>
-                        <li className="list-group-item">
-                            <b>Email</b> <a className="pull-right">&nbsp;{user.email}&nbsp;</a>
-                        </li>
-                        <li className="list-group-item">
-                            <b>Site Admin</b> <a className="pull-right">{user.siteAdmin ? 'Yes' : 'No'}</a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
-
-        </section>;
+            </section>
+        );
     }
 
 }

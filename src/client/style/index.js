@@ -54,6 +54,14 @@ export const DataTablePagination = {
         WebkitTapHighlightColor: "transparent"}
 };
 
+export const EditableBox = {
+    text: {
+        position: "absolute",
+        top: "50%",
+        transform: "translate(0, -50%)"
+    }
+};
+
 export const Footer = {
     mainFooter: {
         fontSize: "12px",
@@ -96,11 +104,6 @@ export const HomePage = {
         paddingLeft: "10%",
         paddingRight: "10%"
     },
-    profileBoxBorder: {
-        margin: "auto",
-        padding: "10px 10px",
-        width: "40%"
-    },
     widgetBox: {
         color: "white"
     }
@@ -129,13 +132,19 @@ export const OrganizationsTable = {
     }
 };
 
-export const ProfilePage = {
-    profileBox: {
-        paddingLeft: "35%",
-        paddingRight: "35%"
-    },
+export const ProfileBox = {
     profileBoxBorder: {
         padding: "10px 10px"
+    },
+    updateButton: {
+        float: "right"
+    }
+};
+
+export const ProfilePage = {
+    profileBox: {
+        paddingLeft: "10%",
+        paddingRight: "10%"
     }
 };
 

@@ -63,27 +63,29 @@ class HomePage extends Component {
 
                 </div>
 
-                <div className="box box-primary" style={STYLE.profileBoxBorder}>
-                    <div className="box-body box-profile">
-                        <img className="profile-user-img img-responsive img-circle"
-                             src="/img/gme-logo.png"
-                             alt="User profile picture"/>
+                <div className="col-md-6 col-md-offset-3">
+                    <div className="box box-primary">
+                        <div className="box-body box-profile">
+                            <img className="profile-user-img img-responsive img-circle"
+                                 src="/img/gme-logo.png"
+                                 alt="User profile picture"/>
 
-                        <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
+                            <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
 
-                        <p className="text-muted text-center">WebGME</p>
+                            <p className="text-muted text-center">WebGME</p>
 
-                        <ul className="list-group list-group-unbordered">
-                            <li className="list-group-item">
-                                <b>Owned Projects</b> <a className="pull-right">{numOwnedProjects}</a>
-                            </li>
-                            <li className="list-group-item">
-                                <b>Viewable Projects</b> <a className="pull-right">{numViewableProjects}</a>
-                            </li>
-                            <li className="list-group-item">
-                                <b>Organizations</b> <a className="pull-right">{numOrganizations}</a>
-                            </li>
-                        </ul>
+                            <ul className="list-group list-group-unbordered">
+                                <li className="list-group-item">
+                                    <b>Owned Projects</b> <a className="pull-right">{numOwnedProjects}</a>
+                                </li>
+                                <li className="list-group-item">
+                                    <b>Viewable Projects</b> <a className="pull-right">{numViewableProjects}</a>
+                                </li>
+                                <li className="list-group-item">
+                                    <b>Organizations</b> <a className="pull-right">{numOrganizations}</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
