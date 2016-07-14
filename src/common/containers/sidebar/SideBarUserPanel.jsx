@@ -18,6 +18,7 @@ class SideBarUserPanel extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchUserIfNeeded());
     }
 
@@ -29,19 +30,21 @@ class SideBarUserPanel extends Component {
     render() {
         const { user } = this.props;
 
-        return <div className="user-panel" style={STYLE.panel}>
-            <div className="pull-left image" style={{cursor: "pointer"}}>
-                <img alt="User Image"
-                     className="img-circle"
-                     onClick={this.goToEditor}
-                     src="/img/gme-logo.png"
-                     style={STYLE.imageIcon}/>
+        return (
+            <div className="user-panel" style={STYLE.panel}>
+                <div className="pull-left image" style={{cursor: "pointer"}}>
+                    <img alt="User Image"
+                         className="img-circle"
+                         onClick={this.goToEditor}
+                         src="/img/gme-logo.png"
+                         style={STYLE.imageIcon}/>
+                </div>
+                <div className="pull-left info">
+                    <p style={STYLE.name}>&nbsp;{user._id}&nbsp;</p>
+                    <span style={STYLE.status}><i className="fa fa-circle text-success"/> Online</span>
+                </div>
             </div>
-            <div className="pull-left info">
-                <p style={STYLE.name}>&nbsp;{user._id}&nbsp;</p>
-                <span style={STYLE.status}><i className="fa fa-circle text-success"/> Online</span>
-            </div>
-        </div>;
+        );
     }
 
 }
@@ -51,8 +54,10 @@ SideBarUserPanel.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+    const { user } = state.user;
+
     return {
-        user: state.user.user
+        user
     };
 };
 

@@ -27,6 +27,7 @@ class ProfilePage extends Component {
             <section className="content" style={STYLE.profileBox}>
 
                 <ProfileBox dispatch={dispatch}
+                            editable={true}
                             restClient={restClient}
                             user={user} />
 

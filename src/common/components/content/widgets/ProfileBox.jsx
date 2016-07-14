@@ -19,7 +19,7 @@ export default class ProfileBox extends Component {
         super(props);
         this.state = {
             confirmPassword: '',
-            email: this.props.user.email,
+            email: this.props.user ? this.props.user.email : '',
             invalidMessage: {
                 confirmPassword: "Passwords must match",
                 email: "Invalid email",
@@ -125,7 +125,7 @@ export default class ProfileBox extends Component {
         // Release focus
         event.target.blur();
 
-        const { dispatch, user } = this.props;
+        const { dispatch, editable, user } = this.props;
 
         Promise.resolve(this.checkAllFields())
             .then(() => {
@@ -140,11 +140,11 @@ export default class ProfileBox extends Component {
                     if (this.state.password !== '') {
                         updatedUser.password = this.state.password;
                     }
-                    if (user.siteAdmin) {
+                    if (editable) {
                         updatedUser.siteAdmin = this.state.siteAdmin;
                     }
 
-                    this.props.restClient.user.updateCurrentUser(updatedUser)
+                    this.props.restClient.users.updateUser(user._id, updatedUser)
                         .then(() => {
                             this.setState({
                                 password: '',
@@ -173,7 +173,7 @@ export default class ProfileBox extends Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { editable, user } = this.props;
 
         return (
             <div className="col-md-6 col-md-offset-3">
@@ -210,10 +210,11 @@ export default class ProfileBox extends Component {
                                         <div className="col-md-3" style={{float: "right"}}>
                                             <ButtonGroup>
                                                 <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
-                                                        disabled={!user.siteAdmin}
+                                                        disabled={!editable}
                                                         onClick={this.onSiteAdminChange}
                                                         id="Yes">Yes</Button>
                                                 <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
+                                                        disabled={!editable}
                                                         onClick={this.onSiteAdminChange}
                                                         id="No">No</Button>
                                             </ButtonGroup>
@@ -225,7 +226,8 @@ export default class ProfileBox extends Component {
                                 <br/>
                             </div>
                             {/* Email */}
-                            <LoginField hint="Email"
+                            <LoginField disabled={!editable}
+                                        hint="Email"
                                         iconClass="glyphicon glyphicon-envelope"
                                         invalidMessage={this.state.invalidMessage.email}
                                         onBlur={this.checkEmail}
@@ -233,6 +235,7 @@ export default class ProfileBox extends Component {
                                         valid={this.state.validCredentials.email}
                                         value={this.state.email ? this.state.email : ''}/>
                             {/* New Password */}
+                            {editable ?
                             <LoginField hint="New Password"
                                         iconClass="glyphicon glyphicon-lock"
                                         invalidMessage={this.state.invalidMessage.password}
@@ -241,8 +244,9 @@ export default class ProfileBox extends Component {
                                         onInputChange={this.onPasswordChange}
                                         textType="password"
                                         valid={this.state.validCredentials.password}
-                                        value={this.state.password}/>
+                                        value={this.state.password}/> : null}
                             {/* Confirm New Password */}
+                            {editable ?
                             <LoginField hint="Confirm New Password"
                                         iconClass="glyphicon glyphicon-log-in"
                                         invalidMessage={this.state.invalidMessage.confirmPassword}
@@ -251,15 +255,16 @@ export default class ProfileBox extends Component {
                                         onInputChange={this.onConfirmPasswordChange}
                                         textType="password"
                                         valid={this.state.validCredentials.confirmPassword}
-                                        value={this.state.confirmPassword}/>
+                                        value={this.state.confirmPassword}/> : null}
 
                         </ul>
 
+                        {editable ?
                         <Button bsStyle="primary"
                                 onClick={this.onUpdate}
                                 style={STYLE.updateButton}>
                             Update
-                        </Button>
+                        </Button> : null}
 
                     </div>
                 </div>
@@ -271,6 +276,7 @@ export default class ProfileBox extends Component {
 
 ProfileBox.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    editable: PropTypes.bool,
     restClient: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
 };

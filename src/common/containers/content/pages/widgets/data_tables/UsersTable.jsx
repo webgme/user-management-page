@@ -43,7 +43,7 @@ class UsersTable extends Component {
 
     render() {
 
-        const { sortedForward, users } = this.props;
+        const { sortedForward, userId, users } = this.props;
 
         const categories = [
             {id: 1, name: 'Name'},
@@ -70,7 +70,7 @@ class UsersTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
-                    <UsersDataTableEntry columnStyle={{width: "13%"}}/>
+                    <UsersDataTableEntry columnStyle={{width: "13%"}} userId={userId} />
                 </DataTable>
 
             </div>
@@ -89,17 +89,19 @@ UsersTable.propTypes = {
 
 const mapStateToProps = (state) => {
     const { users } = state.users;
+    const { user } = state.user;
     const { sortCategory, sortedForward } = state.tables.users;
 
-    let formattedUsers = users.map(user => {
-        return Object.assign(user, {
-            name: user._id
+    let formattedUsers = users.map(eachUser => {
+        return Object.assign(eachUser, {
+            name: eachUser._id
         });
     });
 
     return {
         sortCategory,
         sortedForward,
+        userId: user._id,
         users: sortWithChecks(formattedUsers, sortCategory, sortedForward)
     };
 };

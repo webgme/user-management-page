@@ -73,7 +73,7 @@ function initialize(middlewareOpts) {
         '/profile',
         '/projects', /\/projects\/\w+$/, /\/projects\/\w+\/\w+$/,
         '/organizations', /\/organizations\/\w+$/,
-        /\/users$/
+        '/users', /\/users\/\w+$/
     ];
 
     router.get(ROUTES, ensureAuthenticated, function(req, res) {
