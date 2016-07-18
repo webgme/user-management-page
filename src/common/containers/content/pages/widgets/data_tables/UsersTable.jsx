@@ -69,7 +69,8 @@ class UsersTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
-                    <UsersDataTableEntry columnStyle={{width: "13%"}} userId={userId} />
+                    <UsersDataTableEntry columnStyle={{width: "13%"}}
+                                         userId={userId} />
                 </DataTable>
 
             </div>
