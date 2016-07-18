@@ -76,11 +76,11 @@ class ProjectPage extends Component {
                                                     projectName={projectName}
                                                     restClient={restClient}/>
 
-                        {canTransfer ? <ProjectTransferWidget ownerId={ownerId}
-                                                              projectName={projectName}
-                                                              restClient={restClient}
-                                                              userId={user ? user._id : ''} /> :
-                                       null}
+                        <ProjectTransferWidget canTransfer={canTransfer}
+                                               ownerId={ownerId}
+                                               projectName={projectName}
+                                               restClient={restClient}
+                                               userId={user ? user._id : ''}/>
 
                         <div className="row">
                             <CollaboratorsCommitsBarChart options={{}}

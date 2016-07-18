@@ -27,7 +27,6 @@ export default class OrganizationPage extends Component {
     }
 
     render() {
-
         const { authorization } = this.props;
 
         return (
@@ -35,11 +34,13 @@ export default class OrganizationPage extends Component {
             <section className="content">
                 {/* <h3> {this.props.params.organizationId} </h3> */}
 
-                <OrganizationTable authorization={authorization}
-                                   iconClass="fa fa-institution"
-                                   organizationId={this.props.params.organizationId}
-                                   ownerId={this.props.params.ownerId}
-                                   restClient={this.props.restClient}/>
+                <div className="box box-primary">
+                    <OrganizationTable authorization={authorization}
+                                       iconClass="fa fa-institution"
+                                       organizationId={this.props.params.organizationId}
+                                       ownerId={this.props.params.ownerId}
+                                       restClient={this.props.restClient}/>
+                </div>
 
                 <OrganizationAuthorizationWidget authorization={authorization}
                                                  organizationId={this.props.params.organizationId}

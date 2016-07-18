@@ -12,15 +12,13 @@ import { isEmpty } from './utils';
  * @return {Array.<T>} returns the organizations user specified is admin of
  */
 export const getOrgsUserIsAdminOf = (orgs, userId) => {
-    const orgsUserIsAdminOf = orgs
+    return orgs
         .map((org) => {
             return org.admins.indexOf(userId) > -1 ? org._id : undefined;
         })
         .filter((entry) => {
             return entry;
         });
-
-    return orgsUserIsAdminOf;
 };
 
 /**
@@ -32,12 +30,10 @@ export const getOrgsUserIsAdminOf = (orgs, userId) => {
  */
 export const getOrgsUserCanTransferTo = (organizations, userId, currentProjectOwnerId) => {
     // Exclude current project's owner
-    const orgsUserIsAdminOfWithoutCurrent = getOrgsUserIsAdminOf(organizations, userId)
+    return getOrgsUserIsAdminOf(organizations, userId)
         .filter((orgId) => {
             return orgId !== currentProjectOwnerId;
         });
-
-    return orgsUserIsAdminOfWithoutCurrent;
 };
 
 /**

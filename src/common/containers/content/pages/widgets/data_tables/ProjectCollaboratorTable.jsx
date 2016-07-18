@@ -103,13 +103,13 @@ class ProjectCollaboratorTable extends Component {
                                content="Users"
                                entries={collaborators.userCollaborators}
                                orderEntries={this.onOrderUserEntries}
-                               ownerId={ownerId}
-                               projectName={projectName}
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={userSortedForward}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}
-                                               handleRevoke={this.onRevoke}/>
+                                               handleRevoke={this.onRevoke}
+                                               ownerId={ownerId}
+                                               projectName={projectName} />
                     </DataTable>
 
                     <DataTable categories={dataTableData.categories.organizations}

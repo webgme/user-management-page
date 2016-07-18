@@ -64,10 +64,7 @@ class OrganizationTable extends Component {
         };
 
         return (
-        <div>
-            {/* Users collaborators table */}
-            <div className="box">
-
+            <div>
                 {/* Self-defined header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
@@ -90,10 +87,7 @@ class OrganizationTable extends Component {
                            sortedForward={true}>
                     <OrganizationDataTableEntry/>
                 </DataTable>
-
             </div>
-
-        </div>
         );
     }
 }

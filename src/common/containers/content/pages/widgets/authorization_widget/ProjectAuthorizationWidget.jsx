@@ -156,8 +156,7 @@ class ProjectAuthorizationWidget extends Component {
                                      selectableButtons={authorizationWidgetData.selectableButtons}
                                      selectableButtonsChange={this.handleAuthorizationChange}
                                      submitButtons={authorizationWidgetData.submitButtons}
-                                     valuesInMultiselect={this.state.valuesInMultiselect}/> :
-                null
+                                     valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
     }
 

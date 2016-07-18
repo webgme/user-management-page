@@ -3,7 +3,7 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS } from '../actions/organizations';
+import { REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS } from '../actions/organizations';
 
 const initialState = {
     hasFetched: false,
