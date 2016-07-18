@@ -11,7 +11,9 @@ import { Button } from 'react-bootstrap';
 import { browserHistory, Link } from 'react-router';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
-import {verifyEmail, verifyPassword, verifyUserOrOrganizationId} from '../../../client/utils/loginUtils';
+import { verifyEmail, verifyPassword, verifyUserOrOrganizationId } from '../../../client/utils/loginUtils';
+// Style
+import { RegisterForm as STYLE } from '../../../client/style';
 
 export default class RegisterForm extends Component {
     constructor(props) {
@@ -206,7 +208,7 @@ export default class RegisterForm extends Component {
             <p className="login-box-msg">Register a new membership</p>
 
             {this.state.allowUserRegistration ? null :
-                <div style={{color: "red", fontSize: "15px", paddingBottom: "10px", textAlign: "center"}}>
+                <div style={STYLE.registrationNotAllowed}>
                     User Registration Not Permitted
                 </div>}
 
@@ -262,7 +264,7 @@ export default class RegisterForm extends Component {
                         </div> : null}
                      */}
 
-                    <div className="col-sm-8" style={{paddingTop: "10px"}}>
+                    <div className="col-sm-8" style={STYLE.linkToLogin.column}>
 
                         {/*
                         <Checkbox checked={this.state.agreeToTerms}
@@ -283,7 +285,7 @@ export default class RegisterForm extends Component {
                             <Button bsStyle="primary"
                                     disabled={!validAndNotEmpty}
                                     onClick={this.onRegister}
-                                    style={{float: "right", marginTop: "5px"}}>
+                                    style={STYLE.registerButton}>
                                 Register
                             </Button> : null }
                     </div>

@@ -87,6 +87,7 @@ class OrganizationAuthorizationWidget extends Component {
     }
 
     render() {
+        const { authorization } = this.props;
 
         const authorizationWidgetData = {
             // Have to make these selectable to be in the right place
@@ -105,15 +106,16 @@ class OrganizationAuthorizationWidget extends Component {
         };
 
         return (
-            <AuthorizationWidget authorization={this.props.authorization}
-                                 boxSize="6"
-                                 handleMultiselectChange={this.handleMultiselectChange}
-                                 label={"Add or Remove Members"}
-                                 multi={true}
-                                 multiselectOptions={this.state.multiselectOptions}
-                                 selectableButtons={authorizationWidgetData.selectableButtons}
-                                 selectableButtonsChange={this.handleAuthorizationChange}
-                                 valuesInMultiselect={this.state.valuesInMultiselect}/>
+            authorization ?
+                <AuthorizationWidget boxSize="6"
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     label={"Add or Remove Members"}
+                                     multi={true}
+                                     multiselectOptions={this.state.multiselectOptions}
+                                     selectableButtons={authorizationWidgetData.selectableButtons}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     valuesInMultiselect={this.state.valuesInMultiselect}/> :
+                null
         );
     }
 

@@ -5,17 +5,24 @@
 
 // Libraries
 import React, { Component } from 'react';
+// Style
+import { OrganizationsDataTableEntry as STYLE } from '../../../../../../client/style';
 
 export default class OrganizationDataTableEntry extends Component {
 
     render() {
-        return <tr role="row" className="odd">
-            <td>
-                {this.props.name}
-            </td>
-            {this.props.admin === undefined ? null :
-                <td>{this.props.admin ? <i className="fa fa-check-circle" style={{color: "green"}}/> :
-                                        <i className="fa fa-times-circle" style={{color: "red"}}/>}</td>}
-        </tr>;
+        const { admin, name } = this.props;
+
+        return (
+            <tr role="row" className="odd">
+                <td>
+                    {name}
+                </td>
+                {admin === undefined ? null :
+                    <td>{admin ? <i className="fa fa-check-circle" style={STYLE.isAdmin}/> :
+                                 <i className="fa fa-times-circle" style={STYLE.isNotAdmin}/>}
+                    </td>}
+            </tr>
+        );
     }
 }

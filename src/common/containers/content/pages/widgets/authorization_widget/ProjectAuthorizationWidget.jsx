@@ -114,6 +114,7 @@ class ProjectAuthorizationWidget extends Component {
     }
 
     render() {
+        const { authorization } = this.props;
 
         const authorizationWidgetData = {
             selectableButtons: [
@@ -143,20 +144,20 @@ class ProjectAuthorizationWidget extends Component {
         };
 
         return (
-
-            <AuthorizationWidget authorization={this.props.authorization}
-                                 boxSize="12"
-                                 disableLast={true}
-                                 handleMultiselectChange={this.handleMultiselectChange}
-                                 label={"Authorize Users or Organizations"}
-                                 multi={true}
-                                 multiselectOptions={this.state.multiselectOptions}
-                                 noneSelected={this.state.valuesInMultiselect === ''}
-                                 placeholder="Select one or more (type to search)"
-                                 selectableButtons={authorizationWidgetData.selectableButtons}
-                                 selectableButtonsChange={this.handleAuthorizationChange}
-                                 submitButtons={authorizationWidgetData.submitButtons}
-                                 valuesInMultiselect={this.state.valuesInMultiselect} />
+            authorization ?
+                <AuthorizationWidget boxSize="12"
+                                     disableLast={true}
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     label={"Authorize Users or Organizations"}
+                                     multi={true}
+                                     multiselectOptions={this.state.multiselectOptions}
+                                     noneSelected={this.state.valuesInMultiselect === ''}
+                                     placeholder="Select one or more (type to search)"
+                                     selectableButtons={authorizationWidgetData.selectableButtons}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     submitButtons={authorizationWidgetData.submitButtons}
+                                     valuesInMultiselect={this.state.valuesInMultiselect}/> :
+                null
         );
     }
 

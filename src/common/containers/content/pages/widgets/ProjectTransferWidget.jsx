@@ -1,5 +1,5 @@
 /**
- * Separate component to hold the authorization widget for the project page
+ * Transfer project widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
@@ -10,8 +10,7 @@ import { browserHistory } from 'react-router';
 // Self defined
 import AuthorizationWidget from '../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
 import { multiselectFormat, sortObjectArrayByField } from '../../../../../client/utils/utils';
-import { fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
-import { fetchOrganizations } from '../../../../actions/organizations';
+import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
 import { fetchProjects } from '../../../../actions/projects';
 import { fetchUsers } from '../../../../actions/users';
 
@@ -82,6 +81,7 @@ class ProjectTransferWidget extends Component {
     }
 
     render() {
+        const { authorization } = this.props;
 
         const authorizationWidgetData = {
             // Have to make these selectable to be in the right place
@@ -95,19 +95,20 @@ class ProjectTransferWidget extends Component {
         };
 
         return (
-
-            <AuthorizationWidget authorization={this.props.authorization}
-                                 boxSize="12"
-                                 handleMultiselectChange={this.handleMultiselectChange}
-                                 label={"Transfer Project"}
-                                 multi={false}
-                                 multiselectOptions={this.state.multiselectOptions}
-                                 noneSelected={this.state.valuesInMultiselect === ''}
-                                 placeholder="Select an organization (type to search)"
-                                 selectableButtons={authorizationWidgetData.selectableButtons}
-                                 selectableButtonsChange={this.handleAuthorizationChange}
-                                 submitButtons={authorizationWidgetData.submitButtons}
-                                 valuesInMultiselect={this.state.valuesInMultiselect} />
+            authorization ?
+                <AuthorizationWidget authorization={this.props.authorization}
+                                     boxSize="12"
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     label={"Transfer Project"}
+                                     multi={false}
+                                     multiselectOptions={this.state.multiselectOptions}
+                                     noneSelected={this.state.valuesInMultiselect === ''}
+                                     placeholder="Select an organization (type to search)"
+                                     selectableButtons={authorizationWidgetData.selectableButtons}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     submitButtons={authorizationWidgetData.submitButtons}
+                                     valuesInMultiselect={this.state.valuesInMultiselect}/> :
+                null
         );
     }
 
@@ -120,7 +121,6 @@ ProjectTransferWidget.propTypes = {
 const mapStateToProps = (state) => {
     const { basePath } = state;
     const { organizations } = state.organizations;
-    const orgsHasFetched = state.organizations.hasFetched;
 
     return {
         basePath,

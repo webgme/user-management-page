@@ -66,7 +66,6 @@ class UsersTable extends Component {
                 <DataTable categories={categories}
                            content="Users"
                            entries={users}
-                           iconClass="fa fa-users"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>

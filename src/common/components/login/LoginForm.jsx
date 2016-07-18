@@ -11,6 +11,8 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { browserHistory, Link } from 'react-router';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
+// Style
+import { LoginForm as STYLE } from '../../../client/style';
 
 export default class LoginForm extends Component {
     constructor(props) {
@@ -111,8 +113,8 @@ export default class LoginForm extends Component {
             {!this.state.validCredentials ?
                 <div>
                     <div className="row">
-                        <div className="col-sm-12" style={{textAlign: "center"}}>
-                            <span style={{color: "red", textAlign: "center"}}>Invalid username or password</span>
+                        <div className="col-sm-12" style={STYLE.invalidLogin.column}>
+                            <span style={STYLE.invalidLogin.text}>Invalid username or password</span>
                         </div>
                     </div>
                     <br/>

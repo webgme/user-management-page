@@ -68,7 +68,6 @@ class ProjectsTable extends Component {
                 <DataTable categories={categories}
                            content="Projects"
                            entries={projects}
-                           iconClass="fa fa-cube"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>

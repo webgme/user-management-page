@@ -77,7 +77,6 @@ class OrganizationTable extends Component {
 
                 <DataTable categories={dataTableData.categories.members}
                            entries={data.members}
-                           iconClass="fa fa-university"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={true}>
@@ -86,9 +85,7 @@ class OrganizationTable extends Component {
 
                 <DataTable categories={dataTableData.categories.admins}
                            entries={data.admins}
-                           iconClass="fa fa-university"
                            orderEntries={this.handleOrderEntries}
-                           restClient={this.props.restClient}
                            sortable={true}
                            sortedForward={true}>
                     <OrganizationDataTableEntry/>

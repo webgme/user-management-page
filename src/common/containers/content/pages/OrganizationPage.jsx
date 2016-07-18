@@ -36,6 +36,7 @@ export default class OrganizationPage extends Component {
                 {/* <h3> {this.props.params.organizationId} </h3> */}
 
                 <OrganizationTable authorization={authorization}
+                                   iconClass="fa fa-institution"
                                    organizationId={this.props.params.organizationId}
                                    ownerId={this.props.params.ownerId}
                                    restClient={this.props.restClient}/>

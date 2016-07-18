@@ -10,7 +10,7 @@ export default class ContentWrapper extends Component {
 
     render() {
 
-        let PageWithRestClient = React.cloneElement(this.props.children, {
+        const PageWithRestClient = React.cloneElement(this.props.children, {
             restClient: this.props.restClient
         });
 

@@ -46,9 +46,9 @@ class ProjectPage extends Component {
                         <h2 className="col-md-10" style={STYLE.projectTitle}>
                             <i className="fa fa-cube"/>{` ${ownerId} / ${projectName}`}
                         </h2>
-                        <div className="col-md-2" style={STYLE.viewInEditor}>
+                        <div className="col-md-2" style={STYLE.viewInEditor.column}>
                             <a href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
-                                <Button bsStyle="primary" style={{float: "right"}}>
+                                <Button bsStyle="primary" style={STYLE.viewInEditor.button}>
                                     View in editor
                                 </Button>
                             </a>

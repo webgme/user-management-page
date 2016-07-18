@@ -44,8 +44,7 @@ export default class AuthorizationWidget extends Component {
         });
 
         return (
-            this.props.authorization ?
-                <div className="row">
+            <div className="row">
                     <div className={`col-md-${this.props.boxSize}`}>
                         <div className="box">
 
@@ -81,7 +80,7 @@ export default class AuthorizationWidget extends Component {
 
                         </div>
                     </div>
-                </div> : null
+                </div>
         );
     }
 
