@@ -44,8 +44,7 @@ export default class AuthorizationWidget extends Component {
         });
 
         return (
-            this.props.authorization ?
-                <div className="row">
+            <div className="row">
                     <div className={`col-md-${this.props.boxSize}`}>
                         <div className="box">
 
@@ -56,9 +55,10 @@ export default class AuthorizationWidget extends Component {
                                     <div className="col-sm-6">
                                         <Multiselect
                                             label={this.props.label}
+                                            multi={this.props.multi}
                                             onChange={this.props.handleMultiselectChange}
                                             options={this.props.multiselectOptions}
-                                            placeholder="Select one or more (type to search)"
+                                            placeholder={this.props.placeholder}
                                             valuesInMultiselect={this.props.valuesInMultiselect}/>
                                     </div>
 
@@ -80,7 +80,7 @@ export default class AuthorizationWidget extends Component {
 
                         </div>
                     </div>
-                </div> : null
+                </div>
         );
     }
 

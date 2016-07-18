@@ -79,7 +79,6 @@ class OrganizationsTable extends Component {
                 <DataTable categories={categories}
                            content="Organizations"
                            entries={organizations}
-                           iconClass="fa fa-institution"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>

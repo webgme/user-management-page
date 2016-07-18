@@ -5,6 +5,8 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
+// Style
+import { LoginField as STYLE } from '../../../../client/style';
 
 export default class LoginField extends Component {
 
@@ -50,8 +52,8 @@ export default class LoginField extends Component {
 
                 {this.props.valid ? null :
                     <div className="row">
-                        <div className="col-sm-12" style={{textAlign: "center"}}>
-                            <span style={{color: "red", textAlign: "center"}}>{this.props.invalidMessage}</span>
+                        <div className="col-sm-12" style={STYLE.invalidMessage.column}>
+                            <span style={STYLE.invalidMessage.text}>{this.props.invalidMessage}</span>
                         </div>
                     </div>}
 

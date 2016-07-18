@@ -95,10 +95,7 @@ export default class DataTable extends Component {
             let properties = {};
             Object.keys(entriesList[i]).forEach(prop => {
                 properties[prop] = entriesList[i][prop];
-                properties.handleRevoke = this.props.handleRevoke;
                 properties.key = i;
-                properties.ownerId = this.props.ownerId;
-                properties.projectName = this.props.projectName;
             });
             formattedEntries.push(React.cloneElement(this.props.children, properties));
         }
@@ -119,7 +116,7 @@ export default class DataTable extends Component {
                        data-dt-idx={i}
                        href="#"
                        onClick={this.handlePagination}
-                       style={STYLE.paginationButtons}
+                       style={STYLE.paginationButtons.buttons}
                        tabIndex="0">{i}</a>
                 </li>);
         }
@@ -166,7 +163,7 @@ export default class DataTable extends Component {
                     </div>
 
                     {this.props.entries.length === 0 ?
-                        <div style={{textAlign: "center"}}>No {this.props.content}...</div> :
+                        <div style={STYLE.noEntriesLabel}>No {this.props.content}...</div> :
                         <div className="row">
 
                             <div className="col-sm-12" style={tableMinHeight}>
@@ -198,7 +195,7 @@ export default class DataTable extends Component {
                                 <div className="dataTables_info" id="example1_info" role="status"
                                      aria-live="polite">
                                     <div>
-                                        <label style={{fontWeight: "normal", lineHeight: "2.4"}}>
+                                        <label style={STYLE.showString}>
                                             {showString}
                                         </label>
                                     </div>
@@ -206,7 +203,7 @@ export default class DataTable extends Component {
                         </div>
 
                         {/* Pagination buttons */}
-                        <div className="col-sm-6" style={{textAlign: "center"}}>
+                        <div className="col-sm-6" style={STYLE.paginationButtons.column}>
                             {showPagination ?
                                 <DataTablePagination clickHandler={this.handlePagination}
                                                      formattedPaginationButtons={formattedPaginationButtons}
@@ -215,15 +212,15 @@ export default class DataTable extends Component {
                         </div>
 
                         {/* Select dropdown */}
-                        <div className="col-sm-3" style={{textAlign: "right"}}>
+                        <div className="col-sm-3" style={STYLE.selectDropdown.column}>
                             {showBasedOnRawData ?
                                 <div className="dataTables_length" id="example1_length">
-                                    <label style={{fontWeight: "normal"}}>{this.props.content} per page
+                                    <label style={STYLE.selectDropdown.label}>{this.props.content} per page
                                         <select name="example1_length"
                                                 aria-controls="example1"
                                                 className="form-control input-sm"
                                                 onChange={this.handleSelect}
-                                                style={{padding: "5px 1px"}}>
+                                                style={STYLE.selectDropdown.options}>
 
                                             {formattedSelectOptions}
 

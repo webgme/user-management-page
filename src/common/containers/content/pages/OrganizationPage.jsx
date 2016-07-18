@@ -27,20 +27,20 @@ export default class OrganizationPage extends Component {
     }
 
     render() {
-
-        const { authorization } = this.props;
+        const { canAuthorize } = this.props;
 
         return (
 
             <section className="content">
                 {/* <h3> {this.props.params.organizationId} </h3> */}
 
-                <OrganizationTable authorization={authorization}
-                                   organizationId={this.props.params.organizationId}
-                                   ownerId={this.props.params.ownerId}
-                                   restClient={this.props.restClient}/>
+                <div className="box box-primary">
+                    <OrganizationTable organizationId={this.props.params.organizationId}
+                                       ownerId={this.props.params.ownerId}
+                                       restClient={this.props.restClient}/>
+                </div>
 
-                <OrganizationAuthorizationWidget authorization={authorization}
+                <OrganizationAuthorizationWidget canAuthorize={canAuthorize}
                                                  organizationId={this.props.params.organizationId}
                                                  restClient={this.props.restClient}/>
 
@@ -51,7 +51,7 @@ export default class OrganizationPage extends Component {
 }
 
 OrganizationPage.propTypes = {
-    authorization: PropTypes.bool.isRequired,
+    canAuthorize: PropTypes.bool.isRequired,
     params: PropTypes.shape({
         organizationId: React.PropTypes.string.isRequired
     })
@@ -62,10 +62,10 @@ const mapStateToProps = (state, ownProps) => {
     const { user } = state.user;
     const { ownerId } = ownProps.params;
 
-    const authorization = canUserAuthorize(user, organizations, ownerId);
+    const canAuthorize = canUserAuthorize(user, organizations, ownerId);
 
     return {
-        authorization
+        canAuthorize
     };
 };
 

@@ -10,8 +10,7 @@ import { Link } from 'react-router';
 export default class UsersDataTableEntry extends Component {
 
     render() {
-
-        const { name, description } = this.props.data;
+        const { name, description } = this.props.data ? this.props.data : {};
         const { siteAdmin, _id} = this.props;
         const { basePath } = this.props;
         const { userId } = this.props;

@@ -3,7 +3,7 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import {REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS } from '../actions/organizations';
+import { REQUEST_ORGANIZATIONS, RECEIVE_ORGANIZATIONS } from '../actions/organizations';
 
 const initialState = {
     hasFetched: false,
@@ -11,7 +11,7 @@ const initialState = {
     organizations: []
 };
 
-const user = (state = initialState, action) => {
+const organizations = (state = initialState, action) => {
     switch (action.type) {
         case RECEIVE_ORGANIZATIONS:
             return Object.assign({}, state, {
@@ -28,4 +28,4 @@ const user = (state = initialState, action) => {
     }
 };
 
-export default user;
+export default organizations;

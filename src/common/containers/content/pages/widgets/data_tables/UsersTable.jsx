@@ -66,11 +66,11 @@ class UsersTable extends Component {
                 <DataTable categories={categories}
                            content="Users"
                            entries={users}
-                           iconClass="fa fa-users"
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
-                    <UsersDataTableEntry columnStyle={{width: "13%"}} userId={userId} />
+                    <UsersDataTableEntry columnStyle={{width: "13%"}}
+                                         userId={userId} />
                 </DataTable>
 
             </div>

@@ -71,7 +71,7 @@ class ProjectCollaboratorTable extends Component {
 
     render() {
         const { collaborators, orgSortedForward, userSortedForward } = this.props;
-        const { authorization, ownerId, projectName } = this.props;
+        const { canAuthorize, ownerId, projectName } = this.props;
 
         const dataTableData = {
             categories: {
@@ -102,30 +102,28 @@ class ProjectCollaboratorTable extends Component {
                                categoryStyle={{width: "50%"}}
                                content="Users"
                                entries={collaborators.userCollaborators}
-                               handleRevoke={this.onRevoke}
-                               iconClass={null}
                                orderEntries={this.onOrderUserEntries}
-                               ownerId={ownerId}
-                               projectName={projectName}
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={userSortedForward}>
-                        <ProjectDataTableEntry authorization={authorization} />
+                        <ProjectDataTableEntry canAuthorize={canAuthorize}
+                                               handleRevoke={this.onRevoke}
+                                               ownerId={ownerId}
+                                               projectName={projectName} />
                     </DataTable>
 
                     <DataTable categories={dataTableData.categories.organizations}
                                categoryStyle={{width: "50%"}}
                                content="Organizations"
                                entries={collaborators.organizationCollaborators}
-                               handleRevoke={this.onRevoke}
-                               iconClass={null}
                                orderEntries={this.onOrderOrganizationEntries}
-                               ownerId={ownerId}
-                               projectName={projectName}
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={orgSortedForward}>
-                        <ProjectDataTableEntry authorization={authorization} />
+                        <ProjectDataTableEntry canAuthorize={canAuthorize}
+                                               handleRevoke={this.onRevoke}
+                                               ownerId={ownerId}
+                                               projectName={projectName} />
                     </DataTable>
 
                 </div>
@@ -140,37 +138,23 @@ ProjectCollaboratorTable.propTypes = {
         userCollaborators: PropTypes.array.isRequired,
         organizationCollaborators: PropTypes.array.isRequired
     }),
-    orgSortCategory: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.array
-    ]).isRequired,
     orgSortedForward: PropTypes.bool.isRequired,
-    userSortCategory: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.array
-    ]).isRequired,
     userSortedForward: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;
-    const orgsHasFetched = state.organizations.hasFetched;
     const { users } = state.users;
-    const usersHasFetched = state.users.hasFetched;
 
     const { ownerId, projectName } = ownProps;
     const projectId = `${ownerId}+${projectName}`;
 
     // Retrieving collaborators
-    let collaborators = {userCollaborators: [], organizationCollaborators: []};
-    if (orgsHasFetched && usersHasFetched) {
-        collaborators = retrieveCollaborators(organizations, users, projectId);
-    }
+    let collaborators = retrieveCollaborators(organizations, users, projectId);
 
     // Sorting collaborators
     const userSortCategory = state.tables.projectUser.sortCategory;
     const userSortedForward = state.tables.projectUser.sortedForward;
-
     const orgSortCategory = state.tables.projectOrg.sortCategory;
     const orgSortedForward = state.tables.projectOrg.sortedForward;
 
@@ -181,9 +165,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         collaborators,
-        orgSortCategory,
         orgSortedForward,
-        userSortCategory,
         userSortedForward
     };
 };

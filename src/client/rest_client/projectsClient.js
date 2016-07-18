@@ -100,6 +100,18 @@ export default class ProjectsClient extends BaseClient {
     }
 
     /**
+     * Transfers a project to an organization
+     * Requires delete access, admin in org other than owner, or siteAdmin.
+     * @param {string} ownerId - id of owner
+     * @param {string} projectName - name of project
+     * @param {string} userOrOrgId - id of org gaining ownership of project
+     * @return {Promise} //TODO: How to document the resolved value.
+     */
+    transferProject(ownerId, projectName, userOrOrgId) {
+        return super.post(['projects', ownerId, projectName, 'transfer', userOrOrgId]);
+    }
+
+    /**
      * Gets the latest commits for the project.
      * Requires read access.
      * @param {string} ownerId - owner's id

@@ -87,10 +87,11 @@ class OrganizationAuthorizationWidget extends Component {
     }
 
     render() {
+        const { canAuthorize } = this.props;
 
         const authorizationWidgetData = {
             // Have to make these selectable to be in the right place
-            submitButtons: [
+            selectableButtons: [
                 {
                     selectableButtonChange: this.handleSubmitAuthorization,
                     selectableButtonText: 'Add members',
@@ -105,16 +106,15 @@ class OrganizationAuthorizationWidget extends Component {
         };
 
         return (
-            <AuthorizationWidget authorization={this.props.authorization}
-                                 boxSize="6"
-                                 handleMultiselectChange={this.handleMultiselectChange}
-                                 label={"Add or Remove Members"}
-                                 multiselectOptions={this.state.multiselectOptions}
-                                 ownerId={this.props.organizationId}
-                                 restClient={this.props.restClient}
-                                 selectableButtons={authorizationWidgetData.submitButtons}
-                                 selectableButtonsChange={this.handleAuthorizationChange}
-                                 valuesInMultiselect={this.state.valuesInMultiselect}/>
+            canAuthorize ?
+                <AuthorizationWidget boxSize="6"
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     label={"Add or Remove Members"}
+                                     multi={true}
+                                     multiselectOptions={this.state.multiselectOptions}
+                                     selectableButtons={authorizationWidgetData.selectableButtons}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
     }
 

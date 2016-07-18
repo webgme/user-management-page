@@ -201,13 +201,13 @@ export default class ProfileBox extends Component {
                                 </span>
                                     <div className="row">
 
-                                        <div className="col-md-9">
+                                        <div className="col-md-8">
                                             <input className="form-control"
                                                    disabled={!user.siteAdmin}
                                                    value="Site Admin"/>
                                         </div>
 
-                                        <div className="col-md-3" style={{float: "right"}}>
+                                        <div className="col-md-4" style={{float: "right"}}>
                                             <ButtonGroup>
                                                 <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
                                                         disabled={!editable}

@@ -3,7 +3,7 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import {REQUEST_USER, RECEIVE_USER} from '../actions/user';
+import { REQUEST_USER, RECEIVE_USER } from '../actions/user';
 
 const initialState = {
     hasFetched: false,

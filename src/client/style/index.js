@@ -30,15 +30,38 @@ export const ColorMenu = {
 };
 
 export const DataTable = {
+    noEntriesLabel: {
+        textAlign: "center"
+    },
     paginationButtons: {
-        WebkitUserSelect: "none",
-        KhtmlUserSelect: "none",
-        MozUserSelect: "none",
-        MsUserSelect: "none",
-        OUserSelect: "none",
-        userSelect: "none",
-        outlineStyle: "none",
-        WebkitTapHighlightColor: "transparent"
+        column: {
+            textAlign: "center"
+        },
+        buttons: {
+            WebkitUserSelect: "none",
+            KhtmlUserSelect: "none",
+            MozUserSelect: "none",
+            MsUserSelect: "none",
+            OUserSelect: "none",
+            userSelect: "none",
+            outlineStyle: "none",
+            WebkitTapHighlightColor: "transparent"
+        }
+    },
+    selectDropdown: {
+        column: {
+            textAlign: "right"
+        },
+        label: {
+            fontWeight: "normal"
+        },
+        options: {
+            padding: "5px 1px"
+        }
+    },
+    showString: {
+        fontWeight: "normal",
+        lineHeight: "2.4"
     }
 };
 
@@ -52,14 +75,6 @@ export const DataTablePagination = {
         userSelect: "none",
         outlineStyle: "none",
         WebkitTapHighlightColor: "transparent"}
-};
-
-export const EditableBox = {
-    text: {
-        position: "absolute",
-        top: "50%",
-        transform: "translate(0, -50%)"
-    }
 };
 
 export const Footer = {
@@ -109,8 +124,41 @@ export const HomePage = {
     }
 };
 
+export const LoginField = {
+    invalidMessage: {
+        column: {
+            textAlign: "center"
+        },
+        text: {
+            color: "red",
+            textAlign: "center"
+        }
+    }
+};
+
+export const LoginForm = {
+    invalidLogin: {
+        column: {
+            textAlign: "center"
+        },
+        text: {
+            color: "red",
+            textAlign: "center"
+        }
+    }
+};
+
 export const Multiselect = {
     marginBottom: "10px"
+};
+
+export const OrganizationsDataTableEntry = {
+    isAdmin: {
+        color: "green"
+    },
+    isNotAdmin: {
+        color: "red"
+    }
 };
 
 export const OrganizationsPage = {
@@ -145,6 +193,40 @@ export const ProfilePage = {
     profileBox: {
         paddingLeft: "10%",
         paddingRight: "10%"
+    }
+};
+
+export const ProjectPage = {
+    projectTitle: {
+        paddingLeft: "30px",
+        paddingTop: "14px"
+    },
+    viewInEditor: {
+        button: {
+            float: "right"
+        },
+        column: {
+            paddingRight: "30px",
+            paddingTop: "14px"
+        }
+    }
+};
+
+export const RegisterForm = {
+    linkToLogin: {
+        column: {
+            paddingTop: "10px"
+        }
+    },
+    registrationNotAllowed: {
+        color: "red",
+        fontSize: "15px",
+        paddingBottom: "10px",
+        textAlign: "center"
+    },
+    registerButton: {
+        float: "right",
+        marginTop: "5px"
     }
 };
 

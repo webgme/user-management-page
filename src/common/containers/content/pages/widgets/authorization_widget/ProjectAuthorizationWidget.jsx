@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 // Self defined
 import AuthorizationWidget from '../../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
 import { multiselectFormat, sortObjectArrayByField } from '../../../../../../client/utils/utils';
-import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
+import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
 import { fetchUsers, fetchUsersIfNeeded } from '../../../../../actions/users';
 
 class ProjectAuthorizationWidget extends Component {
@@ -87,7 +87,6 @@ class ProjectAuthorizationWidget extends Component {
         }
 
         let promiseArrayToGrant = [];
-
         if (this.state.valuesInMultiselect !== '') {
             this.state.valuesInMultiselect.split(',').forEach(userOrOrgName => {
                 promiseArrayToGrant.push(
@@ -100,6 +99,7 @@ class ProjectAuthorizationWidget extends Component {
 
         Promise.all(promiseArrayToGrant)
             .then(() => {
+                dispatch(fetchOrganizations());
                 dispatch(fetchUsers());
             })
             .catch(err => {
@@ -114,6 +114,7 @@ class ProjectAuthorizationWidget extends Component {
     }
 
     render() {
+        const { canAuthorize } = this.props;
 
         const authorizationWidgetData = {
             selectableButtons: [
@@ -143,20 +144,19 @@ class ProjectAuthorizationWidget extends Component {
         };
 
         return (
-
-            <AuthorizationWidget authorization={this.props.authorization}
-                                 boxSize="12"
-                                 disableLast={true}
-                                 handleMultiselectChange={this.handleMultiselectChange}
-                                 label={"Authorize Users or Organizations"}
-                                 multiselectOptions={this.state.multiselectOptions}
-                                 noneSelected={this.state.valuesInMultiselect === ''}
-                                 ownerId={this.props.ownerId}
-                                 restClient={this.props.restClient}
-                                 selectableButtons={authorizationWidgetData.selectableButtons}
-                                 selectableButtonsChange={this.handleAuthorizationChange}
-                                 submitButtons={authorizationWidgetData.submitButtons}
-                                 valuesInMultiselect={this.state.valuesInMultiselect} />
+            canAuthorize ?
+                <AuthorizationWidget boxSize="12"
+                                     disableLast={true}
+                                     handleMultiselectChange={this.handleMultiselectChange}
+                                     label={"Authorize Users or Organizations"}
+                                     multi={true}
+                                     multiselectOptions={this.state.multiselectOptions}
+                                     noneSelected={this.state.valuesInMultiselect === ''}
+                                     placeholder="Select one or more (type to search)"
+                                     selectableButtons={authorizationWidgetData.selectableButtons}
+                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     submitButtons={authorizationWidgetData.submitButtons}
+                                     valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
     }
 
@@ -169,9 +169,7 @@ ProjectAuthorizationWidget.propTypes = {
 
 const mapStateToProps = (state) => {
     const { organizations } = state.organizations;
-    const orgsHasFetched = state.organizations.hasFetched;
     const { users } = state.users;
-    const usersHasFetched = state.users.hasFetched;
 
     return {
         organizations,

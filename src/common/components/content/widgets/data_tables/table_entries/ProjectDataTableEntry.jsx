@@ -101,7 +101,7 @@ export default class ProjectDataTableEntry extends Component {
             <td>
                 {this.props.rights}
                 {/* Only the owner(s) can see the remove option */}
-                {this.props.authorization ?
+                {this.props.canAuthorize ?
                     this.props.ownerId === this.props.name ?
                         <OverlayTrigger overlay={<Popover id="1"><strong>You are the owner</strong></Popover>}
                                         placement="top"
