@@ -1,3 +1,5 @@
+/* global window */
+
 /**
  * Container widget for the projects data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -9,9 +11,9 @@ import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import { sortWithChecks } from '../../../../../../client/utils/utils';
 import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
 import { sortBy } from '../../../../../actions/tables';
+import { sortWithChecks } from '../../../../../../client/utils/utils';
 
 const PROJECTS_FIELDS = {
     "Created At": ["info", "createdAt"],
@@ -54,13 +56,16 @@ class ProjectsTable extends Component {
             {id: 5, name: 'Created At'}
         ];
 
+        // Will be 'projects' if in the projects page, if in projectsByOwner then will be ownerId
+        const ownerId = window.location.pathname.split('/').slice(-1)[0];
+
         return (
 
             <div>
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
-                        <i className="fa fa-cubes"/> {` Projects`}
+                        <i className="fa fa-cubes"/> {` Projects ${ownerId === 'projects' ? '' : 'by ' + ownerId}`}
                     </h3>
                 </div>
 
@@ -88,12 +93,21 @@ ProjectsTable.propTypes = {
     sortedForward: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     const { projects } = state.projects;
     const { sortCategory, sortedForward } = state.tables.projects;
 
+    const ownerId = ownProps.pathname.split('/').slice(-1)[0];
+
+    let filteredProjects = projects.slice();
+    if (ownerId !== 'projects') {
+        filteredProjects = filteredProjects.filter((project) => {
+            return project.owner === ownerId;
+        });
+    }
+
     return {
-        projects: sortWithChecks(projects.slice(), sortCategory, sortedForward),
+        projects: sortWithChecks(filteredProjects, sortCategory, sortedForward),
         sortCategory,
         sortedForward
     };

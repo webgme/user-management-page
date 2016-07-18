@@ -11,7 +11,7 @@ const initialState = {
     projects: []
 };
 
-const user = (state = initialState, action) => {
+const projects = (state = initialState, action) => {
     switch (action.type) {
         case RECEIVE_PROJECTS:
             return Object.assign({}, state, {
@@ -28,4 +28,4 @@ const user = (state = initialState, action) => {
     }
 };
 
-export default user;
+export default projects;

@@ -16,7 +16,7 @@ export default class ProjectsPage extends Component {
 
                 <div className="box box-primary">
 
-                    <ProjectsTable />
+                    <ProjectsTable pathname={this.props.location.pathname}/>
 
                 </div>
 

@@ -17,7 +17,6 @@ import OrganizationsPage from '../../common/containers/content/pages/Organizatio
 import ProfilePage from '../../common/containers/content/pages/ProfilePage';
 import ProjectPage from '../../common/containers/content/pages/ProjectPage';
 import ProjectsPage from '../../common/components/content/pages/ProjectsPage';
-import ProjectsByOwnerPage from '../../common/components/content/pages/ProjectsByOwnerPage';
 import UserPage from '../../common/containers/content/pages/UserPage';
 import UsersPage from '../../common/components/content/pages/UsersPage';
 
@@ -41,7 +40,7 @@ export default (
 
             <Route path="projects" component={ProjectsPage} />
 
-            <Route path="projects/:ownerId" component={ProjectsByOwnerPage} />
+            <Route path="projects/:ownerId" component={ProjectsPage} />
 
             <Route path="projects/:ownerId/:projectName" component={ProjectPage} />
 
