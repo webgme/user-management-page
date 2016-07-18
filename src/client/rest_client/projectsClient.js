@@ -101,7 +101,7 @@ export default class ProjectsClient extends BaseClient {
 
     /**
      * Transfers a project to an organization
-     * Requires ownership, admin in org with ownership, or siteAdmin.
+     * Requires delete access, admin in org other than owner, or siteAdmin.
      * @param {string} ownerId - id of owner
      * @param {string} projectName - name of project
      * @param {string} userOrOrgId - id of org gaining ownership of project
