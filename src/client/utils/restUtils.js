@@ -25,7 +25,7 @@ export function canUserAuthorize(user, orgs, ownerId) {
  * @param {string} projectId - Id of project
  * @return {Map} map of users to their rights to a specified projects
  */
-export function getUsersWithAccessToProject(users, projectId) {
+export function getUsersWithAccess(users, projectId) {
     let userMap = {};
     users.forEach(user => {
         if (user.projects.hasOwnProperty(projectId)) {
@@ -61,7 +61,7 @@ export function getUsersWithAccessToProject(users, projectId) {
  * @param {string} projectId - id of project
  * @return {Map} (Had to resolve the map to use it in parallel with another async function)
  */
-export function getOrganizationsWithAccessToProject(orgs, projectId) {
+export function getOrganizationsWithAccess(orgs, projectId) {
     let orgToRights = {};
 
     orgs.forEach(org => {
@@ -91,7 +91,7 @@ export function getOrganizationsWithAccessToProject(orgs, projectId) {
  * @param {string} projectId - id of project
  * @return {Map} returns map of the users in the specified list of organizations (names to rights)
  */
-export function getUsersInOrganizationsWithAccessToProject(orgs, projectId) {
+export function getUsersInOrganizationsWithAccess(orgs, projectId) {
     let userToOrgsRights = {};
 
     orgs.forEach(org => {
@@ -114,7 +114,6 @@ export function getUsersInOrganizationsWithAccessToProject(orgs, projectId) {
                         read: userToOrgsRights[user].read || org.projects[projectId].read,
                         write: userToOrgsRights[user].write || org.projects[projectId].write,
                         delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
-                        inOrg: true,
                         orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) // eslint-disable-line max-len
                     };
                 } else {
@@ -137,9 +136,9 @@ export function getUsersInOrganizationsWithAccessToProject(orgs, projectId) {
  */
 export function retrieveCollaborators(organizations, users, projectId) {
 
-    let usersWithAccess = getUsersWithAccessToProject(users, projectId),
-        usersInOrganizationsWithAccess = getUsersInOrganizationsWithAccessToProject(organizations, projectId),
-        organizationsWithAccess = getOrganizationsWithAccessToProject(organizations, projectId);
+    let usersWithAccess = getUsersWithAccess(users, projectId),
+        usersInOrganizationsWithAccess = getUsersInOrganizationsWithAccess(organizations, projectId),
+        organizationsWithAccess = getOrganizationsWithAccess(organizations, projectId);
 
     // Union of rights if in organization
     if (isEmpty(usersInOrganizationsWithAccess)) {
@@ -150,6 +149,7 @@ export function retrieveCollaborators(organizations, users, projectId) {
                 usersWithAccess[user].read = usersWithAccess[user].read || usersInOrganizationsWithAccess[user].read; // eslint-disable-line max-len
                 usersWithAccess[user].write = usersWithAccess[user].write || usersInOrganizationsWithAccess[user].write; // eslint-disable-line max-len
                 usersWithAccess[user].delete = usersWithAccess[user].delete || usersInOrganizationsWithAccess[user].delete; // eslint-disable-line max-len
+                usersWithAccess[user].inOrg = usersWithAccess[user].inOrg || usersInOrganizationsWithAccess[user].inOrg; // eslint-disable-line max-len
                 usersWithAccess[user].orgsRightsOrigin = usersInOrganizationsWithAccess[user].orgsRightsOrigin;
             } else {
                 usersWithAccess[user] = JSON.parse(JSON.stringify(usersInOrganizationsWithAccess[user]));

@@ -13,9 +13,11 @@ import { connect } from 'react-redux';
 import CollaboratorsCommitsBarChart from '../../../components/content/widgets/charts/CollaboratorsCommitsBarChart';
 import ProjectAuthorizationWidget from './widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from './widgets/data_tables/ProjectCollaboratorTable';
+import ProjectTransferWidget from './widgets/ProjectTransferWidget';
 import { canUserAuthorize } from '../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { ProjectPage as STYLE } from '../../../../client/style';
 
 class ProjectPage extends Component {
 
@@ -41,10 +43,10 @@ class ProjectPage extends Component {
 
                 <div className="box box-primary">
                     <div className="row">
-                        <h2 className="col-md-10" style={{paddingLeft: "30px", paddingTop: "14px"}}>
+                        <h2 className="col-md-10" style={STYLE.projectTitle}>
                             <i className="fa fa-cube"/>{` ${ownerId} / ${projectName}`}
                         </h2>
-                        <div className="col-md-2" style={{paddingRight: "30px", paddingTop: "14px"}}>
+                        <div className="col-md-2" style={STYLE.viewInEditor}>
                             <a href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
                                 <Button bsStyle="primary" style={{float: "right"}}>
                                     View in editor
@@ -68,6 +70,11 @@ class ProjectPage extends Component {
                     <div className="col-md-6">
 
                         <ProjectAuthorizationWidget authorization={authorization}
+                                                    ownerId={ownerId}
+                                                    projectName={projectName}
+                                                    restClient={restClient} />
+
+                        <ProjectTransferWidget authorization={authorization}
                                                     ownerId={ownerId}
                                                     projectName={projectName}
                                                     restClient={restClient} />

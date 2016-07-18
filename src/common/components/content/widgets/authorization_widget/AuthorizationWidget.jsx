@@ -56,9 +56,10 @@ export default class AuthorizationWidget extends Component {
                                     <div className="col-sm-6">
                                         <Multiselect
                                             label={this.props.label}
+                                            multi={this.props.multi}
                                             onChange={this.props.handleMultiselectChange}
                                             options={this.props.multiselectOptions}
-                                            placeholder="Select one or more (type to search)"
+                                            placeholder={this.props.placeholder}
                                             valuesInMultiselect={this.props.valuesInMultiselect}/>
                                     </div>
 

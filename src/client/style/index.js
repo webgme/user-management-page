@@ -148,6 +148,16 @@ export const ProfilePage = {
     }
 };
 
+export const ProjectPage = {
+    projectTitle: {
+        paddingLeft: "30px",
+        paddingTop: "14px"
+    },
+    viewInEditor: {
+        paddingRight: "30px",
+        paddingTop: "14px"}
+};
+
 export const SideBarMenu = {
     sidebarCategoryStyle: {
         lineHeight: "30px",

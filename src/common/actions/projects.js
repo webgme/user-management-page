@@ -39,7 +39,7 @@ const shouldFetchProjects = (state) => {
     return shouldFetch;
 };
 
-const fetchProjects = () => {
+export const fetchProjects = () => {
     return dispatch => {
         dispatch(requestProjects());
         return projectsClient.getAllProjects()

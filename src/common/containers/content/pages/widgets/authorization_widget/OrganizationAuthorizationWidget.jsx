@@ -90,7 +90,7 @@ class OrganizationAuthorizationWidget extends Component {
 
         const authorizationWidgetData = {
             // Have to make these selectable to be in the right place
-            submitButtons: [
+            selectableButtons: [
                 {
                     selectableButtonChange: this.handleSubmitAuthorization,
                     selectableButtonText: 'Add members',
@@ -109,10 +109,9 @@ class OrganizationAuthorizationWidget extends Component {
                                  boxSize="6"
                                  handleMultiselectChange={this.handleMultiselectChange}
                                  label={"Add or Remove Members"}
+                                 multi={true}
                                  multiselectOptions={this.state.multiselectOptions}
-                                 ownerId={this.props.organizationId}
-                                 restClient={this.props.restClient}
-                                 selectableButtons={authorizationWidgetData.submitButtons}
+                                 selectableButtons={authorizationWidgetData.selectableButtons}
                                  selectableButtonsChange={this.handleAuthorizationChange}
                                  valuesInMultiselect={this.state.valuesInMultiselect}/>
         );
