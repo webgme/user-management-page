@@ -6,6 +6,41 @@
 import { isEmpty } from './utils';
 
 /**
+ * Gets the organizations the specified user is an admin of
+ * @param {Array} orgs - organizations
+ * @param {string} userId - userId
+ * @return {Array.<T>} returns the organizations user specified is admin of
+ */
+export const getOrgsUserIsAdminOf = (orgs, userId) => {
+    const orgsUserIsAdminOf = orgs
+        .map((org) => {
+            return org.admins.indexOf(userId) > -1 ? org._id : undefined;
+        })
+        .filter((entry) => {
+            return entry;
+        });
+
+    return orgsUserIsAdminOf;
+};
+
+/**
+ * Gets the organizations the specified user can transfer to
+ * @param {Array} organizations - organizations
+ * @param {string} userId - userId
+ * @param {string} currentProjectOwnerId - currentProjectOwnerId
+ * @return {Array.<T>} array of organizations the user specified can transfer to
+ */
+export const getOrgsUserCanTransferTo = (organizations, userId, currentProjectOwnerId) => {
+    // Exclude current project's owner
+    const orgsUserIsAdminOfWithoutCurrent = getOrgsUserIsAdminOf(organizations, userId)
+        .filter((orgId) => {
+            return orgId !== currentProjectOwnerId;
+        });
+
+    return orgsUserIsAdminOfWithoutCurrent;
+};
+
+/**
  * Returns a boolean for if the current user can authorize others to the project
  * @param {Object} user - user object
  * @param {Array} orgs - array of orgs
@@ -18,6 +53,19 @@ export function canUserAuthorize(user, orgs, ownerId) {
             return org._id === ownerId || org.admins.indexOf(user._id) !== -1;
         });
 }
+
+export const canUserTransfer = (organizations, users, ownerId, projectId, user) => {
+    const collaborators = retrieveCollaborators(organizations, users, projectId);
+    const userCollaborator = collaborators.userCollaborators.find((userCollaborator) => {
+        return userCollaborator.name === user._id;
+    }) || {};
+    const rights = userCollaborator.rights || '';
+
+    const orgsUserCanTransferTo = getOrgsUserCanTransferTo(organizations, user._id, ownerId);
+
+    return user.siteAdmin || (orgsUserCanTransferTo.length &&
+                              rights.toLowerCase().indexOf('delete') > -1);
+};
 
 /**
  * Maps usernames of users with access to a specified project to their respective rights

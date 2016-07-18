@@ -14,9 +14,10 @@ import CollaboratorsCommitsBarChart from '../../../components/content/widgets/ch
 import ProjectAuthorizationWidget from './widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from './widgets/data_tables/ProjectCollaboratorTable';
 import ProjectTransferWidget from './widgets/ProjectTransferWidget';
-import { canUserAuthorize } from '../../../../client/utils/restUtils';
+import { canUserTransfer, canUserAuthorize } from '../../../../client/utils/restUtils';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { fetchUsersIfNeeded } from '../../../actions/users';
 import { ProjectPage as STYLE } from '../../../../client/style';
 
 class ProjectPage extends Component {
@@ -30,13 +31,14 @@ class ProjectPage extends Component {
 
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUserIfNeeded());
+        dispatch(fetchUsersIfNeeded());
     }
 
     render() {
 
-        const { authorization } = this.props;
+        const { canAuthorize, canTransfer } = this.props;
         const { ownerId, projectName } = this.props.params;
-        const { restClient } = this.props;
+        const { user, restClient } = this.props;
 
         return (
             <section className="content">
@@ -60,7 +62,7 @@ class ProjectPage extends Component {
 
                     <div className="col-md-6">
 
-                        <ProjectCollaboratorTable authorization={authorization}
+                        <ProjectCollaboratorTable canAuthorize={canAuthorize}
                                                   ownerId={ownerId}
                                                   projectName={projectName}
                                                   restClient={restClient} />
@@ -69,15 +71,16 @@ class ProjectPage extends Component {
 
                     <div className="col-md-6">
 
-                        <ProjectAuthorizationWidget authorization={authorization}
+                        <ProjectAuthorizationWidget canAuthorize={canAuthorize}
                                                     ownerId={ownerId}
                                                     projectName={projectName}
-                                                    restClient={restClient} />
+                                                    restClient={restClient}/>
 
-                        <ProjectTransferWidget authorization={authorization}
-                                                    ownerId={ownerId}
-                                                    projectName={projectName}
-                                                    restClient={restClient} />
+                        {canTransfer ? <ProjectTransferWidget ownerId={ownerId}
+                                                              projectName={projectName}
+                                                              restClient={restClient}
+                                                              userId={user ? user._id : ''} /> :
+                                       null}
 
                         <div className="row">
                             <CollaboratorsCommitsBarChart options={{}}
@@ -98,18 +101,25 @@ class ProjectPage extends Component {
 }
 
 ProjectPage.propTypes = {
-    authorization: PropTypes.bool.isRequired
+    canAuthorize: PropTypes.bool.isRequired,
+    canTransfer: PropTypes.bool.isRequired,
+    user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;
     const { user } = state.user;
-    const { ownerId } = ownProps.params;
+    const { users } = state.users;
+    const { ownerId, projectName } = ownProps.params;
+    const projectId = `${ownerId}+${projectName}`;
 
-    const authorization = canUserAuthorize(user, organizations, ownerId);
+    const canAuthorize = canUserAuthorize(user, organizations, ownerId);
+    const canTransfer = canUserTransfer(organizations, users, ownerId, projectId, user) || false;
 
     return {
-        authorization
+        canAuthorize,
+        canTransfer,
+        user
     };
 };
 

@@ -71,7 +71,7 @@ class ProjectCollaboratorTable extends Component {
 
     render() {
         const { collaborators, orgSortedForward, userSortedForward } = this.props;
-        const { authorization, ownerId, projectName } = this.props;
+        const { canAuthorize, ownerId, projectName } = this.props;
 
         const dataTableData = {
             categories: {
@@ -108,7 +108,7 @@ class ProjectCollaboratorTable extends Component {
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={userSortedForward}>
-                        <ProjectDataTableEntry authorization={authorization}
+                        <ProjectDataTableEntry canAuthorize={canAuthorize}
                                                handleRevoke={this.onRevoke}/>
                     </DataTable>
 
@@ -120,7 +120,7 @@ class ProjectCollaboratorTable extends Component {
                                showOtherTitle={true}
                                sortable={true}
                                sortedForward={orgSortedForward}>
-                        <ProjectDataTableEntry authorization={authorization}
+                        <ProjectDataTableEntry canAuthorize={canAuthorize}
                                                handleRevoke={this.onRevoke}
                                                ownerId={ownerId}
                                                projectName={projectName} />

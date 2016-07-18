@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 // Self defined
 import AuthorizationWidget from '../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
-import { multiselectFormat, sortObjectArrayByField } from '../../../../../client/utils/utils';
+import { getOrgsUserCanTransferTo } from '../../../../../client/utils/restUtils';
 import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
 import { fetchProjects } from '../../../../actions/projects';
 import { fetchUsers } from '../../../../actions/users';
@@ -28,20 +28,30 @@ class ProjectTransferWidget extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, organizations } = this.props;
+        const { dispatch, orgsUserCanTransferTo } = this.props;
 
         dispatch(fetchOrganizationsIfNeeded());
 
-        let multiselectOptions = multiselectFormat(organizations.sort(sortObjectArrayByField('_id')));
+        let multiselectOptions = orgsUserCanTransferTo.sort().map((orgId) => {
+            return {
+                label: orgId,
+                value: orgId
+            };
+        });
         this.setState({
             multiselectOptions
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        const { organizations } = nextProps;
+        const { orgsUserCanTransferTo } = nextProps;
 
-        let multiselectOptions = multiselectFormat(organizations.sort(sortObjectArrayByField('_id')));
+        let multiselectOptions = orgsUserCanTransferTo.sort().map((orgId) => {
+            return {
+                label: orgId,
+                value: orgId
+            };
+        });
         this.setState({
             multiselectOptions
         });
@@ -81,8 +91,6 @@ class ProjectTransferWidget extends Component {
     }
 
     render() {
-        const { authorization } = this.props;
-
         const authorizationWidgetData = {
             // Have to make these selectable to be in the right place
             selectableButtons: [
@@ -95,36 +103,35 @@ class ProjectTransferWidget extends Component {
         };
 
         return (
-            authorization ?
-                <AuthorizationWidget authorization={this.props.authorization}
-                                     boxSize="12"
-                                     handleMultiselectChange={this.handleMultiselectChange}
-                                     label={"Transfer Project"}
-                                     multi={false}
-                                     multiselectOptions={this.state.multiselectOptions}
-                                     noneSelected={this.state.valuesInMultiselect === ''}
-                                     placeholder="Select an organization (type to search)"
-                                     selectableButtons={authorizationWidgetData.selectableButtons}
-                                     selectableButtonsChange={this.handleAuthorizationChange}
-                                     submitButtons={authorizationWidgetData.submitButtons}
-                                     valuesInMultiselect={this.state.valuesInMultiselect}/> :
-                null
+            <AuthorizationWidget boxSize="12"
+                                 handleMultiselectChange={this.handleMultiselectChange}
+                                 label={"Transfer Project"}
+                                 multi={false}
+                                 multiselectOptions={this.state.multiselectOptions}
+                                 noneSelected={this.state.valuesInMultiselect === ''}
+                                 placeholder="Select an organization (type to search)"
+                                 selectableButtons={authorizationWidgetData.selectableButtons}
+                                 selectableButtonsChange={this.handleAuthorizationChange}
+                                 submitButtons={authorizationWidgetData.submitButtons}
+                                 valuesInMultiselect={this.state.valuesInMultiselect}/>
         );
     }
 
 }
 
 ProjectTransferWidget.propTypes = {
-    organizations: PropTypes.array.isRequired
+    orgsUserCanTransferTo: PropTypes.array.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     const { basePath } = state;
     const { organizations } = state.organizations;
 
+    const orgsUserCanTransferTo = getOrgsUserCanTransferTo(organizations, ownProps.userId, ownProps.ownerId);
+
     return {
         basePath,
-        organizations
+        orgsUserCanTransferTo
     };
 };
 

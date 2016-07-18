@@ -114,7 +114,7 @@ class ProjectAuthorizationWidget extends Component {
     }
 
     render() {
-        const { authorization } = this.props;
+        const { canAuthorize } = this.props;
 
         const authorizationWidgetData = {
             selectableButtons: [
@@ -144,7 +144,7 @@ class ProjectAuthorizationWidget extends Component {
         };
 
         return (
-            authorization ?
+            canAuthorize ?
                 <AuthorizationWidget boxSize="12"
                                      disableLast={true}
                                      handleMultiselectChange={this.handleMultiselectChange}
