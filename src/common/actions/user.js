@@ -32,8 +32,6 @@ const shouldFetchUser = (state) => {
     let shouldFetch = true;
     if (hasFetched || isFetching) {
         shouldFetch = false;
-    } else {
-        shouldFetch = true;
     }
 
     return shouldFetch;

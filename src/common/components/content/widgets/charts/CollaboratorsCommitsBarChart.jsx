@@ -73,32 +73,32 @@ export default class CollaboratorsCommitsBarGraph extends Component {
     }
 
     render() {
-
         return (
-            <div className="col-md-12">
-                <div className="box">
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="box">
 
-                    <div className="box-header with-border">
-                        <h3 className="box-title">{this.props.title}</h3>
+                        <div className="box-header with-border">
+                            <h3 className="box-title">{this.props.title}</h3>
 
-                        <div className="box-tools pull-right">
-                            <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                <i className="fa fa-minus"/>
-                            </button>
+                            <div className="box-tools pull-right">
+                                <button type="button" className="btn btn-box-tool" data-widget="collapse">
+                                    <i className="fa fa-minus"/>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="box-body" id="barChartBox">
-                        <BarChart data={this.state.data}
-                                  height={300}
-                                  width={500}
-                                  options={this.props.options}
-                                  redraw={true}/>
-                    </div>
+                        <div className="box-body" id="barChartBox">
+                            <BarChart data={this.state.data}
+                                      height={300}
+                                      width={500}
+                                      options={this.props.options || {}}
+                                      redraw={true}/>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         );
     }
-
 }

@@ -81,13 +81,11 @@ export default class ProjectPage extends Component {
                                                restClient={restClient}
                                                userId={user ? user._id : ''}/>
 
-                        <div className="row">
-                            <CollaboratorsCommitsBarChart options={{}}
-                                                          ownerId={ownerId}
-                                                          projectName={projectName}
-                                                          restClient={restClient}
-                                                          title="Latest Commits" />
-                        </div>
+
+                        <CollaboratorsCommitsBarChart ownerId={ownerId}
+                                                      projectName={projectName}
+                                                      restClient={restClient}
+                                                      title="Latest Commits"/>
 
                     </div>
 
