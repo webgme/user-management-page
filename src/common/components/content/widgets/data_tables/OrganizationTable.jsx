@@ -1,4 +1,4 @@
-/* global $ */
+/* global */
 
 /**
  * Container widget for the single organization table
@@ -49,6 +49,8 @@ export default class OrganizationTable extends Component {
     render() {
 
         const { members } = this.props.data;
+        const { canAuthorize } = this.props;
+
         const categories = [
             {id: 1, name: 'User'},
             {id: 2, name: 'Admin'}
@@ -68,7 +70,7 @@ export default class OrganizationTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={true}>
-                    <OrganizationDataTableEntry/>
+                    <OrganizationDataTableEntry canAuthorize={canAuthorize}/>
                 </DataTable>
             </div>
         );
