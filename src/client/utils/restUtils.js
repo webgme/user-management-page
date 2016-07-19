@@ -46,7 +46,7 @@ export const getOrgsUserCanTransferTo = (organizations, userId, currentProjectOw
 export function canUserAuthorize(user, orgs, ownerId) {
     return user.siteAdmin || user._id === ownerId ||
         orgs.some((org) => {
-            return org._id === ownerId || org.admins.indexOf(user._id) !== -1;
+            return org._id === ownerId && org.admins.indexOf(user._id) !== -1;
         });
 }
 
