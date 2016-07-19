@@ -79,20 +79,15 @@ export const receiveCommits = (ownerId, projectName, commits) => {
 };
 
 const shouldFetchCommits = (ownerId, projectName, numCommits, state) => {
-    let commits, hasFetched, isFetching;
-    if (state.projects.commits[`${ownerId}+${projectName}`]) {
-        ({ commits, hasFetched, isFetching } = state.projects.commits[`${ownerId}+${projectName}`]);
-    } else {
-        ({ commits, hasFetched, isFetching } = {
+    const { commits, hasFetched, isFetching } = state.projects.commits[`${ownerId}+${projectName}`] ?
+        state.projects.commits[`${ownerId}+${projectName}`] : {
             commits: [],
             hasFetched: false,
-            isFetchign: false
-        });
-    }
+            isFetching: false
+        };
 
     let shouldFetch = true;
-    // Commits could be undefined
-    if (hasFetched || isFetching || (commits ? commits.length >= numCommits : false)) {
+    if (hasFetched || isFetching || commits.length >= numCommits) {
         shouldFetch = false;
     }
 

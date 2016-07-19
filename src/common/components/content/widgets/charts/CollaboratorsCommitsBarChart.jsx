@@ -14,10 +14,6 @@ export default class CollaboratorsCommitsBarGraph extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: {
-                labels: [],
-                datasets: []
-            },
             numCommits: 100
         };
     }
@@ -26,7 +22,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
         const { dispatch } = this.props;
         const { ownerId, projectName } = this.props;
 
-        dispatch(fetchCommitsIfNeeded(ownerId, projectName, 100));
+        dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
     }
 
     shouldComponentUpdate(nextProps/* , nextState */) {
