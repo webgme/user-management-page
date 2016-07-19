@@ -1,4 +1,4 @@
-/* global $ */
+/* global */
 
 /**
  * Container widget for the organizations table widget
@@ -8,24 +8,23 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
 // Self-defined
-import CustomModal from '../../../../../components/content/widgets/CustomModal';
-import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import LoginField from '../../../../../components/content/widgets/LoginField';
-import OrganizationsDataTableEntry from './table_entries/OrganizationsDataTableEntry';
-import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
-import { sortBy } from '../../../../../actions/tables';
-import { fetchUserIfNeeded } from '../../../../../actions/user';
-import { sortObjectArrayByField } from '../../../../../../client/utils/utils';
+import CustomModal from '../CustomModal';
+import DataTable from './DataTable';
+import LoginField from '../LoginField';
+import OrganizationsDataTableEntry from
+    '../../../../containers/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry';
+import { fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
+import { sortBy } from '../../../../actions/tables';
+import { fetchUserIfNeeded } from '../../../../actions/user';
 // Style
-import { OrganizationsTable as STYLE } from '../../../../../../client/style';
+import { OrganizationsTable as STYLE } from '../../../../../client/style';
 
 const ORGANIZATION_FIELDS = {
     "Organization Name": "name"
 };
 
-class OrganizationsTable extends Component {
+export default class OrganizationsTable extends Component {
 
     constructor(props) {
         super(props);
@@ -118,28 +117,3 @@ OrganizationsTable.propTypes = {
     organizations: PropTypes.array.isRequired,
     user: PropTypes.object.isRequired
 };
-
-const mapStateToProps = (state) => {
-    const { organizations } = state.organizations;
-    const { sortCategory, sortedForward } = state.tables.organizations;
-    const { user } = state.user;
-
-    let formattedOrganizations = [];
-    organizations.forEach(org => {
-        if (org.admins.indexOf(user._id) !== -1 || org.users.indexOf(user._id) !== -1 ||
-            user.siteAdmin) {
-            formattedOrganizations.push({name: org._id});
-        }
-    });
-
-    return {
-        organizations: sortedForward ?
-            formattedOrganizations.sort(sortObjectArrayByField(sortCategory)) :
-            formattedOrganizations.sort(sortObjectArrayByField(sortCategory)).reverse(),
-        sortCategory,
-        sortedForward,
-        user
-    };
-};
-
-export default connect(mapStateToProps)(OrganizationsTable);

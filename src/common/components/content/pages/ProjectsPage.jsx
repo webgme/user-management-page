@@ -6,7 +6,7 @@
 // Libraries
 import React, { Component } from 'react';
 // Self defined
-import ProjectsTable from '../../../containers/content/pages/widgets/data_tables/ProjectsTable';
+import ProjectsTable from '../../../containers/content/widgets/data_tables/ProjectsTable';
 
 export default class ProjectsPage extends Component {
 

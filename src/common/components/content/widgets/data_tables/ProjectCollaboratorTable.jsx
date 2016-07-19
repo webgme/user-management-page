@@ -5,15 +5,12 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 // Self-defined
-import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import ProjectDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/ProjectDataTableEntry'; // eslint-disable-line max-len
-import { sortWithChecks } from '../../../../../../client/utils/utils';
-import { retrieveCollaborators } from '../../../../../../client/utils/restUtils';
-import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
-import { fetchUsers, fetchUsersIfNeeded } from '../../../../../actions/users';
-import { sortBy } from '../../../../../actions/tables';
+import DataTable from './DataTable';
+import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
+import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
+import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
+import { sortBy } from '../../../../actions/tables';
 
 const FIELDS = {
     USER: {
@@ -26,7 +23,7 @@ const FIELDS = {
     }
 };
 
-class ProjectCollaboratorTable extends Component {
+export default class ProjectCollaboratorTable extends Component {
 
     constructor(props) {
         super(props);
@@ -141,33 +138,3 @@ ProjectCollaboratorTable.propTypes = {
     orgSortedForward: PropTypes.bool.isRequired,
     userSortedForward: PropTypes.bool.isRequired
 };
-
-const mapStateToProps = (state, ownProps) => {
-    const { organizations } = state.organizations;
-    const { users } = state.users;
-
-    const { ownerId, projectName } = ownProps;
-    const projectId = `${ownerId}+${projectName}`;
-
-    // Retrieving collaborators
-    let collaborators = retrieveCollaborators(organizations, users, projectId);
-
-    // Sorting collaborators
-    const userSortCategory = state.tables.projectUser.sortCategory;
-    const userSortedForward = state.tables.projectUser.sortedForward;
-    const orgSortCategory = state.tables.projectOrg.sortCategory;
-    const orgSortedForward = state.tables.projectOrg.sortedForward;
-
-    collaborators = {
-        userCollaborators: sortWithChecks(collaborators.userCollaborators, userSortCategory, userSortedForward),
-        organizationCollaborators: sortWithChecks(collaborators.organizationCollaborators, orgSortCategory, orgSortedForward) // eslint-disable-line max-len
-    };
-
-    return {
-        collaborators,
-        orgSortedForward,
-        userSortedForward
-    };
-};
-
-export default connect(mapStateToProps)(ProjectCollaboratorTable);

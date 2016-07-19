@@ -6,105 +6,11 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 // Self defined
-import CollaboratorsCommitsBarChart from '../../../components/content/widgets/charts/CollaboratorsCommitsBarChart';
-import ProjectAuthorizationWidget from './widgets/authorization_widget/ProjectAuthorizationWidget';
-import ProjectCollaboratorTable from './widgets/data_tables/ProjectCollaboratorTable';
-import ProjectTransferWidget from './widgets/ProjectTransferWidget';
+import ProjectPage from '../../../components/content/pages/ProjectPage';
+
 import { canUserTransfer, canUserAuthorize } from '../../../../client/utils/restUtils';
-import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
-import { fetchUserIfNeeded } from '../../../actions/user';
-import { fetchUsersIfNeeded } from '../../../actions/users';
-import { ProjectPage as STYLE } from '../../../../client/style';
-
-class ProjectPage extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-        const { dispatch } = this.props;
-
-        dispatch(fetchOrganizationsIfNeeded());
-        dispatch(fetchUserIfNeeded());
-        dispatch(fetchUsersIfNeeded());
-    }
-
-    render() {
-
-        const { canAuthorize, canTransfer } = this.props;
-        const { ownerId, projectName } = this.props.params;
-        const { user, restClient } = this.props;
-
-        return (
-            <section className="content">
-
-                <div className="box box-primary">
-                    <div className="row">
-                        <h2 className="col-md-10" style={STYLE.projectTitle}>
-                            <i className="fa fa-cube"/>{` ${ownerId} / ${projectName}`}
-                        </h2>
-                        <div className="col-md-2" style={STYLE.viewInEditor.column}>
-                            <a href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
-                                <Button bsStyle="primary" style={STYLE.viewInEditor.button}>
-                                    View in editor
-                                </Button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="row">
-
-                    <div className="col-md-6">
-
-                        <ProjectCollaboratorTable canAuthorize={canAuthorize}
-                                                  ownerId={ownerId}
-                                                  projectName={projectName}
-                                                  restClient={restClient} />
-
-                    </div>
-
-                    <div className="col-md-6">
-
-                        <ProjectAuthorizationWidget canAuthorize={canAuthorize}
-                                                    ownerId={ownerId}
-                                                    projectName={projectName}
-                                                    restClient={restClient}/>
-
-                        <ProjectTransferWidget canTransfer={canTransfer}
-                                               ownerId={ownerId}
-                                               projectName={projectName}
-                                               restClient={restClient}
-                                               userId={user ? user._id : ''}/>
-
-                        <div className="row">
-                            <CollaboratorsCommitsBarChart options={{}}
-                                                          ownerId={ownerId}
-                                                          projectName={projectName}
-                                                          restClient={restClient}
-                                                          title="Latest Commits" />
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-        );
-    }
-
-}
-
-ProjectPage.propTypes = {
-    canAuthorize: PropTypes.bool.isRequired,
-    canTransfer: PropTypes.bool.isRequired,
-    user: PropTypes.object.isRequired
-};
 
 const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;

@@ -7,13 +7,12 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 // Self-defined
-import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import ProjectsDataTableEntry from './table_entries/ProjectsDataTableEntry';
-import { fetchProjectsIfNeeded } from '../../../../../actions/projects';
-import { sortBy } from '../../../../../actions/tables';
-import { sortWithChecks } from '../../../../../../client/utils/utils';
+import DataTable from './DataTable';
+import ProjectsDataTableEntry from
+    '../../../../containers/content/widgets/data_tables/table_entries/ProjectsDataTableEntry';
+import { fetchProjectsIfNeeded } from '../../../../actions/projects';
+import { sortBy } from '../../../../actions/tables';
 
 const PROJECTS_FIELDS = {
     "Created At": ["info", "createdAt"],
@@ -23,7 +22,7 @@ const PROJECTS_FIELDS = {
     "Project Name": "name"
 };
 
-class ProjectsTable extends Component {
+export default class ProjectsTable extends Component {
 
     constructor(props) {
         super(props);
@@ -92,25 +91,3 @@ ProjectsTable.propTypes = {
     ]).isRequired,
     sortedForward: PropTypes.bool.isRequired
 };
-
-const mapStateToProps = (state, ownProps) => {
-    const { projects } = state.projects;
-    const { sortCategory, sortedForward } = state.tables.projects;
-
-    const ownerId = ownProps.pathname.split('/').slice(-1)[0];
-
-    let filteredProjects = projects.slice();
-    if (ownerId !== 'projects') {
-        filteredProjects = filteredProjects.filter((project) => {
-            return project.owner === ownerId;
-        });
-    }
-
-    return {
-        projects: sortWithChecks(filteredProjects, sortCategory, sortedForward),
-        sortCategory,
-        sortedForward
-    };
-};
-
-export default connect(mapStateToProps)(ProjectsTable);
