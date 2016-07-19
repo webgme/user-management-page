@@ -36,19 +36,26 @@ const projects = (state = initialState, action) => {
             });
         case RECEIVE_COMMITS:
             // TODO: consider immutability helpers
+            console.log('\n\nOld state: ', JSON.parse(JSON.stringify(state)));
+            console.log('RECEIVE_COMMITS action: ', action);
             let receiveCommitsCopy = JSON.parse(JSON.stringify(state.commits));
             receiveCommitsCopy[`${action.ownerId}+${action.projectName}`] = {
                 commits: action.commits,
                 hasFetched: true,
                 isFetching: false
             };
+            console.log('new state: ', JSON.parse(JSON.stringify(Object.assign({}, state, {
+                commits: receiveCommitsCopy
+            }))));
             return Object.assign({}, state, {
                 commits: receiveCommitsCopy
             });
         case REQUEST_COMMITS:
             // TODO: consider immutability helpers
             let requestCommitsCopy = JSON.parse(JSON.stringify(state.commits));
-            requestCommitsCopy[`${action.ownerId}+${action.projectName}`].isFetching = true;
+            requestCommitsCopy[`${action.ownerId}+${action.projectName}`] = {
+                isFetching: true
+            };
             return Object.assign({}, state, {
                 commits: requestCommitsCopy
             });

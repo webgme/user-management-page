@@ -8,8 +8,7 @@
 // Libraries
 import { connect } from 'react-redux';
 // Self-defined
-import ProjectsTable from
-    '../../../../components/content/widgets/data_tables/ProjectsTable';
+import ProjectsTable from '../../../../components/content/widgets/data_tables/ProjectsTable';
 
 import { sortWithChecks } from '../../../../../client/utils/utils';
 

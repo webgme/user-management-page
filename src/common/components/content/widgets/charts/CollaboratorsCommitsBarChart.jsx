@@ -1,15 +1,13 @@
-/* global document, window, $ */
-
 /**
  * BarGraph for 'commits by collaborators' widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries:
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Bar as BarChart } from 'react-chartjs';
 // Self defined:
-import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../../../client/utils/utils.js';
+import { fetchCommitsIfNeeded } from '../../../../actions/projects';
 
 export default class CollaboratorsCommitsBarGraph extends Component {
 
@@ -25,61 +23,26 @@ export default class CollaboratorsCommitsBarGraph extends Component {
     }
 
     componentDidMount() {
+        const { dispatch } = this.props;
+        const { ownerId, projectName } = this.props;
 
-        let updaters = {};
-
-        this.props.restClient.projects.getLatestCommits(this.props.ownerId, this.props.projectName, this.state.numCommits) // eslint-disable-line max-len
-            .then(arrayOfCommits => {
-                arrayOfCommits.forEach(oneCommit => {
-                    if (updaters[oneCommit.updater[0]]) {
-                        updaters[oneCommit.updater[0]] += 1;
-                    } else {
-                        updaters[oneCommit.updater[0]] = 1;
-                    }
-                });
-
-                let randomColor = getRandomColorHex(),
-                    labels = [],
-                    data = [];
-
-                Object.keys(updaters).forEach(updater => {
-                    labels.push(updater);
-                    data.push(updaters[updater]);
-                });
-
-                this.setState({
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                fillColor: convertHexToRGBA(randomColor, 20),
-                                strokeColor: convertHexToRGBA(randomColor, 100),
-                                pointColor: convertHexToRGBA(randomColor, 100),
-                                pointStrokeColor: shadeColor(randomColor, 50),
-                                pointHighlightFill: shadeColor(randomColor, 50),
-                                pointHighlightStroke: convertHexToRGBA(randomColor, 100),
-                                data: data
-                            }
-                        ]
-                    }
-                });
-            });
+        dispatch(fetchCommitsIfNeeded(ownerId, projectName, 100));
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.data !== nextState.data ||
-               this.state.height !== nextState.height ||
-               this.state.width !== nextState.width;
+    shouldComponentUpdate(nextProps/* , nextState */) {
+        return this.props.data !== nextProps.data;
     }
 
     render() {
+        const { data, options, title } = this.props;
+
         return (
             <div className="row">
                 <div className="col-md-12">
                     <div className="box">
 
                         <div className="box-header with-border">
-                            <h3 className="box-title">{this.props.title}</h3>
+                            <h3 className="box-title">{title}</h3>
 
                             <div className="box-tools pull-right">
                                 <button type="button" className="btn btn-box-tool" data-widget="collapse">
@@ -89,10 +52,10 @@ export default class CollaboratorsCommitsBarGraph extends Component {
                         </div>
 
                         <div className="box-body" id="barChartBox">
-                            <BarChart data={this.state.data}
+                            <BarChart data={data}
                                       height={300}
                                       width={500}
-                                      options={this.props.options || {}}
+                                      options={options || {}}
                                       redraw={true}/>
                         </div>
 
@@ -102,3 +65,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
         );
     }
 }
+
+CollaboratorsCommitsBarGraph.propTypes = {
+    data: PropTypes.object.isRequired
+};

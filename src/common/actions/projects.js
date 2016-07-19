@@ -79,7 +79,16 @@ export const receiveCommits = (ownerId, projectName, commits) => {
 };
 
 const shouldFetchCommits = (ownerId, projectName, numCommits, state) => {
-    const { commits, hasFetched, isFetching } = state.commits[`${ownerId}+${projectName}`];
+    let commits, hasFetched, isFetching;
+    if (state.projects.commits[`${ownerId}+${projectName}`]) {
+        ({ commits, hasFetched, isFetching } = state.projects.commits[`${ownerId}+${projectName}`]);
+    } else {
+        ({ commits, hasFetched, isFetching } = {
+            commits: [],
+            hasFetched: false,
+            isFetchign: false
+        });
+    }
 
     let shouldFetch = true;
     // Commits could be undefined
@@ -103,7 +112,7 @@ export const fetchCommits = (ownerId, projectName, numCommits) => {
 export const fetchCommitsIfNeeded = (ownerId, projectName, numCommits) => {
     return (dispatch, getState) => {
         if (shouldFetchCommits(ownerId, projectName, numCommits, getState())) {
-            return dispatch(fetchCommits());
+            return dispatch(fetchCommits(ownerId, projectName, numCommits));
         }
     };
 };
