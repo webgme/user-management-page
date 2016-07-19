@@ -11,17 +11,17 @@ import { AdminBadge as STYLE } from '../../../../../../client/style';
 export default class OrganizationDataTableEntry extends Component {
 
     render() {
-        const { admin, name } = this.props;
+        const { name, isMember, isAdmin } = this.props;
 
         return (
             <tr role="row" className="odd">
                 <td>
                     {name}
                 </td>
-                {admin === undefined ? null :
-                    <td>{admin ? <i className="fa fa-check-circle" style={STYLE.isAdmin}/> :
-                                 <i className="fa fa-times-circle" style={STYLE.isNotAdmin}/>}
-                    </td>}
+                <td>
+                    {isAdmin ? <i className="fa fa-check-circle" style={STYLE.isAdmin}/> : null}
+                    {isAdmin && isMember === false ? <span className="admin-not-member">!</span> : null}
+                </td>
             </tr>
         );
     }

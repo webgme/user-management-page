@@ -236,26 +236,43 @@ export function retrieveCollaborators(organizations, users, projectId) {
  * Retrieve members and admins
  * @param {Array} orgs - list of organizations
  * @param {string} orgId - organization id
- * @return {{members: Array, admins: Array}} data containing members and admins
+ * @return {Array} data containing members and admins
  */
 export function retrieveMembersAndAdmins(orgs, orgId) {
     // Get the pertinent organization
-    let org = orgs.filter(org => {
-        return org._id === orgId;
-    })[0];
+    let org = null;
+    let members = {};
+    let result = [];
 
-    // Parse that org's data with error checking
-    return {
-        members: org ? org.users.map(user => {
+    for (let i = 0; i < orgs.length; i += 1) {
+        if (orgs[i]._id === orgId) {
+            org = orgs[i];
+            break;
+        }
+    }
+
+    if (org) {
+        // Add all members.
+        result = org.users.map(user => {
+            members[user] = true;
             return {
                 name: user,
-                admin: org.admins.indexOf(user) !== -1
+                isMember: true,
+                isAdmin: org.admins.indexOf(user) !== -1
             };
-        }) : [],
-        admins: org ? org.admins.map(admin => {
-            return {
-                name: admin
-            };
-        }) : []
-    };
+        });
+
+        // See if there are any admins that aren't members - if so add them.
+        org.admins.forEach(admin => {
+            if (members[admin] !== true) {
+                result.push({
+                    name: admin,
+                    isMember: false,
+                    isAdmin: true
+                });
+            }
+        });
+    }
+
+    return result;
 }

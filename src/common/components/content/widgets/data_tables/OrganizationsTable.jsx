@@ -66,7 +66,7 @@ export default class OrganizationsTable extends Component {
 
                     <div style={{float: "right"}}>
                         <Button bsStyle="primary" onClick={this.props.openCreateOrganization}>
-                            Create an organization
+                            New +
                         </Button>
                     </div>
 
