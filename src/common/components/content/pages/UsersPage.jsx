@@ -14,7 +14,7 @@ export default class UsersPage extends Component {
         return (
             <section className="content">
 
-                <div className="box box-primary">
+                <div className="box box-primary col-md-8 col-md-offset-2">
 
                     <UsersTable />
 

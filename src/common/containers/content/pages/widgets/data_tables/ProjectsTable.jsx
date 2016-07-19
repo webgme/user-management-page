@@ -39,7 +39,7 @@ class ProjectsTable extends Component {
 
     handleOrderEntries(event) {
         const { dispatch } = this.props;
-        const newSortCategory = PROJECTS_FIELDS[event.target.value];
+        const newSortCategory = PROJECTS_FIELDS[event.target.innerHTML];
 
         dispatch(sortBy('projects', newSortCategory));
     }

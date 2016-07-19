@@ -14,10 +14,8 @@ import { fetchUsersIfNeeded } from '../../../../../actions/users';
 import { sortBy } from '../../../../../actions/tables';
 
 const USERS_FIELDS = {
-    Name: ["data", "name"],
     UserId: "_id",
-    SiteAdmin: "siteAdmin",
-    Description: ["data", "description"]
+    SiteAdmin: "siteAdmin"
 };
 
 class UsersTable extends Component {
@@ -36,7 +34,7 @@ class UsersTable extends Component {
 
     handleOrderEntries(event) {
         const { dispatch } = this.props;
-        const newSortCategory = USERS_FIELDS[event.target.value];
+        const newSortCategory = USERS_FIELDS[event.target.innerHTML];
 
         dispatch(sortBy('users', newSortCategory));
     }
@@ -46,10 +44,8 @@ class UsersTable extends Component {
         const { sortedForward, userId, users } = this.props;
 
         const categories = [
-            {id: 1, name: 'Name'},
-            {id: 2, name: 'UserId'},
-            {id: 3, name: 'SiteAdmin'},
-            {id: 4, name: 'Description'}
+            {id: 1, name: 'UserId'},
+            {id: 2, name: 'SiteAdmin'}
         ];
 
         return (
@@ -91,7 +87,6 @@ const mapStateToProps = (state) => {
     const { users } = state.users;
     const { user } = state.user;
     const { sortCategory, sortedForward } = state.tables.users;
-
     let formattedUsers = users.map(eachUser => {
         return Object.assign(eachUser, {
             name: eachUser._id

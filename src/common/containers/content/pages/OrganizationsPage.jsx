@@ -97,7 +97,7 @@ class OrganizationsPage extends Component {
         return (
             <section className="content">
 
-            <div className="box box-primary">
+            <div className="box box-primary col-md-8 col-md-offset-2">
 
                 <OrganizationsTable checkOrganizationName={this.checkOrganizationName}
                                     closeCreateOrganization={this.closeCreateOrganization}

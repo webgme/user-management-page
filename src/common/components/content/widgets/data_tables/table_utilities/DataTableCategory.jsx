@@ -26,11 +26,8 @@ export default class DataTableCategories extends Component {
                                          WebkitTapHighlightColor: "transparent"}, this.props.style)}
                    tabIndex="0">
             <div onClick={this.props.sortable ? this.props.orderEntries : () => {}}
-                 style={this.props.sortable ? {cursor: "pointer", float: "left"} : {float: "left"}}
-                 value={this.props.name}>
+                 style={this.props.sortable ? {cursor: "pointer", float: "left"} : {float: "left"}}>
                 {this.props.name}
-                {this.props.sortable ?
-                    <i className={this.props.sortedForward ? "fa fa-level-down" : "fa fa-level-up"}/> : null}
             </div>
         </th>;
     }
