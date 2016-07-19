@@ -10,6 +10,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self defined
 import CollaboratorsCommitsBarChart from '../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
+import CommitsLineChart from '../widgets/charts/CommitsLineChart';
 import ProjectAuthorizationWidget from
     '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
@@ -86,6 +87,11 @@ export default class ProjectPage extends Component {
                                                       projectName={projectName}
                                                       restClient={restClient}
                                                       title="Latest Commits"/>
+
+                        <CommitsLineChart ownerId={ownerId}
+                                          projectName={projectName}
+                                          restClient={restClient}
+                                          title="Latest Commits"/>
 
                     </div>
 

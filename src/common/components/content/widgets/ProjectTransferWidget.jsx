@@ -37,7 +37,7 @@ export default class ProjectTransferWidget extends Component {
             };
         });
 
-        //FIXME: eslint warning
+        // FIXME: eslint warning
         this.setState({
             multiselectOptions
         });
@@ -58,8 +58,9 @@ export default class ProjectTransferWidget extends Component {
     }
 
     handleMultiselectChange(value) {
+        // Deleting all pills will result in '' instead of type null
         this.setState({
-            valuesInMultiselect: value
+            valuesInMultiselect: value ? value : ''
         });
     }
 
@@ -95,9 +96,10 @@ export default class ProjectTransferWidget extends Component {
         const authorizationWidgetData = {
             submitButtons: [
                 {
-                    submitButtonHandler: this.handleTransfer,
-                    submitButtonText: 'Transfer',
-                    submitButtonState: "primary"
+                    disabled: this.state.valuesInMultiselect === '',
+                    onChange: this.handleTransfer,
+                    text: 'Transfer',
+                    state: "primary"
                 }
             ]
         };

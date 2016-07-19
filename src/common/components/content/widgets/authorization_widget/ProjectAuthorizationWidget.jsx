@@ -65,8 +65,9 @@ export default class ProjectAuthorizationWidget extends Component {
     }
 
     handleMultiselectChange(value) {
+        // Deleting all pills will result in '' instead of type null
         this.setState({
-            valuesInMultiselect: value
+            valuesInMultiselect: value ? value : ''
         });
     }
 
@@ -118,26 +119,28 @@ export default class ProjectAuthorizationWidget extends Component {
         const authorizationWidgetData = {
             selectableButtons: [
                 {
-                    selectableButtonChange: this.handleAuthorizationChange,
-                    selectableButtonText: 'Read',
-                    selectableButtonState: this.state.authorizeButtonGroup.read ? 'primary' : null
+                    onChange: this.handleAuthorizationChange,
+                    text: 'Read',
+                    state: this.state.authorizeButtonGroup.read ? 'primary' : null
                 },
                 {
-                    selectableButtonChange: this.handleAuthorizationChange,
-                    selectableButtonText: 'Write',
-                    selectableButtonState: this.state.authorizeButtonGroup.write ? 'primary' : null
+                    onChange: this.handleAuthorizationChange,
+                    text: 'Write',
+                    state: this.state.authorizeButtonGroup.write ? 'primary' : null
                 },
                 {
-                    selectableButtonChange: this.handleAuthorizationChange,
-                    selectableButtonText: 'Delete',
-                    selectableButtonState: this.state.authorizeButtonGroup.delete ? 'primary' : null
+                    onChange: this.handleAuthorizationChange,
+                    text: 'Delete',
+                    state: this.state.authorizeButtonGroup.delete ? 'primary' : null
                 }
             ],
             submitButtons: [
                 {
-                    submitButtonHandler: this.handleSubmitAuthorization,
-                    submitButtonText: 'Submit',
-                    submitButtonState: 'primary'
+                    disabled: this.state.valuesInMultiselect === '',
+                    onChange: this.handleSubmitAuthorization,
+                    state: 'primary',
+                    text: 'Submit'
+
                 }
             ]
         };

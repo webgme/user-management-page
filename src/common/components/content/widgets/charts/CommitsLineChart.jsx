@@ -174,32 +174,37 @@ export default class CommitsLineChart extends Component {
 
     render() {
         return (
-            <div className="col-md-6">
-                <div className="box box-primary">
-                    <div className="box-header with-border">
-                        <h3 className="box-title">Timeline of Latest Commits</h3>
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="box">
 
-                        <div className="box-tools pull-right">
-                            <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                <i className="fa fa-minus"/>
-                            </button>
-                            <ButtonGroup>
-                                <Button bsStyle={this.state.display === 1 ? "primary" : null}
-                                        onClick={this.toggleView}>Total Commits
-                                </Button>
-                                <Button bsStyle={this.state.display === 2 ? "primary" : null}
-                                        onClick={this.toggleView}>Only My Commits
-                                </Button>
-                            </ButtonGroup>
+                        <div className="box-header with-border">
+                            <h3 className="box-title">Timeline of Latest Commits</h3>
+
+                            <div className="box-tools pull-right">
+                                <ButtonGroup>
+                                    <Button bsStyle={this.state.display === 1 ? "primary" : null}
+                                            onClick={this.toggleView}>Total Commits
+                                    </Button>
+                                    <Button bsStyle={this.state.display === 2 ? "primary" : null}
+                                            onClick={this.toggleView}>Only My Commits
+                                    </Button>
+                                </ButtonGroup>
+                                <button type="button" className="btn btn-box-tool" data-widget="collapse">
+                                    <i className="fa fa-minus"/>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="box-body">
-                        <div className="chart">
-                            <LineChart data={this.state.data} options={{}} redraw/>
+                        <div className="box-body">
+                            <LineChart data={this.state.data}
+                                       height={300}
+                                       width={600}
+                                       options={{}}
+                                       redraw={true} />
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         );

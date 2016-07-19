@@ -50,7 +50,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
                         <div className="box-body" id="barChartBox">
                             <BarChart data={data}
                                       height={300}
-                                      width={500}
+                                      width={600}
                                       options={options || {}}
                                       redraw={true}/>
                         </div>
