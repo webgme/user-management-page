@@ -7,15 +7,13 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 // Self-defined
-import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import OrganizationDataTableEntry from '../../../../../components/content/widgets/data_tables/table_entries/OrganizationDataTableEntry'; // eslint-disable-line max-len
-import { sortObjectArrayByField} from '../../../../../../client/utils/utils';
-import { retrieveMembersAndAdmins } from '../../../../../../client/utils/restUtils';
-import { fetchOrganizationsIfNeeded } from '../../../../../actions/organizations';
+import DataTable from './DataTable';
+import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry'; // eslint-disable-line max-len
+import { sortObjectArrayByField} from '../../../../../client/utils/utils';
+import { fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
 
-class OrganizationTable extends Component {
+export default class OrganizationTable extends Component {
 
     constructor(props) {
         super(props);
@@ -29,7 +27,7 @@ class OrganizationTable extends Component {
         dispatch(fetchOrganizationsIfNeeded());
     }
 
-    handleOrderEntries(event) {
+    handleOrderEntries(/*event*/) {
 
         if (this.props.display === 1) {
             this.setState({
@@ -98,17 +96,3 @@ OrganizationTable.propTypes = {
         members: PropTypes.array.isRequired
     }).isRequired
 };
-
-const mapStateToProps = (state, ownProps) => {
-    const { organizations } = state.organizations;
-    const { organizationId } = ownProps;
-
-    const data = retrieveMembersAndAdmins(organizations, organizationId);
-
-    return {
-        data
-    };
-};
-
-export default connect(mapStateToProps)(OrganizationTable);
-

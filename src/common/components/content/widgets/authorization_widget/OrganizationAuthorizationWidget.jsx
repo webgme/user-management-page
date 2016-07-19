@@ -5,14 +5,13 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 // Self defined
-import AuthorizationWidget from '../../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
-import {multiselectFormat, sortObjectArrayByField} from '../../../../../../client/utils/utils';
-import { fetchUsers, fetchUsersIfNeeded } from '../../../../../actions/users';
-import { fetchOrganizations } from '../../../../../actions/organizations';
+import AuthorizationWidget from './AuthorizationWidget';
+import {multiselectFormat, sortObjectArrayByField} from '../../../../../client/utils/utils';
+import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
+import { fetchOrganizations } from '../../../../actions/organizations';
 
-class OrganizationAuthorizationWidget extends Component {
+export default class OrganizationAuthorizationWidget extends Component {
 
     constructor(props) {
         super(props);
@@ -123,13 +122,3 @@ class OrganizationAuthorizationWidget extends Component {
 OrganizationAuthorizationWidget.propTypes = {
     users: PropTypes.array.isRequired
 };
-
-const mapStateToProps = (state) => {
-    const { users } = state.users;
-
-    return {
-        users
-    };
-};
-
-export default connect(mapStateToProps)(OrganizationAuthorizationWidget);

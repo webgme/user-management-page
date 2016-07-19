@@ -5,16 +5,14 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 // Self defined
-import AuthorizationWidget from '../../../../components/content/widgets/authorization_widget/AuthorizationWidget';
-import { getOrgsUserCanTransferTo } from '../../../../../client/utils/restUtils';
-import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
-import { fetchProjects } from '../../../../actions/projects';
-import { fetchUsers } from '../../../../actions/users';
+import AuthorizationWidget from './authorization_widget/AuthorizationWidget';
+import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../actions/organizations';
+import { fetchProjects } from '../../../actions/projects';
+import { fetchUsers } from '../../../actions/users';
 
-class ProjectTransferWidget extends Component {
+export default class ProjectTransferWidget extends Component {
 
     constructor(props) {
         super(props);
@@ -38,6 +36,8 @@ class ProjectTransferWidget extends Component {
                 value: orgId
             };
         });
+
+        //FIXME: eslint warning
         this.setState({
             multiselectOptions
         });
@@ -124,17 +124,3 @@ class ProjectTransferWidget extends Component {
 ProjectTransferWidget.propTypes = {
     orgsUserCanTransferTo: PropTypes.array.isRequired
 };
-
-const mapStateToProps = (state, ownProps) => {
-    const { basePath } = state;
-    const { organizations } = state.organizations;
-
-    const orgsUserCanTransferTo = getOrgsUserCanTransferTo(organizations, ownProps.userId, ownProps.ownerId);
-
-    return {
-        basePath,
-        orgsUserCanTransferTo
-    };
-};
-
-export default connect(mapStateToProps)(ProjectTransferWidget);

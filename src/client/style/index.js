@@ -152,7 +152,7 @@ export const Multiselect = {
     marginBottom: "10px"
 };
 
-export const OrganizationsDataTableEntry = {
+export const AdminBadge = {
     isAdmin: {
         color: "green"
     },

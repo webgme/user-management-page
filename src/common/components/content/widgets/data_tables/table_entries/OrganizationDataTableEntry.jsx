@@ -6,7 +6,7 @@
 // Libraries
 import React, { Component } from 'react';
 // Style
-import { OrganizationsDataTableEntry as STYLE } from '../../../../../../client/style';
+import { AdminBadge as STYLE } from '../../../../../../client/style';
 
 export default class OrganizationDataTableEntry extends Component {
 

@@ -5,22 +5,19 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 // Self-defined
-import DataTable from '../../../../../components/content/widgets/data_tables/DataTable';
-import UsersDataTableEntry from './table_entries/UsersDataTableEntry';
-import { sortWithChecks } from '../../../../../../client/utils/utils';
-import { fetchUsersIfNeeded } from '../../../../../actions/users';
-import { sortBy } from '../../../../../actions/tables';
+import DataTable from './DataTable';
+import UsersDataTableEntry from
+    '../../../../containers/content/widgets/data_tables/table_entries/UsersDataTableEntry';
+import { fetchUsersIfNeeded } from '../../../../actions/users';
+import { sortBy } from '../../../../actions/tables';
 
 const USERS_FIELDS = {
-    Name: ["data", "name"],
     UserId: "_id",
-    SiteAdmin: "siteAdmin",
-    Description: ["data", "description"]
+    SiteAdmin: "siteAdmin"
 };
 
-class UsersTable extends Component {
+export default class UsersTable extends Component {
 
     constructor(props) {
         super(props);
@@ -36,7 +33,7 @@ class UsersTable extends Component {
 
     handleOrderEntries(event) {
         const { dispatch } = this.props;
-        const newSortCategory = USERS_FIELDS[event.target.value];
+        const newSortCategory = USERS_FIELDS[event.target.innerHTML];
 
         dispatch(sortBy('users', newSortCategory));
     }
@@ -46,10 +43,8 @@ class UsersTable extends Component {
         const { sortedForward, userId, users } = this.props;
 
         const categories = [
-            {id: 1, name: 'Name'},
-            {id: 2, name: 'UserId'},
-            {id: 3, name: 'SiteAdmin'},
-            {id: 4, name: 'Description'}
+            {id: 1, name: 'UserId'},
+            {id: 2, name: 'SiteAdmin'}
         ];
 
         return (
@@ -86,24 +81,3 @@ UsersTable.propTypes = {
     sortedForward: PropTypes.bool.isRequired,
     users: PropTypes.array.isRequired
 };
-
-const mapStateToProps = (state) => {
-    const { users } = state.users;
-    const { user } = state.user;
-    const { sortCategory, sortedForward } = state.tables.users;
-
-    let formattedUsers = users.map(eachUser => {
-        return Object.assign(eachUser, {
-            name: eachUser._id
-        });
-    });
-
-    return {
-        sortCategory,
-        sortedForward,
-        userId: user._id,
-        users: sortWithChecks(formattedUsers, sortCategory, sortedForward)
-    };
-};
-
-export default connect(mapStateToProps)(UsersTable);

@@ -6,7 +6,8 @@
 // Libraries
 import { connect } from 'react-redux';
 // Self-defined
-import OrganizationsDataTableEntry from '../../../../../../components/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry'; // eslint-disable-line max-len
+import OrganizationsDataTableEntry from
+    '../../../../../components/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry';
 
 const mapStateToProps = (state) => {
     return {

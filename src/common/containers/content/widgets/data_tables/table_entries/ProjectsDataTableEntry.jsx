@@ -6,7 +6,8 @@
 // Libraries
 import { connect } from 'react-redux';
 // Self-defined
-import ProjectsDataTableEntry from '../../../../../../components/content/widgets/data_tables/table_entries/ProjectsDataTableEntry'; // eslint-disable-line max-len
+import ProjectsDataTableEntry from
+    '../../../../../components/content/widgets/data_tables/table_entries/ProjectsDataTableEntry';
 
 const mapStateToProps = (state) => {
     const { basePath } = state;
