@@ -10,7 +10,8 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self defined
 import CollaboratorsCommitsBarChart from '../widgets/charts/CollaboratorsCommitsBarChart';
-import ProjectAuthorizationWidget from '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
+import ProjectAuthorizationWidget from
+    '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
 import ProjectTransferWidget from '../../../containers/content/widgets/ProjectTransferWidget';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';

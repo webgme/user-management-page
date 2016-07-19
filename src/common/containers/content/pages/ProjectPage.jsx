@@ -9,7 +9,6 @@
 import { connect } from 'react-redux';
 // Self defined
 import ProjectPage from '../../../components/content/pages/ProjectPage';
-
 import { canUserTransfer, canUserAuthorize } from '../../../../client/utils/restUtils';
 
 const mapStateToProps = (state, ownProps) => {

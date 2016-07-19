@@ -93,12 +93,11 @@ export default class ProjectTransferWidget extends Component {
     render() {
         const { canTransfer } = this.props;
         const authorizationWidgetData = {
-            // Have to make these selectable to be in the right place
-            selectableButtons: [
+            submitButtons: [
                 {
-                    selectableButtonChange: this.handleTransfer,
-                    selectableButtonText: 'Transfer',
-                    selectableButtonState: "primary"
+                    submitButtonHandler: this.handleTransfer,
+                    submitButtonText: 'Transfer',
+                    submitButtonState: "primary"
                 }
             ]
         };
@@ -106,14 +105,13 @@ export default class ProjectTransferWidget extends Component {
         return (
             canTransfer ?
                 <AuthorizationWidget boxSize="12"
+                                     disableLast={true}
                                      handleMultiselectChange={this.handleMultiselectChange}
                                      label={"Transfer Project"}
                                      multi={false}
                                      multiselectOptions={this.state.multiselectOptions}
                                      noneSelected={this.state.valuesInMultiselect === ''}
                                      placeholder="Select an organization (type to search)"
-                                     selectableButtons={authorizationWidgetData.selectableButtons}
-                                     selectableButtonsChange={this.handleAuthorizationChange}
                                      submitButtons={authorizationWidgetData.submitButtons}
                                      valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
