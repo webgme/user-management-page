@@ -23,9 +23,10 @@ export default class UsersDataTableEntry extends Component {
                     <Link to={userId === _id ? `${basePath}profile` : `${basePath}users/${_id}`}>{_id}</Link>
                 </td>
 
-                <td style={{width: "10%"}}>
+                {/* <td style={{width: "10%"}}>
                     {siteAdmin ? <i className="fa fa-check-circle" style={STYLE.isAdmin}/> : null}
                 </td>
+                    */ }
 
             </tr>
         );

@@ -43,8 +43,7 @@ export default class UsersTable extends Component {
         const { sortedForward, userId, users } = this.props;
 
         const categories = [
-            {id: 1, name: 'UserId'},
-            {id: 2, name: 'SiteAdmin'}
+            {id: 1, name: 'UserId'}
         ];
 
         return (
