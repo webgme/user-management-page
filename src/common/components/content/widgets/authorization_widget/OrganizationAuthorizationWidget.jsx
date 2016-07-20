@@ -44,7 +44,7 @@ export default class OrganizationAuthorizationWidget extends Component {
 
     handleMultiselectChange(value) {
         this.setState({
-            valuesInMultiselect: value
+            valuesInMultiselect: value || ''
         });
     }
 
@@ -54,17 +54,10 @@ export default class OrganizationAuthorizationWidget extends Component {
 
         if (this.state.valuesInMultiselect !== '') {
             this.state.valuesInMultiselect.split(',').forEach(username => {
-                if (/Add/.test(event.target.innerHTML)) { // have to remove rights if none are selected
-                    promiseArrayToGrant.push(
-                        this.props.restClient.organizations.addUserToOrganization(this.props.organizationId,
-                            username)
-                    );
-                } else if (/Remove/.test(event.target.innerHTML)) {
-                    promiseArrayToGrant.push(
-                        this.props.restClient.organizations.deleteUserFromOrganization(this.props.organizationId,
-                            username)
-                    );
-                }
+                promiseArrayToGrant.push(
+                    this.props.restClient.organizations.addUserToOrganization(this.props.organizationId,
+                        username)
+                );
             });
         }
 
@@ -89,30 +82,26 @@ export default class OrganizationAuthorizationWidget extends Component {
         const { canAuthorize } = this.props;
 
         const authorizationWidgetData = {
-            // Have to make these selectable to be in the right place
-            selectableButtons: [
+            submitButtons: [
                 {
-                    selectableButtonChange: this.handleSubmitAuthorization,
-                    selectableButtonText: 'Add members',
-                    selectableButtonState: "success"
-                },
-                {
-                    selectableButtonChange: this.handleSubmitAuthorization,
-                    selectableButtonText: 'Remove members',
-                    selectableButtonState: "danger"
+                    onChange: this.handleSubmitAuthorization,
+                    text: 'Submit',
+                    state: 'primary',
+                    disabled: this.state.valuesInMultiselect === ''
                 }
             ]
         };
 
         return (
             canAuthorize ?
-                <AuthorizationWidget boxSize="6"
+                <AuthorizationWidget boxSize="12"
+                                     disableLast={true}
                                      handleMultiselectChange={this.handleMultiselectChange}
-                                     label={"Add or Remove Members"}
+                                     label={"Add Members"}
                                      multi={true}
                                      multiselectOptions={this.state.multiselectOptions}
-                                     selectableButtons={authorizationWidgetData.selectableButtons}
-                                     selectableButtonsChange={this.handleAuthorizationChange}
+                                     noneSelected={this.state.valuesInMultiselect === ''}
+                                     submitButtons={authorizationWidgetData.submitButtons}
                                      valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
     }

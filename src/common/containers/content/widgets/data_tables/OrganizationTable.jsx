@@ -16,10 +16,12 @@ const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;
     const { organizationId } = ownProps;
 
-    const data = retrieveMembersAndAdmins(organizations, organizationId);
+    const members = retrieveMembersAndAdmins(organizations, organizationId);
 
     return {
-        data
+        data: {
+            members: members
+        }
     };
 };
 

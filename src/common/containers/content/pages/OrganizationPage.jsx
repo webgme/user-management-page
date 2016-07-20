@@ -11,13 +11,21 @@ import { canUserAuthorize } from '../../../../client/utils/restUtils';
 
 const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;
+    const { projects } = state.projects;
     const { user } = state.user;
-    const { ownerId } = ownProps.params;
+    const { organizationId } = ownProps.params;
+    const { basePath } = state;
 
-    const canAuthorize = canUserAuthorize(user, organizations, ownerId);
+    const canAuthorize = canUserAuthorize(user, organizations, organizationId);
+
+    const ownedProjects = projects.filter(project => {
+        return project.owner === organizationId;
+    });
 
     return {
-        canAuthorize
+        basePath,
+        canAuthorize,
+        ownedProjects
     };
 };
 

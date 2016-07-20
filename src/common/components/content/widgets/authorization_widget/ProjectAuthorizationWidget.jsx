@@ -120,17 +120,17 @@ export default class ProjectAuthorizationWidget extends Component {
                 {
                     onChange: this.handleAuthorizationChange,
                     text: 'Read',
-                    state: this.state.authorizeButtonGroup.read ? 'primary' : null
+                    state: this.state.authorizeButtonGroup.read ? 'success' : null
                 },
                 {
                     onChange: this.handleAuthorizationChange,
                     text: 'Write',
-                    state: this.state.authorizeButtonGroup.write ? 'primary' : null
+                    state: this.state.authorizeButtonGroup.write ? 'success' : null
                 },
                 {
                     onChange: this.handleAuthorizationChange,
                     text: 'Delete',
-                    state: this.state.authorizeButtonGroup.delete ? 'primary' : null
+                    state: this.state.authorizeButtonGroup.delete ? 'success' : null
                 }
             ],
             submitButtons: [

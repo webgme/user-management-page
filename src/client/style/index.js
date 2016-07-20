@@ -5,8 +5,7 @@
 
 export const AuthorizationWidget = {
     selectableButtonGroup: {
-        lineHeight: 3.6,
-        paddingTop: "15px"
+        paddingTop: "30px"
     },
     submitButtonGroup: {
         float: "right",
@@ -154,10 +153,12 @@ export const Multiselect = {
 
 export const AdminBadge = {
     isAdmin: {
-        color: "green"
+        color: "green",
+        cursor: "pointer"
     },
     isNotAdmin: {
-        color: "red"
+        color: "red",
+        cursor: "pointer"
     }
 };
 
