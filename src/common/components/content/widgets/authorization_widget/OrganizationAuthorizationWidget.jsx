@@ -84,9 +84,10 @@ export default class OrganizationAuthorizationWidget extends Component {
         const authorizationWidgetData = {
             submitButtons: [
                 {
-                    submitButtonHandler: this.handleSubmitAuthorization,
-                    submitButtonText: 'Submit',
-                    submitButtonState: 'primary'
+                    onChange: this.handleSubmitAuthorization,
+                    text: 'Submit',
+                    state: 'primary',
+                    disabled: this.state.valuesInMultiselect === ''
                 }
             ]
         };

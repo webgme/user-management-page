@@ -154,10 +154,12 @@ export const Multiselect = {
 
 export const AdminBadge = {
     isAdmin: {
-        color: "green"
+        color: "green",
+        cursor: "pointer"
     },
     isNotAdmin: {
-        color: "red"
+        color: "red",
+        cursor: "pointer"
     }
 };
 
