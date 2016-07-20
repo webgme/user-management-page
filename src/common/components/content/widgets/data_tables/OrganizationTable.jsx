@@ -70,7 +70,6 @@ export default class OrganizationTable extends Component {
 
     handleOrderEntries(event) {
         const { dispatch } = this.props;
-        console.log(event.target.innerHTML);
         const newSortCategory = MEMBER_FIELDS[event.target.value];
 
         dispatch(sortBy('organizationMembers', newSortCategory));
