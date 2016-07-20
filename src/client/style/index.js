@@ -258,7 +258,8 @@ export const SideBarUserPanel = {
     imageIcon: {
         borderRadius: 0,
         maxWidth: "50px",
-        paddingTop: "8px"
+        paddingLeft: "7px",
+        paddingTop: "5px"
     }
 };
 

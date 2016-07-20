@@ -9,6 +9,7 @@ import { Link } from 'react-router';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { fetchProjectsIfNeeded } from '../../../actions/projects';
+import { getUserIconSource } from '../../../../client/utils/utils';
 // Style
 import { HomePage as STYLE } from '../../../../client/style';
 
@@ -66,7 +67,7 @@ export default class HomePage extends Component {
                     <div className="box box-primary">
                         <div className="box-body box-profile">
                             <img className="profile-user-img img-responsive img-circle"
-                                 src="/img/gme-logo.png"
+                                 src={getUserIconSource(user._id)}
                                  alt="User profile picture"/>
 
                             <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>

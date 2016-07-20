@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import blockies from 'blockies';
 
 /**
  * Capitalizes the first letter of a word (formatting help)
@@ -286,4 +287,19 @@ export const processCommitsBar = (commits) => {
             }
         ]
     };
+};
+
+export const getUserIconSource = (userId) => {
+    let icon = blockies({ // All options are optional
+        seed: userId, // seed used to generate icon data, default: random
+        // color: '#dfe', // to manually specify the icon color, default: random
+        // bgcolor: '#aaa', // choose a different background color, default: random
+        size: 15, // width/height of the icon in blocks, default: 8
+        scale: 3, // width/height of each block in pixels, default: 4
+        spotcolor: '#000' // each pixel has a 13% chance of being of a third color,
+        // default: random. Set to -1 to disable it. These "spots" create structures
+        // that look like eyes, mouths and noses.
+    });
+
+    return icon.toDataURL();
 };
