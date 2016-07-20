@@ -22,6 +22,7 @@ export default class OrganizationDataTableEntry extends Component {
         this.close = this.close.bind(this);
         this.confirm = this.confirm.bind(this);
         this.open = this.open.bind(this);
+        this.getAdminElem = this.getAdminElem.bind(this);
     }
 
     close() {
@@ -33,7 +34,23 @@ export default class OrganizationDataTableEntry extends Component {
     confirm(event) {
         this.setState({
             showModal: false
-        });
+        }, this.removeMember(event.target.id));
+    }
+
+    setAdmin() {
+
+    }
+
+    removeMember(memberId) {
+        const { dispatch } = this.props;
+
+        this.props.restClient.organizations.removeMember(this.props.ownerId,
+            this.props.projectName,
+            memberId)
+            .then(() => {
+                dispatch(fetchUsers()); // Re-render after removing user
+                dispatch(fetchOrganizations()); // Re-render after removing user
+            });
     }
 
     open() {
@@ -42,31 +59,29 @@ export default class OrganizationDataTableEntry extends Component {
         });
     }
 
-    render() {
+    getAdminElem() {
+        var result = null;
         const {name, isMember, isAdmin} = this.props;
-
-        /**
-         * @return {Array} - Badge elements depending on is user is admin and member.
-         */
-        function getAdminElem() {
-            var result = null;
-            if (isAdmin) {
-                result = [];
-                result.push(<i key="badge" className="fa fa-check-circle" style={STYLE.isAdmin}/>);
-                if (!isMember) {
-                    result.push(
-                        <OverlayTrigger key="pop-over" trigger={["hover", "focus"]} placement="top" overlay={
+        if (isAdmin) {
+            result = [];
+            result.push(<i key="badge" className="fa fa-check-circle" style={STYLE.isAdmin}/>);
+            if (!isMember) {
+                result.push(
+                    <OverlayTrigger key="pop-over" trigger={["hover", "focus"]} placement="top" overlay={
                             <Popover title="Admin not a Member" id="admin">
                                 {`User '${name}' is an admin but not a member.`}
                             </Popover>}>
-                            <span className="admin-not-member"> ! </span>
-                        </OverlayTrigger>
-                    );
-                }
+                        <span className="admin-not-member"> ! </span>
+                    </OverlayTrigger>
+                );
             }
-
-            return result;
         }
+
+        return result;
+    }
+
+    render() {
+        const {name} = this.props;
 
         return (
             <tr role="row" className="odd">
@@ -89,7 +104,7 @@ export default class OrganizationDataTableEntry extends Component {
                     /> : null}
                 </td>
                 <td style={{width: "10%"}}>
-                    {getAdminElem()}
+                    {this.getAdminElem()}
                 </td>
             </tr>
         );
