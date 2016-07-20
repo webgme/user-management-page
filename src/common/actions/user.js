@@ -13,6 +13,8 @@ export const REQUEST_USER_FAILURE = 'REQUEST_USER_FAILURE';
 export const REQUEST_USER_SUCCESS = 'REQUEST_USER_SUCCESS';
 export const RECEIVE_USER = 'RECEIVE_USER';
 
+export const SET_COLOR_THEME = 'SET_COLOR_THEME';
+
 export const requestUser = () => {
     return {
         type: REQUEST_USER
@@ -38,7 +40,7 @@ const shouldFetchUser = (state) => {
 };
 
 export const fetchUser = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestUser());
         return userClient.getCurrentUser()
             .then(user => {
@@ -52,5 +54,15 @@ export const fetchUserIfNeeded = () => {
         if (shouldFetchUser(getState())) {
             return dispatch(fetchUser());
         }
+    };
+};
+
+export const setThemeColor = (themeColor) => {
+    return (dispatch) => {
+        return userClient.updateCurrentUserData({
+            themeColor
+        }).then(() => {
+            dispatch(fetchUser());
+        });
     };
 };

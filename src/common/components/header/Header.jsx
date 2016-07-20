@@ -22,7 +22,7 @@ export default class Header extends React.Component {
     }
 
     render() {
-        const { basePath } = this.props;
+        const { basePath, restClient } = this.props;
 
         let breadcrumbs = [],
             location = window.location.pathname,
@@ -79,7 +79,7 @@ export default class Header extends React.Component {
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
 
-                        <ColorMenu />
+                        <ColorMenu restClient={restClient}/>
 
                         <UserMenu basePath={basePath} />
 
