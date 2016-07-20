@@ -28,7 +28,7 @@ export const getOrgsUserIsAdminOf = (orgs, userId) => {
  * @param {string} currentProjectOwnerId - currentProjectOwnerId
  * @return {Array.<T>} array of organizations the user specified can transfer to
  */
-export const getOrgsUserCanTransferTo = (organizations, userId, currentProjectOwnerId) => {
+export const getOrgsCanTransferToTo = (organizations, userId, currentProjectOwnerId) => {
     // Exclude current project's owner
     return getOrgsUserIsAdminOf(organizations, userId)
         .filter((orgId) => {
@@ -46,7 +46,7 @@ export const getOrgsUserCanTransferTo = (organizations, userId, currentProjectOw
 export function canUserAuthorize(user, orgs, ownerId) {
     return user.siteAdmin || user._id === ownerId ||
         orgs.some((org) => {
-            return org._id === ownerId || org.admins.indexOf(user._id) !== -1;
+            return org._id === ownerId && org.admins.indexOf(user._id) !== -1;
         });
 }
 
@@ -57,10 +57,9 @@ export const canUserTransfer = (organizations, users, ownerId, projectId, user) 
     }) || {};
     const rights = userCollaborator.rights || '';
 
-    const orgsUserCanTransferTo = getOrgsUserCanTransferTo(organizations, user._id, ownerId);
+    const orgsCanTransferTo = getOrgsCanTransferToTo(organizations, user._id, ownerId);
 
-    return user.siteAdmin || (orgsUserCanTransferTo.length &&
-                              rights.toLowerCase().indexOf('delete') > -1);
+    return user.siteAdmin || (orgsCanTransferTo.length && rights.toLowerCase().indexOf('delete') > -1);
 };
 
 /**

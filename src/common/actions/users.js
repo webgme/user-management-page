@@ -32,15 +32,13 @@ const shouldFetchUsers = (state) => {
     let shouldFetch = true;
     if (hasFetched || isFetching) {
         shouldFetch = false;
-    } else {
-        shouldFetch = true;
     }
 
     return shouldFetch;
 };
 
 export const fetchUsers = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestUsers());
         return usersClient.getAllUsers()
             .then(users => {

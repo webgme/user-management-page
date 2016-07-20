@@ -251,3 +251,39 @@ export function sortWithChecks(arr, sortCategory, sortedForward) {
             arr.sort(sortObjectArrayByNestedDateField(sortCategory[0], sortCategory[1])).reverse();
     }
 }
+
+export const processCommitsBar = (commits) => {
+    let updaters = {};
+
+    commits.forEach(commit => {
+        if (updaters[commit.updater[0]]) {
+            updaters[commit.updater[0]] += 1;
+        } else {
+            updaters[commit.updater[0]] = 1;
+        }
+    });
+
+    let randomColor = getRandomColorHex(),
+        labels = [],
+        data = [];
+
+    Object.keys(updaters).forEach(updater => {
+        labels.push(updater);
+        data.push(updaters[updater]);
+    });
+
+    return {
+        labels: labels,
+        datasets: [
+            {
+                fillColor: convertHexToRGBA(randomColor, 20),
+                strokeColor: convertHexToRGBA(randomColor, 100),
+                pointColor: convertHexToRGBA(randomColor, 100),
+                pointStrokeColor: shadeColor(randomColor, 50),
+                pointHighlightFill: shadeColor(randomColor, 50),
+                pointHighlightStroke: convertHexToRGBA(randomColor, 100),
+                data: data
+            }
+        ]
+    };
+};

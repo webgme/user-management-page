@@ -26,27 +26,27 @@ export default class ProjectTransferWidget extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, orgsUserCanTransferTo } = this.props;
+        const { dispatch, orgsCanTransferTo } = this.props;
 
         dispatch(fetchOrganizationsIfNeeded());
 
-        let multiselectOptions = orgsUserCanTransferTo.sort().map((orgId) => {
+        let multiselectOptions = orgsCanTransferTo.sort().map((orgId) => {
             return {
                 label: orgId,
                 value: orgId
             };
         });
 
-        //FIXME: eslint warning
+        // FIXME: eslint warning
         this.setState({
             multiselectOptions
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        const { orgsUserCanTransferTo } = nextProps;
+        const { orgsCanTransferTo } = nextProps;
 
-        let multiselectOptions = orgsUserCanTransferTo.sort().map((orgId) => {
+        let multiselectOptions = orgsCanTransferTo.sort().map((orgId) => {
             return {
                 label: orgId,
                 value: orgId
@@ -59,7 +59,7 @@ export default class ProjectTransferWidget extends Component {
 
     handleMultiselectChange(value) {
         this.setState({
-            valuesInMultiselect: value
+            valuesInMultiselect: value || ''
         });
     }
 
@@ -93,12 +93,12 @@ export default class ProjectTransferWidget extends Component {
     render() {
         const { canTransfer } = this.props;
         const authorizationWidgetData = {
-            // Have to make these selectable to be in the right place
-            selectableButtons: [
+            submitButtons: [
                 {
-                    selectableButtonChange: this.handleTransfer,
-                    selectableButtonText: 'Transfer',
-                    selectableButtonState: "primary"
+                    disabled: this.state.valuesInMultiselect === '',
+                    onChange: this.handleTransfer,
+                    text: 'Transfer',
+                    state: "primary"
                 }
             ]
         };
@@ -106,14 +106,13 @@ export default class ProjectTransferWidget extends Component {
         return (
             canTransfer ?
                 <AuthorizationWidget boxSize="12"
+                                     disableLast={true}
                                      handleMultiselectChange={this.handleMultiselectChange}
                                      label={"Transfer Project"}
                                      multi={false}
                                      multiselectOptions={this.state.multiselectOptions}
                                      noneSelected={this.state.valuesInMultiselect === ''}
                                      placeholder="Select an organization (type to search)"
-                                     selectableButtons={authorizationWidgetData.selectableButtons}
-                                     selectableButtonsChange={this.handleAuthorizationChange}
                                      submitButtons={authorizationWidgetData.submitButtons}
                                      valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
@@ -122,5 +121,5 @@ export default class ProjectTransferWidget extends Component {
 }
 
 ProjectTransferWidget.propTypes = {
-    orgsUserCanTransferTo: PropTypes.array.isRequired
+    orgsCanTransferTo: PropTypes.array.isRequired
 };

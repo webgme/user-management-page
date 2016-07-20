@@ -1,104 +1,116 @@
-/* global document, window, $ */
-
 /**
  * BarGraph for 'commits by collaborators' widget
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries:
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Bar as BarChart } from 'react-chartjs';
 // Self defined:
-import {convertHexToRGBA, getRandomColorHex, shadeColor} from '../../../../../client/utils/utils.js';
+import { fetchCommitsIfNeeded, fetchProjectsIfNeeded } from '../../../../actions/projects';
+import { timeAgo } from '../../../../../client/utils/utils';
 
 export default class CollaboratorsCommitsBarGraph extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: {
-                labels: [],
-                datasets: []
-            },
             numCommits: 100
         };
     }
 
     componentDidMount() {
+        const { dispatch } = this.props;
+        const { ownerId, projectName } = this.props;
 
-        let updaters = {};
-
-        this.props.restClient.projects.getLatestCommits(this.props.ownerId, this.props.projectName, this.state.numCommits) // eslint-disable-line max-len
-            .then(arrayOfCommits => {
-                arrayOfCommits.forEach(oneCommit => {
-                    if (updaters[oneCommit.updater[0]]) {
-                        updaters[oneCommit.updater[0]] += 1;
-                    } else {
-                        updaters[oneCommit.updater[0]] = 1;
-                    }
-                });
-
-                let randomColor = getRandomColorHex(),
-                    labels = [],
-                    data = [];
-
-                Object.keys(updaters).forEach(updater => {
-                    labels.push(updater);
-                    data.push(updaters[updater]);
-                });
-
-                this.setState({
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                fillColor: convertHexToRGBA(randomColor, 20),
-                                strokeColor: convertHexToRGBA(randomColor, 100),
-                                pointColor: convertHexToRGBA(randomColor, 100),
-                                pointStrokeColor: shadeColor(randomColor, 50),
-                                pointHighlightFill: shadeColor(randomColor, 50),
-                                pointHighlightStroke: convertHexToRGBA(randomColor, 100),
-                                data: data
-                            }
-                        ]
-                    }
-                });
-            });
+        dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
+        dispatch(fetchProjectsIfNeeded());
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.data !== nextState.data ||
-               this.state.height !== nextState.height ||
-               this.state.width !== nextState.width;
+    shouldComponentUpdate(nextProps/* , nextState */) {
+        return this.props.data !== nextProps.data;
     }
 
     render() {
+        const { data, info, options, title } = this.props;
 
         return (
-            <div className="col-md-12">
-                <div className="box">
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="box">
 
-                    <div className="box-header with-border">
-                        <h3 className="box-title">{this.props.title}</h3>
+                        <div className="box-header with-border">
+                            <h3 className="box-title">{title}</h3>
 
-                        <div className="box-tools pull-right">
-                            <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                <i className="fa fa-minus"/>
-                            </button>
+                            <div className="box-tools pull-right">
+                                <button type="button" className="btn btn-box-tool" data-widget="collapse">
+                                    <i className="fa fa-minus"/>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="box-body" id="barChartBox">
-                        <BarChart data={this.state.data}
-                                  height={300}
-                                  width={500}
-                                  options={this.props.options}
-                                  redraw={true}/>
-                    </div>
+                        <div className="row">
+                            <div className="col-md-9">
+                                <div className="box-body" id="barChartBox">
+                                    <BarChart data={data}
+                                              height={300}
+                                              width={600}
+                                              options={options || {}}
+                                              redraw={true} />
+                                </div>
+                            </div>
+                            <div className="col-md-3" style={{paddingRight: "30px"}}>
+                                <strong>Last Modified</strong>
+                                <br/>
+                                <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.modifier ? info.modifier : this.props.unavailable}`}
+                                </i>
 
+                                <br/><br/><br/>
+
+                                <strong>Last Viewed</strong>
+                                <br/>
+                                <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.viewer ? info.viewer : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                <strong>Created At</strong>
+                                <br/>
+                                <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.creator ? info.creator : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                {/*
+                                <select className="pull-right">
+                                    <option value="Bar Chart">Bar Chart</option>
+                                    <option value="Line Graph">Line Graph</option>
+                                </select> */}
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         );
     }
-
 }
+
+CollaboratorsCommitsBarGraph.propTypes = {
+    data: PropTypes.object.isRequired,
+    info: PropTypes.shape({
+        createdAt: PropTypes.string,
+        viewedAt: PropTypes.string,
+        modifiedAt: PropTypes.string,
+        creator: PropTypes.string,
+        viewer: PropTypes.string,
+        modifier: PropTypes.string
+    }).isRequired
+};
+
+CollaboratorsCommitsBarGraph.defaultProps = {
+    unavailable: "Unavailable"
+};

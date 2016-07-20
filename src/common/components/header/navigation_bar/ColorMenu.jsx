@@ -14,7 +14,7 @@ export default class ColorMenu extends Component {
 
     render() {
 
-        const { onChangeThemeColor } = this.props;
+        const { changeThemeColor } = this.props;
 
         let formattedColors = [];
         Object.keys(THEME_COLORS).forEach((color, index) => {
@@ -25,12 +25,12 @@ export default class ColorMenu extends Component {
                 backgroundColor: THEME_COLORS[color]
             };
             formattedColors.push(
-                <li id={color} key={index} onClick={onChangeThemeColor}>
-                    <a href="#" style={{padding: "6px 10px"}}>
+                <li value={color} key={index} onClick={changeThemeColor}>
+                    <a href="#" style={{padding: "6px 10px"}} value={color}>
                         <div className="pull-left">
-                            <div className="color-box" style={colorBoxStyle}></div>
+                            <div className="color-box" style={colorBoxStyle} value={color}></div>
                         </div>
-                        <h4>
+                        <h4 value={color}>
                             {capitalizeFirstLetter(color)}
                         </h4>
                     </a>

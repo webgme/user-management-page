@@ -9,8 +9,10 @@ import { connect } from 'react-redux';
 import App from '../components/App';
 
 const mapStateToProps = (state) => {
+    // Default blue
+    const themeColor = state.user.user.data ? state.user.user.data.themeColor || 'blue' : 'blue';
     return {
-        themeColor: state.themeColor
+        themeColor
     };
 };
 

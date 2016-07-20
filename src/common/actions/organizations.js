@@ -32,15 +32,13 @@ const shouldFetchOrganizations = (state) => {
     let shouldFetch = true;
     if (hasFetched || isFetching) {
         shouldFetch = false;
-    } else {
-        shouldFetch = true;
     }
 
     return shouldFetch;
 };
 
 export const fetchOrganizations = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestOrganizations());
         return organizationsClient.getAllOrganizations()
             .then(organizations => {

@@ -10,7 +10,6 @@ import basePath from './basePath';
 import organizations from './organizations';
 import projects from './projects';
 import tables from './tables';
-import themeColor from './themeColor';
 import user from './user';
 import users from './users';
 
@@ -19,7 +18,6 @@ const reducers = combineReducers({
     organizations,
     projects,
     tables,
-    themeColor,
     user,
     users
 });
