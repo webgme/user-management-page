@@ -5,8 +5,7 @@
 
 export const AuthorizationWidget = {
     selectableButtonGroup: {
-        lineHeight: 3.6,
-        paddingTop: "15px"
+        paddingTop: "30px"
     },
     submitButtonGroup: {
         float: "right",

@@ -21,6 +21,7 @@ export default class AuthorizationWidget extends Component {
             selectableButtons.push(
                 <Button bsStyle={this.props.selectableButtons[index].state}
                         onClick={this.props.selectableButtons[index].onChange}
+                        bsSize="small"
                         key={index}>
                     {this.props.selectableButtons[index].text}
                 </Button>
@@ -52,7 +53,7 @@ export default class AuthorizationWidget extends Component {
 
                                 <div className="row">
 
-                                    <div className="col-sm-6">
+                                    <div className="col-sm-8">
                                         <Multiselect
                                             label={this.props.label}
                                             multi={this.props.multi}
@@ -62,7 +63,7 @@ export default class AuthorizationWidget extends Component {
                                             valuesInMultiselect={this.props.valuesInMultiselect}/>
                                     </div>
 
-                                    <div className="col-sm-6" style={STYLE.selectableButtonGroup}>
+                                    <div className="col-sm-4" style={STYLE.selectableButtonGroup}>
                                         <ButtonGroup>
                                             {selectableButtons}
                                         </ButtonGroup>
