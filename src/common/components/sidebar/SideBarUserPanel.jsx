@@ -10,6 +10,7 @@ import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 // Self-defined
 import { fetchUserIfNeeded } from '../../actions/user';
+import { getUserIconSource } from '../../../client/utils/utils';
 // Style
 import { SideBarUserPanel as STYLE } from '../../../client/style';
 
@@ -35,7 +36,7 @@ export default class SideBarUserPanel extends Component {
                     <img alt="User Image"
                          className="img-circle"
                          onClick={this.goToEditor}
-                         src="/img/gme-logo.png"
+                         src={getUserIconSource(user._id)}
                          style={STYLE.imageIcon}/>
                 </div>
                 <div className="pull-left info">

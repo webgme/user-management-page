@@ -4,13 +4,11 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { Line as LineChart } from 'react-chartjs';
 // Self-defined
-import {convertHexToRGBA, getRandomColorHex, shadeColor,
-        getPastWeeksDays,
-        isEmpty } from '../../../../../client/utils/utils';
+import { isEmpty, processCommitsLine, timeAgo } from '../../../../../client/utils/utils';
 
 export default class CommitsLineChart extends Component {
 
@@ -25,7 +23,6 @@ export default class CommitsLineChart extends Component {
         // Data retrieval
         this.processCommits = this.processCommits.bind(this);
         this.retrieveCommits = this.retrieveCommits.bind(this);
-        this.retrieveUserId = this.retrieveUserId.bind(this);
         // Event handler
         this.toggleView = this.toggleView.bind(this);
     }
@@ -35,90 +32,31 @@ export default class CommitsLineChart extends Component {
     }
 
     componentWillMount() {
+        const { user } = this.props;
+
         if (isEmpty(this.state.commits)) { // Parent did not pass down commits
-            Promise.all([this.retrieveCommits(), this.retrieveUserId()])
-                .then(([commits, userId]) => {
-                    Promise.all([
-                        this.setState({commits: commits}),
-                        this.setState({userId: userId})
-                    ])
+            this.retrieveCommits()
+                .then((commits) => {
+                    Promise.resolve(this.setState({
+                        commits,
+                        userId: user._id
+                    }))
                         .then(() => {
                             this.processCommits();
                         });
                 });
         } else {
-            this.retrieveUserId()
-                .then(userId => {
-                    this.setState({
-                        userId: userId
-                    }, this.processCommits);
-                });
+            this.setState({
+                userId: user._id
+            }, this.processCommits());
         }
     }
 
     processCommits() {
-
-        // Hash projectName to an array of commit times (milliseconds from epoch)
-        let timesCommitted = {};
-        Object.keys(this.state.commits).forEach(projectName => {
-
-            let filteredCommits = this.state.commits[projectName];
-            // If requested, only the ones the user committed
-            if (this.state.display === 2) {
-                filteredCommits = filteredCommits.filter(eachCommit => {
-                    return eachCommit.updater.indexOf(this.state.userId) !== -1;
-                });
-            }
-
-            timesCommitted[projectName] = filteredCommits.map(oneCommit => {
-                return oneCommit.time;
-            });
-        });
-
-        // Processing times
-        let datasets = [];
-        Object.keys(timesCommitted).forEach(projectName => {
-            timesCommitted[projectName].sort();
-            let eachProjectData = Array(7).fill(0), // TODO: extend this to be flexible with user selected timeframe
-                timeNow = new Date().getTime(),
-                millisecondsInADay = 60 * 60 * 24 * 1000,
-                bounds = [];
-            for (let i = 7; i >= 0; i--) {
-                bounds.push(timeNow - (i * millisecondsInADay));
-            }
-
-            let index = 0,
-                boundsIndex = 0;
-            while (index < timesCommitted[projectName].length && boundsIndex < bounds.length) {
-                if (timesCommitted[projectName][index] >= bounds[boundsIndex] &&
-                    timesCommitted[projectName][index] < bounds[boundsIndex + 1]) {
-                    eachProjectData[boundsIndex] += 1;
-                    index++;
-                } else if (timesCommitted[projectName][index] < bounds[boundsIndex]) {
-                    index++;
-                } else {
-                    boundsIndex++;
-                }
-            }
-
-            let randomColor = getRandomColorHex();
-            datasets.push({
-                label: projectName, // this is the name of the project
-                fillColor: convertHexToRGBA(randomColor, 20),
-                strokeColor: convertHexToRGBA(randomColor, 100),
-                pointColor: convertHexToRGBA(randomColor, 100),
-                pointStrokeColor: shadeColor(randomColor, 50), // Lightened because its the shading
-                pointHighlightFill: shadeColor(randomColor, 50), // Lightened because its the shading
-                pointHighlightStroke: convertHexToRGBA(randomColor, 100),
-                data: eachProjectData
-            });
-        });
+        const data = processCommitsLine(this.state.commits, this.state.userId, this.state.display);
 
         this.setState({
-            data: {
-                labels: getPastWeeksDays(),
-                datasets: datasets
-            }
+            data
         });
     }
 
@@ -140,19 +78,12 @@ export default class CommitsLineChart extends Component {
 
                 return Promise.all(projectsCommitRequests)
                     .then(projectsCommits => {
-                        projectsCommits.forEach((commitsForOneProject, index) => {
-                            commits[projectNames[index]] = commitsForOneProject;
+                        projectsCommits.forEach((projectCommits, index) => {
+                            commits[projectNames[index]] = projectCommits;
                         });
 
                         return commits;
                     });
-            });
-    }
-
-    retrieveUserId() {
-        return this.props.restClient.user.getCurrentUser()
-            .then(currentUserInfo => {
-                return currentUserInfo._id;
             });
     }
 
@@ -173,6 +104,8 @@ export default class CommitsLineChart extends Component {
     }
 
     render() {
+        const { info, onChartChange, whichChart } = this.props;
+
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -190,18 +123,51 @@ export default class CommitsLineChart extends Component {
                                             onClick={this.toggleView}>Only My Commits
                                     </Button>
                                 </ButtonGroup>
-                                <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                    <i className="fa fa-minus"/>
-                                </button>
+                                <div className="box-tools pull-right">
+                                    <select onChange={onChartChange}>
+                                        <option value="Bar" selected={whichChart === 'Bar'}>Bar Chart</option>
+                                        <option value="Line" selected={whichChart === 'Line'}>Line Chart</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="box-body">
-                            <LineChart data={this.state.data}
-                                       height={300}
-                                       width={600}
-                                       options={{}}
-                                       redraw={true} />
+                        <div className="row">
+                            <div className="col-md-9">
+                                <div className="box-body">
+                                    <LineChart data={this.state.data}
+                                               height={300}
+                                               width={500}
+                                               options={{}}
+                                               redraw={true}/>
+                                </div>
+                            </div>
+                            <div className="col-md-3" style={{paddingRight: "30px"}}>
+                                <strong>Last Modified</strong>
+                                <br/>
+                                <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.modifier ? info.modifier : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                <strong>Last Viewed</strong>
+                                <br/>
+                                <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.viewer ? info.viewer : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                <strong>Created At</strong>
+                                <br/>
+                                <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.creator ? info.creator : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                            </div>
                         </div>
 
                     </div>
@@ -210,3 +176,19 @@ export default class CommitsLineChart extends Component {
         );
     }
 }
+
+CommitsLineChart.propTypes = {
+    data: PropTypes.object.isRequired,
+    info: PropTypes.shape({
+        createdAt: PropTypes.string,
+        viewedAt: PropTypes.string,
+        modifiedAt: PropTypes.string,
+        creator: PropTypes.string,
+        viewer: PropTypes.string,
+        modifier: PropTypes.string
+    }).isRequired
+};
+
+CommitsLineChart.defaultProps = {
+    unavailable: "Unavailable"
+};

@@ -8,6 +8,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { getUserIconSource } from '../../../../client/utils/utils';
 import { UserMenu as STYLE } from '../../../../client/style';
 
 export default class UserMenu extends Component {
@@ -23,12 +24,12 @@ export default class UserMenu extends Component {
         return (
             <li className="dropdown user user-menu">
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                    <img src="/img/gme-logo.png" className="user-image" alt="User Image"/>
+                    <img src={getUserIconSource(user._id)} className="user-image" alt="User Image"/>
                     <span className="hidden-xs">&nbsp;{user._id}&nbsp;</span>
                 </a>
                 <ul className="dropdown-menu">
                     <li className="user-header" style={STYLE.userHeader}>
-                        <img src="/img/gme-logo.png" className="img-circle" alt="User Image"/>
+                        <img src={getUserIconSource(user._id)} className="img-circle" alt="User Image"/>
                         <p>
                             {user._id}
                         </p>

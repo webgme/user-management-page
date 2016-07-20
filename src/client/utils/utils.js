@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import blockies from 'blockies';
 
 /**
  * Capitalizes the first letter of a word (formatting help)
@@ -252,6 +253,11 @@ export function sortWithChecks(arr, sortCategory, sortedForward) {
     }
 }
 
+/**
+ * Processes the commits to the bar chart's format
+ * @param {Array} commits - commits
+ * @return {{labels: Array, datasets: *[]}} - object that describes the bar chart
+ */
 export const processCommitsBar = (commits) => {
     let updaters = {};
 
@@ -286,4 +292,86 @@ export const processCommitsBar = (commits) => {
             }
         ]
     };
+};
+
+export const processCommitsLine = (commits, userId, display) => {
+    let timesCommitted = {};
+    Object.keys(commits).forEach(projectName => {
+
+        let filteredCommits = commits[projectName];
+        // If requested, only the ones the user committed
+        if (display === 2) {
+            filteredCommits = filteredCommits.filter(eachCommit => {
+                return eachCommit.updater.indexOf(userId) !== -1;
+            });
+        }
+
+        timesCommitted[projectName] = filteredCommits.map(oneCommit => {
+            return oneCommit.time;
+        });
+    });
+
+    // Processing times
+    let datasets = [];
+    Object.keys(timesCommitted).forEach(projectName => {
+        timesCommitted[projectName].sort();
+        let eachProjectData = Array(7).fill(0), // TODO: extend this to be flexible with user selected timeframe
+            timeNow = new Date().getTime(),
+            millisecondsInADay = 60 * 60 * 24 * 1000,
+            bounds = [];
+        for (let i = 7; i >= 0; i--) {
+            bounds.push(timeNow - (i * millisecondsInADay));
+        }
+
+        let index = 0,
+            boundsIndex = 0;
+        while (index < timesCommitted[projectName].length && boundsIndex < bounds.length) {
+            if (timesCommitted[projectName][index] >= bounds[boundsIndex] &&
+                timesCommitted[projectName][index] < bounds[boundsIndex + 1]) {
+                eachProjectData[boundsIndex] += 1;
+                index++;
+            } else if (timesCommitted[projectName][index] < bounds[boundsIndex]) {
+                index++;
+            } else {
+                boundsIndex++;
+            }
+        }
+
+        let randomColor = getRandomColorHex();
+        datasets.push({
+            label: projectName, // this is the name of the project
+            fillColor: convertHexToRGBA(randomColor, 20),
+            strokeColor: convertHexToRGBA(randomColor, 100),
+            pointColor: convertHexToRGBA(randomColor, 100),
+            pointStrokeColor: shadeColor(randomColor, 50), // Lightened because its the shading
+            pointHighlightFill: shadeColor(randomColor, 50), // Lightened because its the shading
+            pointHighlightStroke: convertHexToRGBA(randomColor, 100),
+            data: eachProjectData
+        });
+    });
+
+    return {
+        labels: getPastWeeksDays(),
+        datasets: datasets
+    };
+};
+
+/**
+ * Gets the image URI for a user's icon
+ * @param {string} userId - userId to be used as the randomized seed
+ * @return {string} - image source
+ */
+export const getUserIconSource = (userId) => {
+    let icon = blockies({ // All options are optional
+        seed: userId, // seed used to generate icon data, default: random
+        // color: '#dfe', // to manually specify the icon color, default: random
+        // bgcolor: '#aaa', // choose a different background color, default: random
+        size: 15, // width/height of the icon in blocks, default: 8
+        scale: 3, // width/height of each block in pixels, default: 4
+        spotcolor: '#000' // each pixel has a 13% chance of being of a third color,
+        // default: random. Set to -1 to disable it. These "spots" create structures
+        // that look like eyes, mouths and noses.
+    });
+
+    return icon.toDataURL();
 };
