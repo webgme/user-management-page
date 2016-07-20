@@ -42,14 +42,14 @@ export default class ProjectCollaboratorTable extends Component {
 
     onOrderOrganizationEntries(event) {
         const { dispatch } = this.props;
-        const newSortCategory = FIELDS.ORGANIZATION[event.target.value];
+        const newSortCategory = FIELDS.ORGANIZATION[event.target.innerHTML];
 
         dispatch(sortBy('projectOrg', newSortCategory));
     }
 
     onOrderUserEntries(event) {
         const { dispatch } = this.props;
-        const newSortCategory = FIELDS.USER[event.target.value];
+        const newSortCategory = FIELDS.USER[event.target.innerHTML];
 
         dispatch(sortBy('projectUser', newSortCategory));
     }

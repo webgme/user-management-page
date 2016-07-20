@@ -26,11 +26,11 @@ export default class ProjectTransferWidget extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, orgsUserCanTransferTo } = this.props;
+        const { dispatch, orgsCanTransferTo } = this.props;
 
         dispatch(fetchOrganizationsIfNeeded());
 
-        let multiselectOptions = orgsUserCanTransferTo.sort().map((orgId) => {
+        let multiselectOptions = orgsCanTransferTo.sort().map((orgId) => {
             return {
                 label: orgId,
                 value: orgId
@@ -44,9 +44,9 @@ export default class ProjectTransferWidget extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { orgsUserCanTransferTo } = nextProps;
+        const { orgsCanTransferTo } = nextProps;
 
-        let multiselectOptions = orgsUserCanTransferTo.sort().map((orgId) => {
+        let multiselectOptions = orgsCanTransferTo.sort().map((orgId) => {
             return {
                 label: orgId,
                 value: orgId
@@ -58,9 +58,8 @@ export default class ProjectTransferWidget extends Component {
     }
 
     handleMultiselectChange(value) {
-        // Deleting all pills will result in '' instead of type null
         this.setState({
-            valuesInMultiselect: value ? value : ''
+            valuesInMultiselect: value || ''
         });
     }
 
@@ -122,5 +121,5 @@ export default class ProjectTransferWidget extends Component {
 }
 
 ProjectTransferWidget.propTypes = {
-    orgsUserCanTransferTo: PropTypes.array.isRequired
+    orgsCanTransferTo: PropTypes.array.isRequired
 };

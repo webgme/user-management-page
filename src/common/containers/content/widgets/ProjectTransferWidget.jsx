@@ -7,17 +7,17 @@
 import { connect } from 'react-redux';
 // Self defined
 import ProjectTransferWidget from '../../../components/content/widgets/ProjectTransferWidget';
-import { getOrgsUserCanTransferTo } from '../../../../client/utils/restUtils';
+import { getOrgsCanTransferToTo } from '../../../../client/utils/restUtils';
 
 const mapStateToProps = (state, ownProps) => {
     const { basePath } = state;
     const { organizations } = state.organizations;
 
-    const orgsUserCanTransferTo = getOrgsUserCanTransferTo(organizations, ownProps.userId, ownProps.ownerId);
+    const orgsCanTransferTo = getOrgsCanTransferToTo(organizations, ownProps.userId, ownProps.ownerId);
 
     return {
         basePath,
-        orgsUserCanTransferTo
+        orgsCanTransferTo
     };
 };
 

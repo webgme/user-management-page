@@ -65,9 +65,8 @@ export default class ProjectAuthorizationWidget extends Component {
     }
 
     handleMultiselectChange(value) {
-        // Deleting all pills will result in '' instead of type null
         this.setState({
-            valuesInMultiselect: value ? value : ''
+            valuesInMultiselect: value || ''
         });
     }
 
