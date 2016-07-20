@@ -32,7 +32,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
     }
 
     render() {
-        const { data, info, options, title } = this.props;
+        const { data, info, onChartChange, options, title, whichChart } = this.props;
 
         return (
             <div className="row">
@@ -43,9 +43,10 @@ export default class CollaboratorsCommitsBarGraph extends Component {
                             <h3 className="box-title">{title}</h3>
 
                             <div className="box-tools pull-right">
-                                <button type="button" className="btn btn-box-tool" data-widget="collapse">
-                                    <i className="fa fa-minus"/>
-                                </button>
+                                <select onChange={onChartChange}>
+                                    <option value="Bar" selected={whichChart === 'Bar'}>Bar Chart</option>
+                                    <option value="Line" selected={whichChart === 'Line'}>Line Chart</option>
+                                </select>
                             </div>
                         </div>
 
@@ -54,7 +55,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
                                 <div className="box-body" id="barChartBox">
                                     <BarChart data={data}
                                               height={300}
-                                              width={600}
+                                              width={500}
                                               options={options || {}}
                                               redraw={true} />
                                 </div>
@@ -84,11 +85,6 @@ export default class CollaboratorsCommitsBarGraph extends Component {
 
                                 <br/><br/><br/>
 
-                                {/*
-                                <select className="pull-right">
-                                    <option value="Bar Chart">Bar Chart</option>
-                                    <option value="Line Graph">Line Graph</option>
-                                </select> */}
                             </div>
                         </div>
 
