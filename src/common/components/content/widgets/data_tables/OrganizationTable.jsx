@@ -53,13 +53,11 @@ export default class OrganizationTable extends Component {
         if (actionType === 'removeAdmin') {
             this.props.restClient.organizations.removeAdminOfOrganization(this.props.organizationId, userId)
                 .then(() => {
-                    console.log('remove admin returned');
                     dispatch(fetchOrganizations());
                 });
         } else if (actionType === 'makeAdmin') {
             this.props.restClient.organizations.makeAdminOfOrganization(this.props.organizationId, userId)
                 .then(() => {
-                    console.log('make admin returned');
                     dispatch(fetchOrganizations());
                 });
         }

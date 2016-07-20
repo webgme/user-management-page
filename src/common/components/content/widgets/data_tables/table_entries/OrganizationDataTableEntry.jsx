@@ -17,27 +17,13 @@ export default class OrganizationDataTableEntry extends Component {
         super(props);
         this.state = {
             showModal: false
-            // adminHover: false
         };
 
-        //this.toggleHover = this.toggleHover.bind(this);
         this.close = this.close.bind(this);
         this.confirm = this.confirm.bind(this);
         this.open = this.open.bind(this);
         this.getAdminElem = this.getAdminElem.bind(this);
     }
-
-    // toggleHover(event) {
-    //     var targetType = event.target.getAttribute('action');
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //
-    //     if (targetType === 'removeAdmin' || targetType === 'makeAdmin') {
-    //         this.setState({
-    //             adminHover: !this.state.adminHover
-    //         });
-    //     }
-    // }
 
     open() {
         this.setState({

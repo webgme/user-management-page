@@ -48,7 +48,7 @@ export default class OrganizationsTable extends Component {
 
     render() {
 
-        const { organizations, sortedForward } = this.props;
+        const { organizations, sortedForward, adminOrganizations } = this.props;
 
         const categories = [
             {id: 1, name: 'Organization Name'}
@@ -66,7 +66,7 @@ export default class OrganizationsTable extends Component {
 
                     <div style={{float: "right"}}>
                         <Button bsStyle="primary" onClick={this.props.openCreateOrganization}>
-                            New +
+                            Add +
                         </Button>
                     </div>
 
@@ -81,7 +81,7 @@ export default class OrganizationsTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
-                    <OrganizationsDataTableEntry />
+                    <OrganizationsDataTableEntry adminOrganizations={adminOrganizations}/>
                 </DataTable>
 
                 {/* Create organization modal window */}
