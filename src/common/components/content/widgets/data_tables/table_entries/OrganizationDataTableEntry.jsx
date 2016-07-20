@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
 
+// Self-defined
 import CustomModal from '../../CustomModal';
 // Style
 import {AdminBadge as STYLE} from '../../../../../../client/style';
