@@ -17,8 +17,15 @@ const mapStateToProps = (state, ownProps) => {
     const commits = state.projects.commits[projectId] ? state.projects.commits[projectId].commits || [] : [];
     const data = processCommitsBar(commits.slice());
 
+    // Get project info
+    const thisProject = state.projects.projects.find((project) => {
+        return project._id === projectId;
+    });
+    const { info } = thisProject ? thisProject : {info: {}};
+
     return {
-        data
+        data,
+        info
     };
 };
 

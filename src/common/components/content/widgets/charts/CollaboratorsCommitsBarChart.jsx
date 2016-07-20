@@ -7,7 +7,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Bar as BarChart } from 'react-chartjs';
 // Self defined:
-import { fetchCommitsIfNeeded } from '../../../../actions/projects';
+import { fetchCommitsIfNeeded, fetchProjectsIfNeeded } from '../../../../actions/projects';
+import { timeAgo } from '../../../../../client/utils/utils';
 
 export default class CollaboratorsCommitsBarGraph extends Component {
 
@@ -23,6 +24,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
         const { ownerId, projectName } = this.props;
 
         dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
+        dispatch(fetchProjectsIfNeeded());
     }
 
     shouldComponentUpdate(nextProps/* , nextState */) {
@@ -30,7 +32,7 @@ export default class CollaboratorsCommitsBarGraph extends Component {
     }
 
     render() {
-        const { data, options, title } = this.props;
+        const { data, info, options, title } = this.props;
 
         return (
             <div className="row">
@@ -47,12 +49,47 @@ export default class CollaboratorsCommitsBarGraph extends Component {
                             </div>
                         </div>
 
-                        <div className="box-body" id="barChartBox">
-                            <BarChart data={data}
-                                      height={300}
-                                      width={600}
-                                      options={options || {}}
-                                      redraw={true}/>
+                        <div className="row">
+                            <div className="col-md-9">
+                                <div className="box-body" id="barChartBox">
+                                    <BarChart data={data}
+                                              height={300}
+                                              width={600}
+                                              options={options || {}}
+                                              redraw={true} />
+                                </div>
+                            </div>
+                            <div className="col-md-3" style={{paddingRight: "30px"}}>
+                                <strong>Last Modified</strong>
+                                <br/>
+                                <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.modifier ? info.modifier : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                <strong>Last Viewed</strong>
+                                <br/>
+                                <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.viewer ? info.viewer : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                <strong>Created At</strong>
+                                <br/>
+                                <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(new Date(1447879297957).toISOString())}
+                                    <br/>{`by ${info.creator ? info.creator : this.props.unavailable}`}
+                                </i>
+
+                                <br/><br/><br/>
+
+                                {/*
+                                <select className="pull-right">
+                                    <option value="Bar Chart">Bar Chart</option>
+                                    <option value="Line Graph">Line Graph</option>
+                                </select> */}
+                            </div>
                         </div>
 
                     </div>
@@ -63,5 +100,17 @@ export default class CollaboratorsCommitsBarGraph extends Component {
 }
 
 CollaboratorsCommitsBarGraph.propTypes = {
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    info: PropTypes.shape({
+        createdAt: PropTypes.string,
+        viewedAt: PropTypes.string,
+        modifiedAt: PropTypes.string,
+        creator: PropTypes.string,
+        viewer: PropTypes.string,
+        modifier: PropTypes.string
+    }).isRequired
+};
+
+CollaboratorsCommitsBarGraph.defaultProps = {
+    unavailable: "Unavailable"
 };

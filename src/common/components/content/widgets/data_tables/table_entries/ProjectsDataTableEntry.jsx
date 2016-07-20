@@ -20,58 +20,51 @@ export default class ProjectsDataTableEntry extends Component {
     }
 
     render() {
-        const { basePath } = this.props;
+        const { basePath, columnStyle, info, name, owner, unavailable } = this.props;
 
-        const buildLink = `${basePath}projects/${this.props.owner}/${this.props.name}`;
+        const buildLink = `${basePath}projects/${owner}/${name}`;
 
         return (
             <tr role="row" className="odd">
 
-                <td style={this.props.columnStyle}>
-                    <Link to={`${basePath}projects/${this.props.owner}`}>{this.props.owner}</Link>
+                <td style={columnStyle}>
+                    <Link to={`${basePath}projects/${owner}`}>{owner}</Link>
                 </td>
 
                 <td className="sorting_1">
-                    <Link to={buildLink}>{this.props.name}</Link>
+                    <Link to={buildLink}>{name}</Link>
                 </td>
 
-                <td style={this.props.columnStyle}>
+                <td style={columnStyle}>
                     <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Last Viewed At:" id="Viewed At">
-                            {this.props.info.viewedAt ? new Date(this.props.info.viewedAt).toString() :
-                                                        this.props.unavailable}
+                            {info.viewedAt ? new Date(info.viewedAt).toString() : unavailable}
                             <br/><br/>
-                            <i>{`Viewed by: ${this.props.info.viewer ? this.props.info.viewer :
-                                                                       this.props.unavailable}`}</i>
+                            <i>{`Viewed by: ${info.viewer ? info.viewer : unavailable}`}</i>
                         </Popover>}>
-                        <i>{this.props.info.viewedAt ? timeAgo(this.props.info.viewedAt) :
-                                                       timeAgo(new Date(1447879297957).toISOString())}</i>
+                        <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(new Date(1447879297957).toISOString())}</i>
                     </OverlayTrigger>
                 </td>
 
-                <td style={this.props.columnStyle}>
+                <td style={columnStyle}>
                     <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Last Modified At:" id="Modified At">
-                            {new Date(this.props.info.modifiedAt).toString()}
+                            {new Date(info.modifiedAt).toString()}
                             <br/><br/>
-                            <i>{`Modified by: ${this.props.info.modifier ? this.props.info.modifier :
-                                                                           this.props.unavailable}`}</i>
+                            <i>{`Modified by: ${info.modifier ? info.modifier : unavailable}`}</i>
                         </Popover>}>
-                        <i>{this.props.info.modifiedAt ? timeAgo(this.props.info.modifiedAt) :
-                                                         timeAgo(new Date(1447879297957).toISOString())}</i>
+                        <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(new Date(1447879297957).toISOString())}</i>
                     </OverlayTrigger>
                 </td>
 
-                <td style={this.props.columnStyle}>
+                <td style={columnStyle}>
                     <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Created At:" id="Created At">
-                            {new Date(this.props.info.createdAt).toString()}
+                            {new Date(info.createdAt).toString()}
                             <br/><br/>
-                            <i>{`Created by: ${this.props.info.creator ? this.props.info.creator :
-                                                                         this.props.unavailable}`}</i>
+                            <i>{`Created by: ${info.creator ? info.creator : unavailable}`}</i>
                         </Popover>}>
-                        <i>{this.props.info.createdAt ? timeAgo(this.props.info.createdAt) :
-                                                        timeAgo(new Date(1447879297957).toISOString())}</i>
+                        <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(new Date(1447879297957).toISOString())}</i>
                     </OverlayTrigger>
                 </td>
 
@@ -86,9 +79,9 @@ ProjectsDataTableEntry.propTypes = {
         width: PropTypes.string
     }),
     info: PropTypes.shape({
-        createdAt: PropTypes.Date,
-        modifiedAt: PropTypes.Date,
-        viewedAt: PropTypes.Date
+        createdAt: PropTypes.string,
+        modifiedAt: PropTypes.string,
+        viewedAt: PropTypes.string
     }),
     name: PropTypes.string,
     owner: PropTypes.string
