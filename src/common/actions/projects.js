@@ -43,7 +43,7 @@ const shouldFetchProjects = (state) => {
 };
 
 export const fetchProjects = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestProjects());
         return projectsClient.getAllProjects()
             .then(projects => {
@@ -95,7 +95,7 @@ const shouldFetchCommits = (ownerId, projectName, numCommits, state) => {
 };
 
 export const fetchCommits = (ownerId, projectName, numCommits) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestCommits(ownerId, projectName, numCommits));
         return projectsClient.getLatestCommits(ownerId, projectName, numCommits)
             .then(commits => {

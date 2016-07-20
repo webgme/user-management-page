@@ -38,7 +38,7 @@ const shouldFetchUsers = (state) => {
 };
 
 export const fetchUsers = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestUsers());
         return usersClient.getAllUsers()
             .then(users => {
