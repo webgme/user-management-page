@@ -37,6 +37,7 @@ const table = (state = initialTableState, action) => {
 const initialTablesState = {
     // Table from organization page
     organizations: initialTableState,
+    organizationMembers: initialTableState,
     // Tables from the collaborator table (project page)
     projectUser: initialTableState,
     projectOrg: initialTableState,

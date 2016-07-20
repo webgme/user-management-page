@@ -11,17 +11,19 @@ import { connect } from 'react-redux';
 import OrganizationTable from
     '../../../../components/content/widgets/data_tables/OrganizationTable';
 import { retrieveMembersAndAdmins } from '../../../../../client/utils/restUtils';
+import { sortObjectArrayByField } from '../../../../../client/utils/utils';
 
 const mapStateToProps = (state, ownProps) => {
     const { organizations } = state.organizations;
+    const { sortCategory, sortedForward } = state.tables.organizationMembers;
     const { organizationId } = ownProps;
 
     const members = retrieveMembersAndAdmins(organizations, organizationId);
 
     return {
-        data: {
-            members: members
-        }
+        members: sortedForward ?
+            members.sort(sortObjectArrayByField(sortCategory)) :
+            members.sort(sortObjectArrayByField(sortCategory)).reverse()
     };
 };
 

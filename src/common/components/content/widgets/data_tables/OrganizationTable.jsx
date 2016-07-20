@@ -10,9 +10,14 @@ import React, {Component, PropTypes} from 'react';
 // Self-defined
 import DataTable from './DataTable';
 import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
-import {sortObjectArrayByField} from '../../../../../client/utils/utils';
+import { sortBy } from '../../../../actions/tables';
 import {fetchOrganizationsIfNeeded, fetchOrganizations} from '../../../../actions/organizations';
 import {fetchUsers} from '../../../../actions/users';
+
+const MEMBER_FIELDS = {
+    User: 'name',
+    Admin: 'isAdmin'
+};
 
 export default class OrganizationTable extends Component {
 
@@ -63,29 +68,16 @@ export default class OrganizationTable extends Component {
         }
     }
 
-    handleOrderEntries(/*event*/) {
+    handleOrderEntries(event) {
+        const { dispatch } = this.props;
+        const newSortCategory = MEMBER_FIELDS[event.target.value];
 
-        // if (this.props.display === 1) {
-        //     this.setState({
-        //         members: this.state.sortedForward ?
-        //             this.state.members.sort(sortObjectArrayByField('name')).reverse() :
-        //             this.state.members.sort(sortObjectArrayByField('name')),
-        //         sortedForward: !this.state.sortedForward
-        //     });
-        // } else {
-        //     this.setState({
-        //         admins: this.state.sortedForward ?
-        //             this.state.admins.sort(sortObjectArrayByField('name')).reverse() :
-        //             this.state.admins.sort(sortObjectArrayByField('name')),
-        //         sortedForward: !this.state.sortedForward
-        //     });
-        // }
+        dispatch(sortBy('organizationMembers', newSortCategory));
     }
 
     render() {
 
-        const {members} = this.props.data;
-        const {canAuthorize} = this.props;
+        const {canAuthorize, members} = this.props;
 
         const categories = [
             {id: 1, name: 'User'},
@@ -117,7 +109,5 @@ export default class OrganizationTable extends Component {
 }
 
 OrganizationTable.propTypes = {
-    data: PropTypes.shape({
-        members: PropTypes.array.isRequired
-    }).isRequired
+    members: PropTypes.array.isRequired
 };

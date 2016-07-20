@@ -9,6 +9,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 // Self-defined
 import LoginField from '../../../components/content/widgets/LoginField';
 import { fetchUser } from '../../../actions/user';
+import { fetchUsers } from '../../../actions/users';
 import { verifyEmail, verifyPassword } from '../../../../client/utils/loginUtils';
 // Style
 import { ProfileBox as STYLE } from '../../../../client/style';
@@ -157,6 +158,7 @@ export default class ProfileBox extends Component {
                             });
                             // Refresh user
                             dispatch(fetchUser());
+                            dispatch(fetchUsers());
                         })
                         .catch((err) => {
                             console.error('Error:', err); // eslint-disable-line no-console

@@ -13,8 +13,7 @@ import { fetchUsersIfNeeded } from '../../../../actions/users';
 import { sortBy } from '../../../../actions/tables';
 
 const USERS_FIELDS = {
-    UserId: "_id",
-    SiteAdmin: "siteAdmin"
+    User: "_id"
 };
 
 export default class UsersTable extends Component {
@@ -43,7 +42,7 @@ export default class UsersTable extends Component {
         const { sortedForward, userId, users } = this.props;
 
         const categories = [
-            {id: 1, name: 'UserId'}
+            {id: 1, name: 'User'}
         ];
 
         return (
