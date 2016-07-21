@@ -156,6 +156,8 @@ export default class ProjectAuthorizationWidget extends Component {
                                      placeholder="Select one or more (type to search)"
                                      selectableButtons={authorizationWidgetData.selectableButtons}
                                      selectableButtonsChange={this.handleAuthorizationChange}
+                                     selectableButtonsHelperTitle="Select Access Level"
+                                     selectableButtonsHelperText="R - Read, W - Write, D - Delete"
                                      submitButtons={authorizationWidgetData.submitButtons}
                                      valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );

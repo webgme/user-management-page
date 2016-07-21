@@ -54,7 +54,7 @@ export default class AuthorizationWidget extends Component {
 
                                 <div className="row">
 
-                                    <div className={selectableButtons.length > 0 ? "col-sm-8" : "col-sm-8"}>
+                                    <div className="col-sm-8">
                                         <Multiselect
                                             label={this.props.label}
                                             multi={this.props.multi}
@@ -64,16 +64,13 @@ export default class AuthorizationWidget extends Component {
                                             valuesInMultiselect={this.props.valuesInMultiselect}/>
                                     </div>
 
-                                    <div className={selectableButtons.length > 0 ? "col-sm-4" : "col-sm-4"}
-                                         style={STYLE.selectableButtonGroup}>
+                                    <div className="col-sm-4" style={STYLE.selectableButtonGroup}>
                                         <OverlayTrigger key="pop-over-buttons"
                                                         trigger={["hover", "focus"]}
                                                         placement="top"
                                                         overlay={
-                                            <Popover title={"Set Access Level"} id="btn-pop">
-                                            R - Read <br/>
-                                            W - Write <br/>
-                                            D - Delete
+                                            <Popover title={this.props.selectableButtonsHelperTitle} id="btn-pop">
+                                                {this.props.selectableButtonsHelperText}
                                             </Popover>}>
                                         <ButtonGroup>
                                             {selectableButtons}
