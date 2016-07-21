@@ -69,6 +69,17 @@ export const DataTable = {
     }
 };
 
+export const Unselectable = {
+    WebkitUserSelect: "none",
+        KhtmlUserSelect: "none",
+    MozUserSelect: "none",
+    MsUserSelect: "none",
+    OUserSelect: "none",
+    userSelect: "none",
+    outlineStyle: "none",
+    WebkitTapHighlightColor: "transparent"
+};
+
 export const DataTablePagination = {
     unselectable: {
         WebkitUserSelect: "none",
