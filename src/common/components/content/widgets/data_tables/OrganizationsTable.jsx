@@ -94,7 +94,8 @@ export default class OrganizationsTable extends Component {
                              style={STYLE.createOrganizationModal}
                              title="Create an organization">
                     {/* Organization name */}
-                    <LoginField hint="Organization Name"
+                    <LoginField autoFocus={true}
+                                hint="Organization Name"
                                 iconClass="fa fa-institution"
                                 name="organization"
                                 onBlur={this.props.checkOrganizationName}

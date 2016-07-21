@@ -20,10 +20,12 @@ export default class App extends Component {
 
     render() {
         const { themeColor } = this.props;
+        const { pathname } = this.props.location;
 
         // Passing props through the route
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
             child => React.cloneElement(child, {
+                pathname,
                 restClient: this.restClient
             }));
 
@@ -31,9 +33,10 @@ export default class App extends Component {
         return (
             <div className={`wrapper skin-${themeColor}`}>
 
-                <Header basePath={this.props.route.basePath} />
+                <Header basePath={this.props.route.basePath}
+                        pathname={pathname} />
 
-                <SideBar location={this.props.location} />
+                <SideBar pathname={pathname} />
 
                 {ContentWrapperWithRestClient}
 

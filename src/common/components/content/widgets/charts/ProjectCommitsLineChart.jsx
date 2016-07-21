@@ -8,7 +8,6 @@ import React, { Component, PropTypes } from 'react';
 import { Line as LineChart } from 'react-chartjs';
 // Self-defined
 import { fetchCommitsIfNeeded } from '../../../../actions/projects';
-import { fetchUserIfNeeded } from '../../../../actions/user';
 import { getDefaultDataset, processProjectCommitsLine } from '../../../../../client/utils/utils';
 
 export default class ProjectCommitsLineChart extends Component {
@@ -16,7 +15,7 @@ export default class ProjectCommitsLineChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: getDefaultDataset(this.props.user._id, 7),
+            data: getDefaultDataset(7),
             numCommits: 100
         };
     }
@@ -26,33 +25,31 @@ export default class ProjectCommitsLineChart extends Component {
         const { ownerId, projectName } = this.props;
 
         dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
-        dispatch(fetchUserIfNeeded());
     }
 
     componentWillReceiveProps(nextProps) {
-        const { commits, user, display } = nextProps;
+        const { commits } = nextProps;
         this.setState({
-            data: processProjectCommitsLine(commits, user._id, display)
+            data: processProjectCommitsLine(commits)
         });
     }
 
     componentWillMount() {
-        const { commits, user, display } = this.props;
+        const { commits } = this.props;
         this.setState({
-            data: processProjectCommitsLine(commits, user._id, display)
+            data: processProjectCommitsLine(commits)
         });
     }
 
     shouldComponentUpdate(nextProps /* , nextState */) {
-        return this.props.commits !== nextProps.commits ||
-            this.props.display !== nextProps.display ||
-            this.props.whichChart !== nextProps.whichChart ||
-            this.props.lineChartDisplay !== nextProps.lineChartDisplay;
+        return this.props.commits !== nextProps.commits;
     }
 
     render() {
+        const { data } = this.state;
+
         return (
-            <LineChart data={this.state.data}
+            <LineChart data={data}
                        height={300}
                        width={500}
                        options={{}}
@@ -62,8 +59,7 @@ export default class ProjectCommitsLineChart extends Component {
 }
 
 ProjectCommitsLineChart.propTypes = {
-    commits: PropTypes.array.isRequired,
-    user: PropTypes.object.isRequired
+    commits: PropTypes.array.isRequired
 };
 
 ProjectCommitsLineChart.defaultProps = {

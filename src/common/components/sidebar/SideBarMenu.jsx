@@ -12,38 +12,38 @@ import { SideBarMenu as STYLE } from '../../../client/style';
 export default class SideBarMenu extends Component {
 
     render() {
-        const { basePath } = this.props;
+        const { basePath, pathname } = this.props;
 
         return (
         <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
 
             <li className="header">Site Navigation</li>
 
-            <li className={/home$/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/home$/.test(pathname) ? 'active' : ''}>
                 <Link to={`${basePath}home`} style={{textDecoration: "none"}}>
                     <i className="fa fa-home"/><span>Home</span>
                 </Link>
             </li>
 
-            <li className={/profile$/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/profile$/.test(pathname) ? 'active' : ''}>
                 <Link to={`${basePath}profile`} style={{textDecoration: "none"}}>
                     <i className="fa fa-user"/><span>Profile</span>
                 </Link>
             </li>
 
-            <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/projects/.test(pathname) ? 'active' : ''}>
                 <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
                     <i className="fa fa-cubes"/><span> Projects</span>
                 </Link>
             </li>
 
-            <li className={/organizations/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/organizations/.test(pathname) ? 'active' : ''}>
                 <Link to={`${basePath}organizations`} style={{textDecoration: "none"}}>
                     <i className="fa fa-university"/><span>Organizations</span>
                 </Link>
             </li>
 
-            <li className={/users/.test(this.props.location.pathname) ? 'active' : ''}>
+            <li className={/users/.test(pathname) ? 'active' : ''}>
                 <Link to={`${basePath}users`} style={{textDecoration: "none"}}>
                     <i className="fa fa-users"/><span>Users</span>
                 </Link>

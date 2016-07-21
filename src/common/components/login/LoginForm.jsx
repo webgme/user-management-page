@@ -36,7 +36,7 @@ export default class LoginForm extends Component {
 
     componentDidMount() {
         this.props.loginClient.getGmeConfig()
-            .then(gmeConfig => {
+            .then((gmeConfig) => {
                 this.setState({
                     allowGuests: gmeConfig.authentication.allowGuests,
                     allowUserRegistration: gmeConfig.authentication.allowUserRegistration

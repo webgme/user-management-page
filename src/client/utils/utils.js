@@ -386,10 +386,10 @@ const getIndexIntoTimeArray = (time, now, partitionSize, numPartitions) => {
  * @param {Number} numPartitions - number of partitions
  * @return {Array} default data
  */
-export const getDefaultDataset = (userId, numPartitions) => {
+export const getDefaultDataset = (numPartitions) => {
     let randomColor = getRandomColorHex();
     return [{
-        label: userId,
+        label: 'None',
         fillColor: convertHexToRGBA(randomColor, 20),
         strokeColor: convertHexToRGBA(randomColor, 100),
         pointColor: convertHexToRGBA(randomColor, 100),
@@ -422,7 +422,7 @@ export const getDefaultDoughnutData = () => {
  * @param {number} display - 1 indicates total, 2 indicates only current user's commits
  * @return {{labels: Array, datasets: Array}} (Structure of react-chartjs)
  */
-export const processProjectCommitsLine = (commits, userId, display) => {
+export const processProjectCommitsLine = (commits) => {
     // Map userIds to an array of commit counts
     let userIdToCommitCount = {},
         now = new Date().getTime(),
@@ -432,13 +432,7 @@ export const processProjectCommitsLine = (commits, userId, display) => {
 
     commits
         .filter((commit) => {
-            let result = false;
-            if (display === 2) {
-                result = commit.time >= (now - millisecondsInAWeek) && commit.updater[0] === userId;
-            } else {
-                result = commit.time >= (now - millisecondsInAWeek);
-            }
-            return result;
+            return commit.time >= (now - millisecondsInAWeek);
         })
         .forEach((commit) => {
             if (userIdToCommitCount[commit.updater[0]]) {
@@ -465,7 +459,7 @@ export const processProjectCommitsLine = (commits, userId, display) => {
 
     return {
         labels: getPastWeeksDays(),
-        datasets: datasets.length > 0 ? datasets : getDefaultDataset(userId, numPartitions)
+        datasets: datasets.length > 0 ? datasets : getDefaultDataset(numPartitions)
     };
 };
 

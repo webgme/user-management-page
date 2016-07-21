@@ -26,18 +26,31 @@ export default class ProjectSelectableCharts extends Component {
         super(props);
         this.state = {
             chart: 'Bar',
-            lineChartDisplay: 1 // 1 indicates total commits, 2 indicates only user's commits
+            componentWidth: this.props.width
         };
         // Event handlers
         this.onChartChange = this.onChartChange.bind(this);
-        this.toggleLineChartDisplay = this.toggleLineChartDisplay.bind(this);
     }
 
     componentDidMount() {
         const { dispatch } = this.props;
 
         dispatch(fetchProjectsIfNeeded());
+        this.setState({
+            componentWidth: document.getElementById("selectableChartBox").offsetWidth
+        });
     }
+
+    componentDidUpdate() {
+        const newWidth = document.getElementById("selectableChartBox").offsetWidth;
+
+        if (newWidth !== this.state.componentWidth) {
+            this.setState({
+                componentWidth: document.getElementById("selectableChartBox").offsetWidth
+            });
+        }
+    }
+
     onChartChange(event) {
         // Release focus
         event.target.blur();
@@ -47,31 +60,13 @@ export default class ProjectSelectableCharts extends Component {
         });
     }
 
-    toggleLineChartDisplay(event) {
-        // Release focus
-        event.target.blur();
-
-        let oldDisplay = this.state.lineChartDisplay,
-            newDisplay;
-        if (event.target.innerHTML === 'Total Commits') {
-            newDisplay = 1;
-        } else if (event.target.innerHTML === 'Only My Commits') {
-            newDisplay = 2;
-        }
-
-        if (oldDisplay !== newDisplay) {
-            this.setState({
-                lineChartDisplay: newDisplay
-            });
-        }
-    }
-
     render() {
-        const { chart, lineChartDisplay } = this.state;
-        const { info, ownerId, projectName, unavailable } = this.props;
+        const { chart, componentWidth } = this.state;
+        const { info, ownerId, projectName, unavailable, height, width } = this.props;
+        const displayInfoInline = componentWidth > (width + 100);
 
         return (
-            <div className="row">
+            <div className="row" id="selectableChartBox">
                 <div className="col-md-12">
                     <div className="box">
 
@@ -80,16 +75,6 @@ export default class ProjectSelectableCharts extends Component {
                             <h3 className="box-title">{CHART_TITLES[chart]}</h3>
 
                             <div className="box-tools pull-right">
-                                {chart === 'Line' ?
-                                    <ButtonGroup>
-                                        <Button bsStyle={lineChartDisplay === 1 ? "primary" : null}
-                                                onClick={this.toggleLineChartDisplay}>Total Commits
-                                        </Button>
-                                        <Button bsStyle={lineChartDisplay === 2 ? "primary" : null}
-                                                onClick={this.toggleLineChartDisplay}>Only My Commits
-                                        </Button>
-                                    </ButtonGroup> : null }
-
                                 <div className="box-tools pull-right">
                                     <select onChange={this.onChartChange} value={chart}>
                                         <option value="Bar">Bar Chart</option>
@@ -102,53 +87,81 @@ export default class ProjectSelectableCharts extends Component {
 
                         {/* Chart body */}
                         <div className="row">
-                            <div className="col-md-9">
+                            <div className={`col-md-${displayInfoInline ? 9 : 12}`}>
                                 <div className="box-body">
                                     {chart === 'Bar' ?
-                                        <CollaboratorsCommitsBarChart height={300}
+                                        <CollaboratorsCommitsBarChart height={height}
                                                                       ownerId={ownerId}
                                                                       projectName={projectName}
-                                                                      width={500}/> : null}
+                                                                      width={componentWidth}/> : null}
                                     {chart === 'Line' ?
-                                        <ProjectCommitsLineChart display={lineChartDisplay}
-                                                                 height={300}
+                                        <ProjectCommitsLineChart height={height}
                                                                  ownerId={ownerId}
                                                                  projectName={projectName}
-                                                                 width={500}/> : null}
+                                                                 width={width}/> : null}
                                     {chart === 'Doughnut' ?
-                                        <CommitsDoughnutChart display={lineChartDisplay}
-                                                              height={300}
+                                        <CommitsDoughnutChart height={height}
                                                               ownerId={ownerId}
                                                               projectName={projectName}
-                                                              width={500}/> : null}
+                                                              width={width}/> : null}
                                 </div>
                             </div>
-                            <div className="col-md-3" style={{paddingRight: "30px"}}>
-                                <strong>Last Modified</strong>
-                                <br/>
-                                <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
-                                </i>
+                            {displayInfoInline ?
+                                <div className="col-md-3" style={{textAlign: "-webkit-center"}}>
+                                    <br/>
+                                    <strong>Last Modified</strong>
+                                    <br/>
+                                    <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
+                                        <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
+                                    </i>
 
-                                <br/><br/><br/>
+                                    <br/><br/><br/>
 
-                                <strong>Last Viewed</strong>
-                                <br/>
-                                <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
-                                </i>
+                                    <strong>Last Viewed</strong>
+                                    <br/>
+                                    <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
+                                        <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
+                                    </i>
 
-                                <br/><br/><br/>
+                                    <br/><br/><br/>
 
-                                <strong>Created At</strong>
-                                <br/>
-                                <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.creator ? info.creator : unavailable}`}
-                                </i>
+                                    <strong>Created At</strong>
+                                    <br/>
+                                    <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
+                                        <br/>{`by ${info.creator ? info.creator : unavailable}`}
+                                    </i>
 
-                                <br/><br/><br/>
+                                    <br/><br/><br/>
 
-                            </div>
+                                </div> :
+                                <div className="col-md-12" style={{textAlign: "-webkit-center"}}>
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <strong>Last Modified</strong>
+                                            <br/>
+                                            <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
+                                                <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
+                                            </i>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <strong>Last Viewed</strong>
+                                            <br/>
+                                            <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
+                                                <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
+                                            </i>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <strong>Created At</strong>
+                                            <br/>
+                                            <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
+                                                <br/>{`by ${info.creator ? info.creator : unavailable}`}
+                                            </i>
+                                        </div>
+                                    </div>
+
+                                </div>}
                         </div>
 
                     </div>

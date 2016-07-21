@@ -68,6 +68,7 @@ export default class AuthorizationWidget extends Component {
                                         <OverlayTrigger key="pop-over-buttons"
                                                         trigger={["hover", "focus"]}
                                                         placement="top"
+                                                        delayShow={1000}
                                                         overlay={
                                             <Popover title={this.props.selectableButtonsHelperTitle} id="btn-pop">
                                                 {this.props.selectableButtonsHelperText}
