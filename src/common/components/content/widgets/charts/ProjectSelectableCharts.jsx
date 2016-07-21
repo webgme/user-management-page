@@ -25,12 +25,10 @@ export default class ProjectSelectableCharts extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chart: 'Bar',
-            lineChartDisplay: 1 // 1 indicates total commits, 2 indicates only user's commits
+            chart: 'Bar'
         };
         // Event handlers
         this.onChartChange = this.onChartChange.bind(this);
-        this.toggleLineChartDisplay = this.toggleLineChartDisplay.bind(this);
     }
 
     componentDidMount() {
@@ -47,25 +45,6 @@ export default class ProjectSelectableCharts extends Component {
         });
     }
 
-    toggleLineChartDisplay(event) {
-        // Release focus
-        event.target.blur();
-
-        let oldDisplay = this.state.lineChartDisplay,
-            newDisplay;
-        if (event.target.innerHTML === 'Total Commits') {
-            newDisplay = 1;
-        } else if (event.target.innerHTML === 'Only My Commits') {
-            newDisplay = 2;
-        }
-
-        if (oldDisplay !== newDisplay) {
-            this.setState({
-                lineChartDisplay: newDisplay
-            });
-        }
-    }
-
     render() {
         const { chart, lineChartDisplay } = this.state;
         const { info, ownerId, projectName, unavailable } = this.props;
@@ -80,16 +59,6 @@ export default class ProjectSelectableCharts extends Component {
                             <h3 className="box-title">{CHART_TITLES[chart]}</h3>
 
                             <div className="box-tools pull-right">
-                                {chart === 'Line' ?
-                                    <ButtonGroup>
-                                        <Button bsStyle={lineChartDisplay === 1 ? "primary" : null}
-                                                onClick={this.toggleLineChartDisplay}>Total Commits
-                                        </Button>
-                                        <Button bsStyle={lineChartDisplay === 2 ? "primary" : null}
-                                                onClick={this.toggleLineChartDisplay}>Only My Commits
-                                        </Button>
-                                    </ButtonGroup> : null }
-
                                 <div className="box-tools pull-right">
                                     <select onChange={this.onChartChange} value={chart}>
                                         <option value="Bar">Bar Chart</option>

@@ -11,14 +11,12 @@ import ProjectCommitsLineChart from '../../../../components/content/widgets/char
 const mapStateToProps = (state, ownProps) => {
     const { ownerId, projectName } = ownProps;
     const projectId = `${ownerId}+${projectName}`;
-    const { user } = state.user;
 
     // Could be fetching
     const commits = state.projects.commits[projectId] ? state.projects.commits[projectId].commits || [] : [];
 
     return {
-        commits,
-        user
+        commits
     };
 };
 
