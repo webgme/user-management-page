@@ -11,6 +11,7 @@ import { Link } from 'react-router';
 // Self defined
 import ColorMenu from '../../containers/header/navigation_bar/ColorMenu';
 // import SettingsMenu from './navigation_bar/SettingsMenu';
+import Refresh from '../../containers/header/navigation_bar/Refresh';
 import UserMenu from '../../containers/header/navigation_bar/UserMenu';
 import { capitalizeFirstLetter } from '../../../client/utils/utils';
 import { Header as STYLE } from '../../../client/style';
@@ -78,6 +79,8 @@ export default class Header extends React.Component {
 
                 <div className="navbar-custom-menu">
                     <ul className="nav navbar-nav">
+
+                        <Refresh />
 
                         <ColorMenu />
 

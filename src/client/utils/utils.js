@@ -469,30 +469,21 @@ export const processProjectCommitsLine = (commits, userId, display) => {
     };
 };
 
-export const processProjectCommitsDoughnut = (commits, userId, display) => {
-    let userIdToCommitCount = {},
-        now = new Date().getTime(),
-        millisecondsInADay = 60 * 60 * 24 * 1000,
-        millisecondsInAWeek = millisecondsInADay * 7,
-        numPartitions = 7;
+/**
+ * Helper to process commits for the doughnut chart data
+ * @param {Array} commits - commits
+ * @return {Array} Doughnut data if valid - else default "No commit" data
+ */
+export const processProjectCommitsDoughnut = (commits) => {
+    let userIdToCommitCount = {};
 
-    commits
-        .filter((commit) => {
-            let result = false;
-            if (display === 2) {
-                result = commit.time >= (now - millisecondsInAWeek) && commit.updater[0] === userId;
-            } else {
-                result = commit.time >= (now - millisecondsInAWeek);
-            }
-            return result;
-        })
-        .forEach((commit) => {
-            if (userIdToCommitCount[commit.updater[0]]) {
-                userIdToCommitCount[commit.updater[0]]++;
-            } else {
-                userIdToCommitCount[commit.updater[0]] = 1;
-            }
-        });
+    commits.forEach((commit) => {
+        if (userIdToCommitCount[commit.updater[0]]) {
+            userIdToCommitCount[commit.updater[0]]++;
+        } else {
+            userIdToCommitCount[commit.updater[0]] = 1;
+        }
+    });
 
     let data = [];
     Object.keys(userIdToCommitCount).forEach((userId) => {
