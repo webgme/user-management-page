@@ -11,3 +11,7 @@ export const THEME_COLORS = {
     red: 'rgb(221, 75, 57)',
     yellow: 'rgb(243, 156, 18)'
 };
+
+const DEFAULT_DATE = new Date(1447879297957);
+
+export const DEFAULT_ISODATE = DEFAULT_DATE.toISOString();

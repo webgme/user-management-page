@@ -294,6 +294,13 @@ export const processCommitsBar = (commits) => {
     };
 };
 
+/**
+ * Old processing for all projects (DEPRECATED)
+ * @param {Array} commits - commits
+ * @param {string} userId - userId
+ * @param {Number} display - 1 for total, 2 for only user
+ * @return {{labels: Array, datasets: Array}}
+ */
 export const processProjectsCommitsLine = (commits, userId, display) => {
     let timesCommitted = {};
     Object.keys(commits).forEach(projectName => {
@@ -379,7 +386,7 @@ const getIndexIntoTimeArray = (time, now, partitionSize, numPartitions) => {
  * @param {Number} numPartitions - number of partitions
  * @return {Array} default data
  */
-const getDefaultDataset = (userId, numPartitions) => {
+export const getDefaultDataset = (userId, numPartitions) => {
     let randomColor = getRandomColorHex();
     return [{
         label: userId,
