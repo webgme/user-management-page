@@ -9,6 +9,8 @@ import { Link } from 'react-router';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { fetchProjectsIfNeeded } from '../../../actions/projects';
+import { fetchUsersIfNeeded } from '../../../actions/users';
+import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { getUserIconSource } from '../../../../client/utils/utils';
 // Style
 import { HomePage as STYLE } from '../../../../client/style';
@@ -20,20 +22,23 @@ export default class HomePage extends Component {
 
         dispatch(fetchUserIfNeeded());
         dispatch(fetchProjectsIfNeeded());
+        dispatch(fetchUsersIfNeeded());
+        dispatch(fetchOrganizationsIfNeeded());
     }
 
     render() {
-        const { basePath, projects, user } = this.props;
+        const { basePath, projects, user, users } = this.props;
 
         let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
             numViewableProjects = projects.length,
+            numUsers = users.length,
             numOrganizations = user.orgs ? user.orgs.length : 0; // TODO: check for admin
 
         return (
             <section className="content" style={STYLE.profileBox}>
 
                 <div className="row">
-                    <div className="small-box bg-aqua col-sm-6">
+                    <div className="small-box bg-light-blue col-sm-4">
                         <div className="inner">
                             <h3 style={STYLE.widgetBox}>{numViewableProjects}</h3>
                             <p>Total Project(s)</p>
@@ -47,7 +52,7 @@ export default class HomePage extends Component {
                         </Link>
                     </div>
 
-                    <div className="small-box bg-red col-sm-6">
+                    <div className="small-box bg-green col-sm-4">
                         <div className="inner">
                             <h3 style={STYLE.widgetBox}>{numOrganizations}</h3>
                             <p>Organization Membership(s)</p>
@@ -61,31 +66,18 @@ export default class HomePage extends Component {
                         </Link>
                     </div>
 
-                </div>
-
-                <div className="col-md-6 col-md-offset-3">
-                    <div className="box box-primary">
-                        <div className="box-body box-profile">
-                            <img className="profile-user-img img-responsive img-circle"
-                                 src={getUserIconSource(user._id)}
-                                 alt="User profile picture"/>
-
-                            <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
-
-                            <p className="text-muted text-center">WebGME</p>
-
-                            <ul className="list-group list-group-unbordered">
-                                <li className="list-group-item">
-                                    <b>Owned Projects</b> <a className="pull-right">{numOwnedProjects}</a>
-                                </li>
-                                <li className="list-group-item">
-                                    <b>Viewable Projects</b> <a className="pull-right">{numViewableProjects}</a>
-                                </li>
-                                <li className="list-group-item">
-                                    <b>Organizations</b> <a className="pull-right">{numOrganizations}</a>
-                                </li>
-                            </ul>
+                    <div className="small-box bg-red col-sm-4">
+                        <div className="inner">
+                            <h3 style={STYLE.widgetBox}>{numUsers}</h3>
+                            <p>Users on the deployment</p>
                         </div>
+                        <div className="icon">
+                            <i className="fa fa-users"/>
+                        </div>
+                        <Link to={`${basePath}users`}
+                              className="small-box-footer">
+                            Show Users <i className="fa fa-arrow-circle-right"/>
+                        </Link>
                     </div>
                 </div>
 
