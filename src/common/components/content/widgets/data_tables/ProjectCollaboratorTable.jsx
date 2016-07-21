@@ -14,12 +14,12 @@ import { sortBy } from '../../../../actions/tables';
 
 const FIELDS = {
     USER: {
-        "Rights (RWD)": "rights",
-        "UserID": "name"
+        Access: "rights",
+        User: "name"
     },
     ORGANIZATION: {
-        "OrganizationID": "name",
-        "Rights (RWD)": "rights"
+        Organization: "name",
+        Access: "rights"
     }
 };
 
@@ -73,12 +73,12 @@ export default class ProjectCollaboratorTable extends Component {
         const dataTableData = {
             categories: {
                 users: [
-                    {id: 1, name: 'UserID'},
-                    {id: 2, name: 'Rights (RWD)'}
+                    {id: 1, name: 'User'},
+                    {id: 2, name: 'Access'}
                 ],
                 organizations: [
-                    {id: 1, name: 'OrganizationID'},
-                    {id: 2, name: 'Rights (RWD)'}
+                    {id: 1, name: 'Organization'},
+                    {id: 2, name: 'Access'}
                 ]
             }
         };
@@ -90,7 +90,7 @@ export default class ProjectCollaboratorTable extends Component {
 
                     {/* Self-defined header */}
                     <div className="box-header" style={{paddingBottom: 0}}>
-                        <h3 className="box-title" style={{fontSize: 28}}>
+                        <h3 className="box-title" style={{fontSize: 18}}>
                             <i className={this.props.iconClass}/> {` Collaborators`}
                         </h3>
                     </div>
@@ -100,7 +100,6 @@ export default class ProjectCollaboratorTable extends Component {
                                content="Users"
                                entries={collaborators.userCollaborators}
                                orderEntries={this.onOrderUserEntries}
-                               showOtherTitle={true}
                                sortable={true}
                                sortedForward={userSortedForward}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}
@@ -114,7 +113,6 @@ export default class ProjectCollaboratorTable extends Component {
                                content="Organizations"
                                entries={collaborators.organizationCollaborators}
                                orderEntries={this.onOrderOrganizationEntries}
-                               showOtherTitle={true}
                                sortable={true}
                                sortedForward={orgSortedForward}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}

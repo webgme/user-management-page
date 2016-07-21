@@ -5,7 +5,8 @@
 
 export const AuthorizationWidget = {
     selectableButtonGroup: {
-        paddingTop: "30px"
+        paddingTop: "30px",
+        textAlign: "center"
     },
     submitButtonGroup: {
         float: "right",
@@ -198,13 +199,22 @@ export const ProfilePage = {
 };
 
 export const ProjectPage = {
+    titleBox: {
+        paddingTop: "6px"
+    },
+    titleContainer: {
+        marginBottom: "10px"
+    },
     projectTitle: {
-        paddingLeft: "30px",
-        paddingTop: "14px"
+        marginLeft: "10px",
+        display: "inline",
+        fontSize: "28px",
+        fontWeight: "500"
     },
     viewInEditor: {
         button: {
-            float: "right"
+            marginRight: "10px",
+            marginTop: "3px"
         },
         column: {
             paddingRight: "30px",

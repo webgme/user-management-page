@@ -20,6 +20,7 @@ export default class DataTable extends Component {
             pageNumber: 1,
             searchText: ''
         };
+
         this.handlePagination = this.handlePagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
@@ -76,7 +77,8 @@ export default class DataTable extends Component {
             }),
             startIndexInProjects = (this.state.pageNumber - 1) * this.state.selectValue,
             displayNumStart = startIndexInProjects + 1,
-            displayNumEnd;
+            displayNumEnd,
+            totalNbrOfEntries = this.props.entries.length;
 
         // Putting together "show string"
         if (entriesList.length > (startIndexInProjects + this.state.selectValue)) {
@@ -84,7 +86,7 @@ export default class DataTable extends Component {
         } else {
             displayNumEnd = entriesList.length;
         }
-        let showString = 'Showing ' + displayNumStart + ' to ' + displayNumEnd;
+        let showString = `${displayNumStart} - ${displayNumEnd} of ${totalNbrOfEntries}`;
         if (displayNumStart > entriesList.length) {
             showString = 'Nothing to show.';
         }
@@ -108,8 +110,25 @@ export default class DataTable extends Component {
 
         // Formatting pagination buttons
         let formattedPaginationButtons = [],
-            numPages = Math.floor(entriesList.length / this.state.selectValue) + 1;
-        for (let i = 1; i <= numPages; i++) {
+            numPages = Math.floor(entriesList.length / this.state.selectValue) + 1,
+            startPage,
+            endPage;
+
+        if (numPages <= 3) {
+            startPage = 1;
+            endPage = numPages;
+        } else if (this.state.pageNumber === 1) {
+            startPage = 1;
+            endPage = 3;
+        } else if (this.state.pageNumber === numPages) {
+            startPage = numPages - 2;
+            endPage = numPages;
+        } else {
+            startPage = this.state.pageNumber - 1;
+            endPage = this.state.pageNumber + 1;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
             formattedPaginationButtons.push(
                 <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
                     <a aria-controls="example1"
@@ -153,6 +172,7 @@ export default class DataTable extends Component {
                                     <input type="text"
                                            className="form-control input-sm"
                                            placeholder={`Filter...`}
+                                           style={{display: totalNbrOfEntries <= 10 ? 'none' : 'inline-block'}}
                                            value={this.state.searchText}
                                            aria-controls="example1"
                                            onChange={this.handleSearch}/>
@@ -215,7 +235,7 @@ export default class DataTable extends Component {
                         <div className="col-sm-3" style={STYLE.selectDropdown.column}>
                             {showBasedOnRawData ?
                                 <div className="dataTables_length" id="example1_length">
-                                    <label style={STYLE.selectDropdown.label}>{this.props.content} per page
+                                    <label style={STYLE.selectDropdown.label}>Items per page:
                                         <select name="example1_length"
                                                 aria-controls="example1"
                                                 className="form-control input-sm"

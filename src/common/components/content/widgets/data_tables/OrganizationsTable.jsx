@@ -64,14 +64,12 @@ export default class OrganizationsTable extends Component {
                         <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
 
-                    <div style={{float: "right"}}>
-                        <Button bsStyle="primary" onClick={this.props.openCreateOrganization}>
-                            Add +
-                        </Button>
-                    </div>
-
-                    <br/><br/>
-
+                    <Button className="pull-right"
+                            bsStyle="primary"
+                            bsSize="small"
+                            onClick={this.props.openCreateOrganization}>
+                        Add +
+                    </Button>
                 </div>
 
                 {/* Body */}

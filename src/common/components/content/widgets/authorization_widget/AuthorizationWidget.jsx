@@ -6,6 +6,7 @@
 // Libraries
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import {OverlayTrigger, Popover} from 'react-bootstrap';
 // Self-defined
 import Multiselect from './Multiselect';
 // Style
@@ -64,9 +65,17 @@ export default class AuthorizationWidget extends Component {
                                     </div>
 
                                     <div className="col-sm-4" style={STYLE.selectableButtonGroup}>
+                                        <OverlayTrigger key="pop-over-buttons"
+                                                        trigger={["hover", "focus"]}
+                                                        placement="top"
+                                                        overlay={
+                                            <Popover title={this.props.selectableButtonsHelperTitle} id="btn-pop">
+                                                {this.props.selectableButtonsHelperText}
+                                            </Popover>}>
                                         <ButtonGroup>
                                             {selectableButtons}
                                         </ButtonGroup>
+                                        </OverlayTrigger>
                                     </div>
 
                                 </div>
@@ -75,6 +84,7 @@ export default class AuthorizationWidget extends Component {
                                     <ButtonGroup>
                                         {submitButtons}
                                     </ButtonGroup>
+
                                 </div>
 
                             </div>
