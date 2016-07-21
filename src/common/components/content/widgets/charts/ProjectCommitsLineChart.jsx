@@ -5,19 +5,18 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
 import { Line as LineChart } from 'react-chartjs';
 // Self-defined
-import { fetchCommitsIfNeeded, fetchProjectsIfNeeded } from '../../../../actions/projects';
-import { getDefaultDataset, processProjectCommitsLine, timeAgo } from '../../../../../client/utils/utils';
-import { DEFAULT_ISODATE } from '../../../../../client/utils/constants';
+import { fetchCommitsIfNeeded } from '../../../../actions/projects';
+import { fetchUserIfNeeded } from '../../../../actions/user';
+import { getDefaultDataset, processProjectCommitsLine } from '../../../../../client/utils/utils';
 
 export default class ProjectCommitsLineChart extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: getDefaultDataset(this.props.userId, 7),
+            data: getDefaultDataset(this.props.user._id, 7),
             numCommits: 100
         };
     }
@@ -27,18 +26,20 @@ export default class ProjectCommitsLineChart extends Component {
         const { ownerId, projectName } = this.props;
 
         dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
-        dispatch(fetchProjectsIfNeeded());
+        dispatch(fetchUserIfNeeded());
     }
 
     componentWillReceiveProps(nextProps) {
+        const { commits, user, display } = nextProps;
         this.setState({
-            data: processProjectCommitsLine(nextProps.commits, nextProps.user._id, nextProps.display)
+            data: processProjectCommitsLine(commits, user._id, display)
         });
     }
 
     componentWillMount() {
+        const { commits, user, display } = this.props;
         this.setState({
-            data: processProjectCommitsLine(this.props.commits, this.props.user._id, this.props.display)
+            data: processProjectCommitsLine(commits, user._id, display)
         });
     }
 
@@ -50,89 +51,18 @@ export default class ProjectCommitsLineChart extends Component {
     }
 
     render() {
-        const { lineChartDisplay, info, onChartChange, toggleDisplay, unavailable, whichChart } = this.props;
-
         return (
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="box">
-
-                        <div className="box-header with-border">
-                            <h3 className="box-title">Timeline of Latest Commits</h3>
-
-                            <div className="box-tools pull-right">
-                                <ButtonGroup>
-                                    <Button bsStyle={lineChartDisplay === 1 ? "primary" : null}
-                                            onClick={toggleDisplay}>Total Commits
-                                    </Button>
-                                    <Button bsStyle={lineChartDisplay === 2 ? "primary" : null}
-                                            onClick={toggleDisplay}>Only My Commits
-                                    </Button>
-                                </ButtonGroup>
-                                <div className="box-tools pull-right">
-                                    <select onChange={onChartChange} value={whichChart}>
-                                        <option value="Bar">Bar Chart</option>
-                                        <option value="Line">Line Chart</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-9">
-                                <div className="box-body">
-                                    <LineChart data={this.state.data}
-                                               height={300}
-                                               width={500}
-                                               options={{}}
-                                               redraw={true}/>
-                                </div>
-                            </div>
-                            <div className="col-md-3" style={{paddingRight: "30px"}}>
-                                <strong>Last Modified</strong>
-                                <br/>
-                                <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
-                                </i>
-
-                                <br/><br/><br/>
-
-                                <strong>Last Viewed</strong>
-                                <br/>
-                                <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
-                                </i>
-
-                                <br/><br/><br/>
-
-                                <strong>Created At</strong>
-                                <br/>
-                                <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.creator ? info.creator : unavailable}`}
-                                </i>
-
-                                <br/><br/><br/>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            <LineChart data={this.state.data}
+                       height={300}
+                       width={500}
+                       options={{}}
+                       redraw={true}/>
         );
     }
 }
 
 ProjectCommitsLineChart.propTypes = {
     commits: PropTypes.array.isRequired,
-    info: PropTypes.shape({
-        createdAt: PropTypes.string,
-        viewedAt: PropTypes.string,
-        modifiedAt: PropTypes.string,
-        creator: PropTypes.string,
-        viewer: PropTypes.string,
-        modifier: PropTypes.string
-    }).isRequired,
     user: PropTypes.object.isRequired
 };
 

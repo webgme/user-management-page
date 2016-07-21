@@ -21,12 +21,9 @@ const mapStateToProps = (state, ownProps) => {
     const thisProject = state.projects.projects.find((project) => {
         return project._id === projectId;
     });
-    const info = thisProject ? thisProject.info : {};
 
     return {
-        commits,
-        data,
-        info
+        data
     };
 };
 

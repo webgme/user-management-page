@@ -6,73 +6,84 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { Line as LineChart } from 'react-chartjs';
+import ProjectCommitsLineChart from '../../../../containers/content/widgets/charts/ProjectCommitsLineChart';
+import CollaboratorsCommitsBarChart from '../../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
 // Self-defined
-import { fetchCommitsIfNeeded, fetchProjectsIfNeeded } from '../../../../actions/projects';
-import { getDefaultDataset, processProjectCommitsLine, timeAgo } from '../../../../../client/utils/utils';
+import { timeAgo } from '../../../../../client/utils/utils';
 import { DEFAULT_ISODATE } from '../../../../../client/utils/constants';
+
+const CHART_TITLES = {
+    Bar: 'Latest Commits',
+    Line: 'Timeline of Latest Commits'
+};
 
 export default class ProjectSelectableCharts extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: getDefaultDataset(this.props.userId, 7),
-            numCommits: 100
+            chart: 'Bar',
+            lineChartDisplay: 1 // 1 indicates total commits, 2 indicates only user's commits
         };
+        // Event handlers
+        this.onChartChange = this.onChartChange.bind(this);
+        this.toggleLineChartDisplay = this.toggleLineChartDisplay.bind(this);
     }
 
-    componentDidMount() {
-        const { dispatch } = this.props;
-        const { ownerId, projectName } = this.props;
+    onChartChange(event) {
+        // Release focus
+        event.target.blur();
 
-        dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
-        dispatch(fetchProjectsIfNeeded());
-    }
-
-    componentWillReceiveProps(nextProps) {
         this.setState({
-            data: processProjectCommitsLine(nextProps.commits, nextProps.user._id, nextProps.display)
+            chart: event.target.value
         });
     }
 
-    componentWillMount() {
-        this.setState({
-            data: processProjectCommitsLine(this.props.commits, this.props.user._id, this.props.display)
-        });
-    }
+    toggleLineChartDisplay(event) {
+        // Release focus
+        event.target.blur();
 
-    shouldComponentUpdate(nextProps /* , nextState */) {
-        return this.props.commits !== nextProps.commits ||
-            this.props.display !== nextProps.display ||
-            this.props.whichChart !== nextProps.whichChart ||
-            this.props.lineChartDisplay !== nextProps.lineChartDisplay;
+        let oldDisplay = this.state.lineChartDisplay,
+            newDisplay;
+        if (event.target.innerHTML === 'Total Commits') {
+            newDisplay = 1;
+        } else if (event.target.innerHTML === 'Only My Commits') {
+            newDisplay = 2;
+        }
+
+        if (oldDisplay !== newDisplay) {
+            this.setState({
+                lineChartDisplay: newDisplay
+            });
+        }
     }
 
     render() {
-        const { lineChartDisplay, info, onChartChange, toggleDisplay, unavailable, whichChart } = this.props;
+        const { chart, lineChartDisplay } = this.state;
+        const { info, ownerId, projectName, unavailable } = this.props;
 
         return (
             <div className="row">
                 <div className="col-md-12">
                     <div className="box">
 
+                        {/* Chart selecting */}
                         <div className="box-header with-border">
-                            <h3 className="box-title">Timeline of Latest Commits</h3>
+                            <h3 className="box-title">{CHART_TITLES[chart]}</h3>
 
                             <div className="box-tools pull-right">
-                                {whichChart === 'Line' ?
+                                {chart === 'Line' ?
                                     <ButtonGroup>
                                         <Button bsStyle={lineChartDisplay === 1 ? "primary" : null}
-                                                onClick={toggleDisplay}>Total Commits
+                                                onClick={this.toggleLineChartDisplay}>Total Commits
                                         </Button>
                                         <Button bsStyle={lineChartDisplay === 2 ? "primary" : null}
-                                                onClick={toggleDisplay}>Only My Commits
+                                                onClick={this.toggleLineChartDisplay}>Only My Commits
                                         </Button>
                                     </ButtonGroup> : null }
 
                                 <div className="box-tools pull-right">
-                                    <select onChange={onChartChange} value={whichChart}>
+                                    <select onChange={this.onChartChange} value={chart}>
                                         <option value="Bar">Bar Chart</option>
                                         <option value="Line">Line Chart</option>
                                     </select>
@@ -80,14 +91,21 @@ export default class ProjectSelectableCharts extends Component {
                             </div>
                         </div>
 
+                        {/* Chart body */}
                         <div className="row">
                             <div className="col-md-9">
                                 <div className="box-body">
-                                    <LineChart data={this.state.data}
-                                               height={300}
-                                               width={500}
-                                               options={{}}
-                                               redraw={true}/>
+                                    {chart === 'Bar' ?
+                                        <CollaboratorsCommitsBarChart height={300}
+                                                                      ownerId={ownerId}
+                                                                      projectName={projectName}
+                                                                      width={500}/> : null}
+                                    {chart === 'Line' ?
+                                        <ProjectCommitsLineChart display={lineChartDisplay}
+                                                                 height={300}
+                                                                 ownerId={ownerId}
+                                                                 projectName={projectName}
+                                                                 width={500}/> : null}
                                 </div>
                             </div>
                             <div className="col-md-3" style={{paddingRight: "30px"}}>
@@ -126,7 +144,6 @@ export default class ProjectSelectableCharts extends Component {
 }
 
 ProjectSelectableCharts.propTypes = {
-    commits: PropTypes.array.isRequired,
     info: PropTypes.shape({
         createdAt: PropTypes.string,
         viewedAt: PropTypes.string,
@@ -134,8 +151,7 @@ ProjectSelectableCharts.propTypes = {
         creator: PropTypes.string,
         viewer: PropTypes.string,
         modifier: PropTypes.string
-    }).isRequired,
-    user: PropTypes.object.isRequired
+    }).isRequired
 };
 
 ProjectSelectableCharts.defaultProps = {

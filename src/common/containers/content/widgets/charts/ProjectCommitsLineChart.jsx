@@ -16,15 +16,8 @@ const mapStateToProps = (state, ownProps) => {
     // Could be fetching
     const commits = state.projects.commits[projectId] ? state.projects.commits[projectId].commits || [] : [];
 
-    // Get project info
-    const thisProject = state.projects.projects.find((project) => {
-        return project._id === projectId;
-    });
-    const info = thisProject ? thisProject.info : {};
-
     return {
         commits,
-        info,
         user
     };
 };

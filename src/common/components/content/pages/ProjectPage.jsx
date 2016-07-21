@@ -9,11 +9,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self defined
-import CollaboratorsCommitsBarChart from '../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
 import ProjectAuthorizationWidget from
     '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
-import ProjectCommitsLineChart from '../../../containers/content/widgets/charts/ProjectCommitsLineChart';
 import ProjectSelectableChart from '../../../containers/content/widgets/charts/ProjectSelectableChart';
 import ProjectTransferWidget from '../../../containers/content/widgets/ProjectTransferWidget';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
@@ -25,12 +23,6 @@ export default class ProjectPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            chart: 'Bar',
-            lineChartDisplay: 1 // 1 indicates total commits, 2 indicates only user's commits
-        };
-        this.onChartChange = this.onChartChange.bind(this);
-        this.toggleLineChartDisplay = this.toggleLineChartDisplay.bind(this);
     }
 
     componentDidMount() {
@@ -41,40 +33,10 @@ export default class ProjectPage extends Component {
         dispatch(fetchUsersIfNeeded());
     }
 
-    onChartChange(event) {
-        // Release focus
-        event.target.blur();
-
-        this.setState({
-            chart: event.target.value
-        });
-    }
-
-    toggleLineChartDisplay(event) {
-        // Release focus
-        event.target.blur();
-
-        let oldDisplay = this.state.lineChartDisplay,
-            newDisplay;
-        if (event.target.innerHTML === 'Total Commits') {
-            newDisplay = 1;
-        } else if (event.target.innerHTML === 'Only My Commits') {
-            newDisplay = 2;
-        }
-
-        if (oldDisplay !== newDisplay) {
-            this.setState({
-                lineChartDisplay: newDisplay
-            });
-        }
-    }
-
     render() {
         const { canAuthorize, canTransfer } = this.props;
         const { ownerId, projectName } = this.props.params;
         const { user, restClient } = this.props;
-
-        const { chart, lineChartDisplay } = this.state;
 
         return (
             <section className="content">
@@ -118,32 +80,8 @@ export default class ProjectPage extends Component {
                                                restClient={restClient}
                                                userId={user ? user._id : ''} />
 
-                        {chart === 'Bar' ?
-                            <CollaboratorsCommitsBarChart onChartChange={this.onChartChange}
-                                                          ownerId={ownerId}
-                                                          projectName={projectName}
-                                                          restClient={restClient}
-                                                          title="Latest Commits"
-                                                          whichChart={chart} /> : null}
-
-                        {chart === 'Line' ?
-                            <ProjectCommitsLineChart lineChartDisplay={lineChartDisplay}
-                                                     onChartChange={this.onChartChange}
-                                                     toggleDisplay={this.toggleLineChartDisplay}
-                                                     ownerId={ownerId}
-                                                     projectName={projectName}
-                                                     restClient={restClient}
-                                                     title="Latest Commits"
-                                                     whichChart={chart} /> : null}
-
-                        <ProjectSelectableChart lineChartDisplay={lineChartDisplay}
-                                                onChartChange={this.onChartChange}
-                                                toggleDisplay={this.toggleLineChartDisplay}
-                                                ownerId={ownerId}
-                                                projectName={projectName}
-                                                restClient={restClient}
-                                                title="Latest Commits"
-                                                whichChart={chart} />
+                        <ProjectSelectableChart ownerId={ownerId}
+                                                projectName={projectName} />
 
                     </div>
 
