@@ -35,12 +35,13 @@ export default class OrganizationPage extends Component {
         return (
 
             <section className="content">
-                {/* <h3> {this.props.params.organizationId} </h3> */}
-                <div className="box box-primary">
+                <div className="box box-primary" style={PROJECT_STYLE.titleBox}>
                     <div className="row">
-                        <h2 className="col-md-10" style={PROJECT_STYLE.projectTitle}>
-                            <i className="fa fa-university"/>{' ' + this.props.params.organizationId}
-                        </h2>
+                        <div className="col-md-12" style={PROJECT_STYLE.titleContainer}>
+                            <div style={PROJECT_STYLE.projectTitle}>
+                                <i className="fa fa-university"/>{' ' + this.props.params.organizationId}
+                            </div>
+                        </div>
                     </div>
                 </div>
 

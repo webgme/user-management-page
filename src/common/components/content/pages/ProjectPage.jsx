@@ -57,13 +57,13 @@ export default class ProjectPage extends Component {
         return (
             <section className="content">
 
-                <div className="box box-primary">
+                <div className="box box-primary" style={STYLE.titleBox}>
                     <div className="row">
-                        <h2 className="col-md-10" style={STYLE.projectTitle}>
-                            <i className="fa fa-cube"/>{` ${ownerId} / ${projectName}`}
-                        </h2>
-                        <div className="col-md-2" style={STYLE.viewInEditor.column}>
-                            <a href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
+                        <div className="col-md-12" style={STYLE.titleContainer}>
+                            <div style={STYLE.projectTitle}>
+                                <i className="fa fa-cube"/>{` ${ownerId} / ${projectName}`}
+                            </div>
+                            <a className="pull-right" href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
                                 <Button bsStyle="primary" style={STYLE.viewInEditor.button}>
                                     View in editor
                                 </Button>
