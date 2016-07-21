@@ -75,33 +75,40 @@ export default class ProjectDataTableEntry extends Component {
                          confirmButtonStyle="danger"
                          confirmHandler={this.confirm}
                          confirmId={this.props.name}
-                         modalMessage={'Are you sure you want to revoke ' + this.props.name + '\'s rights to ' +
-                                       this.props.projectName + 'by ' + this.props.ownerId + '?'}
+                         modalMessage={'Are you sure you want to remove ' + this.props.name + '\'s access to ' +
+                                       this.props.ownerId + ' / ' + this.props.projectName + '?'}
                          showModal={this.state.showModal}
-                         title="Revoke rights"/>
+                         title="Remove Collaborator"/>
 
             <td>
+                {this.props.isOrg ?
+                <div style={{float: "left"}}>
+                    <i className="fa fa-university" style={{fontSize: "15px", float: "left"}}/>
+                        <span style={{paddingLeft: "8px"}}>
+                            {this.props.name}
+                        </span>
+                </div> :
                 <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
-                        <Popover title="Rights Origin" id="Rights Origin">
+                        <Popover title="Access Origin" id="Rights Origin">
                             {userRightsOrigin}
                             <br/>
                             {orgsRightsOrigin}
                         </Popover>}>
                     <div style={{float: "left"}}>
-                        <i className={this.props.isOrg ? `fa fa-university` :
-                                                         `fa fa-user${this.props.inOrg ? '-times' : ''}`}
+                        <i className={`fa fa-user${this.props.userRightsOrigin ? '' : '-times'}`}
                            style={{fontSize: "15px", float: "left"}}/>
                         <span style={{paddingLeft: "8px"}}>
                             {this.props.name}
                         </span>
                     </div>
                 </OverlayTrigger>
+                    }
             </td>
 
             <td>
                 {this.props.rights}
-                {/* Only the owner(s) can see the remove option */}
-                {this.props.canAuthorize ?
+                {/* Only the owner(s) can see the remove option and it is not displayed for users with no rights*/}
+                {this.props.canAuthorize && (this.props.isOrg || this.props.userRightsOrigin) ?
                     this.props.ownerId === this.props.name ?
                         <OverlayTrigger overlay={<Popover id="1"><strong>You are the owner</strong></Popover>}
                                         placement="top"

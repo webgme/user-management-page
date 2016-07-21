@@ -14,12 +14,12 @@ import { sortBy } from '../../../../actions/tables';
 
 const FIELDS = {
     USER: {
-        "Rights (RWD)": "rights",
-        "User": "name"
+        Access: "rights",
+        User: "name"
     },
     ORGANIZATION: {
-        "Organization": "name",
-        "Rights (RWD)": "rights"
+        Organization: "name",
+        Access: "rights"
     }
 };
 
@@ -74,11 +74,11 @@ export default class ProjectCollaboratorTable extends Component {
             categories: {
                 users: [
                     {id: 1, name: 'User'},
-                    {id: 2, name: 'Rights'}
+                    {id: 2, name: 'Access'}
                 ],
                 organizations: [
                     {id: 1, name: 'Organization'},
-                    {id: 2, name: 'Rights'}
+                    {id: 2, name: 'Access'}
                 ]
             }
         };

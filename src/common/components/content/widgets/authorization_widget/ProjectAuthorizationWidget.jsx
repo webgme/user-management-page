@@ -16,7 +16,7 @@ export default class ProjectAuthorizationWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            authorizeButtonGroup: {read: true, write: false, delete: false},
+            authorizeButtonGroup: {r: true, w: false, d: false},
             multiselectOptions: [],
             valuesInMultiselect: ''
         };
@@ -77,11 +77,11 @@ export default class ProjectAuthorizationWidget extends Component {
 
         // Check if the user chose to authorize users or organizations
         let projectRights = '';
-        if (this.state.authorizeButtonGroup.read) {
+        if (this.state.authorizeButtonGroup.r) {
             projectRights = 'r';
-        } else if (this.state.authorizeButtonGroup.write) {
+        } else if (this.state.authorizeButtonGroup.w) {
             projectRights = 'rw';
-        } else if (this.state.authorizeButtonGroup.delete) {
+        } else if (this.state.authorizeButtonGroup.d) {
             projectRights = 'rwd';
         }
 
@@ -107,7 +107,7 @@ export default class ProjectAuthorizationWidget extends Component {
 
         // Reset fields after submitting
         this.setState({
-            authorizeButtonGroup: {read: true, write: false, delete: false},
+            authorizeButtonGroup: {r: true, w: false, d: false},
             valuesInMultiselect: ''
         });
     }
@@ -119,18 +119,18 @@ export default class ProjectAuthorizationWidget extends Component {
             selectableButtons: [
                 {
                     onChange: this.handleAuthorizationChange,
-                    text: 'Read',
-                    state: this.state.authorizeButtonGroup.read ? 'success' : null
+                    text: 'R',
+                    state: this.state.authorizeButtonGroup.r ? 'success' : null
                 },
                 {
                     onChange: this.handleAuthorizationChange,
-                    text: 'Write',
-                    state: this.state.authorizeButtonGroup.write ? 'success' : null
+                    text: 'W',
+                    state: this.state.authorizeButtonGroup.w ? 'success' : null
                 },
                 {
                     onChange: this.handleAuthorizationChange,
-                    text: 'Delete',
-                    state: this.state.authorizeButtonGroup.delete ? 'success' : null
+                    text: 'D',
+                    state: this.state.authorizeButtonGroup.d ? 'success' : null
                 }
             ],
             submitButtons: [
@@ -149,7 +149,7 @@ export default class ProjectAuthorizationWidget extends Component {
                 <AuthorizationWidget boxSize="12"
                                      disableLast={true}
                                      handleMultiselectChange={this.handleMultiselectChange}
-                                     label={"Authorize Users or Organizations"}
+                                     label={"Add Collaborators"}
                                      multi={true}
                                      multiselectOptions={this.state.multiselectOptions}
                                      noneSelected={this.state.valuesInMultiselect === ''}
