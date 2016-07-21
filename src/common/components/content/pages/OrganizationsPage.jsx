@@ -20,7 +20,7 @@ export default class OrganizationsPage extends Component {
         super(props);
         this.state = {
             createOrganizationInvalidMessage: 'Organization name must only contain letters, numbers, and' +
-                                              ' the underscore and must be at least 3 characters long',
+            ' the underscore and must be at least 3 characters long',
             newOrganizationName: '',
             showCreateOrganizationModal: false,
             validOrganizationName: true
@@ -83,8 +83,8 @@ export default class OrganizationsPage extends Component {
 
     openCreateOrganization() {
         Promise.resolve(this.setState({
-            showCreateOrganizationModal: true
-        }))
+                showCreateOrganizationModal: true
+            }))
             .then(() => {
                 Object.keys(STYLE.modalDialog).forEach(property => {
                     $('.modal-dialog')[0].style[property] = STYLE.modalDialog[property];
@@ -95,22 +95,24 @@ export default class OrganizationsPage extends Component {
     render() {
         return (
             <section className="content">
+                <div className="row">
+                    <div className="col-md-8 col-md-offset-2">
+                        <div className="box box-primary">
+                            <OrganizationsTable checkOrganizationName={this.checkOrganizationName}
+                                                closeCreateOrganization={this.closeCreateOrganization}
+                                                createOrganization={this.createOrganization}
+                                                createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
+                                                newOrganizationName={this.state.newOrganizationName}
+                                                onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
+                                                openCreateOrganization={this.openCreateOrganization}
+                                                showCreateOrganizationModal={this.state.showCreateOrganizationModal}
+                                                validOrganizationName={this.state.validOrganizationName}/>
 
-            <div className="box box-primary col-md-8 col-md-offset-2">
+                        </div>
+                    </div>
+                </div>
 
-                <OrganizationsTable checkOrganizationName={this.checkOrganizationName}
-                                    closeCreateOrganization={this.closeCreateOrganization}
-                                    createOrganization={this.createOrganization}
-                                    createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
-                                    newOrganizationName={this.state.newOrganizationName}
-                                    onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
-                                    openCreateOrganization={this.openCreateOrganization}
-                                    showCreateOrganizationModal={this.state.showCreateOrganizationModal}
-                                    validOrganizationName={this.state.validOrganizationName}/>
-
-            </div>
-
-        </section>
+            </section>
         );
     }
 

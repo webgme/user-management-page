@@ -13,11 +13,14 @@ export default class UsersPage extends Component {
     render() {
         return (
             <section className="content">
+                <div className="row">
+                    <div className="col-md-8 col-md-offset-2">
+                        <div className="box box-primary">
 
-                <div className="box box-primary col-md-8 col-md-offset-2">
+                            <UsersTable />
 
-                    <UsersTable />
-
+                        </div>
+                    </div>
                 </div>
 
             </section>

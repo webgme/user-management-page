@@ -12,11 +12,15 @@ const mapStateToProps = (state) => {
     const { basePath } = state;
     const { projects } = state.projects;
     const { user } = state.user;
+    const { users } = state.users;
+    const { organizations } = state.organizations;
 
     return {
         basePath,
         projects,
-        user
+        user,
+        users,
+        organizations
     };
 };
 
