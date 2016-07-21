@@ -31,13 +31,13 @@ export default class Header extends React.Component {
             parameters = pathWithoutBase.split('/');
 
         // Always have home
-        breadcrumbs.push(
-            <li style={STYLE.breadCrumbListItem} key={0}>
-                <Link to={basePath} style={STYLE.breadCrumbLink}>
-                    <i className="fa fa-home" style={STYLE.breadCrumbIcon}/>
-                </Link>
-            </li>
-        );
+        //breadcrumbs.push(
+        //    <li style={STYLE.breadCrumbListItem} key={0}>
+        //        <Link to={basePath} style={STYLE.breadCrumbLink}>
+        //            <i className="fa fa-home" style={STYLE.breadCrumbIcon}/>
+        //        </Link>
+        //    </li>
+        //);
 
         let rest = parameters[0] === 'home' ? parameters.slice(1) : parameters;
         let cumulative = '';
