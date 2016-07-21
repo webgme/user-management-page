@@ -57,6 +57,7 @@ export default class HomePage extends Component {
                         <div className="small-box bg-light-blue">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numViewableProjects}</h3>
+
                                 <p>Collaborator on Projects</p>
                             </div>
                             <div className="icon">
@@ -72,6 +73,7 @@ export default class HomePage extends Component {
                         <div className="small-box bg-green">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numOrganizations}</h3>
+
                                 <p>Member in Organizations</p>
                             </div>
                             <div className="icon">
@@ -88,6 +90,7 @@ export default class HomePage extends Component {
                         <div className="small-box bg-red">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numUsers}</h3>
+
                                 <p>Users on the Deployment</p>
                             </div>
                             <div className="icon">
@@ -101,9 +104,8 @@ export default class HomePage extends Component {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-sm-4"></div>
-                    <div className="col-sm-4" style={IMG_CONTAINER_STYLE}>
+                <div className="row" style={{textAlign: "-webkit-center"}}>
+                    <div className="col-md-6" style={{textAlign: "-webkit-right"}}>
                         <Link to={`${basePath}profile`} style={LINK_STYLE}>
                             <img className="img-circle"
                                  src={getUserIconSource(user._id)}
@@ -113,17 +115,16 @@ export default class HomePage extends Component {
                             <br/>
                             {user._id}
                         </Link>
-                        <br/>
+                    </div>
+                    <div className="col-md-6" style={{textAlign: "-webkit-left"}}>
                         <a href="/" style={LINK_STYLE}>
                             <img src="/img/gme-logo.png"
                                  width="150px"
-                            />
+                                />
                             <br/>
                             Editor
                         </a>
-
                     </div>
-                    <div className="col-sm-4"></div>
                 </div>
 
             </section>
