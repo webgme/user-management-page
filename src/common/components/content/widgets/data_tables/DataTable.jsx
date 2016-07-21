@@ -108,8 +108,25 @@ export default class DataTable extends Component {
 
         // Formatting pagination buttons
         let formattedPaginationButtons = [],
-            numPages = Math.floor(entriesList.length / this.state.selectValue) + 1;
-        for (let i = 1; i <= numPages; i++) {
+            numPages = Math.floor(entriesList.length / this.state.selectValue) + 1,
+            startPage,
+            endPage;
+
+        if (numPages <= 3) {
+            startPage = 1;
+            endPage = numPages;
+        } else if (this.state.pageNumber === 1) {
+            startPage = 1;
+            endPage = 3;
+        } else if (this.state.pageNumber === numPages) {
+            startPage = numPages - 2;
+            endPage = numPages;
+        } else {
+            startPage = this.state.pageNumber - 1;
+            endPage = this.state.pageNumber + 1;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
             formattedPaginationButtons.push(
                 <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
                     <a aria-controls="example1"
