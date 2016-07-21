@@ -101,9 +101,8 @@ export default class HomePage extends Component {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-sm-4"></div>
-                    <div className="col-sm-4" style={IMG_CONTAINER_STYLE}>
+                <div className="row" style={{textAlign: "-webkit-center"}}>
+                    <div style={{display: "inline-block"}}>
                         <Link to={`${basePath}profile`} style={LINK_STYLE}>
                             <img className="img-circle"
                                  src={getUserIconSource(user._id)}
@@ -113,17 +112,15 @@ export default class HomePage extends Component {
                             <br/>
                             {user._id}
                         </Link>
-                        <br/>
+                    </div>
+                    <div style={{display: "inline-block"}}>
                         <a href="/" style={LINK_STYLE}>
                             <img src="/img/gme-logo.png"
-                                 width="150px"
-                            />
+                                 width="150px"/>
                             <br/>
                             Editor
                         </a>
-
                     </div>
-                    <div className="col-sm-4"></div>
                 </div>
 
             </section>

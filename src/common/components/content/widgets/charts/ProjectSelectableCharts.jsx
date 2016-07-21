@@ -66,7 +66,7 @@ export default class ProjectSelectableCharts extends Component {
         const displayInfoInline = componentWidth > (width + 100);
 
         return (
-            <div className="row" id="selectableChartBox">
+            <div className="row hidden-xs" id="selectableChartBox">
                 <div className="col-md-12">
                     <div className="box">
 

@@ -72,7 +72,7 @@ export default class Header extends React.Component {
                     <span className="sr-only">Toggle navigation</span>
                 </a>
 
-                <ol className="dropdown messages-menu" style={STYLE.breadCrumb}>
+                <ol className="dropdown messages-menu hidden-xs" style={STYLE.breadCrumb}>
                     {breadcrumbs}
                 </ol>
 
