@@ -13,7 +13,22 @@ import { fetchUsersIfNeeded } from '../../../actions/users';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { getUserIconSource } from '../../../../client/utils/utils';
 // Style
-import { HomePage as STYLE } from '../../../../client/style';
+import { HomePage as STYLE,  ProfileImage as PROFILE_STYLE } from '../../../../client/style';
+
+var IMG_CONTAINER_STYLE = {
+    textAlign: "center",
+    display: "flex",
+    marginTop: "30px"
+};
+
+var LINK_STYLE = {
+    fontSize: "24px",
+    fontWeight: "500",
+    color: "#333333",
+    marginLeft: "10px",
+    marginRight: "10px",
+    textDecoration: "none"
+};
 
 export default class HomePage extends Component {
 
@@ -38,47 +53,77 @@ export default class HomePage extends Component {
             <section className="content" style={STYLE.profileBox}>
 
                 <div className="row">
-                    <div className="small-box bg-light-blue col-sm-4">
-                        <div className="inner">
-                            <h3 style={STYLE.widgetBox}>{numViewableProjects}</h3>
-                            <p>Total Project(s)</p>
+                    <div className="col-sm-4">
+                        <div className="small-box bg-light-blue">
+                            <div className="inner">
+                                <h3 style={STYLE.widgetBox}>{numViewableProjects}</h3>
+                                <p>Collaborator on Projects</p>
+                            </div>
+                            <div className="icon">
+                                <i className="fa fa-cubes"/>
+                            </div>
+                            <Link to={`${basePath}projects`}
+                                  className="small-box-footer">
+                                Show Projects <i className="fa fa-arrow-circle-right"/>
+                            </Link>
                         </div>
-                        <div className="icon">
-                            <i className="fa fa-cubes"/>
+                    </div>
+                    <div className="col-sm-4">
+                        <div className="small-box bg-green">
+                            <div className="inner">
+                                <h3 style={STYLE.widgetBox}>{numOrganizations}</h3>
+                                <p>Member in Organizations</p>
+                            </div>
+                            <div className="icon">
+                                <i className="fa fa-institution"/>
+                            </div>
+                            <Link to={`${basePath}organizations`}
+                                  className="small-box-footer">
+                                Show Organizations <i className="fa fa-arrow-circle-right"/>
+                            </Link>
                         </div>
-                        <Link to={`${basePath}projects`}
-                              className="small-box-footer">
-                            Show Projects <i className="fa fa-arrow-circle-right"/>
-                        </Link>
                     </div>
 
-                    <div className="small-box bg-green col-sm-4">
-                        <div className="inner">
-                            <h3 style={STYLE.widgetBox}>{numOrganizations}</h3>
-                            <p>Organization Membership(s)</p>
+                    <div className="col-sm-4">
+                        <div className="small-box bg-red">
+                            <div className="inner">
+                                <h3 style={STYLE.widgetBox}>{numUsers}</h3>
+                                <p>Users on the Deployment</p>
+                            </div>
+                            <div className="icon">
+                                <i className="fa fa-users"/>
+                            </div>
+                            <Link to={`${basePath}users`}
+                                  className="small-box-footer">
+                                Show Users <i className="fa fa-arrow-circle-right"/>
+                            </Link>
                         </div>
-                        <div className="icon">
-                            <i className="fa fa-institution"/>
-                        </div>
-                        <Link to={`${basePath}organizations`}
-                              className="small-box-footer">
-                            Show Organizations <i className="fa fa-arrow-circle-right"/>
-                        </Link>
                     </div>
+                </div>
 
-                    <div className="small-box bg-red col-sm-4">
-                        <div className="inner">
-                            <h3 style={STYLE.widgetBox}>{numUsers}</h3>
-                            <p>Users on the deployment</p>
-                        </div>
-                        <div className="icon">
-                            <i className="fa fa-users"/>
-                        </div>
-                        <Link to={`${basePath}users`}
-                              className="small-box-footer">
-                            Show Users <i className="fa fa-arrow-circle-right"/>
+                <div className="row">
+                    <div className="col-sm-4"></div>
+                    <div className="col-sm-4" style={IMG_CONTAINER_STYLE}>
+                        <Link to={`${basePath}profile`} style={LINK_STYLE}>
+                            <img className="img-circle"
+                                 src={getUserIconSource(user._id)}
+                                 alt="User profile picture"
+                                 width="150px"
+                                 style={{borderRadius: "25%"}}/>
+                            <br/>
+                            {user._id}
                         </Link>
+                        <br/>
+                        <a href="/" style={LINK_STYLE}>
+                            <img src="/img/gme-logo.png"
+                                 width="150px"
+                            />
+                            <br/>
+                            Editor
+                        </a>
+
                     </div>
+                    <div className="col-sm-4"></div>
                 </div>
 
             </section>

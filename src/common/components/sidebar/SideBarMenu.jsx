@@ -33,7 +33,7 @@ export default class SideBarMenu extends Component {
 
             <li className={/projects/.test(this.props.location.pathname) ? 'active' : ''}>
                 <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-cubes"/><span>Projects</span>
+                    <i className="fa fa-cubes"/><span> Projects</span>
                 </Link>
             </li>
 
