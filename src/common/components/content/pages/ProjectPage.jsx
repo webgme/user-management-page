@@ -10,7 +10,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self defined
 import CollaboratorsCommitsBarChart from '../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
-import CommitsLineChart from '../../../containers/content/widgets/charts/CommitsLineChart';
+import ProjectCommitsLineChart from '../../../containers/content/widgets/charts/ProjectCommitsLineChart';
 import ProjectAuthorizationWidget from
     '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
@@ -25,9 +25,11 @@ export default class ProjectPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chart: 'Line'
+            chart: 'Bar',
+            lineChartDisplay: 1 // 1 indicates total commits, 2 indicates only user's commits
         };
         this.onChartChange = this.onChartChange.bind(this);
+        this.toggleLineChartView = this.toggleLineChartView.bind(this);
     }
 
     componentDidMount() {
@@ -44,6 +46,22 @@ export default class ProjectPage extends Component {
         });
         // Release focus
         event.target.blur();
+    }
+
+    toggleLineChartView(event) {
+        let oldDisplay = this.state.lineChartDisplay,
+            newDisplay;
+        if (event.target.innerHTML === 'Total Commits') {
+            newDisplay = 1;
+        } else if (event.target.innerHTML === 'Only My Commits') {
+            newDisplay = 2;
+        }
+
+        if (oldDisplay !== newDisplay) {
+            this.setState({
+                lineChartDisplay: newDisplay
+            });
+        }
     }
 
     render() {
@@ -97,20 +115,22 @@ export default class ProjectPage extends Component {
                                                userId={user ? user._id : ''}/>
 
                         {chart === 'Bar' ?
-                        <CollaboratorsCommitsBarChart onChartChange={this.onChartChange}
-                                                      ownerId={ownerId}
-                                                      projectName={projectName}
-                                                      restClient={restClient}
-                                                      title="Latest Commits"
-                                                      whichChart={chart}/> : null}
+                            <CollaboratorsCommitsBarChart onChartChange={this.onChartChange}
+                                                          ownerId={ownerId}
+                                                          projectName={projectName}
+                                                          restClient={restClient}
+                                                          title="Latest Commits"
+                                                          whichChart={chart}/> : null}
 
                         {chart === 'Line' ?
-                        <CommitsLineChart onChartChange={this.onChartChange}
-                                          ownerId={ownerId}
-                                          projectName={projectName}
-                                          restClient={restClient}
-                                          title="Latest Commits"
-                                          whichChart={chart}/> : null}
+                            <ProjectCommitsLineChart display={this.state.lineChartDisplay}
+                                                     onChartChange={this.onChartChange}
+                                                     toggleView={this.toggleLineChartView}
+                                                     ownerId={ownerId}
+                                                     projectName={projectName}
+                                                     restClient={restClient}
+                                                     title="Latest Commits"
+                                                     whichChart={chart}/> : null}
 
                     </div>
 

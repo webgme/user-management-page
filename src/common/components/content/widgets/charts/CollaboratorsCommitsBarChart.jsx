@@ -43,9 +43,9 @@ export default class CollaboratorsCommitsBarGraph extends Component {
                             <h3 className="box-title">{title}</h3>
 
                             <div className="box-tools pull-right">
-                                <select onChange={onChartChange}>
-                                    <option value="Bar" selected={whichChart === 'Bar'}>Bar Chart</option>
-                                    <option value="Line" selected={whichChart === 'Line'}>Line Chart</option>
+                                <select onChange={onChartChange} value={whichChart}>
+                                    <option value="Bar">Bar Chart</option>
+                                    <option value="Line">Line Chart</option>
                                 </select>
                             </div>
                         </div>

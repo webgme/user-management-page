@@ -8,7 +8,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { Line as LineChart } from 'react-chartjs';
 // Self-defined
-import { isEmpty, processCommitsLine, timeAgo } from '../../../../../client/utils/utils';
+import { isEmpty, processProjectsCommitsLine, timeAgo } from '../../../../../client/utils/utils';
 
 export default class CommitsLineChart extends Component {
 
@@ -25,6 +25,10 @@ export default class CommitsLineChart extends Component {
         this.retrieveCommits = this.retrieveCommits.bind(this);
         // Event handler
         this.toggleView = this.toggleView.bind(this);
+    }
+
+    componentDidMount() {
+        const { dispatch } = this.props;
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -53,7 +57,7 @@ export default class CommitsLineChart extends Component {
     }
 
     processCommits() {
-        const data = processCommitsLine(this.state.commits, this.state.userId, this.state.display);
+        const data = processProjectsCommitsLine(this.state.commits, this.state.userId, this.state.display);
 
         this.setState({
             data
@@ -63,13 +67,13 @@ export default class CommitsLineChart extends Component {
     retrieveCommits(numCommits = 100) {
 
         return this.props.restClient.projects.getAllProjects() // These are the ones user has access to
-            .then(allProjects => {
+            .then(projects => {
 
                 let commits = {}, // Hash of projectName to array of commits
                     projectsCommitRequests = [],
                     projectNames = [];
 
-                allProjects.forEach(project => {
+                projects.forEach(project => {
                     projectsCommitRequests.push(
                         this.props.restClient.projects.getLatestCommits(project.owner, project.name, numCommits)
                     );
