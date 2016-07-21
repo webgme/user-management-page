@@ -6,20 +6,20 @@
 // Libraries:
 import { connect } from 'react-redux';
 // Self defined:
-import CollaboratorsCommitsBarChart from '../../../../components/content/widgets/charts/CollaboratorsCommitsBarChart';
-import { processCommitsBar } from '../../../../../client/utils/utils';
+import ProjectCommitsLineChart from '../../../../components/content/widgets/charts/ProjectCommitsLineChart';
 
 const mapStateToProps = (state, ownProps) => {
     const { ownerId, projectName } = ownProps;
     const projectId = `${ownerId}+${projectName}`;
+    const { user } = state.user;
 
     // Could be fetching
     const commits = state.projects.commits[projectId] ? state.projects.commits[projectId].commits || [] : [];
-    const data = processCommitsBar(commits.slice());
 
     return {
-        data
+        commits,
+        user
     };
 };
 
-export default connect(mapStateToProps)(CollaboratorsCommitsBarChart);
+export default connect(mapStateToProps)(ProjectCommitsLineChart);

@@ -6,7 +6,7 @@
 // Libraries:
 import { connect } from 'react-redux';
 // Self defined:
-import CommitsLineChart from '../../../../components/content/widgets/charts/CommitsLineChart';
+import CommitsLineChart from '../../../../components/content/widgets/charts/ProjectsCommitsLineChart';
 import { processCommitsLine } from '../../../../../client/utils/utils';
 
 const mapStateToProps = (state, ownProps) => {

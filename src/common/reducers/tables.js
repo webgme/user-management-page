@@ -3,7 +3,7 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import { SORT_CATEGORY } from '../actions/tables';
+import { REFRESH_TABLES, SORT_CATEGORY } from '../actions/tables';
 
 const initialTableState = {
         sortCategory: 'name',
@@ -53,6 +53,8 @@ const tables = (state = initialTablesState, action) => {
             return Object.assign({}, state, {
                 [action.table]: table(state[action.table], action)
             });
+        case REFRESH_TABLES:
+            return initialTablesState;
         default:
             return state;
     }

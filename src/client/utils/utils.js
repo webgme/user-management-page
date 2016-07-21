@@ -294,7 +294,14 @@ export const processCommitsBar = (commits) => {
     };
 };
 
-export const processCommitsLine = (commits, userId, display) => {
+/**
+ * Old processing for all projects (DEPRECATED)
+ * @param {Array} commits - commits
+ * @param {string} userId - userId
+ * @param {Number} display - 1 for total, 2 for only user
+ * @return {{labels: Array, datasets: Array}}
+ */
+export const processProjectsCommitsLine = (commits, userId, display) => {
     let timesCommitted = {};
     Object.keys(commits).forEach(projectName => {
 
@@ -354,6 +361,142 @@ export const processCommitsLine = (commits, userId, display) => {
         labels: getPastWeeksDays(),
         datasets: datasets
     };
+};
+
+/**
+ * Helper function to get index into processProjectsCommitsLine's dataset time array
+ * Note: it is already checked as to whether it is within the selected timeframe (It will be in a partition)
+ * @param {number} time - time to be classified
+ * @param {Number } now - now in milliseconds from epoch
+ * @param {number} partitionSize - size of each partition in milliseconds (Ex. 60 * 60 * 24 * 1000 for a day)
+ * @param {number} numPartitions - number of partitions: (Ex. over past week = 7)
+ * @return {number} - index into time array of commit counts
+ */
+const getIndexIntoTimeArray = (time, now, partitionSize, numPartitions) => {
+    const difference = now - time;
+    // Needs integer division
+    const index = (numPartitions - 1) - Math.floor(difference / partitionSize);
+
+    return index;
+};
+
+/**
+ * Helper to get default state for commit line chart
+ * @param {string} userId - userId
+ * @param {Number} numPartitions - number of partitions
+ * @return {Array} default data
+ */
+export const getDefaultDataset = (userId, numPartitions) => {
+    let randomColor = getRandomColorHex();
+    return [{
+        label: userId,
+        fillColor: convertHexToRGBA(randomColor, 20),
+        strokeColor: convertHexToRGBA(randomColor, 100),
+        pointColor: convertHexToRGBA(randomColor, 100),
+        pointStrokeColor: shadeColor(randomColor, 50), // Lightened because its the shading
+        pointHighlightFill: shadeColor(randomColor, 50), // Lightened because its the shading
+        pointHighlightStroke: convertHexToRGBA(randomColor, 100),
+        data: Array(numPartitions).fill(0)
+    }];
+};
+
+/**
+ * Helper to get default state for commit doughnut chart
+ * @return {Array} default doughnut chart data
+ */
+export const getDefaultDoughnutData = () => {
+    let randomColor = getRandomColorHex();
+    return [{
+        label: 'No commits available',
+        value: 1,
+        color: randomColor,
+        highlight: shadeColor(randomColor, 20)
+    }];
+};
+
+// TODO: allow users to change timeframe (Right now only for the past week)
+/**
+ * Commit processing for an individual project
+ * @param {Array} commits - commits
+ * @param {string} userId - id of current user
+ * @param {number} display - 1 indicates total, 2 indicates only current user's commits
+ * @return {{labels: Array, datasets: Array}} (Structure of react-chartjs)
+ */
+export const processProjectCommitsLine = (commits, userId, display) => {
+    // Map userIds to an array of commit counts
+    let userIdToCommitCount = {},
+        now = new Date().getTime(),
+        millisecondsInADay = 60 * 60 * 24 * 1000,
+        millisecondsInAWeek = millisecondsInADay * 7,
+        numPartitions = 7;
+
+    commits
+        .filter((commit) => {
+            let result = false;
+            if (display === 2) {
+                result = commit.time >= (now - millisecondsInAWeek) && commit.updater[0] === userId;
+            } else {
+                result = commit.time >= (now - millisecondsInAWeek);
+            }
+            return result;
+        })
+        .forEach((commit) => {
+            if (userIdToCommitCount[commit.updater[0]]) {
+                userIdToCommitCount[commit.updater[0]][getIndexIntoTimeArray(commit.time, now, millisecondsInADay, numPartitions)]++; // eslint-disable-line max-len
+            } else {
+                userIdToCommitCount[commit.updater[0]] = Array(numPartitions).fill(0);
+            }
+        });
+
+    let datasets = [];
+    Object.keys(userIdToCommitCount).forEach((userId) => {
+        let randomColor = getRandomColorHex();
+        datasets.push({
+            label: userId,
+            fillColor: convertHexToRGBA(randomColor, 20),
+            strokeColor: convertHexToRGBA(randomColor, 100),
+            pointColor: convertHexToRGBA(randomColor, 100),
+            pointStrokeColor: shadeColor(randomColor, 50), // Lightened because its the shading
+            pointHighlightFill: shadeColor(randomColor, 50), // Lightened because its the shading
+            pointHighlightStroke: convertHexToRGBA(randomColor, 100),
+            data: userIdToCommitCount[userId]
+        });
+    });
+
+    return {
+        labels: getPastWeeksDays(),
+        datasets: datasets.length > 0 ? datasets : getDefaultDataset(userId, numPartitions)
+    };
+};
+
+/**
+ * Helper to process commits for the doughnut chart data
+ * @param {Array} commits - commits
+ * @return {Array} Doughnut data if valid - else default "No commit" data
+ */
+export const processProjectCommitsDoughnut = (commits) => {
+    let userIdToCommitCount = {};
+
+    commits.forEach((commit) => {
+        if (userIdToCommitCount[commit.updater[0]]) {
+            userIdToCommitCount[commit.updater[0]]++;
+        } else {
+            userIdToCommitCount[commit.updater[0]] = 1;
+        }
+    });
+
+    let data = [];
+    Object.keys(userIdToCommitCount).forEach((userId) => {
+        let randomColor = getRandomColorHex();
+        data.push({
+            label: userId,
+            value: userIdToCommitCount[userId],
+            color: randomColor,
+            highlight: shadeColor(randomColor, 20)
+        });
+    });
+
+    return data.length ? data : getDefaultDoughnutData();
 };
 
 /**

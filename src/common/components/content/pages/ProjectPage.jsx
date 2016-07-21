@@ -9,11 +9,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self defined
-import CollaboratorsCommitsBarChart from '../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
-import CommitsLineChart from '../../../containers/content/widgets/charts/CommitsLineChart';
 import ProjectAuthorizationWidget from
     '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
+import ProjectSelectableChart from '../../../containers/content/widgets/charts/ProjectSelectableChart';
 import ProjectTransferWidget from '../../../containers/content/widgets/ProjectTransferWidget';
 import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -24,10 +23,6 @@ export default class ProjectPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            chart: 'Line'
-        };
-        this.onChartChange = this.onChartChange.bind(this);
     }
 
     componentDidMount() {
@@ -38,21 +33,10 @@ export default class ProjectPage extends Component {
         dispatch(fetchUsersIfNeeded());
     }
 
-    onChartChange(event) {
-        this.setState({
-            chart: event.target.value
-        });
-        // Release focus
-        event.target.blur();
-    }
-
     render() {
-
         const { canAuthorize, canTransfer } = this.props;
         const { ownerId, projectName } = this.props.params;
         const { user, restClient } = this.props;
-
-        const { chart } = this.state;
 
         return (
             <section className="content">
@@ -88,29 +72,16 @@ export default class ProjectPage extends Component {
                         <ProjectAuthorizationWidget canAuthorize={canAuthorize}
                                                     ownerId={ownerId}
                                                     projectName={projectName}
-                                                    restClient={restClient}/>
+                                                    restClient={restClient} />
 
                         <ProjectTransferWidget canTransfer={canTransfer}
                                                ownerId={ownerId}
                                                projectName={projectName}
                                                restClient={restClient}
-                                               userId={user ? user._id : ''}/>
+                                               userId={user ? user._id : ''} />
 
-                        {chart === 'Bar' ?
-                        <CollaboratorsCommitsBarChart onChartChange={this.onChartChange}
-                                                      ownerId={ownerId}
-                                                      projectName={projectName}
-                                                      restClient={restClient}
-                                                      title="Latest Commits"
-                                                      whichChart={chart}/> : null}
-
-                        {chart === 'Line' ?
-                        <CommitsLineChart onChartChange={this.onChartChange}
-                                          ownerId={ownerId}
-                                          projectName={projectName}
-                                          restClient={restClient}
-                                          title="Latest Commits"
-                                          whichChart={chart}/> : null}
+                        <ProjectSelectableChart ownerId={ownerId}
+                                                projectName={projectName} />
 
                     </div>
 
