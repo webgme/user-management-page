@@ -400,6 +400,20 @@ export const getDefaultDataset = (userId, numPartitions) => {
     }];
 };
 
+/**
+ * Helper to get default state for commit doughnut chart
+ * @return {Array} default doughnut chart data
+ */
+export const getDefaultDoughnutData = () => {
+    let randomColor = getRandomColorHex();
+    return [{
+        label: 'No commits available',
+        value: 1,
+        color: randomColor,
+        highlight: shadeColor(randomColor, 20)
+    }];
+};
+
 // TODO: allow users to change timeframe (Right now only for the past week)
 /**
  * Commit processing for an individual project
@@ -453,6 +467,45 @@ export const processProjectCommitsLine = (commits, userId, display) => {
         labels: getPastWeeksDays(),
         datasets: datasets.length > 0 ? datasets : getDefaultDataset(userId, numPartitions)
     };
+};
+
+export const processProjectCommitsDoughnut = (commits, userId, display) => {
+    let userIdToCommitCount = {},
+        now = new Date().getTime(),
+        millisecondsInADay = 60 * 60 * 24 * 1000,
+        millisecondsInAWeek = millisecondsInADay * 7,
+        numPartitions = 7;
+
+    commits
+        .filter((commit) => {
+            let result = false;
+            if (display === 2) {
+                result = commit.time >= (now - millisecondsInAWeek) && commit.updater[0] === userId;
+            } else {
+                result = commit.time >= (now - millisecondsInAWeek);
+            }
+            return result;
+        })
+        .forEach((commit) => {
+            if (userIdToCommitCount[commit.updater[0]]) {
+                userIdToCommitCount[commit.updater[0]]++;
+            } else {
+                userIdToCommitCount[commit.updater[0]] = 1;
+            }
+        });
+
+    let data = [];
+    Object.keys(userIdToCommitCount).forEach((userId) => {
+        let randomColor = getRandomColorHex();
+        data.push({
+            label: userId,
+            value: userIdToCommitCount[userId],
+            color: randomColor,
+            highlight: shadeColor(randomColor, 20)
+        });
+    });
+
+    return data.length ? data : getDefaultDoughnutData();
 };
 
 /**

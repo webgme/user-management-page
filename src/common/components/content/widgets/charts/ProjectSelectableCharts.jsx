@@ -6,15 +6,18 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import ProjectCommitsLineChart from '../../../../containers/content/widgets/charts/ProjectCommitsLineChart';
 import CollaboratorsCommitsBarChart from '../../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
+import CommitsDoughnutChart from '../../../../containers/content/widgets/charts/CommitsDoughnutChart';
+import ProjectCommitsLineChart from '../../../../containers/content/widgets/charts/ProjectCommitsLineChart';
 // Self-defined
 import { timeAgo } from '../../../../../client/utils/utils';
 import { DEFAULT_ISODATE } from '../../../../../client/utils/constants';
+import { fetchProjectsIfNeeded } from '../../../../actions/projects';
 
 const CHART_TITLES = {
     Bar: 'Latest Commits',
-    Line: 'Timeline of Latest Commits'
+    Line: 'Timeline of Latest Commits',
+    Doughnut: 'Latest Commits'
 };
 
 export default class ProjectSelectableCharts extends Component {
@@ -30,6 +33,11 @@ export default class ProjectSelectableCharts extends Component {
         this.toggleLineChartDisplay = this.toggleLineChartDisplay.bind(this);
     }
 
+    componentDidMount() {
+        const { dispatch } = this.props;
+
+        dispatch(fetchProjectsIfNeeded());
+    }
     onChartChange(event) {
         // Release focus
         event.target.blur();
@@ -86,6 +94,7 @@ export default class ProjectSelectableCharts extends Component {
                                     <select onChange={this.onChartChange} value={chart}>
                                         <option value="Bar">Bar Chart</option>
                                         <option value="Line">Line Chart</option>
+                                        <option value="Doughnut">Doughnut Chart</option>
                                     </select>
                                 </div>
                             </div>
@@ -106,6 +115,12 @@ export default class ProjectSelectableCharts extends Component {
                                                                  ownerId={ownerId}
                                                                  projectName={projectName}
                                                                  width={500}/> : null}
+                                    {chart === 'Doughnut' ?
+                                        <CommitsDoughnutChart display={lineChartDisplay}
+                                                              height={300}
+                                                              ownerId={ownerId}
+                                                              projectName={projectName}
+                                                              width={500}/> : null}
                                 </div>
                             </div>
                             <div className="col-md-3" style={{paddingRight: "30px"}}>

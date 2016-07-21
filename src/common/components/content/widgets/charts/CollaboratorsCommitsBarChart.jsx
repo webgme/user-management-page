@@ -7,7 +7,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Bar as BarChart } from 'react-chartjs';
 // Self defined:
-import { fetchCommitsIfNeeded, fetchProjectsIfNeeded } from '../../../../actions/projects';
+import { fetchCommitsIfNeeded } from '../../../../actions/projects';
 
 export default class CollaboratorsCommitsBarGraph extends Component {
 
@@ -23,7 +23,6 @@ export default class CollaboratorsCommitsBarGraph extends Component {
         const { ownerId, projectName } = this.props;
 
         dispatch(fetchCommitsIfNeeded(ownerId, projectName, this.state.numCommits));
-        dispatch(fetchProjectsIfNeeded());
     }
 
     shouldComponentUpdate(nextProps/* , nextState */) {
