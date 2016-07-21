@@ -20,7 +20,7 @@ export default class ProjectsDataTableEntry extends Component {
     }
 
     render() {
-        const { basePath, columnStyle, info, name, owner, unavailable } = this.props;
+        const { basePath, className, columnStyle, info, name, owner, unavailable } = this.props;
 
         const buildLink = `${basePath}projects/${owner}/${name}`;
 
@@ -35,7 +35,7 @@ export default class ProjectsDataTableEntry extends Component {
                     <Link to={buildLink}>{name}</Link>
                 </td>
 
-                <td style={columnStyle}>
+                <td className="hidden-xs" style={columnStyle}>
                     <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Last Viewed At:" id="Viewed At">
                             {info.viewedAt ? new Date(info.viewedAt).toString() : unavailable}
@@ -46,7 +46,7 @@ export default class ProjectsDataTableEntry extends Component {
                     </OverlayTrigger>
                 </td>
 
-                <td style={columnStyle}>
+                <td className="hidden-xs" style={columnStyle}>
                     <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Last Modified At:" id="Modified At">
                             {new Date(info.modifiedAt).toString()}
@@ -57,7 +57,7 @@ export default class ProjectsDataTableEntry extends Component {
                     </OverlayTrigger>
                 </td>
 
-                <td style={columnStyle}>
+                <td className="hidden-xs" style={columnStyle}>
                     <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Created At:" id="Created At">
                             {new Date(info.createdAt).toString()}

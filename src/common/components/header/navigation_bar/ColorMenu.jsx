@@ -39,7 +39,7 @@ export default class ColorMenu extends Component {
         });
 
         return (
-            <li className="dropdown messages-menu">
+            <li className="dropdown messages-menu hidden-xs">
 
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                     <i className="fa fa-paint-brush" style={{fontSize: "20px"}}/>

@@ -50,9 +50,9 @@ export default class ProjectsTable extends Component {
         const categories = [
             {id: 1, name: 'Owner'},
             {id: 2, name: 'Project Name'},
-            {id: 3, name: 'Last Viewed'},
-            {id: 4, name: 'Last Changed'},
-            {id: 5, name: 'Created At'}
+            {id: 3, name: 'Last Viewed', className: "hidden-xs"},
+            {id: 4, name: 'Last Changed', className: "hidden-xs"},
+            {id: 5, name: 'Created At', className: "hidden-xs"}
         ];
 
         // Will be 'projects' if in the projects page, if in projectsByOwner then will be ownerId

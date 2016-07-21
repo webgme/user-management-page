@@ -63,7 +63,8 @@ export default class DataTable extends Component {
         // Formatting table categories
         let formattedCategories = [];
         this.props.categories.forEach(category =>
-            formattedCategories.push(<DataTableCategory key={category.id}
+            formattedCategories.push(<DataTableCategory className={category.className}
+                                                        key={category.id}
                                                         name={category.name}
                                                         orderEntries={this.props.orderEntries}
                                                         sortable={this.props.sortable}

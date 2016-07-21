@@ -15,7 +15,7 @@ export default class DataTableCategories extends Component {
             <th aria-controls="example1"
                 aria-label="Rendering engine: activate to sort column descending"
                 aria-sort="ascending"
-                className="sorting_asc"
+                className={this.props.className || ""}
                 colSpan="1"
                 rowSpan="1"
                 style={Object.assign(Unselectable, this.props.style)}
