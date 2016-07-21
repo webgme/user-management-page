@@ -29,6 +29,10 @@ export const ColorMenu = {
     }
 };
 
+export const ProfileImage = {
+    borderRadius: "25%"
+};
+
 export const DataTable = {
     noEntriesLabel: {
         textAlign: "center"

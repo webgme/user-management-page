@@ -11,8 +11,10 @@ import LoginField from '../../../components/content/widgets/LoginField';
 import { fetchUser } from '../../../actions/user';
 import { fetchUsers } from '../../../actions/users';
 import { verifyEmail, verifyPassword } from '../../../../client/utils/loginUtils';
+import { getUserIconSource } from '../../../../client/utils/utils';
+
 // Style
-import { ProfileBox as STYLE } from '../../../../client/style';
+import { ProfileBox as STYLE, ProfileImage as PROFILE_STYLE } from '../../../../client/style';
 
 export default class ProfileBox extends Component {
 
@@ -181,10 +183,12 @@ export default class ProfileBox extends Component {
             <div className="col-md-6 col-md-offset-3">
                 <div className="box box-primary" style={STYLE.profileBoxBorder}>
                     <div className="box-body box-profile">
+                        <img className="profile-user-img img-responsive img-circle"
+                             src={getUserIconSource(user._id)}
+                             alt="User profile picture"
+                             style={PROFILE_STYLE}/>
 
                         <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
-
-                        <p className="text-muted text-center">WebGME</p>
 
                         <ul className="list-group list-group-unbordered">
                             {/* Username */}
