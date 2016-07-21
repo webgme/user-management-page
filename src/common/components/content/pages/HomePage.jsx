@@ -57,7 +57,6 @@ export default class HomePage extends Component {
                         <div className="small-box bg-light-blue">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numViewableProjects}</h3>
-
                                 <p>Collaborator on Projects</p>
                             </div>
                             <div className="icon">
@@ -73,7 +72,6 @@ export default class HomePage extends Component {
                         <div className="small-box bg-green">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numOrganizations}</h3>
-
                                 <p>Member in Organizations</p>
                             </div>
                             <div className="icon">
@@ -90,7 +88,6 @@ export default class HomePage extends Component {
                         <div className="small-box bg-red">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numUsers}</h3>
-
                                 <p>Users on the Deployment</p>
                             </div>
                             <div className="icon">
@@ -119,8 +116,7 @@ export default class HomePage extends Component {
                     <div className="col-md-6" style={{textAlign: "-webkit-left"}}>
                         <a href="/" style={LINK_STYLE}>
                             <img src="/img/gme-logo.png"
-                                 width="150px"
-                                />
+                                 width="150px"/>
                             <br/>
                             Editor
                         </a>
