@@ -59,20 +59,21 @@ export default class DataTable extends Component {
     }
 
     render() {
+        const { categories, entries } = this.props;
 
         // Formatting table categories
         let formattedCategories = [];
-        this.props.categories.forEach(category =>
+        categories.forEach(category =>
             formattedCategories.push(<DataTableCategory className={category.className}
                                                         key={category.id}
                                                         name={category.name}
                                                         orderEntries={this.props.orderEntries}
                                                         sortable={this.props.sortable}
                                                         sortedForward={this.props.sortedForward}
-                                                        style={this.props.categoryStyle}/>));
+                                                        style={category.style} />));
 
         // Setting up bounds
-        let entriesList = this.props.entries.filter(oneEntry => {
+        let entriesList = entries.filter(oneEntry => {
                 let filterRegex = new RegExp(this.state.searchText);
                 return filterRegex.test(oneEntry.name.toLowerCase());
             }),
@@ -132,12 +133,9 @@ export default class DataTable extends Component {
         for (let i = startPage; i <= endPage; i++) {
             formattedPaginationButtons.push(
                 <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
-                    <a aria-controls="example1"
-                       data-dt-idx={i}
-                       href="#"
+                    <a href="#"
                        onClick={this.handlePagination}
-                       style={STYLE.paginationButtons.buttons}
-                       tabIndex="0">{i}</a>
+                       style={STYLE.paginationButtons.buttons}>{i}</a>
                 </li>);
         }
 
@@ -154,105 +152,91 @@ export default class DataTable extends Component {
 
         return (
             <div className="box-body">
+                <div className="row">
 
-                <div id="example1_wrapper"
-                     className="dataTables_wrapper form-inline dt-bootstrap"
-                     style={this.props.style}>
-
-                    <div className="row">
-
-                        {/* Optional title */}
-                        <div className="col-sm-6" style={{paddingTop: "8px"}}>
-                            <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
-                        </div>
-
-                        {/* Search bar */}
-                        <div className="col-sm-6">
-                            <div id="example1_filter" className="dataTables_filter" style={{float: "right"}}>
-                                <label>
-                                    <input type="text"
-                                           className="form-control input-sm"
-                                           placeholder={`Filter...`}
-                                           style={{display: totalNbrOfEntries <= 10 ? 'none' : 'inline-block'}}
-                                           value={this.state.searchText}
-                                           aria-controls="example1"
-                                           onChange={this.handleSearch}/>
-                                </label>
-                            </div>
-                        </div>
-
+                    {/* Optional title */}
+                    <div className="col-sm-6" style={{paddingTop: "8px"}}>
+                        <strong>{this.props.showOtherTitle ? this.props.content : ''}</strong>
                     </div>
 
-                    {this.props.entries.length === 0 ?
-                        <div style={STYLE.noEntriesLabel}>No {this.props.content}...</div> :
-                        <div className="row">
-
-                            <div className="col-sm-12" style={tableMinHeight}>
-                                <table aria-describedby="example1_info"
-                                       className="table table-bordered table-striped dataTable"
-                                       id="example1"
-                                       role="grid">
-
-                                    <thead>
-                                    <tr role="row">
-                                        {formattedCategories}
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    {formattedEntries}
-                                    </tbody>
-
-                                </table>
-                            </div>
-
-                        </div>}
-
-                    <div className="row">
-
-                        {/* "Showing" */}
-                        <div className="col-sm-3">
-                            {showBasedOnRawData ?
-                                <div className="dataTables_info" id="example1_info" role="status"
-                                     aria-live="polite">
-                                    <div>
-                                        <label style={STYLE.showString}>
-                                            {showString}
-                                        </label>
-                                    </div>
-                                </div> : null }
+                    {/* Search bar */}
+                    <div className="col-sm-6">
+                        <div style={{float: "right"}}>
+                            <label>
+                                <input type="text"
+                                       className="form-control input-sm"
+                                       placeholder={`Filter...`}
+                                       style={{display: totalNbrOfEntries <= 10 ? 'none' : 'inline-block'}}
+                                       value={this.state.searchText}
+                                       onChange={this.handleSearch}/>
+                            </label>
                         </div>
-
-                        {/* Pagination buttons */}
-                        <div className="col-sm-6" style={STYLE.paginationButtons.column}>
-                            {showPagination ?
-                                <DataTablePagination clickHandler={this.handlePagination}
-                                                     formattedPaginationButtons={formattedPaginationButtons}
-                                                     numPages={numPages}
-                                                     pageNumber={this.state.pageNumber}/> : null }
-                        </div>
-
-                        {/* Select dropdown */}
-                        <div className="col-sm-3" style={STYLE.selectDropdown.column}>
-                            {showBasedOnRawData ?
-                                <div className="dataTables_length" id="example1_length">
-                                    <label style={STYLE.selectDropdown.label}>Items per page:
-                                        <select name="example1_length"
-                                                aria-controls="example1"
-                                                className="form-control input-sm"
-                                                onChange={this.handleSelect}
-                                                style={STYLE.selectDropdown.options}>
-
-                                            {formattedSelectOptions}
-
-                                        </select>
-                                    </label>
-                                </div> : null}
-                        </div>
-
                     </div>
+
                 </div>
 
+                {this.props.entries.length === 0 ?
+                    <div style={STYLE.noEntriesLabel}>No {this.props.content}...</div> :
+                    <div className="row">
+
+                        <div className="col-sm-12" style={tableMinHeight}>
+                            <table className="table table-bordered table-striped dataTable">
+
+                                <thead>
+                                <tr role="row">
+                                    {formattedCategories}
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {formattedEntries}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>}
+
+                <div className="row">
+
+                    {/* "Showing" */}
+                    <div className="col-sm-3">
+                        {showBasedOnRawData ?
+                            <div className="dataTables_info" id="example1_info" role="status">
+                                <div>
+                                    <label style={STYLE.showString}>
+                                        {showString}
+                                    </label>
+                                </div>
+                            </div> : null }
+                    </div>
+
+                    {/* Pagination buttons */}
+                    <div className="col-sm-6" style={STYLE.paginationButtons.column}>
+                        {showPagination ?
+                            <DataTablePagination clickHandler={this.handlePagination}
+                                                 formattedPaginationButtons={formattedPaginationButtons}
+                                                 numPages={numPages}
+                                                 pageNumber={this.state.pageNumber}/> : null }
+                    </div>
+
+                    {/* Select dropdown */}
+                    <div className="col-sm-3" style={STYLE.selectDropdown.column}>
+                        {showBasedOnRawData ?
+                            <div>
+                                <label style={STYLE.selectDropdown.label}>Items per page:
+                                    <select className="form-control input-sm"
+                                            onChange={this.handleSelect}
+                                            style={STYLE.selectDropdown.options}>
+
+                                        {formattedSelectOptions}
+
+                                    </select>
+                                </label>
+                            </div> : null}
+                    </div>
+
+                </div>
             </div>
         );
     }

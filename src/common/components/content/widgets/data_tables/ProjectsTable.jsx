@@ -1,5 +1,3 @@
-/* global window */
-
 /**
  * Container widget for the projects data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -44,19 +42,18 @@ export default class ProjectsTable extends Component {
     }
 
     render() {
-
-        const { projects, sortedForward } = this.props;
+        const { pathname, projects, sortedForward } = this.props;
 
         const categories = [
-            {id: 1, name: 'Owner'},
-            {id: 2, name: 'Project Name'},
-            {id: 3, name: 'Last Viewed', className: "hidden-xs"},
-            {id: 4, name: 'Last Changed', className: "hidden-xs"},
-            {id: 5, name: 'Created At', className: "hidden-xs"}
+            {id: 1, name: 'Owner', style: {width: "13%"}},
+            {id: 2, name: 'Project Name', style: {width: "50%"}},
+            {id: 3, name: 'Last Viewed', className: "hidden-xs", style: {width: "13%"}},
+            {id: 4, name: 'Last Changed', className: "hidden-xs", style: {width: "13%"}},
+            {id: 5, name: 'Created At', className: "hidden-xs", style: {width: "13%"}}
         ];
 
         // Will be 'projects' if in the projects page, if in projectsByOwner then will be ownerId
-        const ownerId = window.location.pathname.split('/').slice(-1)[0];
+        const ownerId = pathname.split('/').pop();
 
         return (
 
@@ -75,7 +72,7 @@ export default class ProjectsTable extends Component {
                            orderEntries={this.handleOrderEntries}
                            sortable={true}
                            sortedForward={sortedForward}>
-                    <ProjectsDataTableEntry columnStyle={{width: "13%"}}/>
+                    <ProjectsDataTableEntry />
                 </DataTable>
 
             </div>
