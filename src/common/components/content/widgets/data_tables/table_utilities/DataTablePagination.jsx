@@ -13,17 +13,13 @@ export default class DataTableEntry extends Component {
     render() {
         return (
             <div className="dataTables_paginate paging_simple_numbers"
-                    id="example1_paginate"
                     style={{fontSize: "12px"}}>
                 <ul className="pagination" style={{margin: 0}}>
                     <li id="example1_previous"
                         className={this.props.pageNumber === 1 ? "paginate_button previous disabled" :
                                                                  "paginate_button previous"}
                         onClick={this.props.pageNumber === 1 ? null : this.props.clickHandler}>
-                        <a data-dt-idx="0"
-                           href="#" aria-controls="example1"
-                           style={STYLE.unselectable}
-                           tabIndex="0">Previous</a>
+                        <a href="#" style={STYLE.unselectable}>Previous</a>
                     </li>
 
                     {this.props.formattedPaginationButtons}
@@ -32,11 +28,7 @@ export default class DataTableEntry extends Component {
                         className={this.props.pageNumber === this.props.numPages ? "paginate_button next disabled" :
                                                                                    "paginate_button next"}
                         onClick={this.props.pageNumber === this.props.numPages ? null : this.props.clickHandler}>
-                        <a aria-controls="example1"
-                           data-dt-idx="7"
-                           href="#"
-                           style={STYLE.unselectable}
-                           tabIndex="0">Next</a>
+                        <a href="#" style={STYLE.unselectable}>Next</a>
                     </li>
                 </ul>
             </div>

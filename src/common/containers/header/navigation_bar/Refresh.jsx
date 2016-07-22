@@ -1,3 +1,5 @@
+/* global window */
+
 /**
  * Refresh container
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -15,7 +17,7 @@ import { refreshTables } from '../../../actions/tables';
 
 const actions = [fetchUser, fetchUsers, fetchProjects, fetchOrganizations, refreshTables];
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         refresh: (event) => {
             // Release focus
@@ -27,10 +29,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
             // Refresh the commits if in singular project page
             const { pathname } = window.location;
-            if(/projects\/\S+\/\S+$/.test(pathname)) {
+            if (/projects\/\S+\/\S+$/.test(pathname)) {
                 const pathParams = pathname.split('/');
-                const ownerId = pathParams[pathParams.length - 2];
-                const projectName = pathParams[pathParams.length - 1];
+                const projectName = pathParams.pop();
+                const ownerId = pathParams.pop();
                 dispatch(fetchCommits(ownerId, projectName));
             }
         }

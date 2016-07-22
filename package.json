@@ -4,6 +4,7 @@
   "description": "User management page for webgme",
   "main": "./src/server/usermanagement.js",
   "scripts": {
+    "eslint": "node ./node_modules/eslint/bin/eslint.js ./src/*",
     "postinstall": "webpack",
     "production": "set NODE_ENV=production&& webpack",
     "start": "node app.js",

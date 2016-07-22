@@ -71,7 +71,7 @@ export const DataTable = {
 
 export const Unselectable = {
     WebkitUserSelect: "none",
-        KhtmlUserSelect: "none",
+    KhtmlUserSelect: "none",
     MozUserSelect: "none",
     MsUserSelect: "none",
     OUserSelect: "none",
@@ -89,7 +89,8 @@ export const DataTablePagination = {
         OUserSelect: "none",
         userSelect: "none",
         outlineStyle: "none",
-        WebkitTapHighlightColor: "transparent"}
+        WebkitTapHighlightColor: "transparent"
+    }
 };
 
 export const Footer = {

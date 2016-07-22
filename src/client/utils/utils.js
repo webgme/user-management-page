@@ -299,7 +299,7 @@ export const processCommitsBar = (commits) => {
  * @param {Array} commits - commits
  * @param {string} userId - userId
  * @param {Number} display - 1 for total, 2 for only user
- * @return {{labels: Array, datasets: Array}}
+ * @return {{labels: Array, datasets: Array}} projects linechart data
  */
 export const processProjectsCommitsLine = (commits, userId, display) => {
     let timesCommitted = {};
@@ -382,7 +382,6 @@ const getIndexIntoTimeArray = (time, now, partitionSize, numPartitions) => {
 
 /**
  * Helper to get default state for commit line chart
- * @param {string} userId - userId
  * @param {Number} numPartitions - number of partitions
  * @return {Array} default data
  */
@@ -418,8 +417,6 @@ export const getDefaultDoughnutData = () => {
 /**
  * Commit processing for an individual project
  * @param {Array} commits - commits
- * @param {string} userId - id of current user
- * @param {number} display - 1 indicates total, 2 indicates only current user's commits
  * @return {{labels: Array, datasets: Array}} (Structure of react-chartjs)
  */
 export const processProjectCommitsLine = (commits) => {
@@ -505,7 +502,7 @@ export const getUserIconSource = (userId) => {
         // bgcolor: '#aaa', // choose a different background color, default: random
         size: 6, // width/height of the icon in blocks, default: 8
         scale: 8 // width/height of each block in pixels, default: 4
-        //spotcolor: '#000' // each pixel has a 13% chance of being of a third color,
+        // spotcolor: '#000' // each pixel has a 13% chance of being of a third color,
         // default: random. Set to -1 to disable it. These "spots" create structures
         // that look like eyes, mouths and noses.
     });

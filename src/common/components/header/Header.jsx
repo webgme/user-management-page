@@ -30,13 +30,13 @@ export default class Header extends React.Component {
             parameters = pathWithoutBase.split('/');
 
         // Always have home
-        //breadcrumbs.push(
+        // breadcrumbs.push(
         //    <li style={STYLE.breadCrumbListItem} key={0}>
         //        <Link to={basePath} style={STYLE.breadCrumbLink}>
         //            <i className="fa fa-home" style={STYLE.breadCrumbIcon}/>
         //        </Link>
         //    </li>
-        //);
+        // );
 
         let rest = parameters[0] === 'home' ? parameters.slice(1) : parameters;
         let cumulative = '';
@@ -59,40 +59,42 @@ export default class Header extends React.Component {
                 </span>);
         }
 
-        return <header className="main-header">
+        return (
+            <header className="main-header">
 
-            <Link to={`${basePath}`} className="logo" style={{textDecoration: "none"}}>
-                <span className="logo-mini"><b>GME</b></span>
-                <span className="logo-lg"><b>GME</b>Profile</span>
-            </Link>
+                <Link to={`${basePath}`} className="logo" style={{textDecoration: "none"}}>
+                    <span className="logo-mini"><b>GME</b></span>
+                    <span className="logo-lg"><b>GME</b>Profile</span>
+                </Link>
 
-            <nav className="navbar navbar-static-top" role="navigation">
+                <nav className="navbar navbar-static-top" role="navigation">
 
-                <a href="#" className="sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span className="sr-only">Toggle navigation</span>
-                </a>
+                    <a href="#" className="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span className="sr-only">Toggle navigation</span>
+                    </a>
 
-                <ol className="dropdown messages-menu hidden-xs" style={STYLE.breadCrumb}>
-                    {breadcrumbs}
-                </ol>
+                    <ol className="dropdown messages-menu hidden-xs" style={STYLE.breadCrumb}>
+                        {breadcrumbs}
+                    </ol>
 
-                <div className="navbar-custom-menu">
-                    <ul className="nav navbar-nav">
+                    <div className="navbar-custom-menu">
+                        <ul className="nav navbar-nav">
 
-                        <Refresh />
+                            <Refresh />
 
-                        <ColorMenu />
+                            <ColorMenu />
 
-                        <UserMenu />
+                            <UserMenu />
 
-                        {/* <SettingsMenu/> */}
+                            {/* <SettingsMenu/> */}
 
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-            </nav>
+                </nav>
 
-        </header>;
+            </header>
+        );
     }
 
 }
