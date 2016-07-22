@@ -81,6 +81,8 @@ export default class ProjectPage extends Component {
                                                userId={user ? user._id : ''} />
 
                         <ProjectSelectableChart ownerId={ownerId}
+                                                height={300}
+                                                width={500}
                                                 projectName={projectName} />
 
                     </div>

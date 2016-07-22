@@ -25,7 +25,8 @@ export default class ProjectSelectableCharts extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chart: 'Bar'
+            chart: 'Bar',
+            componentWidth: this.props.width
         };
         // Event handlers
         this.onChartChange = this.onChartChange.bind(this);
@@ -35,7 +36,21 @@ export default class ProjectSelectableCharts extends Component {
         const { dispatch } = this.props;
 
         dispatch(fetchProjectsIfNeeded());
+        this.setState({
+            componentWidth: document.getElementById("selectableChartBox").offsetWidth
+        });
     }
+
+    componentDidUpdate() {
+        const newWidth = document.getElementById("selectableChartBox").offsetWidth;
+
+        if (newWidth !== this.state.componentWidth) {
+            this.setState({
+                componentWidth: document.getElementById("selectableChartBox").offsetWidth
+            });
+        }
+    }
+
     onChartChange(event) {
         // Release focus
         event.target.blur();
@@ -46,11 +61,12 @@ export default class ProjectSelectableCharts extends Component {
     }
 
     render() {
-        const { chart, lineChartDisplay } = this.state;
-        const { info, ownerId, projectName, unavailable } = this.props;
+        const { chart, componentWidth } = this.state;
+        const { info, ownerId, projectName, unavailable, height, width } = this.props;
+        const displayInfoInline = componentWidth > (width + 100);
 
         return (
-            <div className="row">
+            <div className="row" id="selectableChartBox">
                 <div className="col-md-12">
                     <div className="box">
 
@@ -71,53 +87,81 @@ export default class ProjectSelectableCharts extends Component {
 
                         {/* Chart body */}
                         <div className="row">
-                            <div className="col-md-9">
+                            <div className={`col-md-${displayInfoInline ? 9 : 12}`}>
                                 <div className="box-body">
                                     {chart === 'Bar' ?
-                                        <CollaboratorsCommitsBarChart height={300}
+                                        <CollaboratorsCommitsBarChart height={height}
                                                                       ownerId={ownerId}
                                                                       projectName={projectName}
-                                                                      width={500}/> : null}
+                                                                      width={componentWidth}/> : null}
                                     {chart === 'Line' ?
-                                        <ProjectCommitsLineChart display={lineChartDisplay}
-                                                                 height={300}
+                                        <ProjectCommitsLineChart height={height}
                                                                  ownerId={ownerId}
                                                                  projectName={projectName}
-                                                                 width={500}/> : null}
+                                                                 width={width}/> : null}
                                     {chart === 'Doughnut' ?
-                                        <CommitsDoughnutChart display={lineChartDisplay}
-                                                              height={300}
+                                        <CommitsDoughnutChart height={height}
                                                               ownerId={ownerId}
                                                               projectName={projectName}
-                                                              width={500}/> : null}
+                                                              width={width}/> : null}
                                 </div>
                             </div>
-                            <div className="col-md-3" style={{paddingRight: "30px"}}>
-                                <strong>Last Modified</strong>
-                                <br/>
-                                <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
-                                </i>
+                            {displayInfoInline ?
+                                <div className="col-md-3" style={{textAlign: "-webkit-center"}}>
+                                    <br/>
+                                    <strong>Last Modified</strong>
+                                    <br/>
+                                    <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
+                                        <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
+                                    </i>
 
-                                <br/><br/><br/>
+                                    <br/><br/><br/>
 
-                                <strong>Last Viewed</strong>
-                                <br/>
-                                <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
-                                </i>
+                                    <strong>Last Viewed</strong>
+                                    <br/>
+                                    <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
+                                        <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
+                                    </i>
 
-                                <br/><br/><br/>
+                                    <br/><br/><br/>
 
-                                <strong>Created At</strong>
-                                <br/>
-                                <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
-                                    <br/>{`by ${info.creator ? info.creator : unavailable}`}
-                                </i>
+                                    <strong>Created At</strong>
+                                    <br/>
+                                    <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
+                                        <br/>{`by ${info.creator ? info.creator : unavailable}`}
+                                    </i>
 
-                                <br/><br/><br/>
+                                    <br/><br/><br/>
 
-                            </div>
+                                </div> :
+                                <div className="col-md-12" style={{textAlign: "-webkit-center"}}>
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <strong>Last Modified</strong>
+                                            <br/>
+                                            <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
+                                                <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
+                                            </i>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <strong>Last Viewed</strong>
+                                            <br/>
+                                            <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
+                                                <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
+                                            </i>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <strong>Created At</strong>
+                                            <br/>
+                                            <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
+                                                <br/>{`by ${info.creator ? info.creator : unavailable}`}
+                                            </i>
+                                        </div>
+                                    </div>
+
+                                </div>}
                         </div>
 
                     </div>
