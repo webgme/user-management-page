@@ -33,7 +33,8 @@ export default class App extends Component {
         return (
             <div className={`wrapper skin-${themeColor}`}>
 
-                <Header basePath={this.props.route.basePath} />
+                <Header basePath={this.props.route.basePath}
+                        pathname={pathname} />
 
                 <SideBar pathname={pathname} />
 

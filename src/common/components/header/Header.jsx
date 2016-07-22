@@ -23,8 +23,7 @@ export default class Header extends React.Component {
     }
 
     render() {
-        const { basePath } = this.props;
-        const { pathname } = window.location;
+        const { basePath, pathname } = this.props;
 
         let breadcrumbs = [],
             pathWithoutBase = pathname.replace(basePath, ''),

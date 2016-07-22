@@ -12,6 +12,7 @@ export default class ProjectsPage extends Component {
 
     render() {
         const { pathname } = this.props;
+
         return (
             <section className="content">
 
