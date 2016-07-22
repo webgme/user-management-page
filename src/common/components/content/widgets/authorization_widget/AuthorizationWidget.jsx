@@ -32,17 +32,21 @@ export default class AuthorizationWidget extends Component {
         // Submit buttons
         let submitButtons = [];
         this.props.submitButtons.forEach((button, index) => {
-            submitButtons.push(
-                <Button bsStyle={button.state}
-                        className={(this.props.disableLast && index === this.props.submitButtons.length - 1 &&
+            if (!(this.props.disableLast && index === this.props.submitButtons.length - 1 &&
+                this.props.noneSelected)) {
+                submitButtons.push(
+                    <Button bsStyle={button.state}
+                            className={(this.props.disableLast && index === this.props.submitButtons.length - 1 &&
                                     button.disabled) ? "disabled" : ""}
-                        key={index}
-                        onClick={this.props.disableLast && index === this.props.submitButtons.length - 1 &&
+                            key={index}
+
+                            onClick={this.props.disableLast && index === this.props.submitButtons.length - 1 &&
                                     this.props.noneSelected ? event => event.target.blur() :
                                                                   button.onChange}>
-                    {button.text}
-                </Button>
-            );
+                        {button.text}
+                    </Button>
+                );
+            }
         });
 
         return (

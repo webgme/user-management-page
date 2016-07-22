@@ -27,6 +27,7 @@ export default class ProfilePage extends Component {
 
                 <ProfileBox dispatch={dispatch}
                             editable={true}
+                            isCurrentUser={true}
                             restClient={restClient}
                             user={user} />
 

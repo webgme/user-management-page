@@ -29,7 +29,7 @@ export default class UserPage extends Component {
         return (
             <section className="content" style={STYLE.profileBox}>
 
-                <div className="col-md-6 col-md-offset-3" style={{textAlign: "center"}}>
+                {/*<div className="col-md-6 col-md-offset-3" style={{textAlign: "center"}}>
                     <Link to={`${basePath}projects/${user._id}`}>
                         <Button bsStyle="primary">
                             Go To Viewable Projects By {user._id}
@@ -37,7 +37,7 @@ export default class UserPage extends Component {
                     </Link>
                 </div>
 
-                <br/><br/><br/>
+                <br/><br/><br/>*/}
 
                 <ProfileBox dispatch={dispatch}
                             editable={editable}
