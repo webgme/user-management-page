@@ -94,7 +94,7 @@ const shouldFetchCommits = (ownerId, projectName, numCommits, state) => {
     return shouldFetch;
 };
 
-export const fetchCommits = (ownerId, projectName, numCommits) => {
+export const fetchCommits = (ownerId, projectName, numCommits = 100) => {
     return (dispatch) => {
         dispatch(requestCommits(ownerId, projectName, numCommits));
         return projectsClient.getLatestCommits(ownerId, projectName, numCommits)

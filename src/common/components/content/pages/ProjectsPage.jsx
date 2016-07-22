@@ -11,12 +11,13 @@ import ProjectsTable from '../../../containers/content/widgets/data_tables/Proje
 export default class ProjectsPage extends Component {
 
     render() {
+        const { pathname } = this.props;
         return (
             <section className="content">
 
                 <div className="box box-primary">
 
-                    <ProjectsTable pathname={this.props.location.pathname}/>
+                    <ProjectsTable pathname={pathname}/>
 
                 </div>
 

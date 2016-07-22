@@ -12,6 +12,7 @@ import SideBarUserPanel from '../../containers/sidebar/SideBarUserPanel';
 export default class SideBar extends Component {
 
     render() {
+        const { pathname } = this.props;
 
         return (
             <aside className="main-sidebar">
@@ -20,7 +21,7 @@ export default class SideBar extends Component {
 
                     <SideBarUserPanel/>
 
-                    <SideBarMenu location={this.props.location}/>
+                    <SideBarMenu pathname={pathname} />
 
                 </section>
 

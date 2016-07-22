@@ -24,10 +24,10 @@ export default class Header extends React.Component {
 
     render() {
         const { basePath } = this.props;
+        const { pathname } = window.location;
 
         let breadcrumbs = [],
-            location = window.location.pathname,
-            pathWithoutBase = location.replace(basePath, ''),
+            pathWithoutBase = pathname.replace(basePath, ''),
             parameters = pathWithoutBase.split('/');
 
         // Always have home
@@ -84,7 +84,7 @@ export default class Header extends React.Component {
 
                         <ColorMenu />
 
-                        <UserMenu basePath={basePath} />
+                        <UserMenu />
 
                         {/* <SettingsMenu/> */}
 

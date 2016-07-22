@@ -11,6 +11,7 @@ import React, { Component } from 'react';
 import OrganizationsTable from '../../../containers/content/widgets/data_tables/OrganizationsTable';
 import { verifyUserOrOrganizationId } from '../../../../client/utils/loginUtils';
 import { fetchOrganizations } from '../../../actions/organizations';
+import { fetchUser } from '../../../actions/user';
 // Style
 import { OrganizationsPage as STYLE } from '../../../../client/style';
 
@@ -61,6 +62,8 @@ export default class OrganizationsPage extends Component {
                             });
                             // Refresh table
                             dispatch(fetchOrganizations());
+                            // Refresh user for user.orgs
+                            dispatch(fetchUser());
                         })
                         .catch(err => {
                             if (err.status === 400) {

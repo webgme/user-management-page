@@ -9,9 +9,11 @@ import React, { Component } from 'react';
 export default class ContentWrapper extends Component {
 
     render() {
+        const { pathname, restClient } = this.props;
 
         const PageWithRestClient = React.cloneElement(this.props.children, {
-            restClient: this.props.restClient
+            pathname,
+            restClient
         });
 
         return <div className="content-wrapper">
