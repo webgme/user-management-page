@@ -457,7 +457,6 @@ export const processProjectCommitsLine = (commits) => {
         });
     });
 
-    console.log('datasets: ', datasets);
     return {
         labels: getPastWeeksDays(),
         datasets: datasets.length > 0 ? datasets : getDefaultDataset(numPartitions)

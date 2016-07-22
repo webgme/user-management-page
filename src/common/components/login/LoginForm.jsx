@@ -133,7 +133,7 @@ export default class LoginForm extends Component {
 
                 {/* Password */}
                 <LoginField hint="Password"
-                                iconClass="glyphicon glyphicon-lock"
+                            iconClass="glyphicon glyphicon-lock"
                             name="password"
                             onEnter={this.onLogIn}
                             onInputChange={this.onPasswordChange}
