@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
     return {
         sortCategory,
         sortedForward,
-        userId: user._id,
+        user: user,
         users: sortWithChecks(formattedUsers, sortCategory, sortedForward)
     };
 };
