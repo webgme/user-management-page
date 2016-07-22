@@ -45,6 +45,7 @@ export default class RegisterForm extends Component {
 
         // Event handlers
         this.checkAllFields = this.checkAllFields.bind(this);
+        this.checkConfirmPassword = this.checkConfirmPassword.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
         this.checkPassword = this.checkPassword.bind(this);
         this.checkUserId = this.checkUserId.bind(this);
@@ -73,6 +74,18 @@ export default class RegisterForm extends Component {
                 email: verifyEmail(this.state.email),
                 password: verifyPassword(this.state.password),
                 userId: verifyUserOrOrganizationId(this.state.userId)
+            }
+        });
+    }
+
+    checkConfirmPassword() {
+        this.setState({
+            validCredentials: {
+                // agreeToTerms: this.state.agreeToTerms,
+                confirmPassword: this.state.password === this.state.confirmPassword,
+                email: this.state.validCredentials.email,
+                password: this.state.validCredentials.password,
+                userId: this.state.validCredentials.userId
             }
         });
     }
@@ -247,6 +260,7 @@ export default class RegisterForm extends Component {
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
                             invalidMessage={this.state.invalidMessage.confirmPassword}
+                            onBlur={this.checkConfirmPassword}
                             onEnter={this.onRegister}
                             onInputChange={this.onConfirmPasswordChange}
                             textType="password"
