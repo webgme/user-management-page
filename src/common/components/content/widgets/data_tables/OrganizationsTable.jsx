@@ -99,6 +99,7 @@ export default class OrganizationsTable extends Component {
                                 iconClass="fa fa-institution"
                                 name="organization"
                                 onBlur={this.props.checkOrganizationName}
+                                onEnter={this.props.createOrganization}
                                 onInputChange={this.props.onCreateOrganizationNameChange}
                                 indentStyle={STYLE.modalDialogTextField}
                                 invalidMessage={this.props.createOrganizationInvalidMessage}

@@ -207,8 +207,8 @@ export function retrieveCollaborators(organizations, users, projectId) {
             inOrg: usersWithAccess[user].inOrg,
             name: user,
             orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
-            rights: usersWithAccess[user].delete ? 'Read Write Delete' :
-                    usersWithAccess[user].write ? 'Read Write' :
+            rights: usersWithAccess[user].delete ? 'Read Write Delete' : // eslint-disable-line no-nested-ternary
+                    usersWithAccess[user].write ? 'Read Write' : // eslint-disable-line no-nested-ternary
                     usersWithAccess[user].read ? 'Read' : '',
             userRightsOrigin: usersWithAccess[user].userRightsOrigin
         });
@@ -220,8 +220,8 @@ export function retrieveCollaborators(organizations, users, projectId) {
             isOrg: true,
             name: organization,
             orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
-            rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' :
-                    organizationsWithAccess[organization].write ? 'Read Write' :
+            rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' : // eslint-disable-line no-nested-ternary, max-len
+                    organizationsWithAccess[organization].write ? 'Read Write' : // eslint-disable-line no-nested-ternary, max-len
                     organizationsWithAccess[organization].read ? 'Read' : ''
         });
     });

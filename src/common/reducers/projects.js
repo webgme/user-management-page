@@ -3,8 +3,8 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import { RECEIVE_PROJECTS, REQUEST_PROJECTS } from '../actions/projects';
-import { RECEIVE_COMMITS, REQUEST_COMMITS } from '../actions/projects';
+import { RECEIVE_COMMITS, REQUEST_COMMITS,
+         RECEIVE_PROJECTS, REQUEST_PROJECTS } from '../actions/projects';
 
 const initialState = {
     /* Structure of initailState.commits:
