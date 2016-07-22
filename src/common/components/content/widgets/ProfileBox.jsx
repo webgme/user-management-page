@@ -120,7 +120,7 @@ export default class ProfileBox extends Component {
         event.target.blur();
 
         this.setState({
-            siteAdmin: event.target.id === 'Yes'
+            siteAdmin: event.target.checked
         });
     }
 
@@ -205,28 +205,26 @@ export default class ProfileBox extends Component {
                                 <span className="input-group-addon">
                                     <i className="glyphicon glyphicon-check"/>
                                 </span>
-                                    <div className="row">
-
-                                        <div className="col-md-8">
-                                            <input className="form-control"
-                                                   disabled={!user.siteAdmin}
-                                                   value="Site Admin"/>
-                                        </div>
-
-                                        <div className="col-md-4" style={{float: "right"}}>
-                                            <ButtonGroup>
-                                                <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
-                                                        disabled={!editable}
-                                                        onClick={this.onSiteAdminChange}
-                                                        id="Yes">Yes</Button>
-                                                <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
-                                                        disabled={!editable}
-                                                        onClick={this.onSiteAdminChange}
-                                                        id="No">No</Button>
-                                            </ButtonGroup>
-                                        </div>
-
-                                    </div>
+                                <input className="form-control"
+                                       disabled={true}
+                                       value="Site Admin"/>
+                                <span className="input-group-addon">
+                                    <input type="checkbox"
+                                           onChange={this.onSiteAdminChange}
+                                           disabled={!editable}
+                                           checked={this.state.siteAdmin}
+                                           aria-label="Checkbox for following text input"/>
+                                </span>
+                                    {/*<ButtonGroup>
+                                    <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
+                                            disabled={!editable}
+                                            onClick={this.onSiteAdminChange}
+                                            id="Yes">Yes</Button>
+                                    <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
+                                            disabled={!editable}
+                                            onClick={this.onSiteAdminChange}
+                                            id="No">No</Button>
+                                </ButtonGroup>*/}
                                 </div>
 
                                 <br/>
