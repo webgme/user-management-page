@@ -71,7 +71,7 @@ export default class AuthorizationWidget extends Component {
                                                         delayShow={1000}
                                                         overlay={
                                             <Popover title={this.props.selectableButtonsHelperTitle} id="btn-pop">
-                                                {this.props.selectableButtonsHelperText}Hello..
+                                                {this.props.selectableButtonsHelperText}
                                             </Popover>}>
                                         <ButtonGroup>
                                             {selectableButtons}

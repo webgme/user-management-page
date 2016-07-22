@@ -247,6 +247,7 @@ export default class RegisterForm extends Component {
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
                             invalidMessage={this.state.invalidMessage.confirmPassword}
+                            onEnter={this.onRegister}
                             onInputChange={this.onConfirmPasswordChange}
                             textType="password"
                             valid={this.state.validCredentials.confirmPassword}
