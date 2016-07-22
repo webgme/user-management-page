@@ -4,17 +4,17 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import React, {Component, PropTypes} from 'react';
+import {Button, ButtonGroup} from 'react-bootstrap';
 // Self-defined
 import LoginField from '../../../components/content/widgets/LoginField';
-import { fetchUser } from '../../../actions/user';
-import { fetchUsers } from '../../../actions/users';
-import { verifyEmail, verifyPassword } from '../../../../client/utils/loginUtils';
-import { getUserIconSource } from '../../../../client/utils/utils';
+import {fetchUser} from '../../../actions/user';
+import {fetchUsers} from '../../../actions/users';
+import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
+import {getUserIconSource} from '../../../../client/utils/utils';
 
 // Style
-import { ProfileBox as STYLE, ProfileImage as PROFILE_STYLE } from '../../../../client/style';
+import {ProfileBox as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';
 
 export default class ProfileBox extends Component {
 
@@ -35,7 +35,8 @@ export default class ProfileBox extends Component {
                 confirmPassword: true,
                 email: true,
                 password: true
-            }
+            },
+            hasEdits: false
         };
         // Event handlers
         this.checkAllFields = this.checkAllFields.bind(this);
@@ -99,19 +100,22 @@ export default class ProfileBox extends Component {
 
     onConfirmPasswordChange(event) {
         this.setState({
-            confirmPassword: event.target.value
+            confirmPassword: event.target.value,
+            hasEdits: true
         });
     }
 
     onEmailChange(event) {
         this.setState({
-            email: event.target.value
+            email: event.target.value,
+            hasEdits: true
         });
     }
 
     onPasswordChange(event) {
         this.setState({
-            password: event.target.value
+            password: event.target.value,
+            hasEdits: true
         });
     }
 
@@ -120,7 +124,8 @@ export default class ProfileBox extends Component {
         event.target.blur();
 
         this.setState({
-            siteAdmin: event.target.checked
+            siteAdmin: event.target.checked,
+            hasEdits: true
         });
     }
 
@@ -128,7 +133,7 @@ export default class ProfileBox extends Component {
         // Release focus
         event.target.blur();
 
-        const { dispatch, editable, user } = this.props;
+        const {dispatch, editable, user} = this.props;
 
         Promise.resolve(this.checkAllFields())
             .then(() => {
@@ -143,28 +148,55 @@ export default class ProfileBox extends Component {
                     if (this.state.password !== '') {
                         updatedUser.password = this.state.password;
                     }
-                    if (editable) {
+                    if (editable && !this.props.isCurrentUser) {
                         updatedUser.siteAdmin = this.state.siteAdmin;
                     }
 
-                    this.props.restClient.users.updateUser(user._id, updatedUser)
-                        .then(() => {
-                            this.setState({
-                                password: '',
-                                confirmPassword: '',
-                                validCredentials: {
-                                    confirmPassword: this.state.password === this.state.confirmPassword,
-                                    email: true,
-                                    password: true
-                                }
+                    if (this.props.isCurrentUser) {
+                        this.props.restClient.user.updateCurrentUser(updatedUser)
+                            .then(() => {
+                                this.setState({
+                                    password: '',
+                                    confirmPassword: '',
+                                    validCredentials: {
+                                        confirmPassword: this.state.password === this.state.confirmPassword,
+                                        email: true,
+                                        password: true
+                                    },
+                                    hasEdits: false
+                                });
+                                // Refresh user
+                                dispatch(fetchUser());
+                                dispatch(fetchUsers());
+                            })
+                            .catch((err) => {
+                                console.error('Error:', err); // eslint-disable-line no-console
+                                dispatch(fetchUser());
+                                dispatch(fetchUsers());
                             });
-                            // Refresh user
-                            dispatch(fetchUser());
-                            dispatch(fetchUsers());
-                        })
-                        .catch((err) => {
-                            console.error('Error:', err); // eslint-disable-line no-console
-                        });
+                    } else {
+                        this.props.restClient.users.updateUser(user._id, updatedUser)
+                            .then(() => {
+                                this.setState({
+                                    password: '',
+                                    confirmPassword: '',
+                                    validCredentials: {
+                                        confirmPassword: this.state.password === this.state.confirmPassword,
+                                        email: true,
+                                        password: true
+                                    },
+                                    hasEdits: false
+                                });
+                                // Refresh user
+                                dispatch(fetchUser());
+                                dispatch(fetchUsers());
+                            })
+                            .catch((err) => {
+                                console.error('Error:', err); // eslint-disable-line no-console
+                                dispatch(fetchUser());
+                                dispatch(fetchUsers());
+                            });
+                    }
                 } else {
                     // Reset fields
                     this.setState({
@@ -177,7 +209,7 @@ export default class ProfileBox extends Component {
     }
 
     render() {
-        const { editable, user } = this.props;
+        const {editable, user} = this.props;
 
         return (
             <div className="col-md-6 col-md-offset-3">
@@ -201,32 +233,22 @@ export default class ProfileBox extends Component {
                             {/* Custom Site Admin */}
                             <div>
                                 <div className={`input-group`}>
-
-                                <span className="input-group-addon">
-                                    <i className="glyphicon glyphicon-check"/>
-                                </span>
-                                <input className="form-control"
-                                       disabled={true}
-                                       value="Site Admin"/>
-                                <span className="input-group-addon">
-                                    <input type="checkbox"
-                                           onChange={this.onSiteAdminChange}
-                                           disabled={!editable}
-                                           checked={this.state.siteAdmin}
-                                           aria-label="Checkbox for following text input"/>
-                                </span>
-                                    {/*<ButtonGroup>
-                                    <Button bsStyle={this.state.siteAdmin ? "primary" : "default"}
-                                            disabled={!editable}
-                                            onClick={this.onSiteAdminChange}
-                                            id="Yes">Yes</Button>
-                                    <Button bsStyle={this.state.siteAdmin ? "default" : "primary"}
-                                            disabled={!editable}
-                                            onClick={this.onSiteAdminChange}
-                                            id="No">No</Button>
-                                </ButtonGroup>*/}
+                                    <span className="input-group-addon">
+                                        <i className="glyphicon glyphicon-check"/>
+                                    </span>
+                                        <input className="form-control"
+                                               readOnly={true}
+                                               disabled={!editable || this.props.isCurrentUser}
+                                               value="Site Admin"/>
+                                    <span className="input-group-addon">
+                                        <input type="checkbox"
+                                               onChange={this.onSiteAdminChange}
+                                               disabled={!editable || this.props.isCurrentUser}
+                                               readOnly={!editable || this.props.isCurrentUser}
+                                               checked={this.state.siteAdmin}
+                                               aria-label="Checkbox for following text input"/>
+                                    </span>
                                 </div>
-
                                 <br/>
                             </div>
                             {/* Email */}
@@ -240,35 +262,35 @@ export default class ProfileBox extends Component {
                                         value={this.state.email ? this.state.email : ''}/>
                             {/* New Password */}
                             {editable ?
-                            <LoginField hint="New Password"
-                                        iconClass="glyphicon glyphicon-lock"
-                                        invalidMessage={this.state.invalidMessage.password}
-                                        name="password"
-                                        onBlur={this.checkPassword}
-                                        onInputChange={this.onPasswordChange}
-                                        textType="password"
-                                        valid={this.state.validCredentials.password}
-                                        value={this.state.password}/> : null}
+                                <LoginField hint="New Password"
+                                            iconClass="glyphicon glyphicon-lock"
+                                            invalidMessage={this.state.invalidMessage.password}
+                                            name="password"
+                                            onBlur={this.checkPassword}
+                                            onInputChange={this.onPasswordChange}
+                                            textType="password"
+                                            valid={this.state.validCredentials.password}
+                                            value={this.state.password}/> : null}
                             {/* Confirm New Password */}
                             {editable ?
-                            <LoginField hint="Confirm New Password"
-                                        iconClass="glyphicon glyphicon-log-in"
-                                        invalidMessage={this.state.invalidMessage.confirmPassword}
-                                        name="confirm-password"
-                                        onBlur={this.checkConfirmPassword}
-                                        onInputChange={this.onConfirmPasswordChange}
-                                        textType="password"
-                                        valid={this.state.validCredentials.confirmPassword}
-                                        value={this.state.confirmPassword}/> : null}
+                                <LoginField hint="Confirm New Password"
+                                            iconClass="glyphicon glyphicon-log-in"
+                                            invalidMessage={this.state.invalidMessage.confirmPassword}
+                                            name="confirm-password"
+                                            onBlur={this.checkConfirmPassword}
+                                            onInputChange={this.onConfirmPasswordChange}
+                                            textType="password"
+                                            valid={this.state.validCredentials.confirmPassword}
+                                            value={this.state.confirmPassword}/> : null}
 
                         </ul>
 
-                        {editable ?
-                        <Button bsStyle="primary"
-                                onClick={this.onUpdate}
-                                style={STYLE.updateButton}>
-                            Update
-                        </Button> : null}
+                        {editable && this.state.hasEdits ?
+                            <Button bsStyle="primary"
+                                    onClick={this.onUpdate}
+                                    style={STYLE.updateButton}>
+                                Update
+                            </Button> : null}
 
                     </div>
                 </div>
@@ -281,6 +303,7 @@ export default class ProfileBox extends Component {
 ProfileBox.propTypes = {
     dispatch: PropTypes.func.isRequired,
     editable: PropTypes.bool,
+    isCurrentUser: PropTypes.bool,
     restClient: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
 };
