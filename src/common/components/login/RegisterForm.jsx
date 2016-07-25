@@ -224,7 +224,7 @@ export default class RegisterForm extends Component {
 
             {this.props.allowUserCreation ? null :
                 <div style={STYLE.registrationNotAllowed}>
-                    User Registration Not Permitted
+                    User Creation Not Permitted
                 </div>}
 
             <form>
