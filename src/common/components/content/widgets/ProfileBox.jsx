@@ -31,6 +31,7 @@ export default class ProfileBox extends Component {
             },
             password: '',
             siteAdmin: this.props.user.siteAdmin || false,
+            canCreate: this.props.user.canCreate,
             validCredentials: {
                 confirmPassword: true,
                 email: true,
@@ -47,6 +48,7 @@ export default class ProfileBox extends Component {
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onSiteAdminChange = this.onSiteAdminChange.bind(this);
+        this.onCanCreateChange = this.onCanCreateChange.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
     }
 
@@ -129,6 +131,16 @@ export default class ProfileBox extends Component {
         });
     }
 
+    onCanCreateChange(event) {
+        // Release focus
+        event.target.blur();
+
+        this.setState({
+            canCreate: event.target.checked,
+            hasEdits: true
+        });
+    }
+
     onUpdate(event) {
         // Release focus
         event.target.blur();
@@ -150,6 +162,9 @@ export default class ProfileBox extends Component {
                     }
                     if (editable && !this.props.isCurrentUser) {
                         updatedUser.siteAdmin = this.state.siteAdmin;
+                    }
+                    if (editable && !this.props.isCurrentUser) {
+                        updatedUser.canCreate = this.state.canCreate;
                     }
 
                     if (this.props.isCurrentUser) {
@@ -251,6 +266,24 @@ export default class ProfileBox extends Component {
                                 </div>
                                 <br/>
                             </div>
+                            {/* Custom Can Create*/}
+                            {editable && !this.props.isCurrentUser ? <div>
+                                <div className={`input-group`}>
+                                    <span className="input-group-addon">
+                                        <i className="glyphicon glyphicon-check"/>
+                                    </span>
+                                    <input className="form-control"
+                                           readOnly={true}
+                                           value="Can Create"/>
+                                    <span className="input-group-addon">
+                                        <input type="checkbox"
+                                               onChange={this.onCanCreateChange}
+                                               checked={this.state.canCreate}
+                                               aria-label="Checkbox for following text input"/>
+                                    </span>
+                                </div>
+                                <br/>
+                            </div> : null}
                             {/* Email */}
                             <LoginField disabled={!editable}
                                         hint="Email"

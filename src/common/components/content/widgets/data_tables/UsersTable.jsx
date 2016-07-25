@@ -5,11 +5,14 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 // Self-defined
 import DataTable from './DataTable';
 import UsersDataTableEntry from
     '../../../../containers/content/widgets/data_tables/table_entries/UsersDataTableEntry';
 import { fetchUsersIfNeeded } from '../../../../actions/users';
+import { fetchUserIfNeeded } from '../../../../actions/user';
 import { sortBy } from '../../../../actions/tables';
 
 const USERS_FIELDS = {
@@ -28,6 +31,7 @@ export default class UsersTable extends Component {
         const { dispatch } = this.props;
 
         dispatch(fetchUsersIfNeeded());
+        dispatch(fetchUserIfNeeded());
     }
 
     handleOrderEntries(event) {
@@ -39,8 +43,7 @@ export default class UsersTable extends Component {
 
     render() {
 
-        const { sortedForward, userId, users } = this.props;
-
+        const { sortedForward, user, users } = this.props;
         const categories = [
             {id: 1, name: 'User'}
         ];
@@ -49,10 +52,21 @@ export default class UsersTable extends Component {
 
             <div>
                 {/* Header */}
-                <div className="box-header" style={{paddingBottom: 0}}>
+                <div className="box-header"
+                     style={{paddingBottom: "0px"}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-users"/> {` Users`}
                     </h3>
+                    <Link to={`${this.props.basePath}newuser`}>
+                    <Button className="pull-right"
+                            bsStyle="primary"
+                            bsSize="small"
+                            style={this.props.user.siteAdmin === true ? {} : {display: 'none'}}
+                            onClick={this.toggleModal}>
+                        Add +
+
+                    </Button>
+                    </Link>
                 </div>
 
                 {/* Body */}
@@ -63,9 +77,8 @@ export default class UsersTable extends Component {
                            sortable={true}
                            sortedForward={sortedForward}>
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
-                                         userId={userId} />
+                                         userId={user._id} />
                 </DataTable>
-
             </div>
         );
     }
@@ -77,5 +90,8 @@ UsersTable.propTypes = {
         PropTypes.array
     ]).isRequired,
     sortedForward: PropTypes.bool.isRequired,
-    users: PropTypes.array.isRequired
+    users: PropTypes.array.isRequired,
+    restClient: PropTypes.object.isRequired,
+    basePath: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired
 };

@@ -40,7 +40,8 @@ export default class SideBarUserPanel extends Component {
                          style={STYLE.imageIcon}/>
                 </div>
                 <div className="pull-left info">
-                    <p style={STYLE.name}>&nbsp;{user._id}&nbsp;</p>
+                    <p style={STYLE.name}>{user.siteAdmin ? <i className="fa fa-graduation-cap"/> : null}
+                    {` ${user._id}`}</p>
                     <span style={STYLE.status}><i className="fa fa-circle text-success"/> Online</span>
                 </div>
             </div>

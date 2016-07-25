@@ -1,12 +1,12 @@
 /**
- * Organizations page
+ * ProjectsPage page container
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
 import { connect } from 'react-redux';
-// Self defined
-import OrganizationsPage from '../../../components/content/pages/OrganizationsPage';
+// Self-defined
+import ProjectsPage from '../../../components/content/pages/ProjectsPage';
 
 const mapStateToProps = (state) => {
     const { basePath } = state;
@@ -16,4 +16,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(OrganizationsPage);
+export default connect(mapStateToProps)(ProjectsPage);

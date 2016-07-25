@@ -14,14 +14,23 @@ const mapStateToProps = (state, ownProps) => {
     const { users } = state.users;
 
     const viewUserId = ownProps.params.userId;
-    const viewUser = users.find((eachUser) => {
+    let userExists = true;
+    let viewUser = users.find((eachUser) => {
         return eachUser._id === viewUserId;
-    }) || {};
+    });
+
+    if (!viewUser) {
+        viewUser = {};
+        userExists = false;
+    }
 
     return {
         basePath,
-        editable: user.siteAdmin,
-        user: viewUser
+        currentUser: user,
+        userId: viewUserId,
+        user: viewUser,
+        users: users,
+        userExists
     };
 };
 

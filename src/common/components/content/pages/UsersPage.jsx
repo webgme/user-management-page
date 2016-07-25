@@ -17,7 +17,8 @@ export default class UsersPage extends Component {
                     <div className="col-md-8 col-md-offset-2">
                         <div className="box box-primary">
 
-                            <UsersTable />
+                            <UsersTable basePath={this.props.basePath}
+                                        restClient={this.props.restClient}/>
 
                         </div>
                     </div>
@@ -26,5 +27,4 @@ export default class UsersPage extends Component {
             </section>
         );
     }
-
 }
