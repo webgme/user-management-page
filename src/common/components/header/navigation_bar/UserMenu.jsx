@@ -28,7 +28,8 @@ export default class UserMenu extends Component {
                          className="user-image"
                          alt="User Image"
                          style={PROFILE_STYLE}/>
-                    <span className="hidden-xs">&nbsp;{user._id}&nbsp;</span>
+                    <span className="hidden-xs">{user.siteAdmin ? <i className="fa fa-graduation-cap"/> : null}
+                        {` ${user._id}`}</span>
                 </a>
                 <ul className="dropdown-menu">
                     <li className="user-header" style={STYLE.userHeader}>
