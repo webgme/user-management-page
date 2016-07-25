@@ -23,9 +23,6 @@ export default class UsersTable extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            showModal: false
-        };
         // Event handlers
         this.handleOrderEntries = this.handleOrderEntries.bind(this);
     }
@@ -61,15 +58,16 @@ export default class UsersTable extends Component {
                     <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-users"/> {` Users`}
                     </h3>
-
+                    <Link to={`${this.props.basePath}newuser`}>
                     <Button className="pull-right"
                             bsStyle="primary"
                             bsSize="small"
                             style={this.props.user.siteAdmin === true ? {} : {display: 'none'}}
                             onClick={this.toggleModal}>
-                        <Link to={`${this.props.basePath}newuser`}>Add +</Link>
+                        Add +
 
                     </Button>
+                    </Link>
                 </div>
 
                 {/* Body */}

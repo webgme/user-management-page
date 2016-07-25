@@ -10,9 +10,11 @@ import NewUserPage from '../../../components/content/pages/NewUserPage';
 
 const mapStateToProps = (state) => {
     const { basePath } = state;
+    const { user } = state.user;
 
     return {
-        basePath
+        basePath,
+        user
     };
 };
 

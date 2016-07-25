@@ -1,5 +1,3 @@
-/* global window */
-
 /**
  * @author pmeijer / https://github.com/pmeijer
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -8,7 +6,7 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 import { verifyEmail, verifyPassword, verifyUserOrOrganizationId } from '../../../client/utils/loginUtils';
@@ -19,7 +17,7 @@ export default class RegisterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allowUserRegistration: false,
+            creating: false,
             // agreeToTerms: false,
             confirmPassword: '',
             email: '',
@@ -54,16 +52,12 @@ export default class RegisterForm extends Component {
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRegister = this.onRegister.bind(this);
+        this.atFailedNewUser = this.atFailedNewUser.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
     }
 
     componentDidMount() {
-        this.props.loginClient.getGmeConfig()
-            .then(gmeConfig => {
-                this.setState({
-                    allowUserRegistration: gmeConfig.authentication.allowUserRegistration
-                });
-            });
+
     }
 
     checkAllFields() {
@@ -153,55 +147,63 @@ export default class RegisterForm extends Component {
     onRegister() {
         let allValid = true;
 
-        Promise.resolve(this.checkAllFields())
-            .then(() => {
-                Object.keys(this.state.validCredentials).forEach(key => {
-                    if (!this.state.validCredentials[key]) {
-                        allValid = false;
+        this.checkAllFields();
+
+        Object.keys(this.state.validCredentials).forEach(key => {
+            if (!this.state.validCredentials[key]) {
+                allValid = false;
+            }
+        });
+
+        if (allValid) {
+            this.setState({
+                creating: true
+            });
+
+            this.props.onNewUser(this.state.userId, this.state.password, this.state.email)
+                .then((status) => {
+                    if (typeof status === 'number') {
+                        this.atFailedNewUser(status);
                     }
                 });
 
-                if (allValid) {
-                    this.props.loginClient.register(this.state.userId, this.state.password, this.state.email)
-                        .then(() => {
-                            this.props.loginClient.login(this.state.userId, this.state.password)
-                                .then(() => {
-                                    browserHistory.push('/');
-                                    window.location.reload();
-                                });
-                        })
-                        .catch(err => {
-                            if (err.status === 400) {
-                                // Immutability add-ons aren't worth installing for this one case
-                                this.setState({
-                                    invalidMessage: {
-                                        confirmPassword: "Passwords must match",
-                                        email: "Invalid email",
-                                        password: "Password must be at least 3 characters long and must not be " +
-                                                  "a poor password such as 'password'",
-                                        userId: "Username already taken"
-                                    },
-                                    validCredentials: {
-                                        confirmPassword: this.state.password === this.state.confirmPassword,
-                                        email: this.state.validCredentials.email,
-                                        password: this.state.validCredentials.password,
-                                        userId: false
-                                    }
-                                });
-                            }
-                            console.error(err); // eslint-disable-line no-console
-                        });
-                } else {
-                    // Reset fields
-                    this.setState({
-                        // agreeToTerms: false,
-                        confirmPassword: '',
-                        email: this.state.validCredentials.email ? this.state.email : '',
-                        password: '',
-                        userId: this.state.validCredentials.userId ? this.state.userId : ''
-                    });
+        } else {
+            // Reset fields
+            this.setState({
+                // agreeToTerms: false,
+                confirmPassword: '',
+                email: this.state.validCredentials.email ? this.state.email : '',
+                password: '',
+                userId: this.state.validCredentials.userId ? this.state.userId : ''
+            });
+        }
+    }
+
+    atFailedNewUser(status) {
+        this.setState({
+            creating: false
+        });
+
+        if (status === 400) {
+            // Immutability add-ons aren't worth installing for this one case
+            this.setState({
+                invalidMessage: {
+                    confirmPassword: "Passwords must match",
+                    email: "Invalid email",
+                    password: "Password must be at least 3 characters long and must not be " +
+                    "a poor password such as 'password'",
+                    userId: "Username already taken"
+                },
+                validCredentials: {
+                    confirmPassword: this.state.password === this.state.confirmPassword,
+                    email: this.state.validCredentials.email,
+                    password: this.state.validCredentials.password,
+                    userId: false
                 }
             });
+        } else {
+            console.error('???');
+        }
     }
 
     onUserIdChange(event) {
@@ -218,9 +220,9 @@ export default class RegisterForm extends Component {
             }, true);
 
         return <div className="register-box-body">
-            <p className="login-box-msg">Register a new membership</p>
+            {this.props.title ? <p className="login-box-msg">{this.props.title}</p> : null}
 
-            {this.state.allowUserRegistration ? null :
+            {this.props.allowUserCreation ? null :
                 <div style={STYLE.registrationNotAllowed}>
                     User Registration Not Permitted
                 </div>}
@@ -289,19 +291,19 @@ export default class RegisterForm extends Component {
                         </Checkbox>
                         */}
 
-                        <Link to={`${this.props.basePath}login`}>
-                            I already have an account
+                        <Link to={this.props.backLinkData.path}>
+                            {this.props.backLinkData.title}
                         </Link>
 
                     </div>
 
                     <div className="col-sm-4">
-                        {this.state.allowUserRegistration ?
+                        {this.props.allowUserCreation && this.state.creating === false ?
                             <Button bsStyle="primary"
                                     disabled={!validAndNotEmpty}
                                     onClick={this.onRegister}
                                     style={STYLE.registerButton}>
-                                Register
+                                Submit
                             </Button> : null }
                     </div>
 
@@ -314,6 +316,11 @@ export default class RegisterForm extends Component {
 }
 
 RegisterForm.propTypes = {
-    basePath: PropTypes.string,
-    loginClient: PropTypes.object
+    allowUserCreation: PropTypes.bool,
+    title: PropTypes.string,
+    backLinkData: PropTypes.shape({
+        title: React.PropTypes.string.isRequired,
+        path: React.PropTypes.string.isRequired
+    }),
+    onNewUser: PropTypes.func.isRequired
 };
