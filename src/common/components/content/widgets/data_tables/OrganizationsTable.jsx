@@ -48,7 +48,7 @@ export default class OrganizationsTable extends Component {
 
     render() {
 
-        const { organizations, sortedForward, adminOrganizations } = this.props;
+        const { organizations, sortedForward, adminOrganizations, user } = this.props;
 
         const categories = [
             {id: 1, name: 'Organization Name'}
@@ -63,13 +63,13 @@ export default class OrganizationsTable extends Component {
                     <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
-
-                    <Button className="pull-right"
+                    {user.siteAdmin || user.canCreate ?
+                        <Button className="pull-right"
                             bsStyle="primary"
                             bsSize="small"
                             onClick={this.props.openCreateOrganization}>
-                        Add +
-                    </Button>
+                            Add +
+                        </Button> : null}
                 </div>
 
                 {/* Body */}

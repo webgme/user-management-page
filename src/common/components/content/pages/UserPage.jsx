@@ -5,8 +5,7 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-bootstrap';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 // Self-defined
 import ProfileBox from '../widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -24,25 +23,16 @@ export default class UserPage extends Component {
     }
 
     render() {
-        const { basePath, dispatch, editable, restClient, user } = this.props;
-
         return (
             <section className="content" style={STYLE.profileBox}>
-
-                {/*<div className="col-md-6 col-md-offset-3" style={{textAlign: "center"}}>
-                    <Link to={`${basePath}projects/${user._id}`}>
-                        <Button bsStyle="primary">
-                            Go To Viewable Projects By {user._id}
-                        </Button>
-                    </Link>
-                </div>
-
-                <br/><br/><br/>*/}
-
-                <ProfileBox dispatch={dispatch}
-                            editable={editable}
-                            restClient={restClient}
-                            user={user} />
+                {this.props.userExists ?
+                <ProfileBox dispatch={this.props.dispatch}
+                            editable={this.props.currentUser.siteAdmin}
+                            restClient={this.props.restClient}
+                            user={this.props.user} /> :
+                    <Link to={`${this.props.basePath}users`}>
+                        {`No such user '${this.props.userId}', back to users ...`}
+                    </Link>}
 
             </section>
         );

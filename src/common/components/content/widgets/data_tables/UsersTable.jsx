@@ -43,8 +43,7 @@ export default class UsersTable extends Component {
 
     render() {
 
-        const { sortedForward, userId, users } = this.props;
-
+        const { sortedForward, user, users } = this.props;
         const categories = [
             {id: 1, name: 'User'}
         ];
@@ -78,7 +77,7 @@ export default class UsersTable extends Component {
                            sortable={true}
                            sortedForward={sortedForward}>
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
-                                         userId={userId} />
+                                         userId={user._id} />
                 </DataTable>
             </div>
         );

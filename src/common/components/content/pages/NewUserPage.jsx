@@ -1,14 +1,15 @@
-/*globals*/
+/* globals window*/
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-
+import { browserHistory } from 'react-router';
 // Self-defined
 import RegisterForm from '../../login/RegisterForm';
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { fetchUsers } from '../../../actions/users';
 
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
@@ -26,8 +27,21 @@ export default class NewUserPage extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    createUser() {
-        console.log(arguments);
+    createUser(userId, password, email, canCreate) {
+        let userData = {
+            password: password,
+            email: email,
+            canCreate: true
+        };
+
+        return this.props.restClient.users.addUser(userId, userData)
+            .then(() => {
+                this.props.dispatch(fetchUsers());
+                browserHistory.push(`${this.props.basePath}users/${userId}`);
+            })
+            .catch(err => {
+                return err.status || 500;
+            });
     }
 
     render() {
@@ -43,9 +57,7 @@ export default class NewUserPage extends Component {
                             </h3>
                         </div>
                         <div className="box-body">
-                            <RegisterForm basePath={this.props.basePath}
-                                          onNewUser={this.createUser}
-                                          title=""
+                            <RegisterForm onNewUser={this.createUser}
                                           backLinkData={{
                                               title: 'Back to users',
                                               path: `${this.props.basePath}users`
