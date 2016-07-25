@@ -5,7 +5,8 @@
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 // Self-defined
 import DataTable from './DataTable';
 import UsersDataTableEntry from
@@ -13,7 +14,6 @@ import UsersDataTableEntry from
 import { fetchUsersIfNeeded } from '../../../../actions/users';
 import { fetchUserIfNeeded } from '../../../../actions/user';
 import { sortBy } from '../../../../actions/tables';
-import { RegisterForm } from '../../../login/RegisterForm';
 
 const USERS_FIELDS = {
     User: "_id"
@@ -28,7 +28,6 @@ export default class UsersTable extends Component {
         };
         // Event handlers
         this.handleOrderEntries = this.handleOrderEntries.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentDidMount() {
@@ -43,12 +42,6 @@ export default class UsersTable extends Component {
         const newSortCategory = USERS_FIELDS[event.target.innerHTML];
 
         dispatch(sortBy('users', newSortCategory));
-    }
-
-    toggleModal() {
-        this.setState({
-            showModal: !this.state.showModal
-        });
     }
 
     render() {
@@ -74,7 +67,8 @@ export default class UsersTable extends Component {
                             bsSize="small"
                             style={this.props.user.siteAdmin === true ? {} : {display: 'none'}}
                             onClick={this.toggleModal}>
-                        Add +
+                        <Link to={`${this.props.basePath}newuser`}>Add +</Link>
+
                     </Button>
                 </div>
 
@@ -88,25 +82,6 @@ export default class UsersTable extends Component {
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
                                          userId={userId} />
                 </DataTable>
-
-                <Modal show={this.state.showModal} onHide={this.toggleModal}>
-
-                    <Modal.Header closeButton>
-                        <Modal.Title>
-                            <strong>Create User</strong>
-                        </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        {/*<RegisterForm basePath={this.props.basePath}
-                                      loginClient={this.props.restClient.login}/>*/}
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        hey
-                    </Modal.Footer>
-
-                </Modal>
             </div>
         );
     }

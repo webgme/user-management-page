@@ -19,6 +19,7 @@ import ProjectPage from '../../common/containers/content/pages/ProjectPage';
 import ProjectsPage from '../../common/containers/content/pages/ProjectsPage';
 import UserPage from '../../common/containers/content/pages/UserPage';
 import UsersPage from '../../common/containers/content/pages/UsersPage';
+import NewUserPage from '../../common/containers/content/pages/NewUserPage';
 
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 
@@ -47,6 +48,8 @@ export default (
             <Route path="users" component={UsersPage} />
 
             <Route path="users/:userId" component={UserPage} />
+
+            <Route path="newuser" component={NewUserPage} />
 
         </Route>
 
