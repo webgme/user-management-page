@@ -253,13 +253,13 @@ export default class ProfileBox extends Component {
                                     </span>
                                         <input className="form-control"
                                                readOnly={true}
-                                               disabled={!editable || this.props.isCurrentUser}
+                                               disabled={(!editable || this.props.isCurrentUser) ? true : undefined}
                                                value="Site Admin"/>
                                     <span className="input-group-addon">
                                         <input type="checkbox"
                                                onChange={this.onSiteAdminChange}
-                                               disabled={!editable || this.props.isCurrentUser}
-                                               readOnly={!editable || this.props.isCurrentUser}
+                                               disabled={(!editable || this.props.isCurrentUser) ? true : undefined}
+                                               readOnly={(!editable || this.props.isCurrentUser) ? true : undefined}
                                                checked={this.state.siteAdmin}
                                                aria-label="Checkbox for following text input"/>
                                     </span>

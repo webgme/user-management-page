@@ -27,7 +27,9 @@ export default class LoginForm extends Component {
         };
         // Event handlers
         this.onClickSignIn = this.onClickSignIn.bind(this); // Allows click to release focus vs enter key
+        this.onClickSignInSmallDevice = this.onClickSignInSmallDevice.bind(this);
         this.onGuestLogIn = this.onGuestLogIn.bind(this);
+        this.onGuestLogInSmallDevice = this.onGuestLogInSmallDevice.bind(this);
         this.onLogIn = this.onLogIn.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRememberMeChange = this.onRememberMeChange.bind(this);
@@ -51,8 +53,20 @@ export default class LoginForm extends Component {
         this.onLogIn();
     }
 
+    onClickSignInSmallDevice(event) {
+        // Release focus
+        event.target.blur();
+
+        this.onLogIn(true);
+    }
+
     onGuestLogIn() {
         browserHistory.push('/');
+        window.location.reload();
+    }
+
+    onGuestLogInSmallDevice() {
+        browserHistory.push(this.props.basePath);
         window.location.reload();
     }
 
@@ -68,7 +82,7 @@ export default class LoginForm extends Component {
         });
     }
 
-    onLogIn() {
+    onLogIn(isSmallDevice) {
         this.props.loginClient.login(this.state.userId, this.state.password)
             .then(res => {
                 if (/2\d\d/.test(res.statusCode)) {
@@ -81,6 +95,11 @@ export default class LoginForm extends Component {
                         nextLocation = '/';
                     } else {
                         nextLocation = window.decodeURIComponent(redirectPath);
+                    }
+
+                    if (isSmallDevice) {
+                        // On small device go to user-management right away.
+                        nextLocation = this.props.basePath;
                     }
 
                     browserHistory.push(nextLocation);
@@ -175,7 +194,7 @@ export default class LoginForm extends Component {
                     <div className="col-sm-7">
 
                         <div style={{float: "right", marginTop: "5px"}}>
-                            <ButtonGroup>
+                            <ButtonGroup className="hidden-xs">
                                 {this.state.allowGuests ?
                                     <Button bsStyle="warning"
                                             onClick={this.onGuestLogIn}>
@@ -183,6 +202,18 @@ export default class LoginForm extends Component {
                                     </Button> : null}
                                 <Button bsStyle="primary"
                                         onClick={this.onClickSignIn}>
+                                    Sign In
+                                </Button>
+                            </ButtonGroup>
+
+                            <ButtonGroup className="visible-xs">
+                                {this.state.allowGuests ?
+                                    <Button bsStyle="warning"
+                                            onClick={this.onGuestLogInSmallDevice}>
+                                        Guest
+                                    </Button> : null}
+                                <Button bsStyle="primary"
+                                        onClick={this.onClickSignInSmallDevice}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>

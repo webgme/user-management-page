@@ -110,15 +110,14 @@ export default class ProjectDataTableEntry extends Component {
                 {/* Only the owner(s) can see the remove option and it is not displayed for users with no rights*/}
                 {this.props.canAuthorize && (this.props.isOrg || this.props.userRightsOrigin) ?
                     this.props.ownerId === this.props.name ?
-                        <OverlayTrigger overlay={<Popover id="1"><strong>You are the owner</strong></Popover>}
+                        <OverlayTrigger overlay={<Popover id="1"><strong>This is the owner</strong></Popover>}
                                         placement="top"
                                         rootClose={true}
                                         trigger={["click"]}>
                             <i className="fa fa-tag"
                                onMouseEnter={this.toggleHover}
                                onMouseLeave={this.toggleHover}
-                               style={{color: this.state.hover ? "green" : "",
-                                       cursor: "pointer",
+                               style={{cursor: "pointer",
                                        float: "right",
                                        fontSize: "15px"}}/>
                         </OverlayTrigger> :

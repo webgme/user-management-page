@@ -60,7 +60,7 @@ export default class OrganizationPage extends Component {
                                                          restClient={this.props.restClient}/>
                     </div>
                     <div className="col-md-6">
-                        <div className="small-box bg-green">
+                        <div className="small-box bg-light-blue">
                             <div className="inner">
                                 <h3 style={HOME_STYLE.widgetBox}>{this.props.ownedProjects.length}</h3>
                                 <p>{this.props.ownedProjects.length > 0 ?
