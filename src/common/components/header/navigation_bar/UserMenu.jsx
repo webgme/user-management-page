@@ -1,3 +1,4 @@
+/* global window*/
 /**
  * User menu container
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -13,9 +14,24 @@ import { UserMenu as STYLE, ProfileImage as PROFILE_STYLE } from '../../../../cl
 
 export default class UserMenu extends Component {
 
+    constructor(props) {
+        super(props);
+        this.onSignOutBtnClick = this.onSignOutBtnClick.bind(this);
+    }
+
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(fetchUserIfNeeded());
+    }
+
+    onSignOutBtnClick() {
+        const { dispatch, basePath } = this.props;
+        dispatch({
+            type: 'USER_LOGOUT',
+            basePath: basePath
+        });
+
+        window.location.href = '/logout';
     }
 
     render() {
@@ -43,9 +59,7 @@ export default class UserMenu extends Component {
                     </li>
                     <li className="user-footer" style={STYLE.logoutAreaBorder}>
                         <div className="col-xs-4 text-center" style={STYLE.logoutButtonPadding}>
-                            <a href="/logout">
-                                <Button style={STYLE.logoutButtonBorder}>Sign Out</Button>
-                            </a>
+                          <Button style={STYLE.logoutButtonBorder} onClick={this.onSignOutBtnClick}>Sign Out</Button>
                         </div>
                     </li>
                 </ul>

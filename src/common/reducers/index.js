@@ -22,4 +22,13 @@ const reducers = combineReducers({
     users
 });
 
-export default reducers;
+const rootReducer = (state, action) => {
+    let newState = state;
+    if (action.type === 'USER_LOGOUT') {
+        newState = { basePath: state.basePath };
+    }
+
+    return reducers(newState, action);
+};
+
+export default rootReducer;
