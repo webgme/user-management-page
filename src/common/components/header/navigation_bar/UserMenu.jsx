@@ -9,6 +9,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { userLogout } from '../../../actions/general';
 import { getUserIconSource } from '../../../../client/utils/utils';
 import { UserMenu as STYLE, ProfileImage as PROFILE_STYLE } from '../../../../client/style';
 
@@ -25,11 +26,8 @@ export default class UserMenu extends Component {
     }
 
     onSignOutBtnClick() {
-        const { dispatch, basePath } = this.props;
-        dispatch({
-            type: 'USER_LOGOUT',
-            basePath: basePath
-        });
+        const { dispatch } = this.props;
+        dispatch(userLogout());
 
         window.location.href = '/logout';
     }

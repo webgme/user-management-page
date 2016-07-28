@@ -10,9 +10,11 @@ import ProfilePage from '../../../components/content/pages/ProfilePage';
 
 const mapStateToProps = (state) => {
     const { user } = state.user;
+    const { config } = state.general.config;
 
     return {
-        user
+        user,
+        config
     };
 };
 

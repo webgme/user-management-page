@@ -8,6 +8,7 @@ import React, { Component, PropTypes } from 'react';
 // Self-defined
 import ProfileBox from '../widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { fetchConfigIfNeeded } from '../../../actions/general';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
 
@@ -17,6 +18,7 @@ export default class ProfilePage extends Component {
         const { dispatch } = this.props;
 
         dispatch(fetchUserIfNeeded());
+        dispatch(fetchConfigIfNeeded());
     }
 
     render() {
@@ -28,6 +30,7 @@ export default class ProfilePage extends Component {
                 <ProfileBox dispatch={dispatch}
                             editable={true}
                             isCurrentUser={true}
+                            config={this.props.config}
                             restClient={restClient}
                             user={user} />
 

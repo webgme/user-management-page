@@ -12,6 +12,8 @@ import projects from './projects';
 import tables from './tables';
 import user from './user';
 import users from './users';
+import general from './general';
+import { USER_LOGOUT } from '../actions/general';
 
 const reducers = combineReducers({
     basePath,
@@ -19,12 +21,13 @@ const reducers = combineReducers({
     projects,
     tables,
     user,
-    users
+    users,
+    general
 });
 
 const rootReducer = (state, action) => {
     let newState = state;
-    if (action.type === 'USER_LOGOUT') {
+    if (action.type === USER_LOGOUT) {
         newState = { basePath: state.basePath };
     }
 
