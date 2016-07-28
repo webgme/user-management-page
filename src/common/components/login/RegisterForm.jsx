@@ -217,15 +217,12 @@ export default class RegisterForm extends Component {
         let validAndNotEmpty = Object.keys(this.state.validCredentials).reduce(
             (previousValue, currentValue /* , currentIndex, array */) => {
                 return previousValue && this.state.validCredentials[currentValue] && this.state[currentValue] !== '';
-            }, true);
+            }, true),
+            titleMessage = this.props.allowUserCreation ? this.props.title : 'User Creation Not Permitted';
 
         return <div className="register-box-body">
-            {this.props.title ? <p className="login-box-msg">{this.props.title}</p> : null}
-
-            {this.props.allowUserCreation ? null :
-                <div style={STYLE.registrationNotAllowed}>
-                    User Creation Not Permitted
-                </div>}
+            {titleMessage ?
+                <p className="login-box-msg">{titleMessage}</p> : null}
 
             <form>
 
@@ -233,6 +230,7 @@ export default class RegisterForm extends Component {
                 <LoginField autoFocus={true}
                             hint="User ID"
                             iconClass="glyphicon glyphicon-user"
+                            disabled = {!this.props.allowUserCreation}
                             invalidMessage={this.state.invalidMessage.userId}
                             onBlur={this.checkUserId}
                             onInputChange={this.onUserIdChange}
@@ -242,6 +240,7 @@ export default class RegisterForm extends Component {
                 {/* email */}
                 <LoginField hint="Email"
                             iconClass="glyphicon glyphicon-envelope"
+                            disabled = {!this.props.allowUserCreation}
                             invalidMessage={this.state.invalidMessage.email}
                             onBlur={this.checkEmail}
                             onInputChange={this.onEmailChange}
@@ -251,6 +250,7 @@ export default class RegisterForm extends Component {
                 {/* password */}
                 <LoginField hint="Password"
                             iconClass="glyphicon glyphicon-lock"
+                            disabled = {!this.props.allowUserCreation}
                             invalidMessage={this.state.invalidMessage.password}
                             onBlur={this.checkPassword}
                             onInputChange={this.onPasswordChange}
@@ -261,6 +261,7 @@ export default class RegisterForm extends Component {
                 {/* confirm password */}
                 <LoginField hint="Confirm password"
                             iconClass="glyphicon glyphicon-log-in"
+                            disabled = {!this.props.allowUserCreation}
                             invalidMessage={this.state.invalidMessage.confirmPassword}
                             onBlur={this.checkConfirmPassword}
                             onEnter={this.onRegister}

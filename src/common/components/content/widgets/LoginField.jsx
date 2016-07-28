@@ -23,7 +23,8 @@ export default class LoginField extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         return nextProps.value !== this.props.value ||
-               nextProps.valid !== this.props.valid;
+               nextProps.valid !== this.props.valid ||
+               nextProps.disabled !== this.props.disabled;
     }
 
     render() {
@@ -37,7 +38,7 @@ export default class LoginField extends Component {
                     </span>
                     <input autoFocus={this.props.autoFocus}
                            className="form-control"
-                           disabled={this.props.disabled || false}
+                           disabled={this.props.disabled ? true : undefined}
                            name={this.props.name}
                            onBlur={this.props.value !== '' ? this.props.onBlur : null}
                            onChange={this.props.onInputChange}
