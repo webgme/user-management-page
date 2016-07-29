@@ -7,6 +7,8 @@ when [authentication is enabled](https://github.com/webgme/webgme/wiki/Users-and
 allow for registration and login, project authorization of other users/organizations, and creation of
 organizations as well as member/admin control for those organizations.
 
+For instructions on webgme authentication and user-management see [this demo on youtube](https://www.youtube.com/watch?v=xS6_FK8kZhE).
+
 ##Developers
 ####Steps to run as an external REST component within WebGME
 
