@@ -224,7 +224,7 @@ export default class ProfileBox extends Component {
     }
 
     render() {
-        const {editable, user} = this.props;
+        const {editable, user, config} = this.props;
 
         return (
             <div className="col-md-6 col-md-offset-3">
@@ -245,9 +245,10 @@ export default class ProfileBox extends Component {
                                         readOnly={true}
                                         valid={true}
                                         value={`UserID: ${user._id ? user._id : ''}`}/>
-                            {/* Custom Site Admin */}
-                            <div>
-                                <div className={`input-group`}>
+                            {/* Custom Site Admin (guest cannot be assigned siteAdmin) */}
+                            { user._id === config.authentication.guestAccount ? null :
+                                <div>
+                                    <div className={`input-group`}>
                                     <span className="input-group-addon">
                                         <i className="glyphicon glyphicon-check"/>
                                     </span>
@@ -263,9 +264,10 @@ export default class ProfileBox extends Component {
                                                checked={this.state.siteAdmin}
                                                aria-label="Checkbox for following text input"/>
                                     </span>
+                                    </div>
+                                    <br/>
                                 </div>
-                                <br/>
-                            </div>
+                            }
                             {/* Custom Can Create*/}
                             {editable && !this.props.isCurrentUser ? <div>
                                 <div className={`input-group`}>
@@ -285,16 +287,18 @@ export default class ProfileBox extends Component {
                                 <br/>
                             </div> : null}
                             {/* Email */}
-                            <LoginField disabled={!editable}
-                                        hint="Email"
-                                        iconClass="glyphicon glyphicon-envelope"
-                                        invalidMessage={this.state.invalidMessage.email}
-                                        onBlur={this.checkEmail}
-                                        onInputChange={this.onEmailChange}
-                                        valid={this.state.validCredentials.email}
-                                        value={this.state.email ? this.state.email : ''}/>
+                            { user._id === config.authentication.guestAccount ? null :
+                                <LoginField disabled={!editable}
+                                            hint="Email"
+                                            iconClass="glyphicon glyphicon-envelope"
+                                            invalidMessage={this.state.invalidMessage.email}
+                                            onBlur={this.checkEmail}
+                                            onInputChange={this.onEmailChange}
+                                            valid={this.state.validCredentials.email}
+                                            value={this.state.email ? this.state.email : ''}/>
+                            }
                             {/* New Password */}
-                            {editable ?
+                            {editable && user._id !== config.authentication.guestAccount ?
                                 <LoginField hint="New Password"
                                             iconClass="glyphicon glyphicon-lock"
                                             invalidMessage={this.state.invalidMessage.password}
@@ -305,7 +309,7 @@ export default class ProfileBox extends Component {
                                             valid={this.state.validCredentials.password}
                                             value={this.state.password}/> : null}
                             {/* Confirm New Password */}
-                            {editable ?
+                            {editable && user._id !== config.authentication.guestAccount ?
                                 <LoginField hint="Confirm New Password"
                                             iconClass="glyphicon glyphicon-log-in"
                                             invalidMessage={this.state.invalidMessage.confirmPassword}

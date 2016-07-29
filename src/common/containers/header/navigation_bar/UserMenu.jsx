@@ -10,9 +10,11 @@ import UserMenu from '../../../components/header/navigation_bar/UserMenu';
 
 const mapStateToProps = (state) => {
     const { user } = state.user;
+    const { basePath } = state.basePath;
 
     return {
-        user
+        user,
+        basePath
     };
 };
 

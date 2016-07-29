@@ -10,6 +10,7 @@ import UserPage from '../../../components/content/pages/UserPage';
 
 const mapStateToProps = (state, ownProps) => {
     const { basePath } = state;
+    const { config } = state.general.config;
     const { user } = state.user;
     const { users } = state.users;
 
@@ -26,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         basePath,
+        config,
         currentUser: user,
         userId: viewUserId,
         user: viewUser,

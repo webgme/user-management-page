@@ -15,9 +15,10 @@ const initialTableState = {
     };
 
 const table = (state = initialTableState, action) => {
+    let newState;
     switch (action.type) {
         case SORT_CATEGORY:
-            let newState = Object.assign({}, state);
+            newState = Object.assign({}, state);
             if (state.sortCategory === action.sortCategory) {
                 Object.assign(newState, {
                     sortedForward: !state.sortedForward
@@ -28,6 +29,7 @@ const table = (state = initialTableState, action) => {
                     sortedForward: true
                 });
             }
+
             return newState;
         default:
             return state;

@@ -1,3 +1,4 @@
+/* global window*/
 /**
  * User menu container
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -8,14 +9,27 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self-defined
 import { fetchUserIfNeeded } from '../../../actions/user';
+import { userLogout } from '../../../actions/general';
 import { getUserIconSource } from '../../../../client/utils/utils';
 import { UserMenu as STYLE, ProfileImage as PROFILE_STYLE } from '../../../../client/style';
 
 export default class UserMenu extends Component {
 
+    constructor(props) {
+        super(props);
+        this.onSignOutBtnClick = this.onSignOutBtnClick.bind(this);
+    }
+
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(fetchUserIfNeeded());
+    }
+
+    onSignOutBtnClick() {
+        const { dispatch } = this.props;
+        dispatch(userLogout());
+
+        window.location.href = '/logout';
     }
 
     render() {
@@ -43,9 +57,7 @@ export default class UserMenu extends Component {
                     </li>
                     <li className="user-footer" style={STYLE.logoutAreaBorder}>
                         <div className="col-xs-4 text-center" style={STYLE.logoutButtonPadding}>
-                            <a href="/logout">
-                                <Button style={STYLE.logoutButtonBorder}>Sign Out</Button>
-                            </a>
+                          <Button style={STYLE.logoutButtonBorder} onClick={this.onSignOutBtnClick}>Sign Out</Button>
                         </div>
                     </li>
                 </ul>

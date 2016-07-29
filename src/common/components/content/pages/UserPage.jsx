@@ -10,6 +10,7 @@ import { Link } from 'react-router';
 import ProfileBox from '../widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { fetchUsersIfNeeded } from '../../../actions/users';
+import { fetchConfigIfNeeded } from '../../../actions/general';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
 
@@ -20,6 +21,7 @@ export default class UserPage extends Component {
 
         dispatch(fetchUserIfNeeded());
         dispatch(fetchUsersIfNeeded());
+        dispatch(fetchConfigIfNeeded());
     }
 
     render() {
@@ -29,6 +31,7 @@ export default class UserPage extends Component {
                 <ProfileBox dispatch={this.props.dispatch}
                             editable={this.props.currentUser.siteAdmin}
                             restClient={this.props.restClient}
+                            config={this.props.config}
                             user={this.props.user} /> :
                     <Link to={`${this.props.basePath}users`}>
                         {`No such user '${this.props.userId}', back to users ...`}
