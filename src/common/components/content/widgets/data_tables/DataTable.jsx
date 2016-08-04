@@ -72,7 +72,7 @@ export default class DataTable extends Component {
 
         const { dispatch, reducerTableName } = this.props;
         const currentSelectValue = this.props.tableOptions.selectValue;
-        const newSelectValue = event.target.value.trim();
+        const newSelectValue = parseInt(event.target.value.trim(), 10);
 
         if (newSelectValue !== currentSelectValue) {
             dispatch(setSelectValue(reducerTableName, newSelectValue));
@@ -103,6 +103,7 @@ export default class DataTable extends Component {
             startIndexInProjects = (pageNumber - 1) * selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd,
+            showString,
             totalNbrOfEntries = this.props.entries.length;
 
         // Putting together "show string"
@@ -111,7 +112,13 @@ export default class DataTable extends Component {
         } else {
             displayNumEnd = entriesList.length;
         }
-        let showString = `${displayNumStart} - ${displayNumEnd} of ${totalNbrOfEntries}`;
+
+        if (searchText) {
+            showString = `${displayNumStart} - ${displayNumEnd} of ${entriesList.length} (${totalNbrOfEntries})`;
+        } else {
+            showString = `${displayNumStart} - ${displayNumEnd} of ${totalNbrOfEntries}`;
+        }
+
         if (displayNumStart > entriesList.length) {
             showString = 'Nothing to show.';
         }
@@ -136,26 +143,36 @@ export default class DataTable extends Component {
         // Formatting pagination buttons
         let formattedPaginationButtons = [],
             numPages = Math.floor(entriesList.length / selectValue) + 1,
+            displayedPageNumber,
             startPage,
             endPage;
+
+        if (pageNumber > numPages) {
+            // Make sure the pageNumber actually exists
+            displayedPageNumber = 1;
+        } else {
+            displayedPageNumber = pageNumber;
+        }
+
+        console.log(pageNumber, displayedPageNumber, numPages);
 
         if (numPages <= 3) {
             startPage = 1;
             endPage = numPages;
-        } else if (pageNumber === 1) {
+        } else if (displayedPageNumber === 1) {
             startPage = 1;
             endPage = 3;
-        } else if (pageNumber === numPages) {
+        } else if (displayedPageNumber === numPages) {
             startPage = numPages - 2;
             endPage = numPages;
         } else {
-            startPage = pageNumber - 1;
-            endPage = pageNumber + 1;
+            startPage = displayedPageNumber - 1;
+            endPage = displayedPageNumber + 1;
         }
 
         for (let i = startPage; i <= endPage; i++) {
             formattedPaginationButtons.push(
-                <li className={pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
+                <li className={displayedPageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
                     <a href="#"
                        onClick={this.handlePagination}
                        style={STYLE.paginationButtons.buttons}>{i}</a>
@@ -240,7 +257,7 @@ export default class DataTable extends Component {
                             <DataTablePagination clickHandler={this.handlePagination}
                                                  formattedPaginationButtons={formattedPaginationButtons}
                                                  numPages={numPages}
-                                                 pageNumber={pageNumber}/> : null }
+                                                 pageNumber={displayedPageNumber}/> : null }
                     </div>
 
                     {/* Select dropdown */}
@@ -250,6 +267,7 @@ export default class DataTable extends Component {
                                 <label style={STYLE.selectDropdown.label}>Items per page:
                                     <select className="form-control input-sm"
                                             onChange={this.handleSelect}
+                                            value={selectValue}
                                             style={STYLE.selectDropdown.options}>
 
                                         {formattedSelectOptions}

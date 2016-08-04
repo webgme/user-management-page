@@ -29,7 +29,17 @@ const table = (state = initialTableState, action) => {
         case SET_PAGE_NUMBER:
             return replaceStateParam('pageNumber', state, action);
         case SET_SEARCH_TEXT:
-            return replaceStateParam('searchText', state, action);
+            if (action.searchText) {
+                // When search is entered go to page one.
+                newState = Object.assign({}, state, {
+                    searchText: action.searchText,
+                    pageNumber: 1
+                });
+            } else {
+                newState = replaceStateParam('searchText', state, action);
+            }
+
+            return newState;
         case SET_SELECT_VALUE:
             return replaceStateParam('selectValue', state, action);
         case SORT_CATEGORY:
