@@ -8,23 +8,16 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 // Self-defined
-import DataTable from './DataTable';
+import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import UsersDataTableEntry from
     '../../../../containers/content/widgets/data_tables/table_entries/UsersDataTableEntry';
 import { fetchUsersIfNeeded } from '../../../../actions/users';
 import { fetchUserIfNeeded } from '../../../../actions/user';
-import { sortBy } from '../../../../actions/tables';
-
-const USERS_FIELDS = {
-    User: "_id"
-};
 
 export default class UsersTable extends Component {
 
     constructor(props) {
         super(props);
-        // Event handlers
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
     }
 
     componentDidMount() {
@@ -34,22 +27,13 @@ export default class UsersTable extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    handleOrderEntries(event) {
-        const { dispatch } = this.props;
-        const newSortCategory = USERS_FIELDS[event.target.innerHTML];
-
-        dispatch(sortBy('users', newSortCategory));
-    }
-
     render() {
-
         const { sortedForward, user, users } = this.props;
         const categories = [
             {id: 1, name: 'User'}
         ];
 
         return (
-
             <div>
                 {/* Header */}
                 <div className="box-header"
@@ -74,8 +58,8 @@ export default class UsersTable extends Component {
                            content="Users"
                            entries={users}
                            orderEntries={this.handleOrderEntries}
-                           sortable={true}
-                           sortedForward={sortedForward}>
+                           reducerTableName="users"
+                           sortable={true}>
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
                                          userId={user._id} />
                 </DataTable>

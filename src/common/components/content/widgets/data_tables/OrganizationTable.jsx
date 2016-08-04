@@ -8,23 +8,16 @@
 // Libraries
 import React, {Component, PropTypes} from 'react';
 // Self-defined
-import DataTable from './DataTable';
+import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
-import { sortBy } from '../../../../actions/tables';
 import {fetchOrganizationsIfNeeded, fetchOrganizations} from '../../../../actions/organizations';
 import {fetchUsers} from '../../../../actions/users';
-
-const MEMBER_FIELDS = {
-    User: 'name',
-    Admin: 'isAdmin'
-};
 
 export default class OrganizationTable extends Component {
 
     constructor(props) {
         super(props);
         // Event handlers
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
         this.removeMember = this.removeMember.bind(this);
         this.setAdmin = this.setAdmin.bind(this);
     }
@@ -68,15 +61,7 @@ export default class OrganizationTable extends Component {
         }
     }
 
-    handleOrderEntries(event) {
-        const { dispatch } = this.props;
-        const newSortCategory = MEMBER_FIELDS[event.target.value];
-
-        dispatch(sortBy('organizationMembers', newSortCategory));
-    }
-
     render() {
-
         const {canAuthorize, members} = this.props;
 
         const categories = [
@@ -96,8 +81,8 @@ export default class OrganizationTable extends Component {
                 <DataTable categories={categories}
                            entries={members}
                            orderEntries={this.handleOrderEntries}
-                           sortable={true}
-                           sortedForward={true}>
+                           reducerTableName="organizationMembers"
+                           sortable={true}>
                     <OrganizationDataTableEntry canAuthorize={canAuthorize}
                                                 removeMember={this.removeMember}
                                                 setAdmin={this.setAdmin}

@@ -8,6 +8,9 @@ import React, { Component } from 'react';
 // Self-defined
 import DataTableCategory from './table_utilities/DataTableCategory';
 import DataTablePagination from './table_utilities/DataTablePagination';
+import { sortBy, setPageNumber, setSearchText, setSelectValue } from
+    '../../../../actions/tables.js';
+import { TABLE_FIELDS } from '../../../../../client/utils/constants';
 // Style
 import { DataTable as STYLE } from '../../../../../client/style';
 
@@ -15,51 +18,71 @@ export default class DataTable extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            selectValue: 10,
-            pageNumber: 1,
-            searchText: ''
-        };
-
+        // Event handlers
+        this.handleOrderEntries = this.handleOrderEntries.bind(this);
         this.handlePagination = this.handlePagination.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
     }
 
-    handlePagination(event) {
+    handleOrderEntries(event) {
+        const { dispatch, reducerTableName } = this.props,
+            category = event.target.innerHTML,
+            newSortCategory = TABLE_FIELDS[reducerTableName][category];
 
-        let newPageNum = this.state.pageNumber;
-        if (event.target.innerHTML.trim() === 'Next') {
-            newPageNum += 1;
-        } else if (event.target.innerHTML.trim() === 'Previous') {
-            newPageNum -= 1;
-        } else {
-            newPageNum = parseInt(event.target.innerHTML.trim(), 10);
+        dispatch(sortBy(reducerTableName, newSortCategory));
+    }
+
+    handlePagination(event) {
+        const { dispatch, reducerTableName } = this.props;
+        const currentPageNumber = this.props.tableOptions.pageNumber;
+
+        let newPageNumber = currentPageNumber;
+        const parsedText = event.target.innerHTML.trim();
+        switch (parsedText) {
+            case 'Next':
+                newPageNumber += 1;
+                break;
+            case 'Previous':
+                newPageNumber -= 1;
+                break;
+            default:
+                newPageNumber = parseInt(parsedText, 10);
+                break;
         }
 
-        this.setState({
-            pageNumber: newPageNum
-        });
+        if (newPageNumber !== currentPageNumber) {
+            dispatch(setPageNumber(reducerTableName, newPageNumber));
+        }
     }
 
     handleSearch(event) {
-        this.setState({
-            searchText: event.target.value.toLowerCase()
-        });
+        const { dispatch, reducerTableName } = this.props;
+        const currentSearchText = this.props.tableOptions.searchText;
+        const newSearchText = event.target.value.toLowerCase();
+
+        if (newSearchText !== currentSearchText) {
+            dispatch(setSearchText(reducerTableName, newSearchText));
+        }
     }
 
     handleSelect(event) {
         // Release focus
         event.target.blur();
 
-        this.setState({
-            selectValue: parseInt(event.target.value.trim(), 10),
-            pageNumber: 1
-        });
+        const { dispatch, reducerTableName } = this.props;
+        const currentSelectValue = this.props.tableOptions.selectValue;
+        const newSelectValue = event.target.value.trim();
+
+        if (newSelectValue !== currentSelectValue) {
+            dispatch(setSelectValue(reducerTableName, newSelectValue));
+            dispatch(setPageNumber(reducerTableName, 1));
+        }
     }
 
     render() {
         const { categories, entries } = this.props;
+        const { pageNumber, searchText, selectValue, sortedForward } = this.props.tableOptions;
 
         // Formatting table categories
         let formattedCategories = [];
@@ -67,24 +90,24 @@ export default class DataTable extends Component {
             formattedCategories.push(<DataTableCategory className={category.className}
                                                         key={category.id}
                                                         name={category.name}
-                                                        orderEntries={this.props.orderEntries}
+                                                        orderEntries={this.handleOrderEntries}
                                                         sortable={this.props.sortable}
-                                                        sortedForward={this.props.sortedForward}
+                                                        sortedForward={sortedForward}
                                                         style={category.style} />));
 
         // Setting up bounds
         let entriesList = entries.filter(oneEntry => {
-                let filterRegex = new RegExp(this.state.searchText);
+                let filterRegex = new RegExp(searchText);
                 return filterRegex.test(oneEntry.name.toLowerCase());
             }),
-            startIndexInProjects = (this.state.pageNumber - 1) * this.state.selectValue,
+            startIndexInProjects = (pageNumber - 1) * selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd,
             totalNbrOfEntries = this.props.entries.length;
 
         // Putting together "show string"
-        if (entriesList.length > (startIndexInProjects + this.state.selectValue)) {
-            displayNumEnd = (startIndexInProjects + this.state.selectValue);
+        if (entriesList.length > (startIndexInProjects + selectValue)) {
+            displayNumEnd = (startIndexInProjects + selectValue);
         } else {
             displayNumEnd = entriesList.length;
         }
@@ -106,33 +129,33 @@ export default class DataTable extends Component {
 
         // Formatting selections (can make more efficient later)
         let formattedSelectOptions = [];
-        let selectOptions = [10, 25, 50, 100];
+        const selectOptions = [10, 25, 50, 100];
         selectOptions.forEach((opt, index) =>
             formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>));
 
         // Formatting pagination buttons
         let formattedPaginationButtons = [],
-            numPages = Math.floor(entriesList.length / this.state.selectValue) + 1,
+            numPages = Math.floor(entriesList.length / selectValue) + 1,
             startPage,
             endPage;
 
         if (numPages <= 3) {
             startPage = 1;
             endPage = numPages;
-        } else if (this.state.pageNumber === 1) {
+        } else if (pageNumber === 1) {
             startPage = 1;
             endPage = 3;
-        } else if (this.state.pageNumber === numPages) {
+        } else if (pageNumber === numPages) {
             startPage = numPages - 2;
             endPage = numPages;
         } else {
-            startPage = this.state.pageNumber - 1;
-            endPage = this.state.pageNumber + 1;
+            startPage = pageNumber - 1;
+            endPage = pageNumber + 1;
         }
 
         for (let i = startPage; i <= endPage; i++) {
             formattedPaginationButtons.push(
-                <li className={this.state.pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
+                <li className={pageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
                     <a href="#"
                        onClick={this.handlePagination}
                        style={STYLE.paginationButtons.buttons}>{i}</a>
@@ -140,15 +163,15 @@ export default class DataTable extends Component {
         }
 
         // Setting up minimum height of table
-        const minHeight = 70 + 35 * (this.props.entries.length < this.state.selectValue ? entriesList.length :
-                                                                                          this.state.selectValue),
+        const minHeight = 70 + 35 * (this.props.entries.length < selectValue ? entriesList.length :
+                                                                                          selectValue),
             tableMinHeight = {
                 minHeight: minHeight + "px"
             };
 
         // Rules for showing showString, pagination, and select options
         let showBasedOnRawData = this.props.entries.length > selectOptions[0];
-        let showPagination = this.state.selectValue < entriesList.length;
+        let showPagination = selectValue < entriesList.length;
 
         return (
             <div className="box-body">
@@ -167,7 +190,7 @@ export default class DataTable extends Component {
                                        className="form-control input-sm"
                                        placeholder={`Filter...`}
                                        style={{display: totalNbrOfEntries <= 10 ? 'none' : 'inline-block'}}
-                                       value={this.state.searchText}
+                                       value={searchText}
                                        onChange={this.handleSearch}/>
                             </label>
                         </div>
@@ -217,7 +240,7 @@ export default class DataTable extends Component {
                             <DataTablePagination clickHandler={this.handlePagination}
                                                  formattedPaginationButtons={formattedPaginationButtons}
                                                  numPages={numPages}
-                                                 pageNumber={this.state.pageNumber}/> : null }
+                                                 pageNumber={pageNumber}/> : null }
                     </div>
 
                     {/* Select dropdown */}
