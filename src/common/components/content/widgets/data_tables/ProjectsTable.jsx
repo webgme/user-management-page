@@ -6,26 +6,15 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 // Self-defined
-import DataTable from './DataTable';
+import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from
     '../../../../containers/content/widgets/data_tables/table_entries/ProjectsDataTableEntry';
 import { fetchProjectsIfNeeded } from '../../../../actions/projects';
-import { sortBy } from '../../../../actions/tables';
-
-const PROJECTS_FIELDS = {
-    "Created At": ["info", "createdAt"],
-    "Last Changed": ["info", "modifiedAt"],
-    "Last Viewed": ["info", "viewedAt"],
-    "Owner": "owner",
-    "Project Name": "name"
-};
 
 export default class ProjectsTable extends Component {
 
     constructor(props) {
         super(props);
-        // Event handlers
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
     }
 
     componentDidMount() {
@@ -34,15 +23,8 @@ export default class ProjectsTable extends Component {
         dispatch(fetchProjectsIfNeeded());
     }
 
-    handleOrderEntries(event) {
-        const { dispatch } = this.props;
-        const newSortCategory = PROJECTS_FIELDS[event.target.innerHTML];
-
-        dispatch(sortBy('projects', newSortCategory));
-    }
-
     render() {
-        const { pathname, projects, sortedForward } = this.props;
+        const { pathname, projects } = this.props;
 
         const categories = [
             {id: 1, name: 'Owner', style: {width: "13%"}},
@@ -56,7 +38,6 @@ export default class ProjectsTable extends Component {
         const ownerId = pathname.split('/').pop();
 
         return (
-
             <div>
                 {/* Header */}
                 <div className="box-header" style={{paddingBottom: 0}}>
@@ -70,8 +51,8 @@ export default class ProjectsTable extends Component {
                            content="Projects"
                            entries={projects}
                            orderEntries={this.handleOrderEntries}
-                           sortable={true}
-                           sortedForward={sortedForward}>
+                           reducerTableName="projects"
+                           sortable={true}>
                     <ProjectsDataTableEntry />
                 </DataTable>
 

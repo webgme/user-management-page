@@ -10,26 +10,19 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self-defined
 import CustomModal from '../CustomModal';
-import DataTable from './DataTable';
+import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import LoginField from '../LoginField';
 import OrganizationsDataTableEntry from
     '../../../../containers/content/widgets/data_tables/table_entries/OrganizationsDataTableEntry';
 import { fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
-import { sortBy } from '../../../../actions/tables';
 import { fetchUserIfNeeded } from '../../../../actions/user';
 // Style
 import { OrganizationsTable as STYLE } from '../../../../../client/style';
-
-const ORGANIZATION_FIELDS = {
-    "Organization Name": "name"
-};
 
 export default class OrganizationsTable extends Component {
 
     constructor(props) {
         super(props);
-        // Event handlers
-        this.handleOrderEntries = this.handleOrderEntries.bind(this);
     }
 
     componentDidMount() {
@@ -39,16 +32,8 @@ export default class OrganizationsTable extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    handleOrderEntries(event) {
-        const { dispatch } = this.props;
-        const newSortCategory = ORGANIZATION_FIELDS[event.target.value];
-
-        dispatch(sortBy('organizations', newSortCategory));
-    }
-
     render() {
-
-        const { organizations, sortedForward, adminOrganizations, user } = this.props;
+        const { organizations, adminOrganizations, user } = this.props;
 
         const categories = [
             {id: 1, name: 'Organization Name'}
@@ -77,8 +62,8 @@ export default class OrganizationsTable extends Component {
                            content="Organizations"
                            entries={organizations}
                            orderEntries={this.handleOrderEntries}
-                           sortable={true}
-                           sortedForward={sortedForward}>
+                           reducerTableName="organizations"
+                           sortable={true}>
                     <OrganizationsDataTableEntry adminOrganizations={adminOrganizations}/>
                 </DataTable>
 

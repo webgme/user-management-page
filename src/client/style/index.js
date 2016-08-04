@@ -96,6 +96,7 @@ export const DataTablePagination = {
 export const Footer = {
     mainFooter: {
         fontSize: "12px",
+        marginBottom: "1px",
         padding: "0px"
     },
     footerLeft: {

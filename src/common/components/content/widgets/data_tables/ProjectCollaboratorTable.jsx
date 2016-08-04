@@ -6,30 +6,16 @@
 // Libraries
 import React, { Component, PropTypes } from 'react';
 // Self-defined
-import DataTable from './DataTable';
+import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
 import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
 import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
-import { sortBy } from '../../../../actions/tables';
-
-const FIELDS = {
-    USER: {
-        Access: "rights",
-        User: "name"
-    },
-    ORGANIZATION: {
-        Organization: "name",
-        Access: "rights"
-    }
-};
 
 export default class ProjectCollaboratorTable extends Component {
 
     constructor(props) {
         super(props);
         // Event handlers
-        this.onOrderOrganizationEntries = this.onOrderOrganizationEntries.bind(this);
-        this.onOrderUserEntries = this.onOrderUserEntries.bind(this);
         this.onRevoke = this.onRevoke.bind(this);
     }
 
@@ -38,20 +24,6 @@ export default class ProjectCollaboratorTable extends Component {
 
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUsersIfNeeded());
-    }
-
-    onOrderOrganizationEntries(event) {
-        const { dispatch } = this.props;
-        const newSortCategory = FIELDS.ORGANIZATION[event.target.innerHTML];
-
-        dispatch(sortBy('projectOrg', newSortCategory));
-    }
-
-    onOrderUserEntries(event) {
-        const { dispatch } = this.props;
-        const newSortCategory = FIELDS.USER[event.target.innerHTML];
-
-        dispatch(sortBy('projectUser', newSortCategory));
     }
 
     onRevoke(event) {
@@ -67,8 +39,7 @@ export default class ProjectCollaboratorTable extends Component {
     }
 
     render() {
-        const { collaborators, orgSortedForward, userSortedForward } = this.props;
-        const { canAuthorize, ownerId, projectName } = this.props;
+        const { canAuthorize, collaborators, ownerId, projectName } = this.props;
 
         const dataTableData = {
             categories: {
@@ -100,8 +71,8 @@ export default class ProjectCollaboratorTable extends Component {
                                content="Users"
                                entries={collaborators.userCollaborators}
                                orderEntries={this.onOrderUserEntries}
-                               sortable={true}
-                               sortedForward={userSortedForward}>
+                               reducerTableName="projectUser"
+                               sortable={true}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}
                                                handleRevoke={this.onRevoke}
                                                ownerId={ownerId}
@@ -113,8 +84,8 @@ export default class ProjectCollaboratorTable extends Component {
                                content="Organizations"
                                entries={collaborators.organizationCollaborators}
                                orderEntries={this.onOrderOrganizationEntries}
-                               sortable={true}
-                               sortedForward={orgSortedForward}>
+                               reducerTableName="projectOrg"
+                               sortable={true}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}
                                                handleRevoke={this.onRevoke}
                                                ownerId={ownerId}

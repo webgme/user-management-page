@@ -3,20 +3,35 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import { REFRESH_TABLES, SORT_CATEGORY } from '../actions/tables';
+import { REFRESH_TABLES, SORT_CATEGORY,
+         SET_PAGE_NUMBER, SET_SEARCH_TEXT, SET_SELECT_VALUE } from '../actions/tables';
 
 const initialTableState = {
+        pageNumber: 1,
+        searchText: '',
+        selectValue: 10,
         sortCategory: 'name',
         sortedForward: true
     },
-    initialUsersTableState = {
-        sortCategory: '_id',
-        sortedForward: true
-    };
+    initialUsersTableState = Object.assign(initialTableState, {
+        sortCategory: '_id'
+    });
+
+const replaceStateParam = (field, state, action) => {
+    return Object.assign({}, state, {
+        [field]: action[field]
+    });
+};
 
 const table = (state = initialTableState, action) => {
     let newState;
     switch (action.type) {
+        case SET_PAGE_NUMBER:
+            return replaceStateParam('pageNumber', state, action);
+        case SET_SEARCH_TEXT:
+            return replaceStateParam('searchText', state, action);
+        case SET_SELECT_VALUE:
+            return replaceStateParam('selectValue', state, action);
         case SORT_CATEGORY:
             newState = Object.assign({}, state);
             if (state.sortCategory === action.sortCategory) {
@@ -51,12 +66,15 @@ const initialTablesState = {
 
 const tables = (state = initialTablesState, action) => {
     switch (action.type) {
+        case REFRESH_TABLES:
+            return initialTablesState;
+        case SET_PAGE_NUMBER:
+        case SET_SEARCH_TEXT:
+        case SET_SELECT_VALUE:
         case SORT_CATEGORY:
             return Object.assign({}, state, {
                 [action.table]: table(state[action.table], action)
             });
-        case REFRESH_TABLES:
-            return initialTablesState;
         default:
             return state;
     }

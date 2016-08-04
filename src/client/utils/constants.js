@@ -15,3 +15,31 @@ export const THEME_COLORS = {
 const DEFAULT_DATE = new Date(1447879297957);
 
 export const DEFAULT_ISODATE = DEFAULT_DATE.toISOString();
+
+export const TABLE_FIELDS = {
+    organizationMembers: {
+        User: 'name',
+        Admin: 'isAdmin'
+    },
+    organizations: {
+        "Organization Name": "name"
+    },
+    projectUser: {
+        Access: "rights",
+        User: "name"
+    },
+    projectOrg: {
+        Organization: "name",
+        Access: "rights"
+    },
+    projects: {
+        "Created At": ["info", "createdAt"],
+        "Last Changed": ["info", "modifiedAt"],
+        "Last Viewed": ["info", "viewedAt"],
+        "Owner": "owner",
+        "Project Name": "name"
+    },
+    users: {
+        User: "_id"
+    }
+};
