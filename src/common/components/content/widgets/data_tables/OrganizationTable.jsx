@@ -62,7 +62,7 @@ export default class OrganizationTable extends Component {
     }
 
     render() {
-        const {canAuthorize, members} = this.props;
+        const { canAuthorize, members } = this.props;
 
         const categories = [
             {id: 1, name: 'User'},

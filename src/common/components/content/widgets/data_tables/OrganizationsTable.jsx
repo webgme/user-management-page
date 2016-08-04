@@ -33,7 +33,7 @@ export default class OrganizationsTable extends Component {
     }
 
     render() {
-        const { organizations, sortedForward, adminOrganizations, user } = this.props;
+        const { organizations, adminOrganizations, user } = this.props;
 
         const categories = [
             {id: 1, name: 'Organization Name'}
@@ -63,8 +63,7 @@ export default class OrganizationsTable extends Component {
                            entries={organizations}
                            orderEntries={this.handleOrderEntries}
                            reducerTableName="organizations"
-                           sortable={true}
-                           sortedForward={sortedForward}>
+                           sortable={true}>
                     <OrganizationsDataTableEntry adminOrganizations={adminOrganizations}/>
                 </DataTable>
 

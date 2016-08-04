@@ -25,8 +25,6 @@ var LINK_STYLE = {
     fontSize: "24px",
     fontWeight: "500",
     color: "#333333",
-    marginLeft: "10px",
-    marginRight: "10px",
     textDecoration: "none"
 };
 
@@ -102,7 +100,7 @@ export default class HomePage extends Component {
                 </div>
 
                 <div className="row" style={{textAlign: "-webkit-center"}}>
-                    <div style={{display: "inline-block"}}>
+                    <div style={{display: "inline-block", textAlign: "-webkit-center"}}>
                         <Link to={`${basePath}profile`} style={LINK_STYLE}>
                             <img className="img-circle"
                                  src={getUserIconSource(user._id)}
@@ -110,15 +108,15 @@ export default class HomePage extends Component {
                                  width="150px"
                                  style={{borderRadius: "25%"}}/>
                             <br/>
-                            {user._id}
+                            <span>{user._id}</span>
                         </Link>
                     </div>
-                    <div style={{display: "inline-block"}}>
+                    <div style={{display: "inline-block", textAlign: "-webkit-center"}}>
                         <a href="/" style={LINK_STYLE}>
                             <img src="/img/gme-logo.png"
                                  width="150px"/>
                             <br/>
-                            Editor
+                            <span>Editor</span>
                         </a>
                     </div>
                 </div>

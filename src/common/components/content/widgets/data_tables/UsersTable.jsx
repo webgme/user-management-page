@@ -28,7 +28,7 @@ export default class UsersTable extends Component {
     }
 
     render() {
-        const { sortedForward, user, users } = this.props;
+        const { user, users } = this.props;
         const categories = [
             {id: 1, name: 'User'}
         ];

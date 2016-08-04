@@ -39,8 +39,7 @@ export default class ProjectCollaboratorTable extends Component {
     }
 
     render() {
-        const { collaborators, orgSortedForward, userSortedForward } = this.props;
-        const { canAuthorize, ownerId, projectName } = this.props;
+        const { canAuthorize, collaborators, ownerId, projectName } = this.props;
 
         const dataTableData = {
             categories: {
