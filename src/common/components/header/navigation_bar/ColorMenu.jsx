@@ -25,12 +25,12 @@ export default class ColorMenu extends Component {
                 backgroundColor: THEME_COLORS[color]
             };
             formattedColors.push(
-                <li value={color} key={index} onClick={changeThemeColor}>
-                    <a href="#" style={{padding: "6px 10px"}} value={color}>
+                <li data-color={color} key={index} onClick={changeThemeColor}>
+                    <a href="#" style={{padding: "6px 10px"}} data-color={color}>
                         <div className="pull-left">
-                            <div className="color-box" style={colorBoxStyle} value={color}></div>
+                            <div className="color-box" style={colorBoxStyle} data-color={color}></div>
                         </div>
-                        <h4 value={color}>
+                        <h4 data-color={color}>
                             {capitalizeFirstLetter(color)}
                         </h4>
                     </a>

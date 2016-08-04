@@ -12,7 +12,7 @@ import { setThemeColor } from '../../../actions/user';
 const mapDispatchToProps = (dispatch) => {
     return {
         changeThemeColor: (event) => {
-            const themeColor = event.target.getAttribute('value');
+            const themeColor = event.target.getAttribute('data-color');
             dispatch(setThemeColor(themeColor));
         }
     };
