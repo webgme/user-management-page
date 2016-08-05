@@ -19,7 +19,7 @@ export default class DataTableEntry extends Component {
                         className={this.props.pageNumber === 1 ? "paginate_button previous disabled" :
                                                                  "paginate_button previous"}
                         onClick={this.props.pageNumber === 1 ? null : this.props.clickHandler}>
-                        <a href="#" style={STYLE.unselectable}>Previous</a>
+                        <a href="#" data-page={this.props.pageNumber} style={STYLE.unselectable}>Previous</a>
                     </li>
 
                     {this.props.formattedPaginationButtons}
@@ -28,7 +28,7 @@ export default class DataTableEntry extends Component {
                         className={this.props.pageNumber === this.props.numPages ? "paginate_button next disabled" :
                                                                                    "paginate_button next"}
                         onClick={this.props.pageNumber === this.props.numPages ? null : this.props.clickHandler}>
-                        <a href="#" style={STYLE.unselectable}>Next</a>
+                        <a href="#" data-page={this.props.pageNumber} style={STYLE.unselectable}>Next</a>
                     </li>
                 </ul>
             </div>
