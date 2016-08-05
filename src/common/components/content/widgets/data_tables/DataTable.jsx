@@ -34,10 +34,13 @@ export default class DataTable extends Component {
     }
 
     handlePagination(event) {
+        // Release focus
+        event.target.blur();
         const { dispatch, reducerTableName } = this.props;
-        const currentPageNumber = this.props.tableOptions.pageNumber;
 
-        let newPageNumber = currentPageNumber;
+        let displayPageNumber = parseInt(event.target.dataset.page, 10),
+            newPageNumber = parseInt(event.target.dataset.page, 10);
+
         const parsedText = event.target.innerHTML.trim();
         switch (parsedText) {
             case 'Next':
@@ -51,7 +54,7 @@ export default class DataTable extends Component {
                 break;
         }
 
-        if (newPageNumber !== currentPageNumber) {
+        if (newPageNumber !== displayPageNumber) {
             dispatch(setPageNumber(reducerTableName, newPageNumber));
         }
     }
@@ -95,18 +98,58 @@ export default class DataTable extends Component {
                                                         sortedForward={sortedForward}
                                                         style={category.style} />));
 
-        // Setting up bounds
+        // Filter out nodes..
         let entriesList = entries.filter(oneEntry => {
-                let filterRegex = new RegExp(searchText);
-                return filterRegex.test(oneEntry.name.toLowerCase());
-            }),
-            startIndexInProjects = (pageNumber - 1) * selectValue,
+            let filterRegex = new RegExp(searchText);
+            return filterRegex.test(oneEntry.name.toLowerCase());
+        });
+
+        // Formatting pagination buttons
+        let formattedPaginationButtons = [],
+            numPages = Math.floor(entriesList.length / selectValue) + 1,
+            startPage,
+            displayedPageNumber,
+            endPage;
+
+        if (pageNumber > numPages) {
+            // Make sure the pageNumber actually exists, if not fall back to first
+            displayedPageNumber = 1;
+        } else {
+            displayedPageNumber = pageNumber;
+        }
+
+        if (numPages <= 3) {
+            startPage = 1;
+            endPage = numPages;
+        } else if (displayedPageNumber === 1) {
+            startPage = 1;
+            endPage = 3;
+        } else if (displayedPageNumber === numPages) {
+            startPage = numPages - 2;
+            endPage = numPages;
+        } else {
+            startPage = displayedPageNumber - 1;
+            endPage = displayedPageNumber + 1;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            formattedPaginationButtons.push(
+                <li className={displayedPageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
+                    <a href="#"
+                       data-page={displayedPageNumber}
+                       onClick={this.handlePagination}
+                       style={STYLE.paginationButtons.buttons}>{i}</a>
+                </li>);
+        }
+
+        // Putting together "show string"
+
+        var startIndexInProjects = (displayedPageNumber - 1) * selectValue,
             displayNumStart = startIndexInProjects + 1,
             displayNumEnd,
             showString,
             totalNbrOfEntries = this.props.entries.length;
 
-        // Putting together "show string"
         if (entriesList.length > (startIndexInProjects + selectValue)) {
             displayNumEnd = (startIndexInProjects + selectValue);
         } else {
@@ -140,45 +183,6 @@ export default class DataTable extends Component {
         selectOptions.forEach((opt, index) =>
             formattedSelectOptions.push(<option value={String(opt)} key={index}>{opt}</option>));
 
-        // Formatting pagination buttons
-        let formattedPaginationButtons = [],
-            numPages = Math.floor(entriesList.length / selectValue) + 1,
-            displayedPageNumber,
-            startPage,
-            endPage;
-
-        if (pageNumber > numPages) {
-            // Make sure the pageNumber actually exists
-            displayedPageNumber = 1;
-        } else {
-            displayedPageNumber = pageNumber;
-        }
-
-        console.log(pageNumber, displayedPageNumber, numPages);
-
-        if (numPages <= 3) {
-            startPage = 1;
-            endPage = numPages;
-        } else if (displayedPageNumber === 1) {
-            startPage = 1;
-            endPage = 3;
-        } else if (displayedPageNumber === numPages) {
-            startPage = numPages - 2;
-            endPage = numPages;
-        } else {
-            startPage = displayedPageNumber - 1;
-            endPage = displayedPageNumber + 1;
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            formattedPaginationButtons.push(
-                <li className={displayedPageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
-                    <a href="#"
-                       onClick={this.handlePagination}
-                       style={STYLE.paginationButtons.buttons}>{i}</a>
-                </li>);
-        }
-
         // Setting up minimum height of table
         const minHeight = 70 + 35 * (this.props.entries.length < selectValue ? entriesList.length :
                                                                                           selectValue),
@@ -206,7 +210,8 @@ export default class DataTable extends Component {
                                 <input type="text"
                                        className="form-control input-sm"
                                        placeholder={`Filter...`}
-                                       style={{display: totalNbrOfEntries <= 10 ? 'none' : 'inline-block'}}
+                                       style={{display: totalNbrOfEntries <= 10 && searchText === '' ?
+                                        'none' : 'inline-block'}}
                                        value={searchText}
                                        onChange={this.handleSearch}/>
                             </label>

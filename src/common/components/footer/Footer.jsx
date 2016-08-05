@@ -31,7 +31,7 @@ export default class Footer extends Component {
                 </strong>
 
                 <span className="pull-right hidden-xs" style={STYLE.footerRight}>
-                    Version 0.2
+                    Version 0.2.1
                 </span>
 
             </footer>
