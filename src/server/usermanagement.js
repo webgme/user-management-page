@@ -67,7 +67,7 @@ function initialize(middlewareOpts) {
         });
     });
 
-    const ROUTES = [
+    var ROUTES = [
         '/',
         '/home',
         '/profile',
