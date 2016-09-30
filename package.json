@@ -5,7 +5,7 @@
   "main": "./src/server/usermanagement.js",
   "scripts": {
     "eslint": "node ./node_modules/eslint/bin/eslint.js ./src/*",
-    "postinstall": "webpack",
+    "prepublish": "webpack",
     "production": "set NODE_ENV=production&& webpack",
     "start": "node app.js",
     "test": "node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test",
