@@ -5,7 +5,7 @@
 
 // Libraries
 import React, {Component, PropTypes} from 'react';
-import {Button, ButtonGroup} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 // Self-defined
 import LoginField from '../../../components/content/widgets/LoginField';
 import {fetchUser} from '../../../actions/user';
@@ -365,7 +365,7 @@ export default class ProfileBox extends Component {
                             <Button bsStyle="danger"
                                     onClick={this.showModal}
                                     style={STYLE.deleteButton}>
-                                Delete
+                                Delete ...
                             </Button> : null}
 
                         {editable && this.state.hasEdits ?
@@ -387,7 +387,7 @@ export default class ProfileBox extends Component {
                              confirmId={user._id}
                              modalMessage={'Are you sure you want to delete ' + user._id + '? This user owns ' +
                                nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
-                                 ' Check projects table filtered by user for full list. ' : ' ') +
+                                 ' Check projects table filtered by owner for full list. ' : ' ') +
                                  'Deleted users still reside in the database with the extra property "disabled: true"' +
                                  ' and can be recovered manually.'
                              }

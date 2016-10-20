@@ -6,19 +6,29 @@
 // Libraries
 import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
+import {Button} from 'react-bootstrap';
 // Self defined
 import OrganizationAuthorizationWidget from
     '../../../containers/content/widgets/authorization_widget/OrganizationAuthorizationWidget';
 import OrganizationTable from '../../../containers/content/widgets/data_tables/OrganizationTable';
-import {fetchOrganizationsIfNeeded} from '../../../actions/organizations';
+import CustomModal from '../widgets/CustomModal';
+import {fetchOrganizationsIfNeeded, fetchOrganizations} from '../../../actions/organizations';
 import {fetchUserIfNeeded} from '../../../actions/user';
 import {fetchProjectsIfNeeded} from '../../../actions/projects';
-import {ProjectPage as PROJECT_STYLE, HomePage as HOME_STYLE} from '../../../../client/style';
+import {ProjectPage as PROJECT_STYLE, HomePage as HOME_STYLE, ProfileBox as STYLE} from '../../../../client/style';
 
 export default class OrganizationPage extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showModal: false
+        };
+
+        this.deleteOrganization = this.deleteOrganization.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.confirmModal = this.confirmModal.bind(this);
     }
 
     componentDidMount() {
@@ -29,8 +39,39 @@ export default class OrganizationPage extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
+    deleteOrganization() {
+        const {dispatch} = this.props;
+        this.props.restClient.organizations.deleteOrganization(this.props.params.organizationId)
+            .then(() => {
+                dispatch(fetchOrganizations());
+            })
+            .catch(() => {
+                dispatch(fetchOrganizations());
+            });
+    }
+
+    showModal() {
+        this.setState({
+            showModal: true
+        });
+    }
+
+    hideModal() {
+        this.setState({
+            showModal: false
+        });
+    }
+
+    confirmModal(event) {
+        this.setState({
+            showModal: false
+        }, this.deleteOrganization(event));
+    }
+
     render() {
-        const {basePath, canAuthorize, organizationExists} = this.props;
+        const {basePath, canAuthorize, organizationExists, user, ownedProjects} = this.props;
+        let canDelete = user.siteAdmin === true,
+            nbrOfOwnedProjects = ownedProjects.length;
 
         if (!organizationExists) {
             return (<section className="content">
@@ -84,6 +125,29 @@ export default class OrganizationPage extends Component {
                         </div>
                     </div>
                 </div>
+
+                {canDelete ?
+                    <Button bsStyle="danger"
+                            onClick={this.showModal}
+                            style={STYLE.deleteButton}>
+                        Delete ...
+                    </Button> : null}
+
+                <CustomModal cancelButtonMessage="Cancel"
+                             cancelButtonStyle="default"
+                             closeHandler={this.hideModal}
+                             confirmButtonMessage="OK"
+                             confirmButtonStyle="danger"
+                             confirmHandler={this.confirmModal}
+                             confirmId={this.props.params.organizationId}
+                             modalMessage={'Are you sure you want to delete ' + this.props.params.organizationId + '?' +
+                              ' This organization owns ' + nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
+                              ' Check projects table filtered by owner for full list. ' : ' ') +
+                              'Deleted organizations still reside in the database with the extra property' +
+                              ' "disabled: true" and can be recovered manually.'
+                             }
+                             showModal={this.state.showModal}
+                             title="Delete Organization"/>
             </section>
         );
     }
