@@ -30,10 +30,17 @@ export default class OrganizationPage extends Component {
     }
 
     render() {
-        const {basePath, canAuthorize} = this.props;
+        const {basePath, canAuthorize, organizationExists} = this.props;
+
+        if (!organizationExists) {
+            return (<section className="content">
+                <Link to={`${this.props.basePath}organizations`}>
+                    {`No such organization '${this.props.params.organizationId}', back to organizations ...`}
+                </Link>
+            </section>);
+        }
 
         return (
-
             <section className="content">
                 <div className="box box-primary" style={PROJECT_STYLE.titleBox}>
                     <div className="row">
@@ -80,7 +87,6 @@ export default class OrganizationPage extends Component {
             </section>
         );
     }
-
 }
 
 OrganizationPage.propTypes = {
