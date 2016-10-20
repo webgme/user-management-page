@@ -12,6 +12,7 @@ import {fetchUser} from '../../../actions/user';
 import {fetchUsers} from '../../../actions/users';
 import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
 import {getUserIconSource} from '../../../../client/utils/utils';
+import CustomModal from './CustomModal';
 
 // Style
 import {ProfileBox as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';
@@ -37,7 +38,8 @@ export default class ProfileBox extends Component {
                 email: true,
                 password: true
             },
-            hasEdits: false
+            hasEdits: false,
+            showModal: false
         };
         // Event handlers
         this.checkAllFields = this.checkAllFields.bind(this);
@@ -50,6 +52,9 @@ export default class ProfileBox extends Component {
         this.onSiteAdminChange = this.onSiteAdminChange.bind(this);
         this.onCanCreateChange = this.onCanCreateChange.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.confirmModal = this.confirmModal.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -141,6 +146,35 @@ export default class ProfileBox extends Component {
         });
     }
 
+    deleteUser() {
+        const {dispatch} = this.props;
+        this.props.restClient.users.deleteUser(this.props.user._id)
+            .then(() => {
+                dispatch(fetchUsers());
+            })
+            .catch(() => {
+                dispatch(fetchUsers());
+            });
+    }
+
+    showModal() {
+        this.setState({
+            showModal: true
+        });
+    }
+
+    hideModal() {
+        this.setState({
+            showModal: false
+        });
+    }
+
+    confirmModal(event) {
+        this.setState({
+            showModal: false
+        }, this.deleteUser(event));
+    }
+
     onUpdate(event) {
         // Release focus
         event.target.blur();
@@ -224,7 +258,14 @@ export default class ProfileBox extends Component {
     }
 
     render() {
-        const {editable, user, config} = this.props;
+        const {editable, user, config, isCurrentUser} = this.props;
+        let isGuest = user._id === config.authentication.guestAccount,
+            nbrOfOwnedProjects = Object.keys(user.projects).filter(function(projectId) {
+                console.log(projectId);
+                console.log(projectId.split('+')[0]);
+                console.log(user._id);
+                return projectId.split('+')[0] === user._id;
+            }).length;
 
         return (
             <div className="col-md-6 col-md-offset-3">
@@ -246,7 +287,7 @@ export default class ProfileBox extends Component {
                                         valid={true}
                                         value={`UserID: ${user._id ? user._id : ''}`}/>
                             {/* Custom Site Admin (guest cannot be assigned siteAdmin) */}
-                            { user._id === config.authentication.guestAccount ? null :
+                            { isGuest ? null :
                                 <div>
                                     <div className={`input-group`}>
                                     <span className="input-group-addon">
@@ -287,7 +328,7 @@ export default class ProfileBox extends Component {
                                 <br/>
                             </div> : null}
                             {/* Email */}
-                            { user._id === config.authentication.guestAccount ? null :
+                            { isGuest ? null :
                                 <LoginField disabled={!editable}
                                             hint="Email"
                                             iconClass="glyphicon glyphicon-envelope"
@@ -298,7 +339,7 @@ export default class ProfileBox extends Component {
                                             value={this.state.email ? this.state.email : ''}/>
                             }
                             {/* New Password */}
-                            {editable && user._id !== config.authentication.guestAccount ?
+                            {editable && !isGuest ?
                                 <LoginField hint="New Password"
                                             iconClass="glyphicon glyphicon-lock"
                                             invalidMessage={this.state.invalidMessage.password}
@@ -309,7 +350,7 @@ export default class ProfileBox extends Component {
                                             valid={this.state.validCredentials.password}
                                             value={this.state.password}/> : null}
                             {/* Confirm New Password */}
-                            {editable && user._id !== config.authentication.guestAccount ?
+                            {editable && !isGuest ?
                                 <LoginField hint="Confirm New Password"
                                             iconClass="glyphicon glyphicon-log-in"
                                             invalidMessage={this.state.invalidMessage.confirmPassword}
@@ -322,6 +363,13 @@ export default class ProfileBox extends Component {
 
                         </ul>
 
+                        {editable && !isCurrentUser && !isGuest ?
+                            <Button bsStyle="danger"
+                                    onClick={this.showModal}
+                                    style={STYLE.deleteButton}>
+                                Delete
+                            </Button> : null}
+
                         {editable && this.state.hasEdits ?
                             <Button bsStyle="primary"
                                     onClick={this.onUpdate}
@@ -331,6 +379,22 @@ export default class ProfileBox extends Component {
 
                     </div>
                 </div>
+
+                <CustomModal cancelButtonMessage="Cancel"
+                             cancelButtonStyle="default"
+                             closeHandler={this.hideModal}
+                             confirmButtonMessage="OK"
+                             confirmButtonStyle="danger"
+                             confirmHandler={this.confirmModal}
+                             confirmId={user._id}
+                             modalMessage={'Are you sure you want to delete ' + user._id + '? This user owns ' +
+                               nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
+                                 ' Check projects table filtered by user for full list. ' : ' ') +
+                                 'Deleted users still reside in the database with the extra property "disabled: true"' +
+                                 ' and can be recovered manually.'
+                             }
+                             showModal={this.state.showModal}
+                             title="Delete User"/>
             </div>
         );
     }
