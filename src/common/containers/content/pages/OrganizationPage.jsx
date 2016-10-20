@@ -22,10 +22,21 @@ const mapStateToProps = (state, ownProps) => {
         return project.owner === organizationId;
     });
 
+    let organizationExists = false;
+    let organization = organizations.find((org) => {
+        return org._id === organizationId;
+    });
+
+    if (organization) {
+        organizationExists = true;
+    }
+
     return {
         basePath,
         canAuthorize,
-        ownedProjects
+        ownedProjects,
+        organizationExists,
+        user
     };
 };
 

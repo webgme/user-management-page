@@ -205,6 +205,10 @@ export const ProfileBox = {
     },
     updateButton: {
         float: "right"
+    },
+    deleteButton: {
+        float: "left",
+        tabindex: "-1"
     }
 };
 
