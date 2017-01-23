@@ -13,11 +13,11 @@ import { isEmpty } from './utils';
  */
 export const getOrgsUserIsAdminOf = (orgs, userId) => {
     return orgs
-        .map((org) => {
-            return org.admins.indexOf(userId) > -1 ? org._id : undefined;
+        .filter(org => {
+            return org.admins.indexOf(userId) > -1;
         })
-        .filter((entry) => {
-            return entry;
+        .map(org => {
+            return org._id;
         });
 };
 
