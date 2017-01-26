@@ -8,18 +8,13 @@ import React from 'react';
 import blockies from 'blockies';
 
 /**
- * Capitalizes the first letter of a word (formatting help)
- * @param {string} word - word to be altered
- * @return {string} - formatted word
+ * Format string so that only first letter is capitalized
+ * Note: String.prototype.charAt & String.prototype.slice handle out of bounds
+ * @param word - word to be formatted
+ * @returns {string} - formatted word
  */
 export function capitalizeFirstLetter(word) {
-    if (word.length === 0) {
-        return '';
-    }
-    if (word.length === 1) {
-        return word.substring(0, 1).toUpperCase();
-    }
-    return word.substring(0, 1).toUpperCase() + word.substring(1);
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
 /**
