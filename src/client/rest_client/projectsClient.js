@@ -57,6 +57,7 @@ export default class ProjectsClient extends BaseClient {
      * @param {string} [info.modifier] - Sets the last user who modified the project.
      * @param {string} [info.createdAt] - Sets the creator of the project.
      * @param {string} [info.creator] - Sets the user who created the project.
+     * @param {string} [info.kind] - Sets the kind of the project.
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateProject(ownerId, projectName, info) {
