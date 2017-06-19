@@ -1,6 +1,6 @@
 {
   "name": "webgme-user-management-page",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "User management page for webgme",
   "main": "./src/server/usermanagement.js",
   "scripts": {
