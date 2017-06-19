@@ -7,7 +7,7 @@ var config = require('webgme/config/config.default'),
     path = require('path');
 
 config.server.port = 9001;
-config.mongo.uri = 'mongodb://127.0.0.1:27017/webgme_tests';
+config.mongo.uri = 'mongodb://127.0.0.1:27017/webgme-usermanagement-test';
 
 config.authentication.enable = true;
 
