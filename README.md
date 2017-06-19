@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/webgme/user-management-page.svg?branch=master)](https://travis-ci.org/webgme/user-management-page)
 [![Version](https://badge.fury.io/js/webgme-user-management-page.svg)](https://www.npmjs.com/package/webgme-user-management-page)
 
-###A webpage for users to manage their webgme account and projects. 
+### A webpage for users to manage their webgme account and projects. 
 `webgme-user-management-page` runs as a dependency of [webgme](https://github.com/webgme/webgme) and is available at `<host>/profile`
 when [authentication is enabled](https://github.com/webgme/webgme/wiki/Users-and-Authentication). The purpose is to
 allow for registration and login, project authorization of other users/organizations, and creation of
@@ -9,8 +9,8 @@ organizations as well as member/admin control for those organizations.
 
 For instructions on webgme authentication and user-management see [this demo on youtube](https://www.youtube.com/watch?v=xS6_FK8kZhE).
 
-##Developers
-####Steps to run as an external REST router within WebGME
+## Developers
+#### Steps to run as an external REST router within WebGME
 
 WebGME requires [NodeJS](https://nodejs.org/) (0.12 <= version, CI tests are performed on versions 4.x, 6.x) and [MongoDB](https://www.mongodb.com/) (version >= 2.6) installed on the host system (the server).
 In addition the npm installation requires [Git](https://git-scm.com) to be installed and available in PATH.
@@ -22,7 +22,7 @@ In addition the npm installation requires [Git](https://git-scm.com) to be insta
 5. From a browser visit `http://localhost:8888/usermanagement/`
 
 
-####Webpack file listener
+#### Webpack file listener
 To build client side bundle on file changes invoke
 ```
 webpack -w
