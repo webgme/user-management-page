@@ -14,11 +14,11 @@ describe('Organizations Rest Client', function() {
 
     gmeConfig.server.port += 1;
     before(function(done) {
+        this.timeout(10000);
         testFixture.clearDBAndGetGMEAuth(gmeConfig)
             .then(function(gmeAuth_) {
                 gmeAuth = gmeAuth_;
-            })
-            .then(function() {
+
                 return Q.allDone([
                     gmeAuth.addUser('userOrgA', 'user@example.com', 'pass', true, {overwrite: true}),
                     gmeAuth.addUser('userOrgAB', 'test@example.com', 'pass', true, {overwrite: true}),
