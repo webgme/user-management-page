@@ -50,10 +50,17 @@ export default class UsersClient extends BaseClient {
     /**
      * Deletes the user specified (requires is current user or user.siteAdmin)
      * @param {string} username - username of user to be deleted
+     * @param {boolean} [force] - if true will remove the user from the database.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    deleteUser(username) {
-        return super.delete(['users', username]);
+    deleteUser(username, force) {
+        let query;
+
+        if (force) {
+            query = {force: true};
+        }
+        debugger;
+        return super.delete(['users', username], query);
     }
 
     /**

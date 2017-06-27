@@ -5,7 +5,7 @@
 
 // Libraries
 import React, {Component, PropTypes} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, Well} from 'react-bootstrap';
 // Self-defined
 import LoginField from '../../../components/content/widgets/LoginField';
 import {fetchUser} from '../../../actions/user';
@@ -39,7 +39,8 @@ export default class ProfileBox extends Component {
                 password: true
             },
             hasEdits: false,
-            showModal: false
+            showModal: false,
+            showModelEnableUser: false
         };
         // Event handlers
         this.checkAllFields = this.checkAllFields.bind(this);
@@ -52,9 +53,14 @@ export default class ProfileBox extends Component {
         this.onSiteAdminChange = this.onSiteAdminChange.bind(this);
         this.onCanCreateChange = this.onCanCreateChange.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
+
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
         this.confirmModal = this.confirmModal.bind(this);
+
+        this.showModalEnableUser = this.showModalEnableUser.bind(this);
+        this.hideModalEnableUser = this.hideModalEnableUser.bind(this);
+        this.confirmModalEnableUser = this.confirmModalEnableUser.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -148,7 +154,18 @@ export default class ProfileBox extends Component {
 
     deleteUser() {
         const {dispatch} = this.props;
-        this.props.restClient.users.deleteUser(this.props.user._id)
+        this.props.restClient.users.deleteUser(this.props.user._id, this.props.user.disabled)
+            .then(() => {
+                dispatch(fetchUsers());
+            })
+            .catch(() => {
+                dispatch(fetchUsers());
+            });
+    }
+
+    reEnableUser() {
+        const {dispatch} = this.props;
+        this.props.restClient.users.patchUser(this.props.user._id, {disabled: false})
             .then(() => {
                 dispatch(fetchUsers());
             })
@@ -173,6 +190,24 @@ export default class ProfileBox extends Component {
         this.setState({
             showModal: false
         }, this.deleteUser(event));
+    }
+
+    showModalEnableUser() {
+        this.setState({
+            showModalEnableUser: true
+        });
+    }
+
+    hideModalEnableUser() {
+        this.setState({
+            showModalEnableUser: false
+        });
+    }
+
+    confirmModalEnableUser(event) {
+        this.setState({
+            showModalEnableUser: false
+        }, this.reEnableUser(event));
     }
 
     onUpdate(event) {
@@ -258,7 +293,7 @@ export default class ProfileBox extends Component {
     }
 
     render() {
-        const {editable, user, config, isCurrentUser} = this.props;
+        const {editable, user, config, isCurrentUser, currentUser} = this.props;
         let isGuest = user._id === config.authentication.guestAccount,
             nbrOfOwnedProjects = Object.keys(user.projects).filter(function(projectId) {
                 // FIXME: Do not rely on split
@@ -274,7 +309,9 @@ export default class ProfileBox extends Component {
                              alt="User profile picture"
                              style={PROFILE_STYLE}/>
 
-                        <h3 className="profile-username text-center">&nbsp;{user._id}&nbsp;</h3>
+                        <h3 className="profile-username text-center" style={user.disabled ? {color: 'grey'} : {}}>
+                            &nbsp;{user._id + (user.disabled ? ' (Disabled)' : '')}&nbsp;
+                        </h3>
 
                         <ul className="list-group list-group-unbordered">
                             {/* Username */}
@@ -361,11 +398,37 @@ export default class ProfileBox extends Component {
 
                         </ul>
 
-                        {editable && !isCurrentUser && !isGuest ?
+                        {currentUser.siteAdmin ?
+                            <div>
+                                <div style={STYLE.infoTitle}>
+                                    DATA
+                                </div>
+                                <pre>
+                                {JSON.stringify(user.data, null, 2)}
+                                </pre>
+                                <br/>
+                                <div style={STYLE.infoTitle}>
+                                    SETTINGS
+                                </div>
+                                <pre>
+                                {JSON.stringify(user.settings, null, 2)}
+                                </pre>
+                            </div>
+                            : null
+                        }
+
+                        {currentUser.siteAdmin && !isCurrentUser && !isGuest ?
                             <Button bsStyle="danger"
                                     onClick={this.showModal}
                                     style={STYLE.deleteButton}>
-                                Delete ...
+                                {user.disabled ? 'Force' : ''} Delete ...
+                            </Button> : null}
+
+                        {currentUser.siteAdmin && user.disabled ?
+                            <Button bsStyle="primary"
+                                    onClick={this.showModalEnableUser}
+                                    style={STYLE.updateButton}>
+                                    Enable User ...
                             </Button> : null}
 
                         {editable && this.state.hasEdits ?
@@ -385,14 +448,36 @@ export default class ProfileBox extends Component {
                              confirmButtonStyle="danger"
                              confirmHandler={this.confirmModal}
                              confirmId={user._id}
-                             modalMessage={'Are you sure you want to delete ' + user._id + '? This user owns ' +
+                             modalMessage={
+                             user.disabled ?
+                               'Are you really sure that you forcefully want to delete ' + user._id + '? After the ' +
+                               'deletion there will no longer be any stored data for the user. If this user was ever ' +
+                                'logged in and a new users registers under the same id - the previous user might ' +
+                                 'have sessions stored allowing him to identify as the new user!' :
+
+                             'Are you sure you want to delete ' + user._id + '? This user owns ' +
                                nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
                                  ' Check projects table filtered by owner for full list. ' : ' ') +
                                  'Deleted users still reside in the database with the extra property "disabled: true"' +
                                  ' and can be recovered manually.'
                              }
                              showModal={this.state.showModal}
-                             title="Delete User"/>
+                             title={user.disabled ? "Forcefully Delete User" : "Delete User"}/>
+
+                <CustomModal cancelButtonMessage="Cancel"
+                             cancelButtonStyle="default"
+                             closeHandler={this.hideModalEnableUser}
+                             confirmButtonMessage="OK"
+                             confirmButtonStyle="danger"
+                             confirmHandler={this.confirmModalEnableUser}
+                             confirmId={user._id}
+                             modalMessage={
+                             'Are you sure you want to re-enable the deleted user "' + user._id + '"? After ' +
+                             're-enabling the user the account will be active and the user will be able to log in ' +
+                              'with the user-id and password stored.'
+                             }
+                             showModal={this.state.showModalEnableUser}
+                             title={"Enable User"}/>
             </div>
         );
     }

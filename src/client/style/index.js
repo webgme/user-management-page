@@ -209,6 +209,12 @@ export const ProfileBox = {
     deleteButton: {
         float: "left",
         tabindex: "-1"
+    },
+    infoTitle: {
+        fontSize: "12px",
+        fontWeight: "700",
+        color: "#959595",
+        letterSpacing: '1px'
     }
 };
 
