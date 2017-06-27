@@ -1,6 +1,6 @@
 {
   "name": "webgme-user-management-page",
-  "version": "0.2.4",
+  "version": "0.3.0-beta1",
   "description": "User management page for webgme",
   "main": "./src/server/usermanagement.js",
   "scripts": {
@@ -15,7 +15,24 @@
     "type": "git",
     "url": "git+https://github.com/webgme/user-management-page.git"
   },
-  "author": "kecso <tkecskes@isis.vanderbilt.edu>",
+  "author": {
+    "name": "WebGME Development Team",
+    "url": "https://webgme.org"
+  },
+  "contributors": [
+    {
+    "name" : "Patrick Kerry Pei" ,
+    "url" : "https://github.com/patrickkerrypei"
+  },
+    {
+      "name" : "Patrik Meijer" ,
+      "url" : "https://github.com/pmeijer"
+    },
+    {
+      "name" : "Tamas Kecskes" ,
+      "url" : "https://github.com/kecso"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/webgme/user-management-page/issues"
@@ -66,6 +83,6 @@
     "webpack": "^1.13.0",
     "http-server": "^0.8.5",
     "mocha": "^2.4.5",
-    "webgme": "webgme/webgme#master"
+    "webgme": "webgme/webgme#configurable-usermanagement-page"
   }
 }
