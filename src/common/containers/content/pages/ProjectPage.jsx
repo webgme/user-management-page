@@ -21,6 +21,10 @@ const mapStateToProps = (state, ownProps) => {
     const canAuthorize = canUserAuthorize(user, organizations, ownerId);
     const canTransfer = canUserTransfer(organizations, users, ownerId, projectId, user) || false;
 
+    // let enabledUsers = users.filter((user) => {
+    //     return !user.disabled;
+    // });
+
     return {
         canAuthorize,
         canTransfer,

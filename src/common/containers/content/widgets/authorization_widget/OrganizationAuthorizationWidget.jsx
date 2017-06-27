@@ -11,9 +11,12 @@ import OrganizationAuthorizationWidget from
 
 const mapStateToProps = (state) => {
     const { users } = state.users;
+    let enabledUsers = users.filter((user) => {
+        return !user.disabled;
+    });
 
     return {
-        users
+        users: enabledUsers
     };
 };
 

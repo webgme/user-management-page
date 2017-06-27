@@ -16,7 +16,7 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllUsers() {
-        return super.get(['users']);
+        return super.get(['users'], {includeDisabled: true});
     }
 
     /**

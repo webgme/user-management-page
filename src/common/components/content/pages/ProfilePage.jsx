@@ -32,6 +32,7 @@ export default class ProfilePage extends Component {
                             isCurrentUser={true}
                             config={this.props.config}
                             restClient={restClient}
+                            currentUser={user}
                             user={user} />
 
             </section>
