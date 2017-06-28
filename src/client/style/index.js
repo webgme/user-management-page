@@ -215,6 +215,16 @@ export const ProfileBox = {
         fontWeight: "700",
         color: "#959595",
         letterSpacing: '1px'
+    },
+    preTextArea: {
+        maxHeight: "200px"
+    },
+    textArea: {
+        width: "100%",
+        height: "200px",
+        fontFamily: "monospace",
+        fontSize: "12px",
+        resize: "vertical"
     }
 };
 

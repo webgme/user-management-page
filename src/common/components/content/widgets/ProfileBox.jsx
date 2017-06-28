@@ -32,7 +32,7 @@ export default class ProfileBox extends Component {
             },
             password: '',
             siteAdmin: this.props.user.siteAdmin || false,
-            canCreate: this.props.user.canCreate,
+            canCreate: this.props.user.canCreate || false,
             validCredentials: {
                 confirmPassword: true,
                 email: true,
@@ -40,7 +40,12 @@ export default class ProfileBox extends Component {
             },
             hasEdits: false,
             showModal: false,
-            showModelEnableUser: false
+            showModelEnableUser: false,
+
+            showEditData: false,
+            showEditSettings: false,
+            editDataValue: JSON.stringify(this.props.user.data, null, 2),
+            editSettingsValue: JSON.stringify(this.props.user.settings, null, 2)
         };
         // Event handlers
         this.checkAllFields = this.checkAllFields.bind(this);
@@ -61,6 +66,10 @@ export default class ProfileBox extends Component {
         this.showModalEnableUser = this.showModalEnableUser.bind(this);
         this.hideModalEnableUser = this.hideModalEnableUser.bind(this);
         this.confirmModalEnableUser = this.confirmModalEnableUser.bind(this);
+
+        this.showEditInline = this.showEditInline.bind(this);
+        this.cancelEditInline = this.cancelEditInline.bind(this);
+        this.onEditInlineChange = this.onEditInlineChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -174,6 +183,7 @@ export default class ProfileBox extends Component {
             });
     }
 
+    // Confirmation modals
     showModal() {
         this.setState({
             showModal: true
@@ -210,6 +220,51 @@ export default class ProfileBox extends Component {
         }, this.reEnableUser(event));
     }
 
+    // Data/Settings forms
+    showEditInline(event) {
+        debugger;
+        if (event.target.id === 'user-data-edit') {
+            this.setState({
+                showEditData: true
+            });
+        } else {
+            this.setState({
+                showEditSettings: true
+            });
+        }
+    }
+
+    cancelEditInline(event) {
+        debugger;
+        event.preventDefault();
+        if (event.target.id === 'user-data-form') {
+            this.setState({
+                showEditData: false,
+                editDataValue: JSON.stringify(this.props.user.data, null, 2)
+            });
+        } else {
+            this.setState({
+                showEditSettings: false,
+                editSettingsValue: JSON.stringify(this.props.user.settings, null, 2)
+            });
+        }
+    }
+
+    onEditInlineChange(event) {
+        debugger;
+        if (event.target.id === 'user-data-text') {
+            this.setState({
+                editDataValue: event.target.value,
+                hasEdits: true
+            });
+        } else {
+            this.setState({
+                editSettingsValue: event.target.value,
+                hasEdits: true
+            });
+        }
+    }
+
     onUpdate(event) {
         // Release focus
         event.target.blur();
@@ -229,14 +284,14 @@ export default class ProfileBox extends Component {
                     if (this.state.password !== '') {
                         updatedUser.password = this.state.password;
                     }
-                    if (editable && !this.props.isCurrentUser) {
+                    if (this.props.currentUser.siteAdmin) {
                         updatedUser.siteAdmin = this.state.siteAdmin;
                     }
-                    if (editable && !this.props.isCurrentUser) {
+                    if (this.props.currentUser.siteAdmin) {
                         updatedUser.canCreate = this.state.canCreate;
                     }
 
-                    if (this.props.isCurrentUser) {
+                    if (this.props.isCurrentUser && !this.props.currentUser.siteAdmin) {
                         this.props.restClient.user.updateCurrentUser(updatedUser)
                             .then(() => {
                                 this.setState({
@@ -259,6 +314,26 @@ export default class ProfileBox extends Component {
                                 dispatch(fetchUsers());
                             });
                     } else {
+                        try {
+                            let newData = JSON.parse(this.state.editDataValue);
+                            if (JSON.stringify(newData) !== JSON.stringify(this.props.user.data)) {
+                                // data valid and not the same
+                                updatedUser.data = newData;
+                            }
+                        } catch (e) {
+                            console.error(e);
+                        }
+
+                        try {
+                            let newSettings = JSON.parse(this.state.editSettingsValue);
+                            if (JSON.stringify(newSettings) !== JSON.stringify(this.props.user.settings)) {
+                                // data valid and not the same
+                                updatedUser.settings = newSettings;
+                            }
+                        } catch (e) {
+                            console.error(e);
+                        }
+
                         this.props.restClient.users.updateUser(user._id, updatedUser)
                             .then(() => {
                                 this.setState({
@@ -269,7 +344,12 @@ export default class ProfileBox extends Component {
                                         email: true,
                                         password: true
                                     },
-                                    hasEdits: false
+                                    hasEdits: false,
+                                    showEditData: false,
+                                    showEditSettings: false,
+                                    editDataValue: JSON.stringify(updatedUser.data || this.props.user.data, null, 2),
+                                    editSettingsValue: JSON.stringify(updatedUser.settings || this.props.user.settings,
+                                        null, 2)
                                 });
                                 // Refresh user
                                 dispatch(fetchUser());
@@ -295,7 +375,7 @@ export default class ProfileBox extends Component {
     render() {
         const {editable, user, config, isCurrentUser, currentUser} = this.props;
         let isGuest = user._id === config.authentication.guestAccount,
-            nbrOfOwnedProjects = Object.keys(user.projects).filter(function(projectId) {
+            nbrOfOwnedProjects = Object.keys(user.projects).filter(function (projectId) {
                 // FIXME: Do not rely on split
                 return projectId.split('+')[0] === user._id;
             }).length;
@@ -398,21 +478,53 @@ export default class ProfileBox extends Component {
 
                         </ul>
 
-                        {currentUser.siteAdmin ?
+                        {currentUser.siteAdmin?
                             <div>
                                 <div style={STYLE.infoTitle}>
                                     DATA
+                                    {user.disabled ? null :
+                                        <i id="user-data-edit" className="fa fa-cog pull-right"
+                                           style={{cursor: 'pointer'}}
+                                           onClick={this.showEditInline}/>
+                                    }
                                 </div>
-                                <pre>
-                                {JSON.stringify(user.data, null, 2)}
-                                </pre>
+
+                                {this.state.showEditData ?
+                                    <form id="user-data-form" onSubmit={this.cancelEditInline}>
+                                        <textarea id="user-data-text" value={this.state.editDataValue}
+                                                  style={STYLE.textArea}
+                                                  onChange={this.onEditInlineChange}/>
+                                        <input type="submit" value="Cancel"/>
+                                    </form> :
+                                    <pre style={STYLE.preTextArea}>
+                                        {JSON.stringify(user.data, null, 2)}
+                                    </pre>
+                                }
+
                                 <br/>
+
                                 <div style={STYLE.infoTitle}>
                                     SETTINGS
+                                    {user.disabled ? null :
+                                        <i id="user-settings-edit" className="fa fa-cog pull-right"
+                                           style={{cursor: 'pointer'}}
+                                           onClick={this.showEditInline}/>
+                                    }
                                 </div>
-                                <pre>
-                                {JSON.stringify(user.settings, null, 2)}
-                                </pre>
+
+                                {this.state.showEditSettings ?
+                                    <form id="user-settings-form" onSubmit={this.cancelEditInline}>
+                                        <textarea id="user-settings-text" value={this.state.editSettingsValue}
+                                                  style={STYLE.textArea}
+                                                  onChange={this.onEditInlineChange}/>
+                                        <input type="submit" value="Cancel"/>
+                                    </form> :
+                                    <pre style={STYLE.preTextArea}>
+                                        {JSON.stringify(user.settings, null, 2)}
+                                    </pre>
+                                }
+
+                                <br/>
                             </div>
                             : null
                         }
@@ -428,7 +540,7 @@ export default class ProfileBox extends Component {
                             <Button bsStyle="primary"
                                     onClick={this.showModalEnableUser}
                                     style={STYLE.updateButton}>
-                                    Enable User ...
+                                Enable User ...
                             </Button> : null}
 
                         {editable && this.state.hasEdits ?
