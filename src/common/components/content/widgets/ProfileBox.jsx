@@ -10,6 +10,7 @@ import {Button, Well} from 'react-bootstrap';
 import LoginField from '../../../components/content/widgets/LoginField';
 import {fetchUser} from '../../../actions/user';
 import {fetchUsers} from '../../../actions/users';
+import {fetchOrganizations} from '../../../actions/organizations';
 import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
 import {getUserIconSource} from '../../../../client/utils/utils';
 import CustomModal from './CustomModal';
@@ -166,6 +167,7 @@ export default class ProfileBox extends Component {
         this.props.restClient.users.deleteUser(this.props.user._id, this.props.user.disabled)
             .then(() => {
                 dispatch(fetchUsers());
+                dispatch(fetchOrganizations());
             })
             .catch(() => {
                 dispatch(fetchUsers());
@@ -493,7 +495,7 @@ export default class ProfileBox extends Component {
                                         <textarea id="user-data-text" value={this.state.editDataValue}
                                                   style={STYLE.textArea}
                                                   onChange={this.onEditInlineChange}/>
-                                        <input type="submit" value="Cancel"/>
+                                        <input className="btn btn-default btn-xs" type="submit" value="Cancel"/>
                                     </form> :
                                     <pre style={STYLE.preTextArea}>
                                         {JSON.stringify(user.data, null, 2)}
@@ -516,7 +518,7 @@ export default class ProfileBox extends Component {
                                         <textarea id="user-settings-text" value={this.state.editSettingsValue}
                                                   style={STYLE.textArea}
                                                   onChange={this.onEditInlineChange}/>
-                                        <input type="submit" value="Cancel"/>
+                                        <input className="btn btn-default btn-xs" type="submit" value="Cancel"/>
                                     </form> :
                                     <pre style={STYLE.preTextArea}>
                                         {JSON.stringify(user.settings, null, 2)}
@@ -583,7 +585,9 @@ export default class ProfileBox extends Component {
                                  modalMessage={
                              'Are you sure you want to re-enable the deleted user "' + user._id + '"? After ' +
                              're-enabling the user the account will be active and the user will be able to log in ' +
-                              'with the user-id and password stored.'
+                              'with the user-id and password stored. Additional if any projects are owned by "' +
+                              user._id + '" these would be owned by any new user or organization created at the now ' +
+                               'would be available id.'
                              }
                                  showModal={this.state.showModalEnableUser}
                                  title={"Enable User"}/>

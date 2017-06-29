@@ -14,6 +14,7 @@ import OrganizationTable from '../../../containers/content/widgets/data_tables/O
 import CustomModal from '../widgets/CustomModal';
 import {fetchOrganizationsIfNeeded, fetchOrganizations} from '../../../actions/organizations';
 import {fetchUserIfNeeded} from '../../../actions/user';
+import {fetchUsers} from '../../../actions/users';
 import {fetchProjectsIfNeeded} from '../../../actions/projects';
 import {ProjectPage as PROJECT_STYLE, HomePage as HOME_STYLE, ProfileBox as STYLE} from '../../../../client/style';
 
@@ -50,6 +51,7 @@ export default class OrganizationPage extends Component {
         this.props.restClient.organizations.deleteOrganization(this.props.params.organizationId, forceDelete)
             .then(() => {
                 dispatch(fetchOrganizations());
+                dispatch(fetchUsers());
             })
             .catch(() => {
                 dispatch(fetchOrganizations());
@@ -106,7 +108,7 @@ export default class OrganizationPage extends Component {
     render() {
         const {basePath, canAuthorize, organizationExists, user, ownedProjects} = this.props;
         let canDelete = user.siteAdmin === true,
-            disabledAndSiteAdmin = this.props.organization.disabled && user.siteAdmin,
+            disabledAndSiteAdmin = organizationExists && this.props.organization.disabled && user.siteAdmin,
             nbrOfOwnedProjects = ownedProjects.length;
 
         if (!organizationExists) {
@@ -207,7 +209,9 @@ export default class OrganizationPage extends Component {
                              confirmId={this.props.params.organizationId}
                              modalMessage={
                                 'Are you sure you want to re-enable the deleted organization "' +
-                                this.props.params.organizationId + '"?'
+                                this.props.params.organizationId + '"? If any projects are owned by "' +
+                                this.props.params.organizationId + '" these would be owned by any new user or ' +
+                                 'organization created at the now would be available id.'
                              }
                              showModal={this.state.showModalEnableOrg}
                              title={"Enable Organization"}/>
