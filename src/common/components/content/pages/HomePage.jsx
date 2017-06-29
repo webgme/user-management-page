@@ -4,16 +4,17 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, {Component, PropTypes} from 'react';
+import {Media, Jumbotron} from 'react-bootstrap';
+import {Link} from 'react-router';
 // Self-defined
-import { fetchUserIfNeeded } from '../../../actions/user';
-import { fetchProjectsIfNeeded } from '../../../actions/projects';
-import { fetchUsersIfNeeded } from '../../../actions/users';
-import { fetchOrganizationsIfNeeded } from '../../../actions/organizations';
-import { getUserIconSource } from '../../../../client/utils/utils';
+import {fetchUserIfNeeded} from '../../../actions/user';
+import {fetchProjectsIfNeeded} from '../../../actions/projects';
+import {fetchUsersIfNeeded} from '../../../actions/users';
+import {fetchOrganizationsIfNeeded} from '../../../actions/organizations';
+import {getUserIconSource} from '../../../../client/utils/utils';
 // Style
-import { HomePage as STYLE,  ProfileImage as PROFILE_STYLE } from '../../../../client/style';
+import {HomePage as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';
 
 var IMG_CONTAINER_STYLE = {
     textAlign: "center",
@@ -31,7 +32,7 @@ var LINK_STYLE = {
 export default class HomePage extends Component {
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
 
         dispatch(fetchUserIfNeeded());
         dispatch(fetchProjectsIfNeeded());
@@ -40,7 +41,7 @@ export default class HomePage extends Component {
     }
 
     render() {
-        const { basePath, projects, user, users } = this.props;
+        const {basePath, projects, user, users} = this.props;
 
         let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
             numViewableProjects = projects.length,
@@ -49,7 +50,29 @@ export default class HomePage extends Component {
 
         return (
             <section className="content" style={STYLE.profileBox}>
+                <div className="row">
+                    <div className="col-sm-10">
+                <Jumbotron>
+                    <h1>Hello {user._id} !</h1>
+                    <Media>
+                        <Media.Left>
+                            <a href="/" style={LINK_STYLE}>
+                                <img width="128" height="128" src="/img/webgme-icon.png" alt="Image"
+                                     style={{margin: "5px 10px 10px 10px"}}/>
+                            </a>
+                        </Media.Left>
+                        <Media.Body>
+                            <p>You are currently at the profile page for webgme.</p>
+                            <p>Here can you view and control the
+                                access level of your webgme projects, see what other users are present on this deployment
+                                and add them to your organizations.</p>
+                            <p>To start using the editor click the icon below left or go to your project listing
+                                and open a specific one.</p>
+                        </Media.Body>
 
+                    </Media>
+                </Jumbotron>
+</div></div>
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="small-box bg-light-blue">
@@ -99,27 +122,6 @@ export default class HomePage extends Component {
                     </div>
                 </div>
 
-                <div className="row" style={{textAlign: "-webkit-center"}}>
-                    <div style={{display: "inline-block", textAlign: "-webkit-center"}}>
-                        <Link to={`${basePath}profile`} style={LINK_STYLE}>
-                            <img className="img-circle"
-                                 src={getUserIconSource(user._id)}
-                                 alt="User profile picture"
-                                 width="150px"
-                                 style={{borderRadius: "25%"}}/>
-                            <br/>
-                            <span>{user._id}</span>
-                        </Link>
-                    </div>
-                    <div style={{display: "inline-block", textAlign: "-webkit-center"}}>
-                        <a href="/" style={LINK_STYLE}>
-                            <img src="/img/gme-logo.png"
-                                 width="150px"/>
-                            <br/>
-                            <span>Editor</span>
-                        </a>
-                    </div>
-                </div>
 
             </section>
         );
