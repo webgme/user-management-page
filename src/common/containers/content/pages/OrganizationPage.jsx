@@ -36,6 +36,7 @@ const mapStateToProps = (state, ownProps) => {
         canAuthorize,
         ownedProjects,
         organizationExists,
+        organization,
         user
     };
 };

@@ -21,10 +21,14 @@ const mapStateToProps = (state) => {
     let formattedOrganizations = [];
     organizations.forEach(org => {
         if (org.admins.indexOf(user._id) !== -1 || user.siteAdmin) {
-            formattedOrganizations.push({name: org._id});
+            formattedOrganizations.push(Object.assign(org, {
+                name: org._id
+            }));
             adminOrganizations[org._id] = true;
         } else if (org.users.indexOf(user._id) !== -1) {
-            formattedOrganizations.push({name: org._id});
+            formattedOrganizations.push(Object.assign(org, {
+                name: org._id
+            }));
             adminOrganizations[org._id] = false;
         }
     });

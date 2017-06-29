@@ -59,9 +59,9 @@ export const fetchUserIfNeeded = () => {
 
 export const setThemeColor = (themeColor) => {
     return (dispatch) => {
-        return userClient.updateCurrentUserData({
+        return userClient.updateCurrentUserSettings({
             themeColor
-        }).then(() => {
+        }, 'WebGMEProfilePage').then(() => {
             dispatch(fetchUser());
         });
     };

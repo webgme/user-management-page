@@ -40,7 +40,7 @@ const shouldFetchOrganizations = (state) => {
 export const fetchOrganizations = () => {
     return (dispatch) => {
         dispatch(requestOrganizations());
-        return organizationsClient.getAllOrganizations()
+        return organizationsClient.getAllOrganizations(true)
             .then(organizations => {
                 dispatch(receiveOrganizations(organizations));
             });

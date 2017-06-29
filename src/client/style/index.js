@@ -201,7 +201,9 @@ export const OrganizationsTable = {
 
 export const ProfileBox = {
     profileBoxBorder: {
-        padding: "10px 10px"
+        padding: "10px 10px",
+        marginLeft: "25%",
+        width: "50%"
     },
     updateButton: {
         float: "right"

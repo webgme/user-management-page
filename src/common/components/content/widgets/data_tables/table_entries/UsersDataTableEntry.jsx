@@ -35,7 +35,7 @@ export default class UsersDataTableEntry extends Component {
                             <Popover title="User Disabled" id="disabled">
                                 {`'${_id}' is disabled.`}
                             </Popover>}>
-                                <i className="fa fa-ban pull-right" style={{color: 'grey', cursor: 'pointer'}}/>
+                                <i className="fa fa-ban pull-right" style={{color: 'grey'}}/>
                         </OverlayTrigger> :
                         siteAdmin ?
                             <OverlayTrigger key="pop-over-admin" trigger={["hover", "focus"]} placement="top" overlay={

@@ -174,7 +174,7 @@ export default class ProfileBox extends Component {
 
     reEnableUser() {
         const {dispatch} = this.props;
-        this.props.restClient.users.patchUser(this.props.user._id, {disabled: false})
+        this.props.restClient.users.updateUser(this.props.user._id, {disabled: false})
             .then(() => {
                 dispatch(fetchUsers());
             })
@@ -381,7 +381,6 @@ export default class ProfileBox extends Component {
             }).length;
 
         return (
-            <div className="col-md-6 col-md-offset-3">
                 <div className="box box-primary" style={STYLE.profileBoxBorder}>
                     <div className="box-body box-profile">
                         <img className="profile-user-img img-responsive img-circle"
@@ -549,18 +548,16 @@ export default class ProfileBox extends Component {
                                     style={STYLE.updateButton}>
                                 Update
                             </Button> : null}
-
                     </div>
-                </div>
 
-                <CustomModal cancelButtonMessage="Cancel"
-                             cancelButtonStyle="default"
-                             closeHandler={this.hideModal}
-                             confirmButtonMessage="OK"
-                             confirmButtonStyle="danger"
-                             confirmHandler={this.confirmModal}
-                             confirmId={user._id}
-                             modalMessage={
+                    <CustomModal cancelButtonMessage="Cancel"
+                                 cancelButtonStyle="default"
+                                 closeHandler={this.hideModal}
+                                 confirmButtonMessage="OK"
+                                 confirmButtonStyle="danger"
+                                 confirmHandler={this.confirmModal}
+                                 confirmId={user._id}
+                                 modalMessage={
                              user.disabled ?
                                'Are you really sure that you forcefully want to delete ' + user._id + '? After the ' +
                                'deletion there will no longer be any stored data for the user. If this user was ever ' +
@@ -573,24 +570,24 @@ export default class ProfileBox extends Component {
                                  'Deleted users still reside in the database with the extra property "disabled: true"' +
                                  ' and can be recovered manually.'
                              }
-                             showModal={this.state.showModal}
-                             title={user.disabled ? "Forcefully Delete User" : "Delete User"}/>
+                                 showModal={this.state.showModal}
+                                 title={user.disabled ? "Forcefully Delete User" : "Delete User"}/>
 
-                <CustomModal cancelButtonMessage="Cancel"
-                             cancelButtonStyle="default"
-                             closeHandler={this.hideModalEnableUser}
-                             confirmButtonMessage="OK"
-                             confirmButtonStyle="danger"
-                             confirmHandler={this.confirmModalEnableUser}
-                             confirmId={user._id}
-                             modalMessage={
+                    <CustomModal cancelButtonMessage="Cancel"
+                                 cancelButtonStyle="default"
+                                 closeHandler={this.hideModalEnableUser}
+                                 confirmButtonMessage="OK"
+                                 confirmButtonStyle="danger"
+                                 confirmHandler={this.confirmModalEnableUser}
+                                 confirmId={user._id}
+                                 modalMessage={
                              'Are you sure you want to re-enable the deleted user "' + user._id + '"? After ' +
                              're-enabling the user the account will be active and the user will be able to log in ' +
                               'with the user-id and password stored.'
                              }
-                             showModal={this.state.showModalEnableUser}
-                             title={"Enable User"}/>
-            </div>
+                                 showModal={this.state.showModalEnableUser}
+                                 title={"Enable User"}/>
+                </div>
         );
     }
 
