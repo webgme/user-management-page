@@ -92,14 +92,9 @@ export default class LoginForm extends Component {
                         nextLocation = '';
 
                     if (redirectPath === '') {
-                        nextLocation = '/';
+                        nextLocation = this.props.basePath;
                     } else {
                         nextLocation = window.decodeURIComponent(redirectPath);
-                    }
-
-                    if (isSmallDevice) {
-                        // On small device go to user-management right away.
-                        nextLocation = this.props.basePath;
                     }
 
                     browserHistory.push(nextLocation);

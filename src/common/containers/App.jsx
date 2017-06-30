@@ -10,7 +10,12 @@ import App from '../components/App';
 
 const mapStateToProps = (state) => {
     // Default blue
-    const themeColor = state.user.user.data ? state.user.user.data.themeColor || 'blue' : 'blue';
+    let themeColor = 'blue'
+
+    if (state.user.user.settings && state.user.user.settings.hasOwnProperty('WebGMEProfilePage')) {
+        themeColor = state.user.user.settings.WebGMEProfilePage.themeColor || 'blue';
+    }
+
     return {
         themeColor
     };

@@ -201,7 +201,9 @@ export const OrganizationsTable = {
 
 export const ProfileBox = {
     profileBoxBorder: {
-        padding: "10px 10px"
+        padding: "10px 10px",
+        marginLeft: "25%",
+        width: "50%"
     },
     updateButton: {
         float: "right"
@@ -209,6 +211,22 @@ export const ProfileBox = {
     deleteButton: {
         float: "left",
         tabindex: "-1"
+    },
+    infoTitle: {
+        fontSize: "12px",
+        fontWeight: "700",
+        color: "#959595",
+        letterSpacing: '1px'
+    },
+    preTextArea: {
+        maxHeight: "200px"
+    },
+    textArea: {
+        width: "100%",
+        height: "200px",
+        fontFamily: "monospace",
+        fontSize: "12px",
+        resize: "vertical"
     }
 };
 

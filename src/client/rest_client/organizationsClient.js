@@ -13,10 +13,12 @@ export default class OrganizationsClient extends BaseClient {
 
     /**
      * Gets a list of all organizations
+     * @param {boolean} [includeDisabled=false] - include the disabled orgs.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getAllOrganizations() {
-        return super.get(['orgs']);
+    getAllOrganizations(includeDisabled) {
+        let query = includeDisabled ? {includeDisabled: includeDisabled} : null;
+        return super.get(['orgs'], query);
     }
 
     /**
@@ -41,10 +43,13 @@ export default class OrganizationsClient extends BaseClient {
     /**
      * Deletes specified organization
      * @param {string} organizationName - name of organization
+     * @param {boolean} [force] - if true will remove the organization from the database.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    deleteOrganization(organizationName) {
-        return super.delete(['orgs', organizationName]);
+    deleteOrganization(organizationName, force) {
+        let query = force ? {force: true} : null;
+
+        return super.delete(['orgs', organizationName], query);
     }
 
     /**
@@ -87,4 +92,7 @@ export default class OrganizationsClient extends BaseClient {
         return super.delete(['orgs', organizationName, 'admins', username]);
     }
 
+    updateOrganization(organizationName, data) {
+        return super.patch(['orgs', organizationName], data);
+    }
 }

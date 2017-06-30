@@ -35,7 +35,7 @@ export default class RegisterPage extends Component {
             .then(() => {
                 this.props.loginClient.login(userId, password)
                     .then(() => {
-                        browserHistory.push('/');
+                        browserHistory.push(this.props.basePath);
                         window.location.reload();
                     });
             })

@@ -65,7 +65,7 @@ export default class UserClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     updateCurrentUserData(value) {
-        return super.put(['user', 'data'], value);
+        return super.patch(['user', 'data'], value);
     }
 
     /**
@@ -76,4 +76,27 @@ export default class UserClient extends BaseClient {
         return super.delete(['user', 'data']);
     }
 
+    getCurrentUserSettings(componentId) {
+        var path = componentId ? ['user', 'settings', componentId] : ['user', 'settings'];
+
+        return super.get(path);
+    }
+
+    setCurrentUserSettings(value, componentId) {
+        var path = componentId ? ['user', 'settings', componentId] : ['user', 'settings'];
+
+        return super.put(path, value);
+    }
+
+    updateCurrentUserSettings(value, componentId) {
+        var path = componentId ? ['user', 'settings', componentId] : ['user', 'settings'];
+
+        return super.patch(path, value);
+    }
+
+    deleteCurrentUserSettings(componentId) {
+        var path = componentId ? ['user', 'settings', componentId] : ['user', 'settings'];
+
+        return super.delete(path);
+    }
 }

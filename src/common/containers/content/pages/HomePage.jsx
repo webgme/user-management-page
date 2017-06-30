@@ -14,13 +14,19 @@ const mapStateToProps = (state) => {
     const { user } = state.user;
     const { users } = state.users;
     const { organizations } = state.organizations;
+    let enabledUsers = users.filter((user) => {
+        return !user.disabled;
+    });
+    let enabledOrgs = organizations.filter((org) => {
+        return !org.disabled;
+    });
 
     return {
         basePath,
         projects,
         user,
-        users,
-        organizations
+        users: enabledUsers,
+        organizations: enabledOrgs
     };
 };
 

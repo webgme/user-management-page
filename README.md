@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/webgme/user-management-page.svg?branch=master)](https://travis-ci.org/webgme/user-management-page)
 [![Version](https://badge.fury.io/js/webgme-user-management-page.svg)](https://www.npmjs.com/package/webgme-user-management-page)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
 
 ### A webpage for users to manage their webgme account and projects. 
 `webgme-user-management-page` runs as a dependency of [webgme](https://github.com/webgme/webgme) and is available at `<host>/profile`
@@ -8,6 +9,11 @@ allow for registration and login, project authorization of other users/organizat
 organizations as well as member/admin control for those organizations.
 
 For instructions on webgme authentication and user-management see [this demo on youtube](https://www.youtube.com/watch?v=xS6_FK8kZhE).
+
+Since webgme [v2.15.0](https://github.com/webgme/webgme/releases/) you can easily fork and modify this page to fit your needs
+and replace the mounted user-management-page point to your customization.
+
+![WebGME-User-Management-Page](images/landing-page.png "Web-app is based on AdminLTE")
 
 ## Developers
 #### Steps to run as an external REST router within WebGME
@@ -30,4 +36,16 @@ webpack -w
 or if not installed globally
 ```
 npm run webpack -- -w
+```
+
+##### Publish
+Delete all unversioned files in `/dist/**`
+```
+npm prune
+npm install
+npm version 0.3.0 -m "Release %s"
+git push origin master
+git checkout v0.3.0
+git push origin v0.3.0
+npm publish ./
 ```

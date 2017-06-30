@@ -111,14 +111,16 @@ export default class BaseClient {
     /**
      * General DELETE request
      * @param {Array} path - path (ex. ['projects', 'ownerId', 'projectName'])
+     * @param {Object} query - query if any (ex. {force: true})
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    delete(path) {
+    delete(path, query = {}) {
         let url = this.baseUrl + path.join('/') + '/';
 
         return new Promise((resolve, reject) => {
             superagent
                 .delete(url)
+                .query(query)
                 .end((err, res) => {
                     if (err || !res.ok) {
                         console.error(err); // eslint-disable-line no-console

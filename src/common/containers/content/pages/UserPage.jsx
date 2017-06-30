@@ -25,13 +25,17 @@ const mapStateToProps = (state, ownProps) => {
         userExists = false;
     }
 
+    let enabledUsers = users.filter((user) => {
+        return !user.disabled;
+    });
+
     return {
         basePath,
         config,
         currentUser: user,
         userId: viewUserId,
         user: viewUser,
-        users: users,
+        users: enabledUsers,
         userExists
     };
 };

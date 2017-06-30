@@ -13,10 +13,12 @@ export default class UsersClient extends BaseClient {
 
     /**
      * Gets all the users on the server
+     * @param {boolean} [includeDisabled=false] - include the disabled users.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    getAllUsers() {
-        return super.get(['users']);
+    getAllUsers(includeDisabled) {
+        let query = includeDisabled ? {includeDisabled: true} : null;
+        return super.get(['users'], query);
     }
 
     /**
@@ -50,10 +52,13 @@ export default class UsersClient extends BaseClient {
     /**
      * Deletes the user specified (requires is current user or user.siteAdmin)
      * @param {string} username - username of user to be deleted
+     * @param {boolean} [force] - if true will remove the user from the database.
      * @return {Promise} //TODO: How to document the resolved value.
      */
-    deleteUser(username) {
-        return super.delete(['users', username]);
+    deleteUser(username, force) {
+        let query = force ? {force: true} : null;
+
+        return super.delete(['users', username], query);
     }
 
     /**
@@ -94,4 +99,27 @@ export default class UsersClient extends BaseClient {
         return super.delete(['users', username, 'data']);
     }
 
+    getUserSettings(username, componentId) {
+        var path = componentId ? ['users', username, 'settings', componentId] : ['users', username, 'settings'];
+
+        return super.get(path);
+    }
+
+    setUserSettings(username, value, componentId) {
+        var path = componentId ? ['users', username, 'settings', componentId] : ['users', username, 'settings'];
+
+        return super.put(path, value);
+    }
+
+    updateUserSettings(value, componentId) {
+        var path = componentId ? ['users', username, 'settings', componentId] : ['users', username, 'settings'];
+
+        return super.patch(path, value);
+    }
+
+    deleteUserSettings(componentId) {
+        var path = componentId ? ['users', username, 'settings', componentId] : ['users', username, 'settings'];
+
+        return super.delete(path);
+    }
 }

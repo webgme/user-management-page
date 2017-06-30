@@ -29,7 +29,8 @@ export default class UserPage extends Component {
             <section className="content" style={STYLE.profileBox}>
                 {this.props.userExists ?
                 <ProfileBox dispatch={this.props.dispatch}
-                            editable={this.props.currentUser.siteAdmin}
+                            editable={this.props.currentUser.siteAdmin && !this.props.user.disabled}
+                            currentUser={this.props.currentUser}
                             restClient={this.props.restClient}
                             config={this.props.config}
                             user={this.props.user} /> :

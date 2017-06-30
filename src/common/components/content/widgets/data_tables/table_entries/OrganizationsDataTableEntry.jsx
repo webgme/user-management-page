@@ -12,21 +12,28 @@ export default class OrganizationsDataTableEntry extends Component {
 
     render() {
 
-        const { basePath, adminOrganizations } = this.props;
+        const { basePath, adminOrganizations, disabled, _id } = this.props;
 
-        const buildLink = `${basePath}organizations/${this.props.name}`;
+        const buildLink = `${basePath}organizations/${this.props._id}`;
 
         return (
             <tr role="row" className="odd">
                 <td className="sorting_1">
-                    <Link to={buildLink}>{this.props.name}</Link>
-                    {adminOrganizations[this.props.name] ?
-                        <OverlayTrigger key="pop-over-admin" trigger={["hover", "focus"]} placement="top" overlay={
-                            <Popover title="Admin" id="admin">
-                                {`You have admin rights to '${this.props.name}'.`}
+                    <Link to={buildLink} style={disabled ? {color: 'grey'} : {}}>{_id}</Link>
+                    {disabled ?
+                        <OverlayTrigger key="pop-over-disabled" trigger={["hover", "focus"]} placement="top" overlay={
+                            <Popover title="Organization Disabled" id="disabled">
+                                {`'${_id}' is disabled.`}
                             </Popover>}>
-                        <i className="fa fa-graduation-cap pull-right"/>
-                        </OverlayTrigger> : null}
+                            <i className="fa fa-ban pull-right" style={{color: 'grey'}}/>
+                        </OverlayTrigger> :
+                        adminOrganizations[_id] ?
+                            <OverlayTrigger key="pop-over-admin" trigger={["hover", "focus"]} placement="top" overlay={
+                            <Popover title="Admin" id="admin">
+                                {`You have admin rights to '${_id}'.`}
+                            </Popover>}>
+                                <i className="fa fa-graduation-cap pull-right"/>
+                            </OverlayTrigger> : null}
                 </td>
             </tr>
         );

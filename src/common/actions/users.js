@@ -40,7 +40,7 @@ const shouldFetchUsers = (state) => {
 export const fetchUsers = () => {
     return (dispatch) => {
         dispatch(requestUsers());
-        return usersClient.getAllUsers()
+        return usersClient.getAllUsers(true)
             .then(users => {
                 dispatch(receiveUsers(users));
             });

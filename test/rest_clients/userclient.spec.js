@@ -177,7 +177,7 @@ describe('User Rest Client', function() {
                 return rest.user.deleteCurrentUser();
             })
             .then(function() {
-                return rest.users.getAllUsers();
+                return gmeAuth.listUsers();
             })
             .then(function(usersList) {
                 logger.debug('After deleting: ', usersList);
