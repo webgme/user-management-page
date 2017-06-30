@@ -9,6 +9,11 @@ organizations as well as member/admin control for those organizations.
 
 For instructions on webgme authentication and user-management see [this demo on youtube](https://www.youtube.com/watch?v=xS6_FK8kZhE).
 
+Since webgme [v2.15.0](https://github.com/webgme/webgme/releases/) you can easily fork and modify this page to fit your needs
+and replace the mounted user-management-page point to your customization.
+
+![WebGME-User-Management-Page](images/landing-page.png "Web-app is based on AdminLTE")
+
 ## Developers
 #### Steps to run as an external REST router within WebGME
 

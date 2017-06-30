@@ -21,16 +21,16 @@
   },
   "contributors": [
     {
-    "name" : "Patrick Kerry Pei" ,
-    "url" : "https://github.com/patrickkerrypei"
-  },
-    {
-      "name" : "Patrik Meijer" ,
-      "url" : "https://github.com/pmeijer"
+      "name": "Patrick Kerry Pei",
+      "url": "https://github.com/patrickkerrypei"
     },
     {
-      "name" : "Tamas Kecskes" ,
-      "url" : "https://github.com/kecso"
+      "name": "Patrik Meijer",
+      "url": "https://github.com/pmeijer"
+    },
+    {
+      "name": "Tamas Kecskes",
+      "url": "https://github.com/kecso"
     }
   ],
   "license": "MIT",
@@ -83,6 +83,6 @@
     "webpack": "^1.13.0",
     "http-server": "^0.8.5",
     "mocha": "^2.4.5",
-    "webgme": "webgme/webgme#configurable-usermanagement-page"
+    "webgme": "webgme/webgme"
   }
 }
