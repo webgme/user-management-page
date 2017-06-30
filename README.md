@@ -37,3 +37,15 @@ or if not installed globally
 ```
 npm run webpack -- -w
 ```
+
+##### Publish
+Delete all unversioned files in `/dist/**`
+```
+npm prune
+npm install
+npm version 0.3.0 -m "Release %s"
+git push origin master
+git checkout v0.3.0
+git push origin v0.3.0
+npm publish ./
+```
