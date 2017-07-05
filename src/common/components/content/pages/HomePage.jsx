@@ -93,7 +93,7 @@ export default class HomePage extends Component {
                         <div className="small-box bg-green">
                             <div className="inner">
                                 <h3 style={STYLE.widgetBox}>{numOrganizations}</h3>
-                                <p>Member in Organizations</p>
+                                <p>Membership(s) in Organizations</p>
                             </div>
                             <div className="icon">
                                 <i className="fa fa-institution"/>
