@@ -189,7 +189,10 @@ export default class OrganizationPage extends Component {
                              modalMessage={
                              disabledAndSiteAdmin ?
                                 'Are you really sure that you forcefully want to delete ' + this.props.params.organizationId + '? After the ' +
-                                'deletion there will no longer be any stored data for the organization.' :
+                                'deletion there will no longer be any stored data for the organization. ' +
+                                 'If any projects are owned by "' + this.props.params.organizationId +
+                                  '" these would be owned by any new user or ' +
+                                 'organization created at the now would be available id.' :
 
                                 'Are you sure you want to delete ' + this.props.params.organizationId + '?' +
                                 ' This organization owns ' + nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
@@ -209,9 +212,7 @@ export default class OrganizationPage extends Component {
                              confirmId={this.props.params.organizationId}
                              modalMessage={
                                 'Are you sure you want to re-enable the deleted organization "' +
-                                this.props.params.organizationId + '"? If any projects are owned by "' +
-                                this.props.params.organizationId + '" these would be owned by any new user or ' +
-                                 'organization created at the now would be available id.'
+                                this.props.params.organizationId + '"?'
                              }
                              showModal={this.state.showModalEnableOrg}
                              title={"Enable Organization"}/>
