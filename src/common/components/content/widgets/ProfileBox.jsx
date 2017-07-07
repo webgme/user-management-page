@@ -564,7 +564,9 @@ export default class ProfileBox extends Component {
                                'Are you really sure that you forcefully want to delete ' + user._id + '? After the ' +
                                'deletion there will no longer be any stored data for the user. If this user was ever ' +
                                 'logged in and a new users registers under the same id - the previous user might ' +
-                                 'have sessions stored allowing him to identify as the new user!' :
+                                 'have sessions stored allowing him to identify as the new user! Additionaly if any ' +
+                                  'projects are owned by "' + user._id + '" these would be owned by any new user or ' +
+                                   'organization created at the now would be available id.' :
 
                              'Are you sure you want to delete ' + user._id + '? This user owns ' +
                                nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
@@ -585,9 +587,7 @@ export default class ProfileBox extends Component {
                                  modalMessage={
                              'Are you sure you want to re-enable the deleted user "' + user._id + '"? After ' +
                              're-enabling the user the account will be active and the user will be able to log in ' +
-                              'with the user-id and password stored. Additional if any projects are owned by "' +
-                              user._id + '" these would be owned by any new user or organization created at the now ' +
-                               'would be available id.'
+                              'with the user-id and password stored.'
                              }
                                  showModal={this.state.showModalEnableUser}
                                  title={"Enable User"}/>

@@ -69,10 +69,10 @@ describe('Users Rest Client', function() {
     });
 
     it('should list specific user by username', function(done) {
-        rest.users.getUser('test')
+        rest.users.getUser('guest')
             .then(function(userData) {
                 logger.debug(userData);
-                expect(userData.email).to.equal('test@example.com');
+                expect(userData.email).to.equal('guest@example.com');
                 done();
             })
             .catch(done);
@@ -121,7 +121,7 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    it('should delete a user', function(done) {
+    it.skip('should delete a user', function(done) {
         rest.users.getAllUsers()
             .then(function(allUsers) {
                 logger.debug('Before: ', allUsers);
@@ -141,7 +141,7 @@ describe('Users Rest Client', function() {
             .catch(done);
     });
 
-    it('should add a new user', function(done) {
+    it.skip('should add a new user', function(done) {
 
         var justAddedBody = {
             password: 'pass',
