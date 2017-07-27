@@ -9,6 +9,8 @@
 import React, { Component, PropTypes } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
+import PrettyLink from '../../../../utils/PrettyLink';
+
 // Self-defined
 import { fetchUserIfNeeded } from '../../../../../actions/user';
 import { timeAgo } from '../../../../../../client/utils/utils';
@@ -23,7 +25,7 @@ export default class ProjectsDataTableEntry extends Component {
     }
 
     render() {
-        const { basePath, info, name, owner, unavailable } = this.props,
+        const { basePath, info, name, owner, unavailable, searchText } = this.props,
             buildLink = `${basePath}projects/${owner}/${name}`,
             columnStyle = [{width: "13%"}, {width: "50%"}];
 
@@ -35,7 +37,7 @@ export default class ProjectsDataTableEntry extends Component {
                 </td>
 
                 <td className="sorting_1" style={columnStyle[1]}>
-                    <Link to={buildLink}>{name}</Link>
+                    <PrettyLink to={buildLink} searchText={searchText}>{name}</PrettyLink>
                 </td>
 
                 <td className="hidden-xs" style={columnStyle[0]}>
@@ -87,7 +89,8 @@ ProjectsDataTableEntry.propTypes = {
         viewedAt: PropTypes.string
     }),
     name: PropTypes.string,
-    owner: PropTypes.string
+    owner: PropTypes.string,
+    searchText: PropTypes.string
 };
 
 ProjectsDataTableEntry.defaultProps = {

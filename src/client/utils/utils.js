@@ -128,13 +128,21 @@ export function shadeColor(color, percent) {
  */
 export function sortObjectArrayByField(field) {
     return function(a, b) {
-        if (typeof a === 'string' && typeof b === 'string') {
-            a[field] = a[field].toLowerCase();
-            b[field] = b[field].toLowerCase();
+        let aVal = a[field];
+        let bVal = b[field];
+
+        if (typeof aVal === 'string' && typeof bVal === 'string') {
+            aVal = aVal.toLowerCase();
+            bVal = bVal.toLowerCase();
         }
-        return (a[field] > b[field]) ? 1 :
-               (a[field] < b[field]) ? -1 :
-                                       0;
+
+        if (aVal > bVal) {
+            return 1;
+        } else if (aVal < bVal) {
+            return -1;
+        }
+
+        return 0;
     };
 }
 
