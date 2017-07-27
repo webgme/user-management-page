@@ -67,7 +67,7 @@ export default class HomePage extends Component {
                                 access level of your webgme projects, see what other users are present on this deployment
                                 and add them to your organizations.</p>
                             <p>To start using the editor click the icon to the left or go to your project listing
-                                and open a specific one.</p>
+                                to open a specific one.</p>
                         </Media.Body>
 
                     </Media>
