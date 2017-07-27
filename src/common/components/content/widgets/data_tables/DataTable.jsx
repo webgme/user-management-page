@@ -27,8 +27,13 @@ export default class DataTable extends Component {
 
     handleOrderEntries(event) {
         const { dispatch, reducerTableName } = this.props,
-            category = event.target.innerHTML,
-            newSortCategory = TABLE_FIELDS[reducerTableName][category];
+            category = event.target.innerText;
+
+        if (!category) {
+            return;
+        }
+
+        const newSortCategory = TABLE_FIELDS[reducerTableName][category];
 
         dispatch(sortBy(reducerTableName, newSortCategory));
     }
@@ -96,6 +101,7 @@ export default class DataTable extends Component {
                                                         orderEntries={this.handleOrderEntries}
                                                         sortable={this.props.sortable}
                                                         sortedForward={sortedForward}
+                                                        isSorted={category.isSorted}
                                                         style={category.style} />));
 
         // Filter out nodes..
