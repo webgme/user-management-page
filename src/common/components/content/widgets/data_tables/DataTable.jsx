@@ -179,6 +179,7 @@ export default class DataTable extends Component {
             Object.keys(entriesList[i]).forEach(prop => {
                 properties[prop] = entriesList[i][prop];
                 properties.key = i;
+                properties.searchText = searchText;
             });
             formattedEntries.push(React.cloneElement(this.props.children, properties));
         }
