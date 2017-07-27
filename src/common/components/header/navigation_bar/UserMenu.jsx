@@ -27,9 +27,23 @@ export default class UserMenu extends Component {
 
     onSignOutBtnClick() {
         const { dispatch } = this.props;
+
         dispatch(userLogout());
 
-        window.location.href = '/logout';
+        // The redirect target should be the _top so we need to add a temporary anchor..
+        let tempAnchor = document.createElement('a');
+        let referrer = window.sessionStorage.getItem('originalReferrer');
+
+        tempAnchor.target = '_top';
+
+        if (referrer) {
+            tempAnchor.href = '/logout?redirectUrl=' + referrer;
+        } else {
+            tempAnchor.href = '/logout';
+        }
+
+        document.body.appendChild(tempAnchor);
+        tempAnchor.click();
     }
 
     render() {

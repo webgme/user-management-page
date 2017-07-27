@@ -16,6 +16,11 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.restClient = new RestClient();
+        // Set the referrer in the session store (if not already set)
+        if (typeof window.sessionStorage.getItem('originalReferrer') !== 'string') {
+            // Use top in case embedded in iframe.
+            window.sessionStorage.setItem('originalReferrer', window.top.document.referrer);
+        }
     }
 
     render() {
