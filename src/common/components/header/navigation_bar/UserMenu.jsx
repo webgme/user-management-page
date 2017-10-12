@@ -28,7 +28,6 @@ export default class UserMenu extends Component {
     onSignOutBtnClick() {
         const { dispatch } = this.props;
 
-        window.parent.postMessage('logout', '*');
         dispatch(userLogout());
 
         // The redirect target should be the _top so we need to add a temporary anchor..
@@ -45,6 +44,8 @@ export default class UserMenu extends Component {
 
         document.body.appendChild(tempAnchor);
         tempAnchor.click();
+
+        window.parent.postMessage('logout', '*');
     }
 
     render() {
