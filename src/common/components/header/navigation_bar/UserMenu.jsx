@@ -34,7 +34,7 @@ export default class UserMenu extends Component {
         let tempAnchor = document.createElement('a');
         let referrer = window.sessionStorage.getItem('originalReferrer');
 
-        tempAnchor.target = '_top';
+        tempAnchor.target = '_self';
 
         if (referrer) {
             tempAnchor.href = '/logout?redirectUrl=' + referrer;
@@ -44,6 +44,8 @@ export default class UserMenu extends Component {
 
         document.body.appendChild(tempAnchor);
         tempAnchor.click();
+
+        window.parent.postMessage('logout', '*');
     }
 
     render() {

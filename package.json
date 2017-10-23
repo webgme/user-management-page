@@ -44,7 +44,7 @@
     "express": "4.14.0"
   },
   "devDependencies": {
-    "admin-lte": "^2.3.3",
+    "admin-lte": "2.3.7",
     "babel-core": "^6.8.0",
     "babel-istanbul": "^0.8.0",
     "babel-loader": "^6.2.4",

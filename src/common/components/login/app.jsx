@@ -13,13 +13,8 @@ export default class App extends Component {
         super(props);
         this.loginClient = new LoginClient();
 
-        if (typeof window.sessionStorage.getItem('originalReferrer') !== 'string') {
-            // Use top in case embedded in iframe.
-            try {
-                window.sessionStorage.setItem('originalReferrer', window.top.document.referrer);
-            } catch (e) {
-                // We're in a cross-referenced iframe.
-            }
+        if (window.top === window && typeof window.sessionStorage.getItem('originalReferrer') !== 'string') {
+            window.sessionStorage.setItem('originalReferrer', window.document.referrer);
         }
     }
 
