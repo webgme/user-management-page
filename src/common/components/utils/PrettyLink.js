@@ -16,7 +16,7 @@ export default class PrettyLink extends Component {
             middle = '',
             end = '';
 
-        console.log(text, searchText, matchIndex);
+        //console.log(text, searchText, matchIndex);
 
         if (searchText.length > 0 && matchIndex > -1) {
             start = text.substring(0, matchIndex);
