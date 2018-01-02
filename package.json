@@ -44,7 +44,7 @@
     "express": "4.14.0"
   },
   "devDependencies": {
-    "admin-lte": "2.3.7",
+    "admin-lte": "2.4.2",
     "babel-core": "^6.8.0",
     "babel-istanbul": "^0.8.0",
     "babel-loader": "^6.2.4",
@@ -64,25 +64,25 @@
     "file-loader": "^0.8.5",
     "font-awesome": "^4.5.0",
     "font-awesome-webpack": "0.0.4",
+    "http-server": "^0.8.5",
     "imports-loader": "^0.6.5",
     "jquery": "^2.2.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "mocha": "^2.4.5",
     "react": "^15.0.2",
     "react-bootstrap": "^0.29.4",
     "react-chartjs": "^0.7.3",
     "react-dom": "^15.0.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
-    "react-select": "^1.0.0-beta13",
+    "react-select": "^1.1.0",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "style-loader": "^0.13.1",
     "superagent": "^1.8.3",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.0",
-    "http-server": "^0.8.5",
-    "mocha": "^2.4.5",
-    "webgme": "webgme/webgme"
+    "webgme": "webgme/webgme",
+    "webpack": "^1.13.0"
   }
 }
