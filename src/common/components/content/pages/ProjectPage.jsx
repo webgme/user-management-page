@@ -55,7 +55,7 @@ export default class ProjectPage extends Component {
                 dispatch(fetchOrganizations());
             })
             .catch(() => {
-                dispatch(fetchOrganizations());
+                dispatch(fetchProjects());
             });
     }
 
