@@ -62,6 +62,17 @@ export const canUserTransfer = (organizations, users, ownerId, projectId, user) 
     return user.siteAdmin || (orgsCanTransferTo.length && rights.toLowerCase().indexOf('delete') > -1);
 };
 
+export const canUserDelete = (organizations, users, projectId, user) => {
+    const collaborators = retrieveCollaborators(organizations, users, projectId);
+    const userCollaborator = collaborators.userCollaborators.find((userCollaborator) => {
+        return userCollaborator.name === user._id;
+    }) || {};
+
+    const rights = userCollaborator.rights || '';
+
+    return user.siteAdmin || rights.toLowerCase().indexOf('delete') > -1;
+};
+
 /**
  * Maps usernames of users with access to a specified project to their respective rights
  * @param {Array} users - all users
