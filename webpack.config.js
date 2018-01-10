@@ -7,9 +7,12 @@ var webpack = require('webpack'),
     path = require('path'),
     SRC_DIR = path.join(__dirname, 'src/client'),
     DIST_DIR = path.join(__dirname, 'dist'),
-    isProduction = process.env.NODE_ENV ? process.env.NODE_ENV !== 'dev' : true;
+    isProduction = process.env.NODE_ENV ? process.env.NODE_ENV !== 'development' : true;
 
 console.log('Production build mode:', isProduction);
+if (isProduction) {
+    process.env['NODE_ENV'] = 'production';
+}
 
 /**
  * Conditionally loads plugins (mainly for production build)

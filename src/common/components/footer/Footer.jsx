@@ -31,7 +31,7 @@ export default class Footer extends Component {
                 </strong>
 
                 <span className="pull-right hidden-xs" style={STYLE.footerRight}>
-                    <a href="https://github.com/webgme/user-management-page/releases" target="_blank">v0.3.2</a>
+                    <a href="https://github.com/webgme/user-management-page/releases" target="_blank">v0.3.4</a>
                 </span>
 
             </footer>
