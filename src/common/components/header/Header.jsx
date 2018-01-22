@@ -69,7 +69,7 @@ export default class Header extends React.Component {
 
                 <nav className="navbar navbar-static-top" role="navigation">
 
-                    <a href="#" className="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">
                         <span className="sr-only">Toggle navigation</span>
                     </a>
 
