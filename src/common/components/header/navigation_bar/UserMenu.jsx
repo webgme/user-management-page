@@ -1,13 +1,15 @@
-/* global window*/
+/* global window, document*/
 /**
  * User menu container
  * @author patrickkerrypei / https://github.com/patrickkerrypei
+ * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 // Self-defined
+import BaseClient from '../../../../client/rest_client/baseClient';
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { userLogout } from '../../../actions/general';
 import { getUserIconSource } from '../../../../client/utils/utils';
@@ -18,17 +20,31 @@ export default class UserMenu extends Component {
     constructor(props) {
         super(props);
         this.onSignOutBtnClick = this.onSignOutBtnClick.bind(this);
+        this.restClient = new BaseClient('');
+        this.state = {
+            gmeConfig: null
+        };
     }
 
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(fetchUserIfNeeded());
+        this.restClient.get(['/gmeConfig.json'])
+            .then((gmeConfig) => {
+                this.setState({
+                    gmeConfig
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     }
 
     onSignOutBtnClick() {
         const { dispatch } = this.props;
+        const { gmeConfig } = this.state;
 
-        dispatch(userLogout());
+        //dispatch(userLogout());
 
         // The redirect target should be the _top so we need to add a temporary anchor..
         let tempAnchor = document.createElement('a');
@@ -43,9 +59,12 @@ export default class UserMenu extends Component {
         }
 
         document.body.appendChild(tempAnchor);
-        tempAnchor.click();
-
+        // Note that path=/ is needed since the cookie is stored at root.
+        window.document.cookie = gmeConfig.authentication.jwt.cookieId +
+            '=;path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         window.parent.postMessage('logout', '*');
+
+        tempAnchor.click();
     }
 
     render() {
