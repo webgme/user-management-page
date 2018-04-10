@@ -6,6 +6,7 @@
 
 import React from 'react';
 import blockies from 'blockies';
+import {getUserDisplayName} from "./usersUtils";
 
 /**
  * Format string so that only first letter is capitalized
@@ -85,11 +86,14 @@ export function isEmpty(object) {
  * @param {Array} allOfOneThing - array of one kind of objects(users/organizations)
  * @return {Object|*|Array} - Formatted array for use with react-select
  */
-export function multiselectFormat(allOfOneThing) {
+export function multiselectFormat(allOfOneThing, labelField, valueField) {
+    labelField = labelField || '_id';
+    valueField = valueField || '_id';
+
     return allOfOneThing.map(oneThing => {
         return Object.assign({}, {
-            label: oneThing._id,
-            value: oneThing._id
+            label: oneThing[labelField],
+            value: oneThing[valueField]
         });
     });
 }
@@ -266,10 +270,10 @@ export const processCommitsBar = (commits) => {
     let updaters = {};
 
     commits.forEach(commit => {
-        if (updaters[commit.updater[0]]) {
-            updaters[commit.updater[0]] += 1;
+        if (updaters[getUserDisplayName(commit.updater[0])]) {
+            updaters[getUserDisplayName(commit.updater[0])] += 1;
         } else {
-            updaters[commit.updater[0]] = 1;
+            updaters[getUserDisplayName(commit.updater[0])] = 1;
         }
     });
 
@@ -278,8 +282,8 @@ export const processCommitsBar = (commits) => {
         data = [];
 
     Object.keys(updaters).forEach(updater => {
-        labels.push(updater);
-        data.push(updaters[updater]);
+        labels.push(getUserDisplayName(updater));
+        data.push(updaters[getUserDisplayName(updater)]);
     });
 
     return {
@@ -447,7 +451,7 @@ export const processProjectCommitsLine = (commits) => {
     Object.keys(userIdToCommitCount).forEach((userId) => {
         let randomColor = getRandomColorHex();
         datasets.push({
-            label: userId,
+            label: getUserDisplayName(userId),
             fillColor: convertHexToRGBA(randomColor, 20),
             strokeColor: convertHexToRGBA(randomColor, 100),
             pointColor: convertHexToRGBA(randomColor, 100),
@@ -473,10 +477,10 @@ export const processProjectCommitsDoughnut = (commits) => {
     let userIdToCommitCount = {};
 
     commits.forEach((commit) => {
-        if (userIdToCommitCount[commit.updater[0]]) {
-            userIdToCommitCount[commit.updater[0]]++;
+        if (userIdToCommitCount[getUserDisplayName(commit.updater[0])]) {
+            userIdToCommitCount[getUserDisplayName(commit.updater[0])]++;
         } else {
-            userIdToCommitCount[commit.updater[0]] = 1;
+            userIdToCommitCount[getUserDisplayName(commit.updater[0])] = 1;
         }
     });
 
@@ -484,8 +488,8 @@ export const processProjectCommitsDoughnut = (commits) => {
     Object.keys(userIdToCommitCount).forEach((userId) => {
         let randomColor = getRandomColorHex();
         data.push({
-            label: userId,
-            value: userIdToCommitCount[userId],
+            label: getUserDisplayName(userId),
+            value: userIdToCommitCount[getUserDisplayName(userId)],
             color: randomColor,
             highlight: shadeColor(randomColor, 20)
         });

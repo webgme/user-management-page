@@ -4,11 +4,12 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import React, {Component} from 'react';
+import {OverlayTrigger, Popover} from 'react-bootstrap';
 // Self-defined
 import CustomModal from '../../CustomModal';
 import {formatRightsOrigin} from '../../../../../../client/utils/utils';
+import {getUserDisplayName} from "../../../../../../client/utils/usersUtils";
 
 export default class ProjectDataTableEntry extends Component {
 
@@ -75,34 +76,35 @@ export default class ProjectDataTableEntry extends Component {
                          confirmButtonStyle="danger"
                          confirmHandler={this.confirm}
                          confirmId={this.props.name}
-                         modalMessage={'Are you sure you want to remove ' + this.props.name + '\'s access to ' +
-                                       this.props.ownerId + ' / ' + this.props.projectName + '?'}
+                         modalMessage={'Are you sure you want to remove ' + getUserDisplayName(this.props.name) +
+                         '\'s access to ' + getUserDisplayName(this.props.ownerId) + ' / ' +
+                         this.props.projectName + '?'}
                          showModal={this.state.showModal}
                          title="Remove Collaborator"/>
 
             <td>
                 {this.props.isOrg ?
-                <div style={{float: "left"}}>
-                    <i className="fa fa-university" style={{fontSize: "15px", float: "left"}}/>
+                    <div style={{float: "left"}}>
+                        <i className="fa fa-university" style={{fontSize: "15px", float: "left"}}/>
                         <span style={{paddingLeft: "8px"}}>
                             {this.props.name}
                         </span>
-                </div> :
-                <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
+                    </div> :
+                    <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={
                         <Popover title="Access Origin" id="Rights Origin">
                             {userRightsOrigin}
                             <br/>
                             {orgsRightsOrigin}
                         </Popover>}>
-                    <div style={{float: "left"}}>
-                        <i className={`fa fa-user${this.props.userRightsOrigin ? '' : '-times'}`}
-                           style={{fontSize: "15px", float: "left"}}/>
-                        <span style={{paddingLeft: "8px"}}>
-                            {this.props.name}
+                        <div style={{float: "left"}}>
+                            <i className={`fa fa-user${this.props.userRightsOrigin ? '' : '-times'}`}
+                               style={{fontSize: "15px", float: "left"}}/>
+                            <span style={{paddingLeft: "8px"}}>
+                            {getUserDisplayName(this.props.name)}
                         </span>
-                    </div>
-                </OverlayTrigger>
-                    }
+                        </div>
+                    </OverlayTrigger>
+                }
             </td>
 
             <td>
@@ -117,20 +119,24 @@ export default class ProjectDataTableEntry extends Component {
                             <i className="fa fa-tag"
                                onMouseEnter={this.toggleHover}
                                onMouseLeave={this.toggleHover}
-                               style={{cursor: "pointer",
-                                       float: "right",
-                                       fontSize: "15px"}}/>
+                               style={{
+                                   cursor: "pointer",
+                                   float: "right",
+                                   fontSize: "15px"
+                               }}/>
                         </OverlayTrigger> :
                         <i className="fa fa-remove"
                            id={this.props.name}
                            onClick={this.open}
                            onMouseEnter={this.toggleHover}
                            onMouseLeave={this.toggleHover}
-                           style={{color: this.state.hover ? "red" : "",
-                                   cursor: "pointer",
-                                   float: "right",
-                                   fontSize: "15px"}}/> :
-                 null}
+                           style={{
+                               color: this.state.hover ? "red" : "",
+                               cursor: "pointer",
+                               float: "right",
+                               fontSize: "15px"
+                           }}/> :
+                    null}
             </td>
 
         </tr>;

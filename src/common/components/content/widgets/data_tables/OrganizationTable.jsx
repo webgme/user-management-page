@@ -29,8 +29,15 @@ export default class OrganizationTable extends Component {
     }
 
     removeMember(event) {
-        const {dispatch} = this.props;
-        var userId = event.target.id;
+        const {dispatch, members} = this.props;
+        let name = event.target.id,
+            userId = null;
+
+        members.forEach(member => {
+            if (member.name === name) {
+                userId = member.id;
+            }
+        });
 
         this.props.restClient.organizations.deleteUserFromOrganization(this.props.organizationId, userId)
             .then(() => {
@@ -40,10 +47,17 @@ export default class OrganizationTable extends Component {
     }
 
     setAdmin(event) {
-        const {dispatch} = this.props;
+        const {dispatch, members} = this.props;
 
-        var actionType = event.target.getAttribute('action'),
-            userId = event.target.id;
+        let actionType = event.target.getAttribute('action'),
+            name = event.target.id,
+            userId = null;
+
+        members.forEach(member => {
+            if (member.name === name) {
+                userId = member.id;
+            }
+        });
 
         event.preventDefault();
         event.stopPropagation();
@@ -62,7 +76,7 @@ export default class OrganizationTable extends Component {
     }
 
     render() {
-        const { canAuthorize, members } = this.props;
+        const {canAuthorize, members} = this.props;
 
         const categories = [
             {id: 1, name: 'User'},

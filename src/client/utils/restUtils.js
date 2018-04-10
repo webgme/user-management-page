@@ -3,7 +3,8 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
-import { isEmpty } from './utils';
+import {isEmpty} from './utils';
+import {getUserDisplayName} from './usersUtils';
 
 /**
  * Gets the organizations the specified user is an admin of
@@ -102,7 +103,8 @@ export function getUsersWithAccess(users, projectId) {
                 delete: user.projects[projectId].delete,
                 inOrg: false,
                 userRightsOrigin: [userRightsOrigin],
-                orgsRightsOrigin: []
+                orgsRightsOrigin: [],
+                dispayName: user.displayName
             };
         }
     });
@@ -110,7 +112,7 @@ export function getUsersWithAccess(users, projectId) {
 }
 
 /**
-) * Hashes the names of all organizations with access to their respective rights
+ ) * Hashes the names of all organizations with access to their respective rights
  * @param {Array} orgs - array of all orgs
  * @param {string} projectId - id of project
  * @return {Map} (Had to resolve the map to use it in parallel with another async function)
@@ -134,6 +136,7 @@ export function getOrganizationsWithAccess(orgs, projectId) {
 
             orgToRights[org._id] = JSON.parse(JSON.stringify(org.projects[projectId]));
             orgToRights[org._id].orgsRightsOrigin = orgToRights[org._id].orgsRightsOrigin ? orgToRights[org._id].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) : [org._id + ': ' + orgsRightsOrigin]; // eslint-disable-line max-len
+            orgToRights[org._id].displayName = org._id;
         }
     });
     return orgToRights;
@@ -168,7 +171,7 @@ export function getUsersInOrganizationsWithAccess(orgs, projectId) {
                         read: userToOrgsRights[user].read || org.projects[projectId].read,
                         write: userToOrgsRights[user].write || org.projects[projectId].write,
                         delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
-                        orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) // eslint-disable-line max-len
+                        orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]), // eslint-disable-line max-len
                     };
                 } else {
                     userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));
@@ -219,7 +222,7 @@ export function retrieveCollaborators(organizations, users, projectId) {
             name: user,
             orgsRightsOrigin: usersWithAccess[user].orgsRightsOrigin,
             rights: usersWithAccess[user].delete ? 'Read Write Delete' : // eslint-disable-line no-nested-ternary
-                    usersWithAccess[user].write ? 'Read Write' : // eslint-disable-line no-nested-ternary
+                usersWithAccess[user].write ? 'Read Write' : // eslint-disable-line no-nested-ternary
                     usersWithAccess[user].read ? 'Read' : '',
             userRightsOrigin: usersWithAccess[user].userRightsOrigin
         });
@@ -232,7 +235,7 @@ export function retrieveCollaborators(organizations, users, projectId) {
             name: organization,
             orgsRightsOrigin: organizationsWithAccess[organization].orgsRightsOrigin,
             rights: organizationsWithAccess[organization].delete ? 'Read Write Delete' : // eslint-disable-line no-nested-ternary, max-len
-                    organizationsWithAccess[organization].write ? 'Read Write' : // eslint-disable-line no-nested-ternary, max-len
+                organizationsWithAccess[organization].write ? 'Read Write' : // eslint-disable-line no-nested-ternary, max-len
                     organizationsWithAccess[organization].read ? 'Read' : ''
         });
     });
@@ -267,7 +270,8 @@ export function retrieveMembersAndAdmins(orgs, orgId) {
         result = org.users.map(user => {
             members[user] = true;
             return {
-                name: user,
+                id: user,
+                name: getUserDisplayName(user),
                 isMember: true,
                 isAdmin: org.admins.indexOf(user) !== -1
             };
@@ -277,7 +281,8 @@ export function retrieveMembersAndAdmins(orgs, orgId) {
         org.admins.forEach(admin => {
             if (members[admin] !== true) {
                 result.push({
-                    name: admin,
+                    id: admin,
+                    name: getUserDisplayName(admin),
                     isMember: false,
                     isAdmin: true
                 });

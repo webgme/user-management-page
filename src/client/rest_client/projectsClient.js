@@ -4,6 +4,7 @@
  */
 
 import BaseClient from './baseClient';
+import {getUserDisplayName} from "../utils/usersUtils";
 
 export default class ProjectsClient extends BaseClient {
 
@@ -16,7 +17,16 @@ export default class ProjectsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllProjects() {
-        return super.get(['projects']);
+        return new Promise((resolve, reject) => {
+            super.get(['projects'])
+                .then(function(projects){
+                    projects.forEach(project => {
+                        project.ownerDisplayName = getUserDisplayName(project.owner);
+                    });
+                    resolve(projects);
+                })
+                .catch(reject);
+        });
     }
 
     /**

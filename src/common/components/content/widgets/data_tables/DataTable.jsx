@@ -4,15 +4,17 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // Self-defined
 import DataTableCategory from './table_utilities/DataTableCategory';
 import DataTablePagination from './table_utilities/DataTablePagination';
-import { sortBy, setPageNumber, setSearchText, setSelectValue } from
-    '../../../../actions/tables.js';
-import { TABLE_FIELDS } from '../../../../../client/utils/constants';
+import {
+    sortBy, setPageNumber, setSearchText, setSelectValue
+} from
+        '../../../../actions/tables.js';
+import {TABLE_FIELDS} from '../../../../../client/utils/constants';
 // Style
-import { DataTable as STYLE } from '../../../../../client/style';
+import {DataTable as STYLE} from '../../../../../client/style';
 
 export default class DataTable extends Component {
 
@@ -26,7 +28,7 @@ export default class DataTable extends Component {
     }
 
     handleOrderEntries(event) {
-        const { dispatch, reducerTableName } = this.props,
+        const {dispatch, reducerTableName} = this.props,
             category = event.target.innerText;
 
         if (!category) {
@@ -34,14 +36,13 @@ export default class DataTable extends Component {
         }
 
         const newSortCategory = TABLE_FIELDS[reducerTableName][category];
-
         dispatch(sortBy(reducerTableName, newSortCategory));
     }
 
     handlePagination(event) {
         // Release focus
         event.target.blur();
-        const { dispatch, reducerTableName } = this.props;
+        const {dispatch, reducerTableName} = this.props;
 
         let displayPageNumber = parseInt(event.target.dataset.page, 10),
             newPageNumber = parseInt(event.target.dataset.page, 10);
@@ -65,7 +66,7 @@ export default class DataTable extends Component {
     }
 
     handleSearch(event) {
-        const { dispatch, reducerTableName } = this.props;
+        const {dispatch, reducerTableName} = this.props;
         const currentSearchText = this.props.tableOptions.searchText;
         const newSearchText = event.target.value.toLowerCase();
 
@@ -78,7 +79,7 @@ export default class DataTable extends Component {
         // Release focus
         event.target.blur();
 
-        const { dispatch, reducerTableName } = this.props;
+        const {dispatch, reducerTableName} = this.props;
         const currentSelectValue = this.props.tableOptions.selectValue;
         const newSelectValue = parseInt(event.target.value.trim(), 10);
 
@@ -89,8 +90,8 @@ export default class DataTable extends Component {
     }
 
     render() {
-        const { categories, entries } = this.props;
-        const { pageNumber, searchText, selectValue, sortedForward } = this.props.tableOptions;
+        const {categories, entries} = this.props;
+        const {pageNumber, searchText, selectValue, sortedForward} = this.props.tableOptions;
 
         // Formatting table categories
         let formattedCategories = [];
@@ -102,7 +103,7 @@ export default class DataTable extends Component {
                                                         sortable={this.props.sortable}
                                                         sortedForward={sortedForward}
                                                         isSorted={category.isSorted}
-                                                        style={category.style} />));
+                                                        style={category.style}/>));
 
         // Filter out nodes..
         let entriesList = entries.filter(oneEntry => {
@@ -192,7 +193,7 @@ export default class DataTable extends Component {
 
         // Setting up minimum height of table
         const minHeight = 70 + 35 * (this.props.entries.length < selectValue ? entriesList.length :
-                                                                                          selectValue),
+            selectValue),
             tableMinHeight = {
                 minHeight: minHeight + "px"
             };
@@ -217,8 +218,10 @@ export default class DataTable extends Component {
                                 <input type="text"
                                        className="form-control input-sm"
                                        placeholder={`Filter...`}
-                                       style={{display: totalNbrOfEntries <= 10 && searchText === '' ?
-                                        'none' : 'inline-block'}}
+                                       style={{
+                                           display: totalNbrOfEntries <= 10 && searchText === '' ?
+                                               'none' : 'inline-block'
+                                       }}
                                        value={searchText}
                                        onChange={this.handleSearch}/>
                             </label>
@@ -260,7 +263,7 @@ export default class DataTable extends Component {
                                         {showString}
                                     </label>
                                 </div>
-                            </div> : null }
+                            </div> : null}
                     </div>
 
                     {/* Pagination buttons */}
@@ -269,7 +272,7 @@ export default class DataTable extends Component {
                             <DataTablePagination clickHandler={this.handlePagination}
                                                  formattedPaginationButtons={formattedPaginationButtons}
                                                  numPages={numPages}
-                                                 pageNumber={displayedPageNumber}/> : null }
+                                                 pageNumber={displayedPageNumber}/> : null}
                     </div>
 
                     {/* Select dropdown */}

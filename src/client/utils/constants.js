@@ -36,10 +36,10 @@ export const TABLE_FIELDS = {
         "Created At": ["info", "createdAt"],
         "Last Changed": ["info", "modifiedAt"],
         "Last Viewed": ["info", "viewedAt"],
-        "Owner": "owner",
+        "Owner": "ownerDisplayName",
         "Project Name": "name"
     },
     users: {
-        User: "_id"
+        User: "displayName"
     }
 };

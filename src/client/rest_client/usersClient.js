@@ -17,8 +17,17 @@ export default class UsersClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllUsers(includeDisabled) {
-        let query = includeDisabled ? {includeDisabled: true} : null;
-        return super.get(['users'], query);
+        return new Promise((resolve, reject) => {
+            let query = includeDisabled ? {includeDisabled: true} : null;
+            super.get(['users'], query)
+                .then(function(users){
+                    users.forEach(user => {
+                        user.displayName = user.displayName || user._id;
+                    });
+                    resolve(users);
+                })
+                .catch(reject);
+        });
     }
 
     /**
