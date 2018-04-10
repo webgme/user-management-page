@@ -10,7 +10,6 @@ import AuthorizationWidget from './AuthorizationWidget';
 import {multiselectFormat, sortObjectArrayByField} from '../../../../../client/utils/utils';
 import {fetchOrganizations, fetchOrganizationsIfNeeded} from '../../../../actions/organizations';
 import {fetchUsers, fetchUsersIfNeeded} from '../../../../actions/users';
-import {getUserDisplayName} from "../../../../../client/utils/usersUtils";
 
 export default class ProjectAuthorizationWidget extends Component {
 

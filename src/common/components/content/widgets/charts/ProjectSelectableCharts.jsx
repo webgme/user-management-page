@@ -13,7 +13,7 @@ import ProjectCommitsLineChart from '../../../../containers/content/widgets/char
 import {timeAgo} from '../../../../../client/utils/utils';
 import {DEFAULT_ISODATE} from '../../../../../client/utils/constants';
 import {fetchProjectsIfNeeded} from '../../../../actions/projects';
-import {getUserDisplayName} from "../../../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../../../client/utils/usersUtils';
 
 const CHART_TITLES = {
     Bar: 'Latest Commits',

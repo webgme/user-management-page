@@ -15,7 +15,7 @@ import PrettyLink from '../../../../utils/PrettyLink';
 import { fetchUserIfNeeded } from '../../../../../actions/user';
 import { timeAgo } from '../../../../../../client/utils/utils';
 import { DEFAULT_ISODATE } from '../../../../../../client/utils/constants';
-import {getUserDisplayName} from "../../../../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../../../../client/utils/usersUtils';
 
 export default class ProjectsDataTableEntry extends Component {
 

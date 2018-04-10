@@ -21,7 +21,7 @@ import {fetchOrganizations, fetchOrganizationsIfNeeded} from '../../../actions/o
 import {fetchUser, fetchUserIfNeeded} from '../../../actions/user';
 import {fetchUsers, fetchUsersIfNeeded} from '../../../actions/users';
 import {ProjectPage as STYLE, ProfileBox as MORE_STYLES} from '../../../../client/style';
-import {getUserDisplayName} from "../../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../../client/utils/usersUtils';
 
 export default class ProjectPage extends Component {
 

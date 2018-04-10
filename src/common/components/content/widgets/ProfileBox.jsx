@@ -14,7 +14,7 @@ import {fetchOrganizations} from '../../../actions/organizations';
 import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
 import {getUserIconSource} from '../../../../client/utils/utils';
 import CustomModal from './CustomModal';
-import {getUserDisplayName} from "../../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../../client/utils/usersUtils';
 
 // Style
 import {ProfileBox as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';

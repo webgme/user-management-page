@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 
 // Self-defined
 import { getUserIconSource } from '../../../../../../client/utils/utils';
-import {getUserDisplayName} from "../../../../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../../../../client/utils/usersUtils';
 
 export default class UsersDataTableEntry extends Component {
 

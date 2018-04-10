@@ -15,7 +15,7 @@ import Refresh from '../../containers/header/navigation_bar/Refresh';
 import UserMenu from '../../containers/header/navigation_bar/UserMenu';
 import {capitalizeFirstLetter} from '../../../client/utils/utils';
 import {Header as STYLE} from '../../../client/style';
-import {getUserDisplayName} from "../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../client/utils/usersUtils';
 
 export default class Header extends React.Component {
 

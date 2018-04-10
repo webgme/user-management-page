@@ -4,6 +4,7 @@
  */
 
 import BaseClient from './baseClient';
+import {ensureUsersDisplayNames} from '../utils/usersUtils';
 
 export default class UsersClient extends BaseClient {
 
@@ -18,9 +19,14 @@ export default class UsersClient extends BaseClient {
      */
     getAllUsers(includeDisabled) {
         return new Promise((resolve, reject) => {
+            const self = this;
             let query = includeDisabled ? {includeDisabled: true} : null;
-            super.get(['users'], query)
-                .then(function(users){
+
+            ensureUsersDisplayNames()
+                .then(function () {
+                    return self.get(['users'], query);
+                })
+                .then(function (users) {
                     users.forEach(user => {
                         user.displayName = user.displayName || user._id;
                     });

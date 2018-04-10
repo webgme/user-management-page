@@ -13,7 +13,7 @@ import UsersDataTableEntry from
     '../../../../containers/content/widgets/data_tables/table_entries/UsersDataTableEntry';
 import { fetchUsersIfNeeded } from '../../../../actions/users';
 import { fetchUserIfNeeded } from '../../../../actions/user';
-import { getUserDisplayName } from "../../../../../client/utils/usersUtils";
+import { getUserDisplayName } from '../../../../../client/utils/usersUtils';
 
 export default class UsersTable extends Component {
 

@@ -13,12 +13,10 @@ import { browserHistory, Router } from 'react-router';
 // Self-defined
 import MainRoutes from './routes/MainRoutes';
 import configureStore from '../common/store';
-import {getUserDisplayName} from './utils/usersUtils';
 
 // Preload store with basePath
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 const store = configureStore({ basePath });
-let tempUser = getUserDisplayName('');
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');

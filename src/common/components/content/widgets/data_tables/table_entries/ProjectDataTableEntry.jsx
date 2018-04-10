@@ -9,7 +9,7 @@ import {OverlayTrigger, Popover} from 'react-bootstrap';
 // Self-defined
 import CustomModal from '../../CustomModal';
 import {formatRightsOrigin} from '../../../../../../client/utils/utils';
-import {getUserDisplayName} from "../../../../../../client/utils/usersUtils";
+import {getUserDisplayName} from '../../../../../../client/utils/usersUtils';
 
 export default class ProjectDataTableEntry extends Component {
 

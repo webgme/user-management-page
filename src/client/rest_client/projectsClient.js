@@ -4,7 +4,7 @@
  */
 
 import BaseClient from './baseClient';
-import {getUserDisplayName} from "../utils/usersUtils";
+import {ensureUsersDisplayNames, getUserDisplayName} from '../utils/usersUtils';
 
 export default class ProjectsClient extends BaseClient {
 
@@ -18,8 +18,12 @@ export default class ProjectsClient extends BaseClient {
      */
     getAllProjects() {
         return new Promise((resolve, reject) => {
-            super.get(['projects'])
-                .then(function(projects){
+            const self = this;
+            ensureUsersDisplayNames()
+                .then(function () {
+                    return self.get(['projects']);
+                })
+                .then(function (projects) {
                     projects.forEach(project => {
                         project.ownerDisplayName = getUserDisplayName(project.owner);
                     });

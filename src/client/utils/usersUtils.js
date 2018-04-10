@@ -6,27 +6,24 @@
 
 import BaseClient from '../rest_client/baseClient';
 
-const displayNames = {};
-let requested = false,
-    myClient = null;
+let displayNames = {};
 
 export function getUserDisplayName(userId) {
-    if (myClient === null) {
-        myClient = new BaseClient('');
-    }
+    return displayNames[userId] || userId;
+}
 
-    if (requested === false) {
-        requested = true;
+export function ensureUsersDisplayNames() {
+    debugger;
+    return new Promise((resolve, reject) => {
+        let myClient = new BaseClient('');
         myClient.get(['/api/users'], {displayName: true})
             .then(function (users) {
+                displayNames = {};
                 users.forEach(function (user) {
                     displayNames[user._id] = user.displayName;
                 });
+                resolve();
             })
-            .catch(function (/*err*/) {
-                requested = false;
-            });
-    }
-
-    return displayNames[userId] || userId;
+            .catch(reject);
+    });
 }
