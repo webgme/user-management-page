@@ -7,14 +7,15 @@
 
 // Libraries
 import React from 'react';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 // Self defined
 import ColorMenu from '../../containers/header/navigation_bar/ColorMenu';
 // import SettingsMenu from './navigation_bar/SettingsMenu';
 import Refresh from '../../containers/header/navigation_bar/Refresh';
 import UserMenu from '../../containers/header/navigation_bar/UserMenu';
-import { capitalizeFirstLetter } from '../../../client/utils/utils';
-import { Header as STYLE } from '../../../client/style';
+import {capitalizeFirstLetter} from '../../../client/utils/utils';
+import {Header as STYLE} from '../../../client/style';
+import {getUserDisplayName} from '../../../client/utils/usersUtils';
 
 export default class Header extends React.Component {
 
@@ -23,7 +24,7 @@ export default class Header extends React.Component {
     }
 
     render() {
-        const { basePath, pathname } = this.props;
+        const {basePath, pathname} = this.props;
 
         let breadcrumbs = [],
             pathWithoutBase = pathname.replace(basePath, ''),
@@ -45,7 +46,7 @@ export default class Header extends React.Component {
                 <li style={STYLE.breadCrumbListItem} key={index + 1}>
                     <Link to={`${basePath}${cumulative}${oneParam}`} style={STYLE.breadCrumbLink}>
                         {index === 0 ? capitalizeFirstLetter(rest[index]) :
-                                       rest[index]}
+                            index === 1 ? getUserDisplayName(rest[index]) : rest[index]}
                     </Link>
                 </li>
             );
@@ -80,11 +81,11 @@ export default class Header extends React.Component {
                     <div className="navbar-custom-menu">
                         <ul className="nav navbar-nav">
 
-                            <Refresh />
+                            <Refresh/>
 
-                            <ColorMenu />
+                            <ColorMenu/>
 
-                            <UserMenu />
+                            <UserMenu/>
 
                             {/* <SettingsMenu/> */}
 

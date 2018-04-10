@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 // Self defined
 import AuthorizationWidget from './AuthorizationWidget';
-import { multiselectFormat, sortObjectArrayByField } from '../../../../../client/utils/utils';
-import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../../actions/organizations';
-import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
+import {multiselectFormat, sortObjectArrayByField} from '../../../../../client/utils/utils';
+import {fetchOrganizations, fetchOrganizationsIfNeeded} from '../../../../actions/organizations';
+import {fetchUsers, fetchUsersIfNeeded} from '../../../../actions/users';
 
 export default class ProjectAuthorizationWidget extends Component {
 
@@ -27,21 +27,23 @@ export default class ProjectAuthorizationWidget extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, organizations, users} = this.props;
+        const {dispatch, organizations, users} = this.props;
 
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUsersIfNeeded());
 
-        let multiselectOptions = multiselectFormat(users.concat(organizations).sort(sortObjectArrayByField('_id')));
+        let multiselectOptions = multiselectFormat(
+            users.concat(organizations).sort(sortObjectArrayByField('displayName')), 'displayName', '_id');
         this.setState({
             multiselectOptions
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        const { organizations, users } = nextProps;
+        const {organizations, users} = nextProps;
 
-        let multiselectOptions = multiselectFormat(users.concat(organizations).sort(sortObjectArrayByField('_id')));
+        let multiselectOptions = multiselectFormat(
+            users.concat(organizations).sort(sortObjectArrayByField('displayName')), 'displayName', '_id');
         this.setState({
             multiselectOptions
         });
@@ -71,7 +73,7 @@ export default class ProjectAuthorizationWidget extends Component {
     }
 
     handleSubmitAuthorization(event) {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         // Release focus
         event.target.blur();
 
@@ -90,9 +92,9 @@ export default class ProjectAuthorizationWidget extends Component {
             this.state.valuesInMultiselect.split(',').forEach(userOrOrgName => {
                 promiseArrayToGrant.push(
                     this.props.restClient.projects.grantRightsToProject(this.props.ownerId,
-                                                                        this.props.projectName,
-                                                                        userOrOrgName,
-                                                                        projectRights));
+                        this.props.projectName,
+                        userOrOrgName,
+                        projectRights));
             });
         }
 
@@ -113,7 +115,7 @@ export default class ProjectAuthorizationWidget extends Component {
     }
 
     render() {
-        const { canAuthorize } = this.props;
+        const {canAuthorize} = this.props;
 
         const authorizationWidgetData = {
             selectableButtons: [

@@ -78,7 +78,7 @@ export default class UserMenu extends Component {
                          alt="User Image"
                          style={PROFILE_STYLE}/>
                     <span className="hidden-xs">{user.siteAdmin ? <i className="fa fa-graduation-cap"/> : null}
-                        {` ${user._id}`}</span>
+                        {` ${user.displayName || user._id}`}</span>
                 </a>
                 <ul className="dropdown-menu">
                     <li className="user-header" style={STYLE.userHeader}>
@@ -87,7 +87,7 @@ export default class UserMenu extends Component {
                              alt="User Image"
                              style={PROFILE_STYLE}/>
                         <p>
-                            {user._id}
+                            {user.displayName || user._id}
                         </p>
                     </li>
                     <li className="user-footer" style={STYLE.logoutAreaBorder}>

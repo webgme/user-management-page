@@ -41,7 +41,7 @@ export default class SideBarUserPanel extends Component {
                 </div>
                 <div className="pull-left info">
                     <p style={STYLE.name}>{user.siteAdmin ? <i className="fa fa-graduation-cap"/> : null}
-                    {` ${user._id}`}</p>
+                    {`${user.displayName || user._id}`}</p>
                     <span style={STYLE.status}><i className="fa fa-circle text-success"/> Online</span>
                 </div>
             </div>

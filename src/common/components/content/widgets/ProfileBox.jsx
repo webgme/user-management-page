@@ -14,6 +14,7 @@ import {fetchOrganizations} from '../../../actions/organizations';
 import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
 import {getUserIconSource} from '../../../../client/utils/utils';
 import CustomModal from './CustomModal';
+import {getUserDisplayName} from '../../../../client/utils/usersUtils';
 
 // Style
 import {ProfileBox as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';
@@ -224,7 +225,6 @@ export default class ProfileBox extends Component {
 
     // Data/Settings forms
     showEditInline(event) {
-        debugger;
         if (event.target.id === 'user-data-edit') {
             this.setState({
                 showEditData: true
@@ -237,7 +237,6 @@ export default class ProfileBox extends Component {
     }
 
     cancelEditInline(event) {
-        debugger;
         event.preventDefault();
         if (event.target.id === 'user-data-form') {
             this.setState({
@@ -253,7 +252,6 @@ export default class ProfileBox extends Component {
     }
 
     onEditInlineChange(event) {
-        debugger;
         if (event.target.id === 'user-data-text') {
             this.setState({
                 editDataValue: event.target.value,
@@ -391,7 +389,7 @@ export default class ProfileBox extends Component {
                              style={PROFILE_STYLE}/>
 
                         <h3 className="profile-username text-center" style={user.disabled ? {color: 'grey'} : {}}>
-                            &nbsp;{user._id + (user.disabled ? ' (Disabled)' : '')}&nbsp;
+                            &nbsp;{getUserDisplayName(user._id) + (user.disabled ? ' (Disabled)' : '')}&nbsp;
                         </h3>
 
                         <ul className="list-group list-group-unbordered">
@@ -561,14 +559,15 @@ export default class ProfileBox extends Component {
                                  confirmId={user._id}
                                  modalMessage={
                              user.disabled ?
-                               'Are you really sure that you forcefully want to delete ' + user._id + '? After the ' +
-                               'deletion there will no longer be any stored data for the user. If this user was ever ' +
-                                'logged in and a new users registers under the same id - the previous user might ' +
-                                 'have sessions stored allowing him to identify as the new user! Additionaly if any ' +
-                                  'projects are owned by "' + user._id + '" these would be owned by any new user or ' +
+                               'Are you really sure that you forcefully want to delete ' +
+                                 getUserDisplayName(user._id) + '? After the deletion there will no longer be any ' +
+                                 'stored data for the user. If this user was ever logged in and a new users ' +
+                                 'registers under the same id - the previous user might have sessions stored ' +
+                                 'allowing him to identify as the new user! Additionaly if any projects are owned ' +
+                                 'by "' + getUserDisplayName(user._id) + '" these would be owned by any new user or ' +
                                    'organization created at the now would be available id.' :
 
-                             'Are you sure you want to delete ' + user._id + '? This user owns ' +
+                             'Are you sure you want to delete ' + getUserDisplayName(user._id) + '? This user owns ' +
                                nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
                                  ' Check projects table filtered by owner for full list. ' : ' ') +
                                  'Deleted users still reside in the database with the extra property "disabled: true"' +
@@ -585,9 +584,9 @@ export default class ProfileBox extends Component {
                                  confirmHandler={this.confirmModalEnableUser}
                                  confirmId={user._id}
                                  modalMessage={
-                             'Are you sure you want to re-enable the deleted user "' + user._id + '"? After ' +
-                             're-enabling the user the account will be active and the user will be able to log in ' +
-                              'with the user-id and password stored.'
+                             'Are you sure you want to re-enable the deleted user "' + getUserDisplayName(user._id) +
+                             '"? After re-enabling the user the account will be active and the user will be able to ' +
+                             'log in with the user-id and password stored.'
                              }
                                  showModal={this.state.showModalEnableUser}
                                  title={"Enable User"}/>

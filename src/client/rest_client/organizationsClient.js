@@ -17,8 +17,17 @@ export default class OrganizationsClient extends BaseClient {
      * @return {Promise} //TODO: How to document the resolved value.
      */
     getAllOrganizations(includeDisabled) {
-        let query = includeDisabled ? {includeDisabled: includeDisabled} : null;
-        return super.get(['orgs'], query);
+        return new Promise((resolve, reject) => {
+            let query = includeDisabled ? {includeDisabled: true} : null;
+            super.get(['orgs'], query)
+                .then(function(orgs){
+                    orgs.forEach(org => {
+                        org.displayName = org._id;
+                    });
+                    resolve(orgs);
+                })
+                .catch(reject);
+        });
     }
 
     /**

@@ -6,21 +6,22 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
-import { Button } from 'react-bootstrap';
+import React, {Component, PropTypes} from 'react';
+import {Link} from 'react-router';
+import {Button} from 'react-bootstrap';
 // Self defined
 import ProjectAuthorizationWidget from
-    '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
+        '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
 import ProjectSelectableChart from '../../../containers/content/widgets/charts/ProjectSelectableChart';
 import ProjectTransferWidget from '../../../containers/content/widgets/ProjectTransferWidget';
 import CustomModal from '../widgets/CustomModal';
 import {fetchProjects, fetchProjectsIfNeeded} from '../../../actions/projects';
 import {fetchOrganizations, fetchOrganizationsIfNeeded} from '../../../actions/organizations';
-import { fetchUser, fetchUserIfNeeded } from '../../../actions/user';
-import { fetchUsers, fetchUsersIfNeeded } from '../../../actions/users';
-import { ProjectPage as STYLE, ProfileBox as MORE_STYLES } from '../../../../client/style';
+import {fetchUser, fetchUserIfNeeded} from '../../../actions/user';
+import {fetchUsers, fetchUsersIfNeeded} from '../../../actions/users';
+import {ProjectPage as STYLE, ProfileBox as MORE_STYLES} from '../../../../client/style';
+import {getUserDisplayName} from '../../../../client/utils/usersUtils';
 
 export default class ProjectPage extends Component {
 
@@ -37,7 +38,7 @@ export default class ProjectPage extends Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
 
         dispatch(fetchOrganizationsIfNeeded());
         dispatch(fetchUserIfNeeded());
@@ -78,14 +79,20 @@ export default class ProjectPage extends Component {
     }
 
     render() {
-        const { canAuthorize, canTransfer, canDelete, exists } = this.props;
-        const { ownerId, projectName } = this.props.params;
-        const { user, restClient } = this.props;
+        const {canAuthorize, canTransfer, canDelete, exists} = this.props;
+        const {ownerId, projectName} = this.props.params;
+        const {user, restClient} = this.props;
+        let displayedProjectName = '';
+
+        if (ownerId !== user._id) {
+            displayedProjectName += getUserDisplayName(ownerId) + ' / ';
+        }
+        displayedProjectName += projectName;
 
         if (!exists) {
             return (<section className="content">
                 <Link to={`${this.props.basePath}projects`}>
-                    {`No such project '${ownerId} / ${projectName}', back to projects ...`}
+                    {`No such project '${displayedProjectName}', back to projects ...`}
                 </Link>
             </section>);
         }
@@ -97,9 +104,10 @@ export default class ProjectPage extends Component {
                     <div className="row">
                         <div className="col-md-12" style={STYLE.titleContainer}>
                             <div style={STYLE.projectTitle}>
-                                <i className="fa fa-cube"/>{` ${ownerId} / ${projectName}`}
+                                <i className="fa fa-cube"/>{` ${displayedProjectName}`}
                             </div>
-                            <a className="pull-right" href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
+                            <a className="pull-right"
+                               href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
                                 <Button bsStyle="primary" style={STYLE.viewInEditor.button}>
                                     View in editor
                                 </Button>
@@ -115,7 +123,7 @@ export default class ProjectPage extends Component {
                         <ProjectCollaboratorTable canAuthorize={canAuthorize}
                                                   ownerId={ownerId}
                                                   projectName={projectName}
-                                                  restClient={restClient} />
+                                                  restClient={restClient}/>
 
                     </div>
 
@@ -124,18 +132,18 @@ export default class ProjectPage extends Component {
                         <ProjectAuthorizationWidget canAuthorize={canAuthorize}
                                                     ownerId={ownerId}
                                                     projectName={projectName}
-                                                    restClient={restClient} />
+                                                    restClient={restClient}/>
 
                         <ProjectTransferWidget canTransfer={canTransfer}
                                                ownerId={ownerId}
                                                projectName={projectName}
                                                restClient={restClient}
-                                               userId={user ? user._id : ''} />
+                                               userId={user ? user._id : ''}/>
 
                         <ProjectSelectableChart ownerId={ownerId}
                                                 height={300}
                                                 width={500}
-                                                projectName={projectName} />
+                                                projectName={projectName}/>
 
                     </div>
 
@@ -155,8 +163,8 @@ export default class ProjectPage extends Component {
                              confirmHandler={this.confirmModal}
                              confirmId={`${ownerId}+${projectName}`}
                              modalMessage={
-                                     'Are you sure you want to delete ' + ownerId + ' / ' + projectName + '?' +
-                                     ' A deleted project will be removed from the database and cannot be recovered..'
+                                 'Are you sure you want to delete ' + ownerId + ' / ' + projectName + '?' +
+                                 ' A deleted project will be removed from the database and cannot be recovered..'
                              }
                              showModal={this.state.showModal}
                              title="Delete Project"/>

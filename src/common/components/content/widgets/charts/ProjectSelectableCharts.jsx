@@ -4,15 +4,16 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import React, {Component, PropTypes} from 'react';
+import {Button, ButtonGroup} from 'react-bootstrap';
 import CollaboratorsCommitsBarChart from '../../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
 import CommitsDoughnutChart from '../../../../containers/content/widgets/charts/CommitsDoughnutChart';
 import ProjectCommitsLineChart from '../../../../containers/content/widgets/charts/ProjectCommitsLineChart';
 // Self-defined
-import { timeAgo } from '../../../../../client/utils/utils';
-import { DEFAULT_ISODATE } from '../../../../../client/utils/constants';
-import { fetchProjectsIfNeeded } from '../../../../actions/projects';
+import {timeAgo} from '../../../../../client/utils/utils';
+import {DEFAULT_ISODATE} from '../../../../../client/utils/constants';
+import {fetchProjectsIfNeeded} from '../../../../actions/projects';
+import {getUserDisplayName} from '../../../../../client/utils/usersUtils';
 
 const CHART_TITLES = {
     Bar: 'Latest Commits',
@@ -33,7 +34,7 @@ export default class ProjectSelectableCharts extends Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
 
         dispatch(fetchProjectsIfNeeded());
         this.setState({
@@ -61,8 +62,8 @@ export default class ProjectSelectableCharts extends Component {
     }
 
     render() {
-        const { chart, componentWidth } = this.state;
-        const { info, ownerId, projectName, unavailable, height, width } = this.props;
+        const {chart, componentWidth} = this.state;
+        const {info, ownerId, projectName, unavailable, height, width} = this.props;
         const displayInfoInline = componentWidth > (width + 100);
 
         return (
@@ -112,7 +113,7 @@ export default class ProjectSelectableCharts extends Component {
                                     <strong>Last Modified</strong>
                                     <br/>
                                     <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
-                                        <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
+                                        <br/>{`by ${info.modifier ? getUserDisplayName(info.modifier) : unavailable}`}
                                     </i>
 
                                     <br/><br/><br/>
@@ -120,7 +121,7 @@ export default class ProjectSelectableCharts extends Component {
                                     <strong>Last Viewed</strong>
                                     <br/>
                                     <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
-                                        <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
+                                        <br/>{`by ${info.viewer ? getUserDisplayName(info.viewer) : unavailable}`}
                                     </i>
 
                                     <br/><br/><br/>
@@ -128,7 +129,7 @@ export default class ProjectSelectableCharts extends Component {
                                     <strong>Created At</strong>
                                     <br/>
                                     <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
-                                        <br/>{`by ${info.creator ? info.creator : unavailable}`}
+                                        <br/>{`by ${info.creator ? getUserDisplayName(info.creator) : unavailable}`}
                                     </i>
 
                                     <br/><br/><br/>
@@ -140,7 +141,8 @@ export default class ProjectSelectableCharts extends Component {
                                             <strong>Last Modified</strong>
                                             <br/>
                                             <i>{info.modifiedAt ? timeAgo(info.modifiedAt) : timeAgo(DEFAULT_ISODATE)}
-                                                <br/>{`by ${info.modifier ? info.modifier : unavailable}`}
+                                                <br/>{`by ${info.modifier ?
+                                                    getUserDisplayName(info.modifier) : unavailable}`}
                                             </i>
                                         </div>
 
@@ -148,7 +150,8 @@ export default class ProjectSelectableCharts extends Component {
                                             <strong>Last Viewed</strong>
                                             <br/>
                                             <i>{info.viewedAt ? timeAgo(info.viewedAt) : timeAgo(DEFAULT_ISODATE)}
-                                                <br/>{`by ${info.viewer ? info.viewer : unavailable}`}
+                                                <br/>{`by ${info.viewer ?
+                                                    getUserDisplayName(info.viewer) : unavailable}`}
                                             </i>
                                         </div>
 
@@ -156,7 +159,8 @@ export default class ProjectSelectableCharts extends Component {
                                             <strong>Created At</strong>
                                             <br/>
                                             <i>{info.createdAt ? timeAgo(info.createdAt) : timeAgo(DEFAULT_ISODATE)}
-                                                <br/>{`by ${info.creator ? info.creator : unavailable}`}
+                                                <br/>{`by ${info.creator ?
+                                                    getUserDisplayName(info.creator) : unavailable}`}
                                             </i>
                                         </div>
                                     </div>

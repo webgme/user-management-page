@@ -4,12 +4,12 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 // Self defined
 import AuthorizationWidget from './AuthorizationWidget';
 import {multiselectFormat, sortObjectArrayByField} from '../../../../../client/utils/utils';
-import { fetchUsers, fetchUsersIfNeeded } from '../../../../actions/users';
-import { fetchOrganizations } from '../../../../actions/organizations';
+import {fetchUsers, fetchUsersIfNeeded} from '../../../../actions/users';
+import {fetchOrganizations} from '../../../../actions/organizations';
 
 export default class OrganizationAuthorizationWidget extends Component {
 
@@ -24,19 +24,23 @@ export default class OrganizationAuthorizationWidget extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, users} = this.props;
+        const {dispatch, users} = this.props;
         dispatch(fetchUsersIfNeeded());
 
-        let multiselectOptions = multiselectFormat(users.sort(sortObjectArrayByField('_id')));
+        let multiselectOptions = multiselectFormat(
+            users.sort(sortObjectArrayByField('displayName')), 'displayName', '_id');
+
         this.setState({
             multiselectOptions
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        const { users } = nextProps;
+        const {users} = nextProps;
 
-        let multiselectOptions = multiselectFormat(users.sort(sortObjectArrayByField('_id')));
+        let multiselectOptions = multiselectFormat(
+            users.sort(sortObjectArrayByField('displayName')), 'displayName', '_id');
+
         this.setState({
             multiselectOptions
         });
@@ -49,7 +53,7 @@ export default class OrganizationAuthorizationWidget extends Component {
     }
 
     handleSubmitAuthorization(event) {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         let promiseArrayToGrant = [];
 
         if (this.state.valuesInMultiselect !== '') {
@@ -79,7 +83,7 @@ export default class OrganizationAuthorizationWidget extends Component {
     }
 
     render() {
-        const { canAuthorize } = this.props;
+        const {canAuthorize} = this.props;
 
         const authorizationWidgetData = {
             submitButtons: [

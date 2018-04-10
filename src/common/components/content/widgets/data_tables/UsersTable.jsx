@@ -13,6 +13,7 @@ import UsersDataTableEntry from
     '../../../../containers/content/widgets/data_tables/table_entries/UsersDataTableEntry';
 import { fetchUsersIfNeeded } from '../../../../actions/users';
 import { fetchUserIfNeeded } from '../../../../actions/user';
+import { getUserDisplayName } from '../../../../../client/utils/usersUtils';
 
 export default class UsersTable extends Component {
 
@@ -32,7 +33,6 @@ export default class UsersTable extends Component {
         const categories = [
             {id: 1, name: 'User'}
         ];
-
         return (
             <div>
                 {/* Header */}
@@ -61,7 +61,7 @@ export default class UsersTable extends Component {
                            reducerTableName="users"
                            sortable={true}>
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
-                                         userId={user._id} />
+                                         userId={getUserDisplayName(user._id)} />
                 </DataTable>
             </div>
         );

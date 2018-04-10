@@ -53,7 +53,7 @@ export default class HomePage extends Component {
                 <div className="row">
                     <div className="col-sm-10">
                 <Jumbotron>
-                    <h1>Hello {user._id} !</h1>
+                    <h1>Hello {user.displayName || user._id} !</h1>
                     <Media>
                         <Media.Left>
                             <a href="/" style={LINK_STYLE}>
