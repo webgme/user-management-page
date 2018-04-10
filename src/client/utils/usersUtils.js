@@ -4,7 +4,7 @@
  * @author kecso / https://github.com/kecso
  */
 
-import BaseClient from '../rest_client/BaseClient';
+import BaseClient from '../rest_client/baseClient';
 
 const displayNames = {};
 let requested = false,
