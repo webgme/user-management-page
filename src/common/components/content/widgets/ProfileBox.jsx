@@ -225,7 +225,6 @@ export default class ProfileBox extends Component {
 
     // Data/Settings forms
     showEditInline(event) {
-        debugger;
         if (event.target.id === 'user-data-edit') {
             this.setState({
                 showEditData: true
@@ -238,7 +237,6 @@ export default class ProfileBox extends Component {
     }
 
     cancelEditInline(event) {
-        debugger;
         event.preventDefault();
         if (event.target.id === 'user-data-form') {
             this.setState({
@@ -254,7 +252,6 @@ export default class ProfileBox extends Component {
     }
 
     onEditInlineChange(event) {
-        debugger;
         if (event.target.id === 'user-data-text') {
             this.setState({
                 editDataValue: event.target.value,

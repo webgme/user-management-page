@@ -13,7 +13,6 @@ export function getUserDisplayName(userId) {
 }
 
 export function ensureUsersDisplayNames() {
-    debugger;
     return new Promise((resolve, reject) => {
         let myClient = new BaseClient('');
         myClient.get(['/api/users'], {displayName: true})
