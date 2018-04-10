@@ -19,7 +19,7 @@ export default class ProjectsClient extends BaseClient {
     getAllProjects() {
         return new Promise((resolve, reject) => {
             const self = this;
-            ensureUsersDisplayNames()
+            ensureUsersDisplayNames(self)
                 .then(function () {
                     return self.get(['projects']);
                 })

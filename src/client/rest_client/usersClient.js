@@ -22,7 +22,7 @@ export default class UsersClient extends BaseClient {
             const self = this;
             let query = includeDisabled ? {includeDisabled: true} : null;
 
-            ensureUsersDisplayNames()
+            ensureUsersDisplayNames(self)
                 .then(function () {
                     return self.get(['users'], query);
                 })
