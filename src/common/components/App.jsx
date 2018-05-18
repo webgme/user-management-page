@@ -44,6 +44,8 @@ export default class App extends Component {
         // let ContentWrapperWithRestClient = React.Children.map(this.props.children,
         //     child => React.cloneElement(child, {restClient}));
 
+        console.log(basePath);
+
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
         return (
             <div className={`wrapper skin-${themeColor}`}>
@@ -58,7 +60,7 @@ export default class App extends Component {
                     path={`${basePath}`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <HomePage/>
+                            <HomePage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -67,7 +69,7 @@ export default class App extends Component {
                     path={`${basePath}home`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <HomePage/>
+                            <HomePage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -76,7 +78,7 @@ export default class App extends Component {
                     path={`${basePath}organizations`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <OrganizationsPage/>
+                            <OrganizationsPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -85,7 +87,7 @@ export default class App extends Component {
                     path={`${basePath}organizations/:organizationId`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <OrganizationPage/>
+                            <OrganizationPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -94,7 +96,7 @@ export default class App extends Component {
                     path={`${basePath}profile`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <ProfilePage/>
+                            <ProfilePage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -104,7 +106,7 @@ export default class App extends Component {
                     path={`${basePath}projects`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <ProjectsPage/>
+                            <ProjectsPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -114,7 +116,7 @@ export default class App extends Component {
                     path={`${basePath}projects/:ownerId`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <ProjectsPage/>
+                            <ProjectsPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -124,7 +126,7 @@ export default class App extends Component {
                     path={`${basePath}projects/:ownerId/:projectName`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <ProjectPage/>
+                            <ProjectPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -134,7 +136,7 @@ export default class App extends Component {
                     path={`${basePath}users`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <UsersPage/>
+                            <UsersPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -144,7 +146,7 @@ export default class App extends Component {
                     path={`${basePath}users/:userId`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <UserPage/>
+                            <UserPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />
@@ -154,7 +156,7 @@ export default class App extends Component {
                     path={`${basePath}newuser`}
                     render={() => (
                         <ContentWrapper restClient={restClient}>
-                            <NewUserPage/>
+                            <NewUserPage pathname={pathname}/>
                         </ContentWrapper>)
                     }
                 />

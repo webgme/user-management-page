@@ -23,7 +23,7 @@ import {HomePage as STYLE} from '../../../../client/style';
 //     marginTop: "30px"
 // };
 
-var LINK_STYLE = {
+const LINK_STYLE = {
     fontSize: "24px",
     fontWeight: "500",
     color: "#333333",

@@ -22,4 +22,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(withRouter(App));
+export default withRouter(connect(mapStateToProps)(App));
