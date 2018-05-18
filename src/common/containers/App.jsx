@@ -5,6 +5,7 @@
 
 // Libraries
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 // Self-defined
 import App from '../components/App';
 
@@ -21,4 +22,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(withRouter(App));

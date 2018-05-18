@@ -21,7 +21,7 @@ const store = configureStore({ basePath });
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
 require('admin-lte/dist/js/adminlte');
-// require('bootstrap-webpack');
+require('bootstrap-webpack');
 require('font-awesome-webpack');
 require('react-select/less/default.less');
 require('chart.js');
@@ -31,7 +31,9 @@ render((
 
     <Provider store={store}>
 
-        <Router routes={MainRoutes} />
+        <Router>
+            {MainRoutes}
+        </Router>
 
     </Provider>
 

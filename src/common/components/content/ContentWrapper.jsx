@@ -4,30 +4,37 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 export default class ContentWrapper extends Component {
 
     render() {
-        const { pathname, restClient } = this.props;
+        const {pathname, restClient} = this.props;
 
-        const PageWithRestClient = React.cloneElement(this.props.children, {
-            pathname,
-            restClient
-        });
+        // const PageWithRestClient = React.cloneElement(this.props.children, {
+        //     pathname,
+        //     restClient
+        // });
 
-        return <div className="content-wrapper">
+        const PageWithRestClient = React.Children.map(this.props.children,
+            child => React.cloneElement(child, {
+                pathname,
+                restClient
+            }));
 
-            <section className="content-header">
-                {/* <h2 style={{fontFamily: "Garamond", fontWeight: 680}}>
+        return (
+            <div className="content-wrapper">
+
+                <section className="content-header">
+                    {/* <h2 style={{fontFamily: "Garamond", fontWeight: 680}}>
                     WebGME Management
                     <small> ...(optional)... </small>
                 </h2>*/}
-            </section>
+                </section>
 
-            {PageWithRestClient}
+                {PageWithRestClient}
 
-        </div>;
+            </div>);
     }
 
 }

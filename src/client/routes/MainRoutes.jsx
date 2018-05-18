@@ -7,7 +7,7 @@
 
 // Libraries
 import React from 'react';
-import { Route } from 'react-router-dom';
+import {Route} from 'react-router-dom';
 // Self-defined
 import App from '../../common/containers/App';
 import ContentWrapper from '../../common/components/content/ContentWrapper';
@@ -25,33 +25,111 @@ const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 export default (
 
     <App basePath={basePath}>
+        <Route
+            exact
+            path={`${basePath}`}
+            render={() => (
+                <ContentWrapper>
+                    {HomePage}
+                </ContentWrapper>)
+            }
+        />
+        <Route
+            exact
+            path={`${basePath}home`}
+            render={() => (
+                <ContentWrapper>
+                    {HomePage}
+                </ContentWrapper>)
+            }
+        />
+        <Route
+            exact
+            path={`${basePath}organizations`}
+            render={() => (
+                <ContentWrapper>
+                    {OrganizationsPage}
+                </ContentWrapper>)
+            }
+        />
+        <Route
+            exact
+            path={`${basePath}organizations/:organizationId`}
+            render={() => (
+                <ContentWrapper>
+                    {OrganizationPage}
+                </ContentWrapper>)
+            }
+        />
+        <Route
+            exact
+            path={`${basePath}profile`}
+            render={() => (
+                <ContentWrapper>
+                    {ProfilePage}
+                </ContentWrapper>)
+            }
+        />
 
-        {/*<IndexRedirect to="home" />*/}
+        <Route
+            exact
+            path={`${basePath}projects`}
+            render={() => (
+                <ContentWrapper>
+                    {ProjectsPage}
+                </ContentWrapper>)
+            }
+        />
 
-        <ContentWrapper>
+        <Route
+            exact
+            path={`${basePath}projects/:ownerId`}
+            render={() => (
+                <ContentWrapper>
+                    {ProjectsPage}
+                </ContentWrapper>)
+            }
+        />
 
-            <Route path="home" component={HomePage} />
+        <Route
+            exact
+            path={`${basePath}projects/:ownerId/:projectName`}
+            render={() => (
+                <ContentWrapper>
+                    {ProjectPage}
+                </ContentWrapper>)
+            }
+        />
 
-            <Route path="organizations" component={OrganizationsPage} />
+        <Route
+            exact
+            path={`${basePath}users`}
+            render={() => (
+                <ContentWrapper>
+                    {UsersPage}
+                </ContentWrapper>)
+            }
+        />
 
-            <Route path="organizations/:organizationId" component={OrganizationPage} />
+        <Route
+            exact
+            path={`${basePath}users/:userId`}
+            render={() => (
+                <ContentWrapper>
+                    {UserPage}
+                </ContentWrapper>)
+            }
+        />
 
-            <Route path="profile" component={ProfilePage} />
-
-            <Route path="projects" component={ProjectsPage} />
-
-            <Route path="projects/:ownerId" component={ProjectsPage} />
-
-            <Route path="projects/:ownerId/:projectName" component={ProjectPage} />
-
-            <Route path="users" component={UsersPage} />
-
-            <Route path="users/:userId" component={UserPage} />
-
-            <Route path="newuser" component={NewUserPage} />
-
-        </ContentWrapper>
-
+        <Route
+            exact
+            path={`${basePath}newuser`}
+            render={() => (
+                <ContentWrapper>
+                    {NewUserPage}
+                </ContentWrapper>)
+            }
+        />
     </App>
 
 );

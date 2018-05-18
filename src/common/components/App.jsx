@@ -1,3 +1,4 @@
+/* globals window */
 /**
  * Main app for SPA (Single Page Application)
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -26,19 +27,20 @@ export default class App extends Component {
     render() {
         const { themeColor } = this.props;
         const { pathname } = this.props.location;
+        const {restClient} = this;
 
         // Passing props through the route
         let ContentWrapperWithRestClient = React.Children.map(this.props.children,
             child => React.cloneElement(child, {
                 pathname,
-                restClient: this.restClient
+                restClient
             }));
 
         // Wrapper can be "skin-blue, skin-black, skin-purple, skin-yellow, skin-red, or skin-green"
         return (
             <div className={`wrapper skin-${themeColor}`}>
 
-                <Header basePath={this.props.route.basePath}
+                <Header basePath={this.props.basePath}
                     pathname={pathname} />
 
                 <SideBar pathname={pathname} />

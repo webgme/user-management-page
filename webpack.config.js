@@ -45,6 +45,7 @@ function getPlugins() {
     return plugins;
 }
 module.exports = {
+    devtool: 'source-map',
     entry: {
         main: path.join(SRC_DIR, 'main.jsx'),
         login: path.join(SRC_DIR, 'login.jsx')
