@@ -5,7 +5,7 @@
 // Libraries
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 // Self-defined
 import RegisterForm from '../../login/RegisterForm';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -14,7 +14,7 @@ import { fetchUsers } from '../../../actions/users';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
 
-export default class NewUserPage extends Component {
+class NewUserPage extends Component {
 
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ export default class NewUserPage extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    createUser(userId, password, email, canCreate) {
+    createUser(userId, password, email) {
         let userData = {
             password: password,
             email: email,
@@ -37,7 +37,7 @@ export default class NewUserPage extends Component {
         return this.props.restClient.users.addUser(userId, userData)
             .then(() => {
                 this.props.dispatch(fetchUsers());
-                browserHistory.push(`${this.props.basePath}users/${userId}`);
+                this.props.history.push(`${this.props.basePath}users/${userId}`);
             })
             .catch(err => {
                 return err.status || 500;
@@ -75,3 +75,5 @@ export default class NewUserPage extends Component {
 NewUserPage.propTypes = {
     user: PropTypes.object.isRequired
 };
+
+export default withRouter(NewUserPage);

@@ -89,9 +89,9 @@ export default class OrganizationsPage extends Component {
             showCreateOrganizationModal: true
         }))
             .then(() => {
-                Object.keys(STYLE.modalDialog).forEach(property => {
-                    $('.modal-dialog')[0].style[property] = STYLE.modalDialog[property];
-                });
+                // Object.keys(STYLE.modalDialog).forEach(property => {
+                //     $('.modal-dialog')[0].style[property] = STYLE.modalDialog[property];
+                // });
             });
     }
 
