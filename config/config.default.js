@@ -15,7 +15,7 @@ config.authentication.allowGuests = true;
 config.authentication.userManagementPage = path.join(__dirname, '../src/server/usermanagement');
 
 config.rest.components = {
-    'usermanagement': path.resolve('./src/server/usermanagement')
+    usermanagement: path.resolve('./src/server/usermanagement')
 };
 
 // config.client.appDir = './dist';

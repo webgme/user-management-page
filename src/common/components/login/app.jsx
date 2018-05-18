@@ -1,3 +1,4 @@
+/* globals window */
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
@@ -42,7 +43,5 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-    // route: PropTypes.shape({
-        basePath: PropTypes.string.isRequired
-    // })
+    basePath: PropTypes.string.isRequired
 };
