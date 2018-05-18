@@ -58,7 +58,6 @@ export default class UsersTable extends Component {
                 <DataTable categories={categories}
                     content="Users"
                     entries={users}
-                    orderEntries={this.handleOrderEntries}
                     reducerTableName="users"
                     sortable={true}>
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
@@ -76,7 +75,6 @@ UsersTable.propTypes = {
     ]).isRequired,
     sortedForward: PropTypes.bool.isRequired,
     users: PropTypes.array.isRequired,
-    restClient: PropTypes.object.isRequired,
     basePath: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired
 };

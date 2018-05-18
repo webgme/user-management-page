@@ -7,12 +7,12 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {browserHistory} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 // Self-defined
 import RegisterForm from './RegisterForm';
 
-export default class RegisterPage extends Component {
+class RegisterPage extends Component {
 
     constructor(props) {
         super(props);
@@ -36,7 +36,7 @@ export default class RegisterPage extends Component {
             .then(() => {
                 this.props.loginClient.login(userId, password)
                     .then(() => {
-                        browserHistory.push(this.props.basePath);
+                        this.props.history.push(this.props.basePath);
                         window.location.reload();
                     });
             })
@@ -61,3 +61,5 @@ RegisterPage.propTypes = {
     basePath: PropTypes.string,
     loginClient: PropTypes.object
 };
+
+export default withRouter(RegisterPage);

@@ -9,13 +9,13 @@ import PropTypes from 'prop-types';
 // Style
 import {Unselectable} from '../../../../../../client/style';
 
-export default class DataTableCategories extends Component {
+export default class DataTableCategory extends Component {
 
     render() {
 
         return (
             <th className={this.props.className || ''}
-                style={Object.assign(Unselectable, this.props.style)}>
+                style={Object.assign({}, Unselectable, this.props.style)}>
                 <div onClick={this.props.sortable ? this.props.orderEntries : () => {}}
                     style={this.props.sortable ? {cursor: 'pointer', float: 'left'} : {float: 'left'}}>
                     {this.props.name}
@@ -34,11 +34,11 @@ export default class DataTableCategories extends Component {
     }
 }
 
-DataTableCategories.propTypes = {
+DataTableCategory.propTypes = {
     name: PropTypes.string.isRequired,
     isSorted: PropTypes.bool,
     sortedForward: PropTypes.bool,
     sortable: PropTypes.bool,
-    orderEntries: PropTypes.function,
+    orderEntries: PropTypes.func,
     className: PropTypes.string
 };

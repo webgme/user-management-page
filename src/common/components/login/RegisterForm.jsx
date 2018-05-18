@@ -7,14 +7,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 import { verifyEmail, verifyPassword, verifyUserOrOrganizationId } from '../../../client/utils/loginUtils';
 // Style
 import { RegisterForm as STYLE } from '../../../client/style';
 
-class RegisterForm extends Component {
+export default class RegisterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -328,5 +328,3 @@ RegisterForm.propTypes = {
     }),
     onNewUser: PropTypes.func.isRequired
 };
-
-export default withRouter(RegisterForm);
