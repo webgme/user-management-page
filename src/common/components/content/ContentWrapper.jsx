@@ -9,16 +9,10 @@ import React, {Component} from 'react';
 export default class ContentWrapper extends Component {
 
     render() {
-        const {pathname, restClient} = this.props;
+        const {restClient} = this.props;
 
-        // const PageWithRestClient = React.cloneElement(this.props.children, {
-        //     pathname,
-        //     restClient
-        // });
-
-        const PageWithRestClient = React.Children.map(this.props.children,
-            child => React.cloneElement(child, {
-                pathname,
+        const PageWithRestClient = React.cloneElement(
+            React.Children.only(this.props.children, {
                 restClient
             }));
 
@@ -36,5 +30,4 @@ export default class ContentWrapper extends Component {
 
             </div>);
     }
-
 }

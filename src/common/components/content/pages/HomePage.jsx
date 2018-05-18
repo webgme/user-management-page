@@ -13,15 +13,15 @@ import {fetchUserIfNeeded} from '../../../actions/user';
 import {fetchProjectsIfNeeded} from '../../../actions/projects';
 import {fetchUsersIfNeeded} from '../../../actions/users';
 import {fetchOrganizationsIfNeeded} from '../../../actions/organizations';
-import {getUserIconSource} from '../../../../client/utils/utils';
+// import {getUserIconSource} from '../../../../client/utils/utils';
 // Style
-import {HomePage as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';
+import {HomePage as STYLE} from '../../../../client/style';
 
-var IMG_CONTAINER_STYLE = {
-    textAlign: "center",
-    display: "flex",
-    marginTop: "30px"
-};
+// var IMG_CONTAINER_STYLE = {
+//     textAlign: "center",
+//     display: "flex",
+//     marginTop: "30px"
+// };
 
 var LINK_STYLE = {
     fontSize: "24px",
@@ -31,6 +31,10 @@ var LINK_STYLE = {
 };
 
 export default class HomePage extends Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     componentDidMount() {
         const {dispatch} = this.props;
@@ -44,8 +48,8 @@ export default class HomePage extends Component {
     render() {
         const {basePath, projects, user, users} = this.props;
 
-        let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
-            numViewableProjects = projects.length,
+        // let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
+        let numViewableProjects = projects.length,
             numUsers = users.length,
             numOrganizations = user.orgs ? user.orgs.length : 0; // TODO: check for admin
 
@@ -65,9 +69,11 @@ export default class HomePage extends Component {
                                 <Media.Body>
                                     <p>You are currently at the profile page for webgme.</p>
                                     <p>Here can you view and control the
-                                access level of your webgme projects, see what other users are present on this deployment
+                                access level of your webgme projects, see what other users are present
+                                        on this deployment
                                 and add them to your organizations.</p>
-                                    <p>To start using the editor click the icon to the left or go to your project listing
+                                    <p>To start using the editor click the icon to the left or go
+                                        to your project listing
                                 to open a specific one.</p>
                                 </Media.Body>
 
