@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Self-defined
 import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import ProjectDataTableEntry from './table_entries/ProjectDataTableEntry';
@@ -30,8 +31,8 @@ export default class ProjectCollaboratorTable extends Component {
         const { dispatch } = this.props;
 
         this.props.restClient.projects.removeRightsToProject(this.props.ownerId,
-                                                             this.props.projectName,
-                                                             event.target.id)
+            this.props.projectName,
+            event.target.id)
             .then(() => {
                 dispatch(fetchUsers()); // Re-render after revoking rights
                 dispatch(fetchOrganizations()); // Re-render after revoking rights
@@ -67,29 +68,29 @@ export default class ProjectCollaboratorTable extends Component {
                     </div>
 
                     <DataTable categories={dataTableData.categories.users}
-                               categoryStyle={{width: "50%"}}
-                               content="Users"
-                               entries={collaborators.userCollaborators}
-                               orderEntries={this.onOrderUserEntries}
-                               reducerTableName="projectUser"
-                               sortable={true}>
+                        categoryStyle={{width: "50%"}}
+                        content="Users"
+                        entries={collaborators.userCollaborators}
+                        orderEntries={this.onOrderUserEntries}
+                        reducerTableName="projectUser"
+                        sortable={true}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}
-                                               handleRevoke={this.onRevoke}
-                                               ownerId={ownerId}
-                                               projectName={projectName} />
+                            handleRevoke={this.onRevoke}
+                            ownerId={ownerId}
+                            projectName={projectName} />
                     </DataTable>
 
                     <DataTable categories={dataTableData.categories.organizations}
-                               categoryStyle={{width: "50%"}}
-                               content="Organizations"
-                               entries={collaborators.organizationCollaborators}
-                               orderEntries={this.onOrderOrganizationEntries}
-                               reducerTableName="projectOrg"
-                               sortable={true}>
+                        categoryStyle={{width: "50%"}}
+                        content="Organizations"
+                        entries={collaborators.organizationCollaborators}
+                        orderEntries={this.onOrderOrganizationEntries}
+                        reducerTableName="projectOrg"
+                        sortable={true}>
                         <ProjectDataTableEntry canAuthorize={canAuthorize}
-                                               handleRevoke={this.onRevoke}
-                                               ownerId={ownerId}
-                                               projectName={projectName} />
+                            handleRevoke={this.onRevoke}
+                            ownerId={ownerId}
+                            projectName={projectName} />
                     </DataTable>
 
                 </div>

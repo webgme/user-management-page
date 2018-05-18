@@ -4,8 +4,9 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 // Self-defined
 import ProfileBox from '../widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -28,12 +29,12 @@ export default class UserPage extends Component {
         return (
             <section className="content" style={STYLE.profileBox}>
                 {this.props.userExists ?
-                <ProfileBox dispatch={this.props.dispatch}
-                            editable={this.props.currentUser.siteAdmin && !this.props.user.disabled}
-                            currentUser={this.props.currentUser}
-                            restClient={this.props.restClient}
-                            config={this.props.config}
-                            user={this.props.user} /> :
+                    <ProfileBox dispatch={this.props.dispatch}
+                        editable={this.props.currentUser.siteAdmin && !this.props.user.disabled}
+                        currentUser={this.props.currentUser}
+                        restClient={this.props.restClient}
+                        config={this.props.config}
+                        user={this.props.user} /> :
                     <Link to={`${this.props.basePath}users`}>
                         {`No such user '${this.props.userId}', back to users ...`}
                     </Link>}

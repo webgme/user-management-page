@@ -36,10 +36,10 @@ export default class CommitsDoughnutChart extends Component {
 
         return (
             <DoughnutChart data={data}
-                           height={height}
-                           width={width}
-                           options={options || {}}
-                           redraw={true} />
+                height={height}
+                width={width}
+                options={options || {}}
+                redraw={true} />
         );
     }
 }

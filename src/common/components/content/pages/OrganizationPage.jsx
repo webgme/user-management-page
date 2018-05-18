@@ -4,8 +4,9 @@
  */
 
 // Libraries
-import React, {Component, PropTypes} from 'react';
-import { Link } from 'react-router';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 // Self defined
 import OrganizationAuthorizationWidget from
@@ -135,15 +136,15 @@ export default class OrganizationPage extends Component {
                     <div className="col-md-6">
                         <div className="box box-primary">
                             <OrganizationTable canAuthorize={disabledAndSiteAdmin ? false : canAuthorize}
-                                               organizationId={this.props.params.organizationId}
-                                               ownerId={this.props.params.ownerId}
-                                               restClient={this.props.restClient}/>
+                                organizationId={this.props.params.organizationId}
+                                ownerId={this.props.params.ownerId}
+                                restClient={this.props.restClient}/>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <OrganizationAuthorizationWidget canAuthorize={disabledAndSiteAdmin ? false : canAuthorize}
-                                                         organizationId={this.props.params.organizationId}
-                                                         restClient={this.props.restClient}/>
+                            organizationId={this.props.params.organizationId}
+                            restClient={this.props.restClient}/>
                     </div>
                     <div className="col-md-6">
                         <div className="small-box bg-light-blue">
@@ -157,7 +158,7 @@ export default class OrganizationPage extends Component {
                                 <i className="fa fa-cubes"/>
                             </div>
                             <Link to={`${basePath}projects/${this.props.params.organizationId}`}
-                                  className="small-box-footer">
+                                className="small-box-footer">
                                 Show Projects <i className="fa fa-arrow-circle-right"/>
                             </Link>
                         </div>
@@ -166,56 +167,58 @@ export default class OrganizationPage extends Component {
 
                 {canDelete ?
                     <Button bsStyle="danger"
-                            onClick={this.showModal}
-                            style={STYLE.deleteButton}>
+                        onClick={this.showModal}
+                        style={STYLE.deleteButton}>
                         {disabledAndSiteAdmin ? 'Force ' : ''} Delete ...
                     </Button> : null}
 
                 {disabledAndSiteAdmin ?
                     <Button bsStyle="primary"
-                            onClick={this.showModalEnableOrg}
-                            style={STYLE.updateButton}>
+                        onClick={this.showModalEnableOrg}
+                        style={STYLE.updateButton}>
                         Enable Organization ...
                     </Button> : null
                 }
 
                 <CustomModal cancelButtonMessage="Cancel"
-                             cancelButtonStyle="default"
-                             closeHandler={this.hideModal}
-                             confirmButtonMessage="OK"
-                             confirmButtonStyle="danger"
-                             confirmHandler={this.confirmModal}
-                             confirmId={this.props.params.organizationId}
-                             modalMessage={
-                             disabledAndSiteAdmin ?
-                                'Are you really sure that you forcefully want to delete ' + this.props.params.organizationId + '? After the ' +
+                    cancelButtonStyle="default"
+                    closeHandler={this.hideModal}
+                    confirmButtonMessage="OK"
+                    confirmButtonStyle="danger"
+                    confirmHandler={this.confirmModal}
+                    confirmId={this.props.params.organizationId}
+                    modalMessage={
+                        disabledAndSiteAdmin ?
+                            'Are you really sure that you forcefully want to delete ' +
+                            this.props.params.organizationId + '? After the ' +
                                 'deletion there will no longer be any stored data for the organization. ' +
                                  'If any projects are owned by "' + this.props.params.organizationId +
                                   '" these would be owned by any new user or ' +
                                  'organization created at the now would be available id.' :
 
-                                'Are you sure you want to delete ' + this.props.params.organizationId + '?' +
-                                ' This organization owns ' + nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
+                            'Are you sure you want to delete ' + this.props.params.organizationId + '?' +
+                                ' This organization owns ' + nbrOfOwnedProjects + ' project(s).' +
+                            (nbrOfOwnedProjects > 0 ?
                                 ' Check projects table filtered by owner for full list. ' : ' ') +
                                 'Deleted organizations still reside in the database with the extra property' +
                                 ' "disabled: true" and can be recovered manually.'
-                             }
-                             showModal={this.state.showModal}
-                             title="Delete Organization"/>
+                    }
+                    showModal={this.state.showModal}
+                    title="Delete Organization"/>
 
                 <CustomModal cancelButtonMessage="Cancel"
-                             cancelButtonStyle="default"
-                             closeHandler={this.hideModalEnableOrg}
-                             confirmButtonMessage="OK"
-                             confirmButtonStyle="danger"
-                             confirmHandler={this.confirmModalEnableOrg}
-                             confirmId={this.props.params.organizationId}
-                             modalMessage={
-                                'Are you sure you want to re-enable the deleted organization "' +
+                    cancelButtonStyle="default"
+                    closeHandler={this.hideModalEnableOrg}
+                    confirmButtonMessage="OK"
+                    confirmButtonStyle="danger"
+                    confirmHandler={this.confirmModalEnableOrg}
+                    confirmId={this.props.params.organizationId}
+                    modalMessage={
+                        'Are you sure you want to re-enable the deleted organization "' +
                                 this.props.params.organizationId + '"?'
-                             }
-                             showModal={this.state.showModalEnableOrg}
-                             title={"Enable Organization"}/>
+                    }
+                    showModal={this.state.showModalEnableOrg}
+                    title={"Enable Organization"}/>
             </section>
         );
     }
@@ -226,6 +229,6 @@ OrganizationPage.propTypes = {
     canAuthorize: PropTypes.bool.isRequired,
     ownedProjects: PropTypes.array.isRequired,
     params: PropTypes.shape({
-        organizationId: React.PropTypes.string.isRequired
+        organizationId: PropTypes.string.isRequired
     })
 };

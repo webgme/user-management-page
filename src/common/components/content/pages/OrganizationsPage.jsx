@@ -86,8 +86,8 @@ export default class OrganizationsPage extends Component {
 
     openCreateOrganization() {
         Promise.resolve(this.setState({
-                showCreateOrganizationModal: true
-            }))
+            showCreateOrganizationModal: true
+        }))
             .then(() => {
                 Object.keys(STYLE.modalDialog).forEach(property => {
                     $('.modal-dialog')[0].style[property] = STYLE.modalDialog[property];
@@ -102,14 +102,14 @@ export default class OrganizationsPage extends Component {
                     <div className="col-md-8 col-md-offset-2">
                         <div className="box box-primary">
                             <OrganizationsTable checkOrganizationName={this.checkOrganizationName}
-                                                closeCreateOrganization={this.closeCreateOrganization}
-                                                createOrganization={this.createOrganization}
-                                                createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
-                                                newOrganizationName={this.state.newOrganizationName}
-                                                onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
-                                                openCreateOrganization={this.openCreateOrganization}
-                                                showCreateOrganizationModal={this.state.showCreateOrganizationModal}
-                                                validOrganizationName={this.state.validOrganizationName}/>
+                                closeCreateOrganization={this.closeCreateOrganization}
+                                createOrganization={this.createOrganization}
+                                createOrganizationInvalidMessage={this.state.createOrganizationInvalidMessage}
+                                newOrganizationName={this.state.newOrganizationName}
+                                onCreateOrganizationNameChange={this.onCreateOrganizationNameChange}
+                                openCreateOrganization={this.openCreateOrganization}
+                                showCreateOrganizationModal={this.state.showCreateOrganizationModal}
+                                validOrganizationName={this.state.validOrganizationName}/>
 
                         </div>
                     </div>

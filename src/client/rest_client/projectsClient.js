@@ -20,10 +20,10 @@ export default class ProjectsClient extends BaseClient {
         return new Promise((resolve, reject) => {
             const self = this;
             ensureUsersDisplayNames(self)
-                .then(function () {
+                .then(function() {
                     return self.get(['projects']);
                 })
-                .then(function (projects) {
+                .then(function(projects) {
                     projects.forEach(project => {
                         project.ownerDisplayName = getUserDisplayName(project.owner);
                     });

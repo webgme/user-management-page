@@ -1,11 +1,11 @@
-/* globals window*/
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router-dom';
 // Self-defined
 import RegisterForm from '../../login/RegisterForm';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -58,14 +58,14 @@ export default class NewUserPage extends Component {
                         </div>
                         <div className="box-body">
                             <RegisterForm onNewUser={this.createUser}
-                                          backLinkData={{
-                                              title: 'Back to users',
-                                              path: `${this.props.basePath}users`
-                                          }}
-                                          allowUserCreation={canCreate}/>
-                            </div>
+                                backLinkData={{
+                                    title: 'Back to users',
+                                    path: `${this.props.basePath}users`
+                                }}
+                                allowUserCreation={canCreate}/>
                         </div>
                     </div>
+                </div>
             </section>
         );
     }

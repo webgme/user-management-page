@@ -4,7 +4,8 @@
  */
 
 // Libraries:
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Bar as BarChart } from 'react-chartjs';
 // Self defined:
 import { fetchCommitsIfNeeded } from '../../../../actions/projects';
@@ -35,10 +36,10 @@ export default class CollaboratorsCommitsBarGraph extends Component {
 
         return (
             <BarChart data={data}
-                      height={height}
-                      width={width}
-                      options={options || {}}
-                      redraw={true}/>
+                height={height}
+                width={width}
+                options={options || {}}
+                redraw={true}/>
         );
     }
 }

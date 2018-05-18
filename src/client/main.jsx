@@ -9,7 +9,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { browserHistory, Router } from 'react-router';
+import { browserHistory, Router } from 'react-router-dom';
 // Self-defined
 import MainRoutes from './routes/MainRoutes';
 import configureStore from '../common/store';
@@ -21,7 +21,7 @@ const store = configureStore({ basePath });
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
 require('admin-lte/dist/js/adminlte');
-require('bootstrap-webpack');
+// require('bootstrap-webpack');
 require('font-awesome-webpack');
 require('react-select/less/default.less');
 require('chart.js');

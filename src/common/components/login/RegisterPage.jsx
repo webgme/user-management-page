@@ -5,8 +5,9 @@
  */
 
 // Libraries
-import React, {Component, PropTypes} from 'react';
-import {browserHistory} from 'react-router';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {browserHistory} from 'react-router-dom';
 
 // Self-defined
 import RegisterForm from './RegisterForm';
@@ -47,12 +48,12 @@ export default class RegisterPage extends Component {
     render() {
 
         return <RegisterForm onNewUser={this.registerUser}
-                             backLinkData={{
-                                 title: 'I already have an account',
-                                 path: `${this.props.basePath}login`
-                             }}
-                             title="Register a new membership"
-                             allowUserCreation={this.state.allowUserCreation}/>;
+            backLinkData={{
+                title: 'I already have an account',
+                path: `${this.props.basePath}login`
+            }}
+            title="Register a new membership"
+            allowUserCreation={this.state.allowUserCreation}/>;
     }
 }
 

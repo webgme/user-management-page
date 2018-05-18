@@ -1,4 +1,3 @@
-/* globals document */
 /**
  * Utility functions for users
  * @author kecso / https://github.com/kecso
@@ -12,9 +11,9 @@ export function getUserDisplayName(userId) {
 export function ensureUsersDisplayNames(restClient) {
     return new Promise((resolve, reject) => {
         restClient.get(['users'], {displayName: true})
-            .then(function (users) {
+            .then(function(users) {
                 displayNames = {};
-                users.forEach(function (user) {
+                users.forEach(function(user) {
                     displayNames[user._id] = user.displayName;
                 });
                 resolve();

@@ -1,5 +1,3 @@
-/* global window */
-
 /**
  * Container widget for the projects data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei

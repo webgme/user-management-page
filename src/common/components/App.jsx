@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Self-defined
 import Footer from './footer/Footer';
 import Header from './header/Header';
@@ -38,7 +39,7 @@ export default class App extends Component {
             <div className={`wrapper skin-${themeColor}`}>
 
                 <Header basePath={this.props.route.basePath}
-                        pathname={pathname} />
+                    pathname={pathname} />
 
                 <SideBar pathname={pathname} />
 

@@ -8,7 +8,7 @@
  * @param {string} email - email to be checked
  * @return {boolean} - T/F valid email
  */
-export function verifyEmail(email) {
+export function verifyEmail(/* email */) {
     return true;
     // return email.length >= 3 &&
     //        /^\S+@\S+\.\S+$/.test(email);

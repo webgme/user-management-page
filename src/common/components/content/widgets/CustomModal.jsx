@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 
 export default class CustomModal extends Component {
@@ -12,7 +13,7 @@ export default class CustomModal extends Component {
     render() {
         return (
             <Modal show={this.props.showModal} onHide={this.props.closeHandler}
-                   style={this.props.style}>
+                style={this.props.style}>
 
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -30,12 +31,12 @@ export default class CustomModal extends Component {
 
                 <Modal.Footer>
                     <Button bsStyle={this.props.confirmButtonStyle}
-                            id={this.props.confirmId}
-                            onClick={this.props.confirmHandler} >
+                        id={this.props.confirmId}
+                        onClick={this.props.confirmHandler} >
                         {this.props.confirmButtonMessage}
                     </Button>
                     <Button bsStyle={this.props.cancelButtonStyle}
-                            onClick={this.props.closeHandler}>
+                        onClick={this.props.closeHandler}>
                         {this.props.cancelButtonMessage}
                     </Button>
                 </Modal.Footer>

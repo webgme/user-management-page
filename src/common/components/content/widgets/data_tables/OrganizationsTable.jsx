@@ -6,7 +6,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 // Self-defined
 import CustomModal from '../CustomModal';
@@ -44,7 +45,7 @@ export default class OrganizationsTable extends Component {
 
                 {/* Header */}
                 <div className="box-header"
-                     style={{paddingBottom: "0px"}}>
+                    style={{paddingBottom: "0px"}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-institution"/> {` Organizations`}
                     </h3>
@@ -59,38 +60,38 @@ export default class OrganizationsTable extends Component {
 
                 {/* Body */}
                 <DataTable categories={categories}
-                           content="Organizations"
-                           entries={organizations}
-                           orderEntries={this.handleOrderEntries}
-                           reducerTableName="organizations"
-                           sortable={true}>
+                    content="Organizations"
+                    entries={organizations}
+                    orderEntries={this.handleOrderEntries}
+                    reducerTableName="organizations"
+                    sortable={true}>
                     <OrganizationsDataTableEntry adminOrganizations={adminOrganizations}/>
                 </DataTable>
 
                 {/* Create organization modal window */}
                 <CustomModal cancelButtonMessage="Cancel"
-                             cancelButtonStyle="default"
-                             closeHandler={this.props.closeCreateOrganization}
-                             confirmButtonMessage="Create"
-                             confirmButtonStyle="primary"
-                             confirmHandler={this.props.createOrganization}
-                             modalMessage="Please enter the name of the organization you wish to create"
-                             showModal={this.props.showCreateOrganizationModal}
-                             style={STYLE.createOrganizationModal}
-                             title="Create an organization">
+                    cancelButtonStyle="default"
+                    closeHandler={this.props.closeCreateOrganization}
+                    confirmButtonMessage="Create"
+                    confirmButtonStyle="primary"
+                    confirmHandler={this.props.createOrganization}
+                    modalMessage="Please enter the name of the organization you wish to create"
+                    showModal={this.props.showCreateOrganizationModal}
+                    style={STYLE.createOrganizationModal}
+                    title="Create an organization">
                     {/* Organization name */}
                     <LoginField autoFocus={true}
-                                hint="Organization Name"
-                                iconClass="fa fa-institution"
-                                name="organization"
-                                onBlur={this.props.checkOrganizationName}
-                                onEnter={this.props.createOrganization}
-                                onInputChange={this.props.onCreateOrganizationNameChange}
-                                indentStyle={STYLE.modalDialogTextField}
-                                invalidMessage={this.props.createOrganizationInvalidMessage}
-                                valid={this.props.validOrganizationName}
-                                value={this.props.newOrganizationName}
-                                warning={!this.props.validOrganizationName} />
+                        hint="Organization Name"
+                        iconClass="fa fa-institution"
+                        name="organization"
+                        onBlur={this.props.checkOrganizationName}
+                        onEnter={this.props.createOrganization}
+                        onInputChange={this.props.onCreateOrganizationNameChange}
+                        indentStyle={STYLE.modalDialogTextField}
+                        invalidMessage={this.props.createOrganizationInvalidMessage}
+                        valid={this.props.validOrganizationName}
+                        value={this.props.newOrganizationName}
+                        warning={!this.props.validOrganizationName} />
                 </CustomModal>
 
             </div>

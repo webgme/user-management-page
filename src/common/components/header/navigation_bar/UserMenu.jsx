@@ -6,7 +6,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 // Self-defined
 import BaseClient from '../../../../client/rest_client/baseClient';
@@ -44,7 +45,7 @@ export default class UserMenu extends Component {
         const { dispatch } = this.props;
         const { gmeConfig } = this.state;
 
-        //dispatch(userLogout());
+        // dispatch(userLogout());
 
         // The redirect target should be the _top so we need to add a temporary anchor..
         let tempAnchor = document.createElement('a');
@@ -74,25 +75,25 @@ export default class UserMenu extends Component {
             <li className="dropdown user user-menu">
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                     <img src={getUserIconSource(user._id)}
-                         className="user-image"
-                         alt="User Image"
-                         style={PROFILE_STYLE}/>
+                        className="user-image"
+                        alt="User Image"
+                        style={PROFILE_STYLE}/>
                     <span className="hidden-xs">{user.siteAdmin ? <i className="fa fa-graduation-cap"/> : null}
                         {` ${user.displayName || user._id}`}</span>
                 </a>
                 <ul className="dropdown-menu">
                     <li className="user-header" style={STYLE.userHeader}>
                         <img src={getUserIconSource(user._id)}
-                             className="img-circle"
-                             alt="User Image"
-                             style={PROFILE_STYLE}/>
+                            className="img-circle"
+                            alt="User Image"
+                            style={PROFILE_STYLE}/>
                         <p>
                             {user.displayName || user._id}
                         </p>
                     </li>
                     <li className="user-footer" style={STYLE.logoutAreaBorder}>
                         <div className="col-xs-4 text-center" style={STYLE.logoutButtonPadding}>
-                          <Button style={STYLE.logoutButtonBorder} onClick={this.onSignOutBtnClick}>Sign Out</Button>
+                            <Button style={STYLE.logoutButtonBorder} onClick={this.onSignOutBtnClick}>Sign Out</Button>
                         </div>
                     </li>
                 </ul>

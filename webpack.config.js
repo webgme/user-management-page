@@ -65,7 +65,7 @@ module.exports = {
             {test: /bootstrap\/js\//, loader: 'imports-loader?jQuery=jquery'},
 
             // Loader for react-select's less stylesheet
-            {test: /\.less$/, loader: 'style!css!less'},
+            {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
 
             // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
             // loads bootstrap's css.
@@ -77,6 +77,6 @@ module.exports = {
     },
     plugins: getPlugins(),
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['.js', '.jsx']
     }
 };

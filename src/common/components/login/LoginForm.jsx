@@ -6,9 +6,10 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { browserHistory, Link } from 'react-router';
+import { browserHistory, Link } from 'react-router-dom';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 // Style
@@ -88,7 +89,7 @@ export default class LoginForm extends Component {
                 if (/2\d\d/.test(res.statusCode)) {
 
                     let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
-                                       /redirect=(\S+)/.exec(window.location.href)[1] : '',
+                            /redirect=(\S+)/.exec(window.location.href)[1] : '',
                         nextLocation = '';
 
                     if (redirectPath === '') {
@@ -138,22 +139,22 @@ export default class LoginForm extends Component {
 
                 {/* Username */}
                 <LoginField autoFocus={true}
-                            hint="User ID"
-                            iconClass="glyphicon glyphicon-user"
-                            name="username"
-                            onInputChange={this.onUserIdChange}
-                            valid={true}
-                            value={this.state.userId}/>
+                    hint="User ID"
+                    iconClass="glyphicon glyphicon-user"
+                    name="username"
+                    onInputChange={this.onUserIdChange}
+                    valid={true}
+                    value={this.state.userId}/>
 
                 {/* Password */}
                 <LoginField hint="Password"
-                            iconClass="glyphicon glyphicon-lock"
-                            name="password"
-                            onEnter={this.onLogIn}
-                            onInputChange={this.onPasswordChange}
-                            textType="password"
-                            valid={this.state.validCredentials}
-                            value={this.state.password}/>
+                    iconClass="glyphicon glyphicon-lock"
+                    name="password"
+                    onEnter={this.onLogIn}
+                    onInputChange={this.onPasswordChange}
+                    textType="password"
+                    valid={this.state.validCredentials}
+                    value={this.state.password}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
@@ -192,11 +193,11 @@ export default class LoginForm extends Component {
                             <ButtonGroup className="hidden-xs">
                                 {this.state.allowGuests ?
                                     <Button bsStyle="warning"
-                                            onClick={this.onGuestLogIn}>
+                                        onClick={this.onGuestLogIn}>
                                         Guest
                                     </Button> : null}
                                 <Button bsStyle="primary"
-                                        onClick={this.onClickSignIn}>
+                                    onClick={this.onClickSignIn}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>
@@ -204,11 +205,11 @@ export default class LoginForm extends Component {
                             <ButtonGroup className="visible-xs">
                                 {this.state.allowGuests ?
                                     <Button bsStyle="warning"
-                                            onClick={this.onGuestLogInSmallDevice}>
+                                        onClick={this.onGuestLogInSmallDevice}>
                                         Guest
                                     </Button> : null}
                                 <Button bsStyle="primary"
-                                        onClick={this.onClickSignInSmallDevice}>
+                                    onClick={this.onClickSignInSmallDevice}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>

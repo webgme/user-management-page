@@ -11,8 +11,8 @@ import {getUserDisplayName} from "./usersUtils";
 /**
  * Format string so that only first letter is capitalized
  * Note: String.prototype.charAt & String.prototype.slice handle out of bounds
- * @param word - word to be formatted
- * @returns {string} - formatted word
+ * @param {string} word - word to be formatted
+ * @return {string} - formatted word
  */
 export function capitalizeFirstLetter(word) {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -84,6 +84,8 @@ export function isEmpty(object) {
 /**
  * Formats an array of objects to be sent to the multiselect drop-down list
  * @param {Array} allOfOneThing - array of one kind of objects(users/organizations)
+ * @param {string} labelField - field for label
+ * @param {string} valueField - value for field
  * @return {Object|*|Array} - Formatted array for use with react-select
  */
 export function multiselectFormat(allOfOneThing, labelField, valueField) {

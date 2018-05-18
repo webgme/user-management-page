@@ -1,5 +1,3 @@
-/* global window */
-
 /**
  * Header component
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -7,7 +5,7 @@
 
 // Libraries
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 // Self defined
 import ColorMenu from '../../containers/header/navigation_bar/ColorMenu';
 // import SettingsMenu from './navigation_bar/SettingsMenu';

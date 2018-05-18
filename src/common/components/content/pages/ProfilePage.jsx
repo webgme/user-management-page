@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Self-defined
 import ProfileBox from '../widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -28,12 +29,12 @@ export default class ProfilePage extends Component {
             <section className="content" style={STYLE.profileBox}>
 
                 <ProfileBox dispatch={dispatch}
-                            editable={true}
-                            isCurrentUser={true}
-                            config={this.props.config}
-                            restClient={restClient}
-                            currentUser={user}
-                            user={user} />
+                    editable={true}
+                    isCurrentUser={true}
+                    config={this.props.config}
+                    restClient={restClient}
+                    currentUser={user}
+                    user={user} />
 
             </section>
         );

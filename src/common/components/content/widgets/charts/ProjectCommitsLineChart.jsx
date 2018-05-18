@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Line as LineChart } from 'react-chartjs';
 // Self-defined
 import { fetchCommitsIfNeeded } from '../../../../actions/projects';
@@ -50,10 +51,10 @@ export default class ProjectCommitsLineChart extends Component {
 
         return (
             <LineChart data={data}
-                       height={300}
-                       width={500}
-                       options={{}}
-                       redraw={true}/>
+                height={300}
+                width={500}
+                options={{}}
+                redraw={true}/>
         );
     }
 }

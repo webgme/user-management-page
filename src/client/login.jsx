@@ -8,7 +8,7 @@
 // Libraries
 import React from 'react';
 import {render} from 'react-dom';
-import { browserHistory, Router } from 'react-router';
+import { BrowserRouter as Router} from 'react-router-dom';
 // Self-defined
 import LoginRoutes from './routes/LoginRoutes';
 
@@ -16,7 +16,10 @@ require('bootstrap-webpack');
 require('admin-lte/dist/css/AdminLTE.min.css');
 
 render((
-
-    <Router history={browserHistory} routes={LoginRoutes} />
+    <div>
+        <Router>
+            {LoginRoutes}
+        </Router>
+    </div>
 
 ), document.getElementById('mainEntry'));

@@ -4,9 +4,10 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 import { verifyEmail, verifyPassword, verifyUserOrOrganizationId } from '../../../client/utils/loginUtils';
@@ -202,7 +203,7 @@ export default class RegisterForm extends Component {
                 }
             });
         } else {
-            console.error('???');
+            // console.error('???');
         }
     }
 
@@ -215,9 +216,11 @@ export default class RegisterForm extends Component {
     render() {
 
         let validAndNotEmpty = Object.keys(this.state.validCredentials).reduce(
-            (previousValue, currentValue /* , currentIndex, array */) => {
-                return previousValue && this.state.validCredentials[currentValue] && this.state[currentValue] !== '';
-            }, true),
+                (previousValue, currentValue /* , currentIndex, array */) => {
+                    return previousValue &&
+                        this.state.validCredentials[currentValue] &&
+                        this.state[currentValue] !== '';
+                }, true),
             titleMessage = this.props.allowUserCreation ? this.props.title : 'User Creation Not Permitted';
 
         return <div className="register-box-body">
@@ -228,47 +231,47 @@ export default class RegisterForm extends Component {
 
                 {/* userId */}
                 <LoginField autoFocus={true}
-                            hint="User ID"
-                            iconClass="glyphicon glyphicon-user"
-                            disabled = {!this.props.allowUserCreation}
-                            invalidMessage={this.state.invalidMessage.userId}
-                            onBlur={this.checkUserId}
-                            onInputChange={this.onUserIdChange}
-                            valid={this.state.validCredentials.userId}
-                            value={this.state.userId}/>
+                    hint="User ID"
+                    iconClass="glyphicon glyphicon-user"
+                    disabled = {!this.props.allowUserCreation}
+                    invalidMessage={this.state.invalidMessage.userId}
+                    onBlur={this.checkUserId}
+                    onInputChange={this.onUserIdChange}
+                    valid={this.state.validCredentials.userId}
+                    value={this.state.userId}/>
 
                 {/* email */}
                 <LoginField hint="Email"
-                            iconClass="glyphicon glyphicon-envelope"
-                            disabled = {!this.props.allowUserCreation}
-                            invalidMessage={this.state.invalidMessage.email}
-                            onBlur={this.checkEmail}
-                            onInputChange={this.onEmailChange}
-                            valid={this.state.validCredentials.email}
-                            value={this.state.email}/>
+                    iconClass="glyphicon glyphicon-envelope"
+                    disabled = {!this.props.allowUserCreation}
+                    invalidMessage={this.state.invalidMessage.email}
+                    onBlur={this.checkEmail}
+                    onInputChange={this.onEmailChange}
+                    valid={this.state.validCredentials.email}
+                    value={this.state.email}/>
 
                 {/* password */}
                 <LoginField hint="Password"
-                            iconClass="glyphicon glyphicon-lock"
-                            disabled = {!this.props.allowUserCreation}
-                            invalidMessage={this.state.invalidMessage.password}
-                            onBlur={this.checkPassword}
-                            onInputChange={this.onPasswordChange}
-                            textType="password"
-                            valid={this.state.validCredentials.password}
-                            value={this.state.password}/>
+                    iconClass="glyphicon glyphicon-lock"
+                    disabled = {!this.props.allowUserCreation}
+                    invalidMessage={this.state.invalidMessage.password}
+                    onBlur={this.checkPassword}
+                    onInputChange={this.onPasswordChange}
+                    textType="password"
+                    valid={this.state.validCredentials.password}
+                    value={this.state.password}/>
 
                 {/* confirm password */}
                 <LoginField hint="Confirm password"
-                            iconClass="glyphicon glyphicon-log-in"
-                            disabled = {!this.props.allowUserCreation}
-                            invalidMessage={this.state.invalidMessage.confirmPassword}
-                            onBlur={this.checkConfirmPassword}
-                            onEnter={this.onRegister}
-                            onInputChange={this.onConfirmPasswordChange}
-                            textType="password"
-                            valid={this.state.validCredentials.confirmPassword}
-                            value={this.state.confirmPassword}/>
+                    iconClass="glyphicon glyphicon-log-in"
+                    disabled = {!this.props.allowUserCreation}
+                    invalidMessage={this.state.invalidMessage.confirmPassword}
+                    onBlur={this.checkConfirmPassword}
+                    onEnter={this.onRegister}
+                    onInputChange={this.onConfirmPasswordChange}
+                    textType="password"
+                    valid={this.state.validCredentials.confirmPassword}
+                    value={this.state.confirmPassword}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
@@ -301,9 +304,9 @@ export default class RegisterForm extends Component {
                     <div className="col-sm-4">
                         {this.props.allowUserCreation && this.state.creating === false ?
                             <Button bsStyle="primary"
-                                    disabled={!validAndNotEmpty}
-                                    onClick={this.onRegister}
-                                    style={STYLE.registerButton}>
+                                disabled={!validAndNotEmpty}
+                                onClick={this.onRegister}
+                                style={STYLE.registerButton}>
                                 Submit
                             </Button> : null }
                     </div>
@@ -320,8 +323,8 @@ RegisterForm.propTypes = {
     allowUserCreation: PropTypes.bool,
     title: PropTypes.string,
     backLinkData: PropTypes.shape({
-        title: React.PropTypes.string.isRequired,
-        path: React.PropTypes.string.isRequired
+        title: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired
     }),
     onNewUser: PropTypes.func.isRequired
 };

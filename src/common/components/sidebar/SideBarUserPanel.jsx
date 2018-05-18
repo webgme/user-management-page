@@ -6,8 +6,9 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router-dom';
 // Self-defined
 import { fetchUserIfNeeded } from '../../actions/user';
 import { getUserIconSource } from '../../../client/utils/utils';
@@ -34,14 +35,14 @@ export default class SideBarUserPanel extends Component {
             <div className="user-panel" style={STYLE.panel}>
                 <div className="pull-left image" style={{cursor: "pointer"}}>
                     <img alt="User Image"
-                         className="img-circle"
-                         onClick={this.goToEditor}
-                         src={getUserIconSource(user._id)}
-                         style={STYLE.imageIcon}/>
+                        className="img-circle"
+                        onClick={this.goToEditor}
+                        src={getUserIconSource(user._id)}
+                        style={STYLE.imageIcon}/>
                 </div>
                 <div className="pull-left info">
                     <p style={STYLE.name}>{user.siteAdmin ? <i className="fa fa-graduation-cap"/> : null}
-                    {`${user.displayName || user._id}`}</p>
+                        {`${user.displayName || user._id}`}</p>
                     <span style={STYLE.status}><i className="fa fa-circle text-success"/> Online</span>
                 </div>
             </div>

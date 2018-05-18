@@ -4,7 +4,7 @@
  */
 
 import { REFRESH_TABLES, SORT_CATEGORY,
-         SET_PAGE_NUMBER, SET_SEARCH_TEXT, SET_SELECT_VALUE } from '../actions/tables';
+    SET_PAGE_NUMBER, SET_SEARCH_TEXT, SET_SELECT_VALUE } from '../actions/tables';
 
 const initialTableState = {
         pageNumber: 1,

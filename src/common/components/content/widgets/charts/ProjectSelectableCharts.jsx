@@ -1,11 +1,13 @@
+/* globals document */
 /**
  * LineChart widget for Commits
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
 // Libraries
-import React, {Component, PropTypes} from 'react';
-import {Button, ButtonGroup} from 'react-bootstrap';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+// import {Button, ButtonGroup} from 'react-bootstrap';
 import CollaboratorsCommitsBarChart from '../../../../containers/content/widgets/charts/CollaboratorsCommitsBarChart';
 import CommitsDoughnutChart from '../../../../containers/content/widgets/charts/CommitsDoughnutChart';
 import ProjectCommitsLineChart from '../../../../containers/content/widgets/charts/ProjectCommitsLineChart';
@@ -92,19 +94,19 @@ export default class ProjectSelectableCharts extends Component {
                                 <div className="box-body">
                                     {chart === 'Bar' ?
                                         <CollaboratorsCommitsBarChart height={height}
-                                                                      ownerId={ownerId}
-                                                                      projectName={projectName}
-                                                                      width={componentWidth}/> : null}
+                                            ownerId={ownerId}
+                                            projectName={projectName}
+                                            width={componentWidth}/> : null}
                                     {chart === 'Line' ?
                                         <ProjectCommitsLineChart height={height}
-                                                                 ownerId={ownerId}
-                                                                 projectName={projectName}
-                                                                 width={width}/> : null}
+                                            ownerId={ownerId}
+                                            projectName={projectName}
+                                            width={width}/> : null}
                                     {chart === 'Doughnut' ?
                                         <CommitsDoughnutChart height={height}
-                                                              ownerId={ownerId}
-                                                              projectName={projectName}
-                                                              width={width}/> : null}
+                                            ownerId={ownerId}
+                                            projectName={projectName}
+                                            width={width}/> : null}
                                 </div>
                             </div>
                             {displayInfoInline ?

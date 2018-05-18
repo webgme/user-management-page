@@ -30,11 +30,11 @@ export default class MultiSelect extends Component {
             <div className="section" style={STYLE}>
                 <h3 className="section-heading">{this.props.label}</h3>
                 <Select multi={this.props.multi}
-                        onChange={this.handleSelectChange}
-                        options={this.props.options}
-                        placeholder={this.props.placeholder}
-                        simpleValue
-                        value={this.props.valuesInMultiselect}/>
+                    onChange={this.handleSelectChange}
+                    options={this.props.options}
+                    placeholder={this.props.placeholder}
+                    simpleValue
+                    value={this.props.valuesInMultiselect}/>
             </div>
         );
     }

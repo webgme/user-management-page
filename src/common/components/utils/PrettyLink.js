@@ -1,10 +1,11 @@
-/*globals*/
+/* globals*/
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class PrettyLink extends Component {
 
@@ -16,7 +17,7 @@ export default class PrettyLink extends Component {
             middle = '',
             end = '';
 
-        //console.log(text, searchText, matchIndex);
+        // console.log(text, searchText, matchIndex);
 
         if (searchText.length > 0 && matchIndex > -1) {
             start = text.substring(0, matchIndex);

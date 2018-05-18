@@ -7,7 +7,7 @@
 
 // Libraries
 import React from 'react';
-import { IndexRedirect, Route } from 'react-router';
+import { IndexRedirect, Route } from 'react-router-dom';
 // Self-defined
 import App from '../../common/containers/App';
 import ContentWrapper from '../../common/components/content/ContentWrapper';

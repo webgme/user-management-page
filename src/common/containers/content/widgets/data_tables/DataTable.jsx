@@ -9,7 +9,7 @@
 import { connect } from 'react-redux';
 // Self-defined
 import DataTable from '../../../../components/content/widgets/data_tables/DataTable';
-import { sortObjectArrayByField } from '../../../../../client/utils/utils';
+// import { sortObjectArrayByField } from '../../../../../client/utils/utils';
 
 const mapStateToProps = (state, ownProps) => {
     const reducerTableName = ownProps.reducerTableName;
