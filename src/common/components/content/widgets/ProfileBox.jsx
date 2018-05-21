@@ -4,8 +4,9 @@
  */
 
 // Libraries
-import React, {Component, PropTypes} from 'react';
-import {Button, Well} from 'react-bootstrap';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {Button} from 'react-bootstrap';
 // Self-defined
 import LoginField from '../../../components/content/widgets/LoginField';
 import {fetchUser} from '../../../actions/user';
@@ -42,7 +43,7 @@ export default class ProfileBox extends Component {
             },
             hasEdits: false,
             showModal: false,
-            showModelEnableUser: false,
+            showModalEnableUser: false,
 
             showEditData: false,
             showEditSettings: false,
@@ -269,7 +270,7 @@ export default class ProfileBox extends Component {
         // Release focus
         event.target.blur();
 
-        const {dispatch, editable, user} = this.props;
+        const {dispatch, user} = this.props;
 
         Promise.resolve(this.checkAllFields())
             .then(() => {
@@ -375,222 +376,271 @@ export default class ProfileBox extends Component {
     render() {
         const {editable, user, config, isCurrentUser, currentUser} = this.props;
         let isGuest = user._id === config.authentication.guestAccount,
-            nbrOfOwnedProjects = Object.keys(user.projects).filter(function (projectId) {
-                // FIXME: Do not rely on split
-                return projectId.split('+')[0] === user._id;
-            }).length;
+            nbrOfOwnedProjects = Object.keys(user.projects)
+                .filter(projectId => projectId.split('+')[0] === user._id)
+                .length;
 
         return (
-                <div className="box box-primary" style={STYLE.profileBoxBorder}>
-                    <div className="box-body box-profile">
-                        <img className="profile-user-img img-responsive img-circle"
-                             src={getUserIconSource(user._id)}
-                             alt="User profile picture"
-                             style={PROFILE_STYLE}/>
+            <div className="box box-primary" style={STYLE.profileBoxBorder}>
+                <div className="box-body box-profile">
+                    <img
+                        className="profile-user-img img-responsive img-circle"
+                        src={getUserIconSource(user._id)}
+                        alt="User profile picture"
+                        style={PROFILE_STYLE}/>
 
-                        <h3 className="profile-username text-center" style={user.disabled ? {color: 'grey'} : {}}>
-                            &nbsp;{getUserDisplayName(user._id) + (user.disabled ? ' (Disabled)' : '')}&nbsp;
-                        </h3>
+                    <h3 className="profile-username text-center" style={user.disabled ? {color: 'grey'} : {}}>
+                        &nbsp;{getUserDisplayName(user._id) + (user.disabled ? ' (Disabled)' : '')}&nbsp;
+                    </h3>
 
-                        <ul className="list-group list-group-unbordered">
-                            {/* Username */}
-                            <LoginField disabled={true}
-                                        iconClass="glyphicon glyphicon-user"
-                                        name="username"
-                                        readOnly={true}
-                                        valid={true}
-                                        value={`UserID: ${user._id ? user._id : ''}`}/>
-                            {/* Custom Site Admin (guest cannot be assigned siteAdmin) */}
-                            { isGuest ? null :
-                                <div>
-                                    <div className={`input-group`}>
-                                    <span className="input-group-addon">
-                                        <i className="glyphicon glyphicon-check"/>
-                                    </span>
-                                        <input className="form-control"
-                                               readOnly={true}
-                                               disabled={(!editable || this.props.isCurrentUser) ? true : undefined}
-                                               value="Site Admin"/>
-                                    <span className="input-group-addon">
-                                        <input type="checkbox"
-                                               onChange={this.onSiteAdminChange}
-                                               disabled={(!editable || this.props.isCurrentUser) ? true : undefined}
-                                               readOnly={(!editable || this.props.isCurrentUser) ? true : undefined}
-                                               checked={this.state.siteAdmin}
-                                               aria-label="Checkbox for following text input"/>
-                                    </span>
-                                    </div>
-                                    <br/>
-                                </div>
-                            }
-                            {/* Custom Can Create*/}
-                            {editable && !this.props.isCurrentUser ? <div>
+                    <ul className="list-group list-group-unbordered">
+                        {/* Username */}
+                        <LoginField
+                            disabled={true}
+                            iconClass="glyphicon glyphicon-user"
+                            name="username"
+                            readOnly={true}
+                            valid={true}
+                            value={`UserID: ${user._id ? user._id : ''}`}/>
+                        {/* Custom Site Admin (guest cannot be assigned siteAdmin) */}
+                        {isGuest ? null :
+                            <div>
                                 <div className={`input-group`}>
                                     <span className="input-group-addon">
                                         <i className="glyphicon glyphicon-check"/>
                                     </span>
-                                    <input className="form-control"
-                                           readOnly={true}
-                                           value="Can Create"/>
-                                    <span className="input-group-addon">
-                                        <input type="checkbox"
-                                               onChange={this.onCanCreateChange}
-                                               checked={this.state.canCreate}
-                                               aria-label="Checkbox for following text input"/>
-                                    </span>
+                                    {(() => {
+                                        const res = [(
+                                            <input
+                                                key="site-admin-label"
+                                                className="form-control"
+                                                readOnly={true}
+                                                value="Site Admin"/>
+                                        )];
+
+                                        if (!editable || this.props.isCurrentUser) {
+                                            res.push((
+                                                <span
+                                                    key="site-admin-cb"
+                                                    className="input-group-addon">
+                                                    <input
+                                                        type="checkbox"
+                                                        onChange={this.onSiteAdminChange}
+                                                        disabled={true}
+                                                        readOnly={true}
+                                                        checked={this.state.siteAdmin}
+                                                        aria-label="Checkbox for following text input"
+                                                    />
+                                                </span>));
+                                        } else {
+                                            res.push((
+                                                <span
+                                                    key="site-admin-cb"
+                                                    className="input-group-addon">
+                                                    <input
+                                                        type="checkbox"
+                                                        onChange={this.onSiteAdminChange}
+                                                        checked={this.state.siteAdmin}
+                                                        aria-label="Checkbox for following text input"
+                                                    />
+                                                </span>));
+                                        }
+
+                                        return res;
+                                    })()}
+
                                 </div>
-                                <br/>
-                            </div> : null}
-                            {/* Email */}
-                            { isGuest ? null :
-                                <LoginField disabled={!editable}
-                                            hint="Email"
-                                            iconClass="glyphicon glyphicon-envelope"
-                                            invalidMessage={this.state.invalidMessage.email}
-                                            onBlur={this.checkEmail}
-                                            onInputChange={this.onEmailChange}
-                                            valid={this.state.validCredentials.email}
-                                            value={this.state.email ? this.state.email : ''}/>
-                            }
-                            {/* New Password */}
-                            {editable && !isGuest ?
-                                <LoginField hint="New Password"
-                                            iconClass="glyphicon glyphicon-lock"
-                                            invalidMessage={this.state.invalidMessage.password}
-                                            name="password"
-                                            onBlur={this.checkPassword}
-                                            onInputChange={this.onPasswordChange}
-                                            textType="password"
-                                            valid={this.state.validCredentials.password}
-                                            value={this.state.password}/> : null}
-                            {/* Confirm New Password */}
-                            {editable && !isGuest ?
-                                <LoginField hint="Confirm New Password"
-                                            iconClass="glyphicon glyphicon-log-in"
-                                            invalidMessage={this.state.invalidMessage.confirmPassword}
-                                            name="confirm-password"
-                                            onBlur={this.checkConfirmPassword}
-                                            onInputChange={this.onConfirmPasswordChange}
-                                            textType="password"
-                                            valid={this.state.validCredentials.confirmPassword}
-                                            value={this.state.confirmPassword}/> : null}
-
-                        </ul>
-
-                        {currentUser.siteAdmin?
-                            <div>
-                                <div style={STYLE.infoTitle}>
-                                    DATA
-                                    {user.disabled ? null :
-                                        <i id="user-data-edit" className="fa fa-cog pull-right"
-                                           style={{cursor: 'pointer'}}
-                                           onClick={this.showEditInline}/>
-                                    }
-                                </div>
-
-                                {this.state.showEditData ?
-                                    <form id="user-data-form" onSubmit={this.cancelEditInline}>
-                                        <textarea id="user-data-text" value={this.state.editDataValue}
-                                                  style={STYLE.textArea}
-                                                  onChange={this.onEditInlineChange}/>
-                                        <input className="btn btn-default btn-xs" type="submit" value="Cancel"/>
-                                    </form> :
-                                    <pre style={STYLE.preTextArea}>
-                                        {JSON.stringify(user.data, null, 2)}
-                                    </pre>
-                                }
-
-                                <br/>
-
-                                <div style={STYLE.infoTitle}>
-                                    SETTINGS
-                                    {user.disabled ? null :
-                                        <i id="user-settings-edit" className="fa fa-cog pull-right"
-                                           style={{cursor: 'pointer'}}
-                                           onClick={this.showEditInline}/>
-                                    }
-                                </div>
-
-                                {this.state.showEditSettings ?
-                                    <form id="user-settings-form" onSubmit={this.cancelEditInline}>
-                                        <textarea id="user-settings-text" value={this.state.editSettingsValue}
-                                                  style={STYLE.textArea}
-                                                  onChange={this.onEditInlineChange}/>
-                                        <input className="btn btn-default btn-xs" type="submit" value="Cancel"/>
-                                    </form> :
-                                    <pre style={STYLE.preTextArea}>
-                                        {JSON.stringify(user.settings, null, 2)}
-                                    </pre>
-                                }
-
                                 <br/>
                             </div>
-                            : null
                         }
+                        {/* Custom Can Create*/}
+                        {editable && !this.props.isCurrentUser ? <div>
+                            <div className={`input-group`}>
+                                <span className="input-group-addon">
+                                    <i className="glyphicon glyphicon-check"/>
+                                </span>
+                                <input
+                                    className="form-control"
+                                    readOnly={true}
+                                    value="Can Create"/>
+                                <span className="input-group-addon">
+                                    <input
+                                        type="checkbox"
+                                        onChange={this.onCanCreateChange}
+                                        checked={this.state.canCreate}
+                                        aria-label="Checkbox for following text input"/>
+                                </span>
+                            </div>
+                            <br/>
+                        </div> : null}
+                        {/* Email */}
+                        {isGuest ? null :
+                            <LoginField
+                                disabled={!editable}
+                                hint="Email"
+                                iconClass="glyphicon glyphicon-envelope"
+                                invalidMessage={this.state.invalidMessage.email}
+                                onBlur={this.checkEmail}
+                                onInputChange={this.onEmailChange}
+                                valid={this.state.validCredentials.email}
+                                value={this.state.email ? this.state.email : ''}/>
+                        }
+                        {/* New Password */}
+                        {editable && !isGuest ?
+                            <LoginField
+                                hint="New Password"
+                                iconClass="glyphicon glyphicon-lock"
+                                invalidMessage={this.state.invalidMessage.password}
+                                name="password"
+                                onBlur={this.checkPassword}
+                                onInputChange={this.onPasswordChange}
+                                textType="password"
+                                valid={this.state.validCredentials.password}
+                                value={this.state.password}/> : null}
+                        {/* Confirm New Password */}
+                        {editable && !isGuest ?
+                            <LoginField
+                                hint="Confirm New Password"
+                                iconClass="glyphicon glyphicon-log-in"
+                                invalidMessage={this.state.invalidMessage.confirmPassword}
+                                name="confirm-password"
+                                onBlur={this.checkConfirmPassword}
+                                onInputChange={this.onConfirmPasswordChange}
+                                textType="password"
+                                valid={this.state.validCredentials.confirmPassword}
+                                value={this.state.confirmPassword}/> : null}
 
-                        {currentUser.siteAdmin && !isCurrentUser && !isGuest ?
-                            <Button bsStyle="danger"
-                                    onClick={this.showModal}
-                                    style={STYLE.deleteButton}>
-                                {user.disabled ? 'Force' : ''} Delete ...
-                            </Button> : null}
+                    </ul>
 
-                        {currentUser.siteAdmin && user.disabled ?
-                            <Button bsStyle="primary"
-                                    onClick={this.showModalEnableUser}
-                                    style={STYLE.updateButton}>
-                                Enable User ...
-                            </Button> : null}
+                    {currentUser.siteAdmin ?
+                        <div>
+                            <div style={STYLE.infoTitle}>
+                                DATA
+                                {user.disabled ? null :
+                                    <i
+                                        id="user-data-edit" className="fa fa-cog pull-right"
+                                        style={{cursor: 'pointer'}}
+                                        onClick={this.showEditInline}
+                                    />
+                                }
+                            </div>
 
-                        {editable && this.state.hasEdits ?
-                            <Button bsStyle="primary"
-                                    onClick={this.onUpdate}
-                                    style={STYLE.updateButton}>
-                                Update
-                            </Button> : null}
-                    </div>
+                            {this.state.showEditData ?
+                                <form id="user-data-form" onSubmit={this.cancelEditInline}>
+                                    <textarea
+                                        id="user-data-text"
+                                        value={this.state.editDataValue}
+                                        style={STYLE.textArea}
+                                        onChange={this.onEditInlineChange}
+                                    />
+                                    <input className="btn btn-default btn-xs" type="submit" value="Cancel"/>
+                                </form> :
+                                <pre style={STYLE.preTextArea}>
+                                    {JSON.stringify(user.data, null, 2)}
+                                </pre>
+                            }
 
-                    <CustomModal cancelButtonMessage="Cancel"
-                                 cancelButtonStyle="default"
-                                 closeHandler={this.hideModal}
-                                 confirmButtonMessage="OK"
-                                 confirmButtonStyle="danger"
-                                 confirmHandler={this.confirmModal}
-                                 confirmId={user._id}
-                                 modalMessage={
-                             user.disabled ?
-                               'Are you really sure that you forcefully want to delete ' +
-                                 getUserDisplayName(user._id) + '? After the deletion there will no longer be any ' +
-                                 'stored data for the user. If this user was ever logged in and a new users ' +
-                                 'registers under the same id - the previous user might have sessions stored ' +
-                                 'allowing him to identify as the new user! Additionaly if any projects are owned ' +
-                                 'by "' + getUserDisplayName(user._id) + '" these would be owned by any new user or ' +
-                                   'organization created at the now would be available id.' :
+                            <br/>
 
-                             'Are you sure you want to delete ' + getUserDisplayName(user._id) + '? This user owns ' +
-                               nbrOfOwnedProjects + ' project(s).' + (nbrOfOwnedProjects > 0 ?
-                                 ' Check projects table filtered by owner for full list. ' : ' ') +
-                                 'Deleted users still reside in the database with the extra property "disabled: true"' +
-                                 ' and can be recovered manually.'
-                             }
-                                 showModal={this.state.showModal}
-                                 title={user.disabled ? "Forcefully Delete User" : "Delete User"}/>
+                            <div style={STYLE.infoTitle}>
+                                SETTINGS
+                                {user.disabled ? null :
+                                    <i
+                                        id="user-settings-edit"
+                                        className="fa fa-cog pull-right"
+                                        style={{cursor: 'pointer'}}
+                                        onClick={this.showEditInline}
+                                    />
+                                }
+                            </div>
 
-                    <CustomModal cancelButtonMessage="Cancel"
-                                 cancelButtonStyle="default"
-                                 closeHandler={this.hideModalEnableUser}
-                                 confirmButtonMessage="OK"
-                                 confirmButtonStyle="danger"
-                                 confirmHandler={this.confirmModalEnableUser}
-                                 confirmId={user._id}
-                                 modalMessage={
-                             'Are you sure you want to re-enable the deleted user "' + getUserDisplayName(user._id) +
-                             '"? After re-enabling the user the account will be active and the user will be able to ' +
-                             'log in with the user-id and password stored.'
-                             }
-                                 showModal={this.state.showModalEnableUser}
-                                 title={"Enable User"}/>
+                            {this.state.showEditSettings ?
+                                <form id="user-settings-form" onSubmit={this.cancelEditInline}>
+                                    <textarea
+                                        id="user-settings-text" value={this.state.editSettingsValue}
+                                        style={STYLE.textArea}
+                                        onChange={this.onEditInlineChange}/>
+                                    <input className="btn btn-default btn-xs" type="submit" value="Cancel"/>
+                                </form> :
+                                <pre style={STYLE.preTextArea}>
+                                    {JSON.stringify(user.settings, null, 2)}
+                                </pre>
+                            }
+
+                            <br/>
+                        </div> :
+                        null
+                    }
+
+                    {currentUser.siteAdmin && !isCurrentUser && !isGuest ?
+                        <Button
+                            bsStyle="danger"
+                            onClick={this.showModal}
+                            style={STYLE.deleteButton}>
+                            {user.disabled ? 'Force' : ''} Delete ...
+                        </Button> : null}
+
+                    {currentUser.siteAdmin && user.disabled ?
+                        <Button
+                            bsStyle="primary"
+                            onClick={this.showModalEnableUser}
+                            style={STYLE.updateButton}>
+                            Enable User ...
+                        </Button> : null}
+
+                    {editable && this.state.hasEdits ?
+                        <Button
+                            bsStyle="primary"
+                            onClick={this.onUpdate}
+                            style={STYLE.updateButton}>
+                            Update
+                        </Button> : null}
                 </div>
+
+                <CustomModal
+                    cancelButtonMessage="Cancel"
+                    cancelButtonStyle="default"
+                    closeHandler={this.hideModal}
+                    confirmButtonMessage="OK"
+                    confirmButtonStyle="danger"
+                    confirmHandler={this.confirmModal}
+                    confirmId={user._id}
+                    modalMessage={
+                        user.disabled ?
+                            'Are you really sure that you forcefully want to delete ' +
+                            getUserDisplayName(user._id) + '? After the deletion there will no longer be' +
+                            ' any ' +
+                            'stored data for the user. If this user was ever logged in and a new users ' +
+                            'registers under the same id - the previous user might have sessions stored ' +
+                            'allowing him to identify as the new user! Additionaly if any projects are owned ' +
+                            'by "' + getUserDisplayName(user._id) + '" these would be owned by any new user or ' +
+                            'organization created at the now would be available id.' :
+
+                            'Are you sure you want to delete ' + getUserDisplayName(user._id) + '? This user owns ' +
+                            nbrOfOwnedProjects + ' project(s).' +
+                            (nbrOfOwnedProjects > 0 ? ' Check projects table filtered by owner for full list. ' : ' ') +
+                            'Deleted users still reside in the database with the extra property "disabled: true"' +
+                            ' and can be recovered manually.'
+                    }
+                    showModal={this.state.showModal}
+                    title={user.disabled ? "Forcefully Delete User" : "Delete User"}/>
+
+                <CustomModal
+                    cancelButtonMessage="Cancel"
+                    cancelButtonStyle="default"
+                    closeHandler={this.hideModalEnableUser}
+                    confirmButtonMessage="OK"
+                    confirmButtonStyle="danger"
+                    confirmHandler={this.confirmModalEnableUser}
+                    confirmId={user._id}
+                    modalMessage={
+                        'Are you sure you want to re-enable the deleted user "' + getUserDisplayName(user._id) +
+                        '"? After re-enabling the user the account will be active and the user ' +
+                        'will be able to log in with the user-id and password stored.'
+                    }
+                    showModal={this.state.showModalEnableUser}
+                    title={"Enable User"}/>
+            </div>
         );
     }
 

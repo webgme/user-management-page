@@ -4,9 +4,10 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 // Self-defined
 import { getUserIconSource } from '../../../../../../client/utils/utils';
@@ -36,7 +37,7 @@ export default class UsersDataTableEntry extends Component {
                             <Popover title="User Disabled" id="disabled">
                                 {`'${getUserDisplayName(_id)}' is disabled.`}
                             </Popover>}>
-                                <i className="fa fa-ban pull-right" style={{color: 'grey'}}/>
+                            <i className="fa fa-ban pull-right" style={{color: 'grey'}}/>
                         </OverlayTrigger> :
                         siteAdmin ?
                             <OverlayTrigger key="pop-over-admin" trigger={["hover", "focus"]} placement="top" overlay={

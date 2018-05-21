@@ -6,7 +6,8 @@
  */
 
 // Libraries
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 // Self-defined
 import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import OrganizationDataTableEntry from './table_entries/OrganizationDataTableEntry';
@@ -93,13 +94,13 @@ export default class OrganizationTable extends Component {
                 </div>
 
                 <DataTable categories={categories}
-                           entries={members}
-                           orderEntries={this.handleOrderEntries}
-                           reducerTableName="organizationMembers"
-                           sortable={true}>
+                    entries={members}
+                    orderEntries={this.handleOrderEntries}
+                    reducerTableName="organizationMembers"
+                    sortable={true}>
                     <OrganizationDataTableEntry canAuthorize={canAuthorize}
-                                                removeMember={this.removeMember}
-                                                setAdmin={this.setAdmin}
+                        removeMember={this.removeMember}
+                        setAdmin={this.setAdmin}
                     />
                 </DataTable>
             </div>

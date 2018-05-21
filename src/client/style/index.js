@@ -190,8 +190,8 @@ export const OrganizationsPage = {
 
 export const OrganizationsTable = {
     createOrganizationModal: {
-        paddingTop: "50%",
-        marginTop: "50%"
+        // paddingTop: "50%",
+        // marginTop: "50%"
     },
     modalDialogTextField: {
         marginLeft: "15px",

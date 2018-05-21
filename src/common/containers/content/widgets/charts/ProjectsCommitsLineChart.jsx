@@ -7,7 +7,7 @@
 import { connect } from 'react-redux';
 // Self defined:
 import CommitsLineChart from '../../../../components/content/widgets/charts/ProjectsCommitsLineChart';
-import { processCommitsLine } from '../../../../../client/utils/utils';
+// import { processCommitsLine } from '../../../../../client/utils/utils';
 
 const mapStateToProps = (state, ownProps) => {
     const { ownerId, projectName } = ownProps;
@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
     const { user } = state.user;
 
     // Could be fetching
-    const commits = state.projects.commits[projectId] ? state.projects.commits[projectId].commits || [] : [];
+    // const commits = state.projects.commits[projectId] ? state.projects.commits[projectId].commits || [] : [];
     // const data = processCommitsLine(commits.slice(), user._id, 1);
     const data = {};
 

@@ -1,9 +1,11 @@
+/* globals window */
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Self-defined
 import LoginClient from '../../../client/rest_client/loginClient';
 
@@ -24,7 +26,7 @@ export default class App extends Component {
         let FormWithBasePath = React.Children.map(this.props.children,
             child => React.cloneElement(child, {
                 loginClient: this.loginClient,
-                basePath: this.props.route.basePath
+                basePath: this.props.basePath
             }));
 
         return (
@@ -41,7 +43,5 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-    route: React.PropTypes.shape({
-        basePath: React.PropTypes.string.isRequired
-    })
+    basePath: PropTypes.string.isRequired
 };

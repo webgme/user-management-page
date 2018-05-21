@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { Line as LineChart } from 'react-chartjs';
 // Self-defined
@@ -121,10 +122,10 @@ export default class CommitsLineChart extends Component {
                             <div className="box-tools pull-right">
                                 <ButtonGroup>
                                     <Button bsStyle={this.state.display === 1 ? "primary" : null}
-                                            onClick={this.toggleView}>Total Commits
+                                        onClick={this.toggleView}>Total Commits
                                     </Button>
                                     <Button bsStyle={this.state.display === 2 ? "primary" : null}
-                                            onClick={this.toggleView}>Only My Commits
+                                        onClick={this.toggleView}>Only My Commits
                                     </Button>
                                 </ButtonGroup>
                                 <div className="box-tools pull-right">
@@ -140,10 +141,10 @@ export default class CommitsLineChart extends Component {
                             <div className="col-md-9">
                                 <div className="box-body">
                                     <LineChart data={this.state.data}
-                                               height={300}
-                                               width={500}
-                                               options={{}}
-                                               redraw={true}/>
+                                        height={300}
+                                        width={500}
+                                        options={{}}
+                                        redraw={true}/>
                                 </div>
                             </div>
                             <div className="col-md-3" style={{paddingRight: "30px"}}>

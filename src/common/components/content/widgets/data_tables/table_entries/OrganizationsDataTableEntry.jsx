@@ -4,9 +4,10 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default class OrganizationsDataTableEntry extends Component {
 
@@ -29,9 +30,9 @@ export default class OrganizationsDataTableEntry extends Component {
                         </OverlayTrigger> :
                         adminOrganizations[_id] ?
                             <OverlayTrigger key="pop-over-admin" trigger={["hover", "focus"]} placement="top" overlay={
-                            <Popover title="Admin" id="admin">
-                                {`You have admin rights to '${_id}'.`}
-                            </Popover>}>
+                                <Popover title="Admin" id="admin">
+                                    {`You have admin rights to '${_id}'.`}
+                                </Popover>}>
                                 <i className="fa fa-graduation-cap pull-right"/>
                             </OverlayTrigger> : null}
                 </td>

@@ -51,15 +51,15 @@ export default class OrganizationDataTableEntry extends Component {
             if (canAuthorize) {
                 result.push(
                     <OverlayTrigger key="pop-over-admin" trigger={["hover", "focus"]} placement="top" overlay={
-                            <Popover title="Revoke Admin" id="admin">
-                                {`Click to remove '${name}' admin rights from organization.`}
-                            </Popover>}>
+                        <Popover title="Revoke Admin" id="admin">
+                            {`Click to remove '${name}' admin rights from organization.`}
+                        </Popover>}>
                         <i key="admin"
-                           action="removeAdmin"
-                           id={name}
-                           onClick={this.props.setAdmin}
-                           className="fa fa-check-circle"
-                           style={STYLE.isAdmin}/>
+                            action="removeAdmin"
+                            id={name}
+                            onClick={this.props.setAdmin}
+                            className="fa fa-check-circle"
+                            style={STYLE.isAdmin}/>
                     </OverlayTrigger>);
             } else {
                 result.push(<i key="admin" className="fa fa-check-circle" style={{color: 'green'}}/>);
@@ -68,9 +68,9 @@ export default class OrganizationDataTableEntry extends Component {
             if (!isMember) {
                 result.push(
                     <OverlayTrigger key="pop-over" trigger={["hover", "focus"]} placement="top" overlay={
-                            <Popover title="Admin not a Member" id="admin">
-                                {`User '${name}' is an admin but not a member.`}
-                            </Popover>}>
+                        <Popover title="Admin not a Member" id="admin">
+                            {`User '${name}' is an admin but not a member.`}
+                        </Popover>}>
                         <span className="admin-not-member"> ! </span>
                     </OverlayTrigger>
                 );
@@ -78,15 +78,15 @@ export default class OrganizationDataTableEntry extends Component {
         } else if (canAuthorize) {
             result.push(
                 <OverlayTrigger key="pop-over" trigger={["hover", "focus"]} placement="top" overlay={
-                            <Popover title="Assign Admin" id="admin">
-                                {`Click to add '${name}' as an admin for the organization.`}
-                            </Popover>}>
+                    <Popover title="Assign Admin" id="admin">
+                        {`Click to add '${name}' as an admin for the organization.`}
+                    </Popover>}>
                     <i key="admin"
-                       action="makeAdmin"
-                       id={name}
-                       onClick={this.props.setAdmin}
-                       className="fa fa-times-circle"
-                       style={STYLE.isNotAdmin}/>
+                        action="makeAdmin"
+                        id={name}
+                        onClick={this.props.setAdmin}
+                        className="fa fa-times-circle"
+                        style={STYLE.isNotAdmin}/>
                 </OverlayTrigger>);
         } else {
             result.push(<i key="admin" className="fa fa-times-circle" style={{color: 'red'}}/>);
@@ -101,23 +101,23 @@ export default class OrganizationDataTableEntry extends Component {
         return (
             <tr role="row" className="odd">
                 <CustomModal cancelButtonMessage="Cancel"
-                             cancelButtonStyle="default"
-                             closeHandler={this.close}
-                             confirmButtonMessage="OK"
-                             confirmButtonStyle="danger"
-                             confirmHandler={this.confirm}
-                             confirmId={name}
-                             modalMessage={'Are you sure you want to remove ' + name +
+                    cancelButtonStyle="default"
+                    closeHandler={this.close}
+                    confirmButtonMessage="OK"
+                    confirmButtonStyle="danger"
+                    confirmHandler={this.confirm}
+                    confirmId={name}
+                    modalMessage={'Are you sure you want to remove ' + name +
                               ' from the organization?'}
-                             showModal={this.state.showModal}
-                             title="Remove Member"/>
+                    showModal={this.state.showModal}
+                    title="Remove Member"/>
                 <td>
                     {name}
                     {this.props.canAuthorize && isMember ?
                         <i className="fa fa-remove"
-                           id={this.props.name}
-                           onClick={this.open}
-                           style={{cursor: "pointer", float: "right", fontSize: "15px"}}/> : null}
+                            id={this.props.name}
+                            onClick={this.open}
+                            style={{cursor: "pointer", float: "right", fontSize: "15px"}}/> : null}
                 </td>
                 <td style={{width: '10%', textAlign: 'center'}}>
                     {this.getAdminElem()}

@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Style
 import { LoginField as STYLE } from '../../../../client/style';
 
@@ -32,22 +33,22 @@ export default class LoginField extends Component {
             <div>
 
                 <div className={`input-group ${this.props.valid ? '' : 'has-error'}`}
-                     style={this.props.indentStyle || {}}>
+                    style={this.props.indentStyle || {}}>
                     <span className="input-group-addon">
                         <i className={this.props.iconClass}/>
                     </span>
                     <input autoFocus={this.props.autoFocus}
-                           className="form-control"
-                           disabled={this.props.disabled ? true : undefined}
-                           name={this.props.name}
-                           onBlur={this.props.value !== '' ? this.props.onBlur : null}
-                           onChange={this.props.onInputChange}
-                           onKeyUp={this.checkEnter}
-                           placeholder={this.props.hint}
-                           readOnly={this.props.readOnly}
-                           required="required"
-                           type={this.props.textType || "text"}
-                           value={this.props.value}/>
+                        className="form-control"
+                        disabled={this.props.disabled ? true : undefined}
+                        name={this.props.name}
+                        onBlur={this.props.value !== '' ? this.props.onBlur : null}
+                        onChange={this.props.onInputChange}
+                        onKeyUp={this.checkEnter}
+                        placeholder={this.props.hint}
+                        readOnly={this.props.readOnly}
+                        required="required"
+                        type={this.props.textType || "text"}
+                        value={this.props.value}/>
                     <br/>
                 </div>
 

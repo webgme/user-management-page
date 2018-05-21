@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 // Self defined
 import AuthorizationWidget from './AuthorizationWidget';
 import {multiselectFormat, sortObjectArrayByField} from '../../../../../client/utils/utils';
@@ -149,19 +150,19 @@ export default class ProjectAuthorizationWidget extends Component {
         return (
             canAuthorize ?
                 <AuthorizationWidget boxSize="12"
-                                     disableLast={true}
-                                     handleMultiselectChange={this.handleMultiselectChange}
-                                     label={"Add Collaborators"}
-                                     multi={true}
-                                     multiselectOptions={this.state.multiselectOptions}
-                                     noneSelected={this.state.valuesInMultiselect === ''}
-                                     placeholder="Select one or more (type to search)"
-                                     selectableButtons={authorizationWidgetData.selectableButtons}
-                                     selectableButtonsChange={this.handleAuthorizationChange}
-                                     selectableButtonsHelperTitle="Select Access Level"
-                                     selectableButtonsHelperText="R - Read, W - Write, D - Delete"
-                                     submitButtons={authorizationWidgetData.submitButtons}
-                                     valuesInMultiselect={this.state.valuesInMultiselect}/> : null
+                    disableLast={true}
+                    handleMultiselectChange={this.handleMultiselectChange}
+                    label={"Add Collaborators"}
+                    multi={true}
+                    multiselectOptions={this.state.multiselectOptions}
+                    noneSelected={this.state.valuesInMultiselect === ''}
+                    placeholder="Select one or more (type to search)"
+                    selectableButtons={authorizationWidgetData.selectableButtons}
+                    selectableButtonsChange={this.handleAuthorizationChange}
+                    selectableButtonsHelperTitle="Select Access Level"
+                    selectableButtonsHelperText="R - Read, W - Write, D - Delete"
+                    submitButtons={authorizationWidgetData.submitButtons}
+                    valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
     }
 

@@ -1,5 +1,3 @@
-/* global window */
-
 /**
  * Individual project page
  * @author patrickkerrypei / https://github.com/patrickkerrypei

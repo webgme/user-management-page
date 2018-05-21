@@ -4,7 +4,8 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Self-defined
 import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import ProjectsDataTableEntry from
@@ -55,7 +56,7 @@ export default class ProjectsTable extends Component {
             {id: 2, name: 'Project Name', style: {width: "50%"}, isSorted: sortIndex === 2},
             {id: 3, name: 'Last Viewed', className: "hidden-xs", style: {width: "13%"}, isSorted: sortIndex === 3},
             {id: 4, name: 'Last Changed', className: "hidden-xs", style: {width: "13%"}, isSorted: sortIndex === 4},
-            {id: 5, name: 'Created At', className: "hidden-xs", style: {width: "13%"}, isSorted: sortIndex === 5},
+            {id: 5, name: 'Created At', className: "hidden-xs", style: {width: "13%"}, isSorted: sortIndex === 5}
         ];
 
         // Will be 'projects' if in the projects page, if in projectsByOwner then will be ownerId
@@ -72,11 +73,11 @@ export default class ProjectsTable extends Component {
 
                 {/* Body */}
                 <DataTable categories={categories}
-                           content="Projects"
-                           entries={projects}
-                           orderEntries={this.handleOrderEntries}
-                           reducerTableName="projects"
-                           sortable={true}>
+                    content="Projects"
+                    entries={projects}
+                    orderEntries={this.handleOrderEntries}
+                    reducerTableName="projects"
+                    sortable={true}>
                     <ProjectsDataTableEntry />
                 </DataTable>
 

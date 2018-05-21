@@ -45,6 +45,7 @@ function getPlugins() {
     return plugins;
 }
 module.exports = {
+    devtool: 'source-map',
     entry: {
         main: path.join(SRC_DIR, 'main.jsx'),
         login: path.join(SRC_DIR, 'login.jsx')
@@ -65,7 +66,7 @@ module.exports = {
             {test: /bootstrap\/js\//, loader: 'imports-loader?jQuery=jquery'},
 
             // Loader for react-select's less stylesheet
-            {test: /\.less$/, loader: 'style!css!less'},
+            {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
 
             // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
             // loads bootstrap's css.
@@ -77,6 +78,6 @@ module.exports = {
     },
     plugins: getPlugins(),
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['.js', '.jsx']
     }
 };

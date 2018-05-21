@@ -171,7 +171,7 @@ export function getUsersInOrganizationsWithAccess(orgs, projectId) {
                         read: userToOrgsRights[user].read || org.projects[projectId].read,
                         write: userToOrgsRights[user].write || org.projects[projectId].write,
                         delete: userToOrgsRights[user].delete || org.projects[projectId].delete,
-                        orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]), // eslint-disable-line max-len
+                        orgsRightsOrigin: userToOrgsRights[user].orgsRightsOrigin.concat([org._id + ': ' + orgsRightsOrigin]) // eslint-disable-line max-len
                     };
                 } else {
                     userToOrgsRights[user] = JSON.parse(JSON.stringify(org.projects[projectId]));

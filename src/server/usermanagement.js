@@ -8,6 +8,7 @@ var express = require('express'),
     path = require('path'),
     ejs = require('ejs'),
     fs = require('fs'),
+    // eslint-disable-next-line
     router = express.Router(),
     bodyParser = require('body-parser'),
     DIST_DIR = path.join(__dirname, '..', '..', 'dist'),
@@ -47,6 +48,7 @@ function initialize(middlewareOpts) {
 
     // Detecting if its a file name
     router.get(/\./, function(req, res) {
+        // eslint-disable-next-line
         var onlyFileExtension = req.originalUrl.match(/[^\/]+$/)[0]; // this is the file name
         serveFile(onlyFileExtension, res);
     });

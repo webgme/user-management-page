@@ -23,10 +23,10 @@ export default class UsersClient extends BaseClient {
             let query = includeDisabled ? {includeDisabled: true} : null;
 
             ensureUsersDisplayNames(self)
-                .then(function () {
+                .then(function() {
                     return self.get(['users'], query);
                 })
-                .then(function (users) {
+                .then(function(users) {
                     users.forEach(user => {
                         user.displayName = user.displayName || user._id;
                     });
@@ -126,13 +126,13 @@ export default class UsersClient extends BaseClient {
         return super.put(path, value);
     }
 
-    updateUserSettings(value, componentId) {
+    updateUserSettings(username, value, componentId) {
         var path = componentId ? ['users', username, 'settings', componentId] : ['users', username, 'settings'];
 
         return super.patch(path, value);
     }
 
-    deleteUserSettings(componentId) {
+    deleteUserSettings(username, componentId) {
         var path = componentId ? ['users', username, 'settings', componentId] : ['users', username, 'settings'];
 
         return super.delete(path);

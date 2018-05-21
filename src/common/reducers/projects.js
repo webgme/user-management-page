@@ -4,7 +4,7 @@
  */
 
 import { RECEIVE_COMMITS, REQUEST_COMMITS,
-         RECEIVE_PROJECTS, REQUEST_PROJECTS } from '../actions/projects';
+    RECEIVE_PROJECTS, REQUEST_PROJECTS } from '../actions/projects';
 
 const initialState = {
     /* Structure of initailState.commits:

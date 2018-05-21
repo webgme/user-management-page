@@ -4,9 +4,10 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 // Self-defined
 import DataTable from '../../../../containers/content/widgets/data_tables/DataTable';
 import UsersDataTableEntry from
@@ -37,31 +38,30 @@ export default class UsersTable extends Component {
             <div>
                 {/* Header */}
                 <div className="box-header"
-                     style={{paddingBottom: "0px"}}>
+                    style={{paddingBottom: "0px"}}>
                     <h3 className="box-title" style={{fontSize: 28}}>
                         <i className="fa fa-users"/> {` Users`}
                     </h3>
                     <Link to={`${this.props.basePath}newuser`}>
-                    <Button className="pull-right"
+                        <Button className="pull-right"
                             bsStyle="primary"
                             bsSize="small"
                             style={this.props.user.siteAdmin === true ? {} : {display: 'none'}}
                             onClick={this.toggleModal}>
                         Add +
 
-                    </Button>
+                        </Button>
                     </Link>
                 </div>
 
                 {/* Body */}
                 <DataTable categories={categories}
-                           content="Users"
-                           entries={users}
-                           orderEntries={this.handleOrderEntries}
-                           reducerTableName="users"
-                           sortable={true}>
+                    content="Users"
+                    entries={users}
+                    reducerTableName="users"
+                    sortable={true}>
                     <UsersDataTableEntry columnStyle={{width: "13%"}}
-                                         userId={getUserDisplayName(user._id)} />
+                        userId={getUserDisplayName(user._id)} />
                 </DataTable>
             </div>
         );
@@ -75,7 +75,6 @@ UsersTable.propTypes = {
     ]).isRequired,
     sortedForward: PropTypes.bool.isRequired,
     users: PropTypes.array.isRequired,
-    restClient: PropTypes.object.isRequired,
     basePath: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired
 };

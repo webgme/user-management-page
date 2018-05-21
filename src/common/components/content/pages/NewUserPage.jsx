@@ -1,11 +1,11 @@
-/* globals window*/
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 // Self-defined
 import RegisterForm from '../../login/RegisterForm';
 import { fetchUserIfNeeded } from '../../../actions/user';
@@ -14,7 +14,7 @@ import { fetchUsers } from '../../../actions/users';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
 
-export default class NewUserPage extends Component {
+class NewUserPage extends Component {
 
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ export default class NewUserPage extends Component {
         dispatch(fetchUserIfNeeded());
     }
 
-    createUser(userId, password, email, canCreate) {
+    createUser(userId, password, email) {
         let userData = {
             password: password,
             email: email,
@@ -37,7 +37,7 @@ export default class NewUserPage extends Component {
         return this.props.restClient.users.addUser(userId, userData)
             .then(() => {
                 this.props.dispatch(fetchUsers());
-                browserHistory.push(`${this.props.basePath}users/${userId}`);
+                this.props.history.push(`${this.props.basePath}users/${userId}`);
             })
             .catch(err => {
                 return err.status || 500;
@@ -58,14 +58,14 @@ export default class NewUserPage extends Component {
                         </div>
                         <div className="box-body">
                             <RegisterForm onNewUser={this.createUser}
-                                          backLinkData={{
-                                              title: 'Back to users',
-                                              path: `${this.props.basePath}users`
-                                          }}
-                                          allowUserCreation={canCreate}/>
-                            </div>
+                                backLinkData={{
+                                    title: 'Back to users',
+                                    path: `${this.props.basePath}users`
+                                }}
+                                allowUserCreation={canCreate}/>
                         </div>
                     </div>
+                </div>
             </section>
         );
     }
@@ -75,3 +75,5 @@ export default class NewUserPage extends Component {
 NewUserPage.propTypes = {
     user: PropTypes.object.isRequired
 };
+
+export default withRouter(NewUserPage);

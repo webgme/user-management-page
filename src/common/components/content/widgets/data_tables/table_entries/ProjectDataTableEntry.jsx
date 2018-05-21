@@ -70,17 +70,17 @@ export default class ProjectDataTableEntry extends Component {
         return <tr role="row" className="odd">
 
             <CustomModal cancelButtonMessage="Cancel"
-                         cancelButtonStyle="default"
-                         closeHandler={this.close}
-                         confirmButtonMessage="OK"
-                         confirmButtonStyle="danger"
-                         confirmHandler={this.confirm}
-                         confirmId={this.props.name}
-                         modalMessage={'Are you sure you want to remove ' + getUserDisplayName(this.props.name) +
+                cancelButtonStyle="default"
+                closeHandler={this.close}
+                confirmButtonMessage="OK"
+                confirmButtonStyle="danger"
+                confirmHandler={this.confirm}
+                confirmId={this.props.name}
+                modalMessage={'Are you sure you want to remove ' + getUserDisplayName(this.props.name) +
                          '\'s access to ' + getUserDisplayName(this.props.ownerId) + ' / ' +
                          this.props.projectName + '?'}
-                         showModal={this.state.showModal}
-                         title="Remove Collaborator"/>
+                showModal={this.state.showModal}
+                title="Remove Collaborator"/>
 
             <td>
                 {this.props.isOrg ?
@@ -98,10 +98,10 @@ export default class ProjectDataTableEntry extends Component {
                         </Popover>}>
                         <div style={{float: "left"}}>
                             <i className={`fa fa-user${this.props.userRightsOrigin ? '' : '-times'}`}
-                               style={{fontSize: "15px", float: "left"}}/>
+                                style={{fontSize: "15px", float: "left"}}/>
                             <span style={{paddingLeft: "8px"}}>
-                            {getUserDisplayName(this.props.name)}
-                        </span>
+                                {getUserDisplayName(this.props.name)}
+                            </span>
                         </div>
                     </OverlayTrigger>
                 }
@@ -113,29 +113,29 @@ export default class ProjectDataTableEntry extends Component {
                 {this.props.canAuthorize && (this.props.isOrg || this.props.userRightsOrigin) ?
                     this.props.ownerId === this.props.name ?
                         <OverlayTrigger overlay={<Popover id="1"><strong>This is the owner</strong></Popover>}
-                                        placement="top"
-                                        rootClose={true}
-                                        trigger={["click"]}>
+                            placement="top"
+                            rootClose={true}
+                            trigger={["click"]}>
                             <i className="fa fa-tag"
-                               onMouseEnter={this.toggleHover}
-                               onMouseLeave={this.toggleHover}
-                               style={{
-                                   cursor: "pointer",
-                                   float: "right",
-                                   fontSize: "15px"
-                               }}/>
+                                onMouseEnter={this.toggleHover}
+                                onMouseLeave={this.toggleHover}
+                                style={{
+                                    cursor: "pointer",
+                                    float: "right",
+                                    fontSize: "15px"
+                                }}/>
                         </OverlayTrigger> :
                         <i className="fa fa-remove"
-                           id={this.props.name}
-                           onClick={this.open}
-                           onMouseEnter={this.toggleHover}
-                           onMouseLeave={this.toggleHover}
-                           style={{
-                               color: this.state.hover ? "red" : "",
-                               cursor: "pointer",
-                               float: "right",
-                               fontSize: "15px"
-                           }}/> :
+                            id={this.props.name}
+                            onClick={this.open}
+                            onMouseEnter={this.toggleHover}
+                            onMouseLeave={this.toggleHover}
+                            style={{
+                                color: this.state.hover ? "red" : "",
+                                cursor: "pointer",
+                                float: "right",
+                                fontSize: "15px"
+                            }}/> :
                     null}
             </td>
 

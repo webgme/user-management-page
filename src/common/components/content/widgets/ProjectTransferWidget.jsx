@@ -4,8 +4,9 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router-dom';
 // Self defined
 import AuthorizationWidget from './authorization_widget/AuthorizationWidget';
 import { fetchOrganizations, fetchOrganizationsIfNeeded } from '../../../actions/organizations';
@@ -106,15 +107,15 @@ export default class ProjectTransferWidget extends Component {
         return (
             canTransfer ?
                 <AuthorizationWidget boxSize="12"
-                                     disableLast={true}
-                                     handleMultiselectChange={this.handleMultiselectChange}
-                                     label={"Transfer Project"}
-                                     multi={false}
-                                     multiselectOptions={this.state.multiselectOptions}
-                                     noneSelected={this.state.valuesInMultiselect === ''}
-                                     placeholder="Select an organization (type to search)"
-                                     submitButtons={authorizationWidgetData.submitButtons}
-                                     valuesInMultiselect={this.state.valuesInMultiselect}/> : null
+                    disableLast={true}
+                    handleMultiselectChange={this.handleMultiselectChange}
+                    label={"Transfer Project"}
+                    multi={false}
+                    multiselectOptions={this.state.multiselectOptions}
+                    noneSelected={this.state.valuesInMultiselect === ''}
+                    placeholder="Select an organization (type to search)"
+                    submitButtons={authorizationWidgetData.submitButtons}
+                    valuesInMultiselect={this.state.valuesInMultiselect}/> : null
         );
     }
 

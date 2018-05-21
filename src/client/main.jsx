@@ -9,9 +9,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { browserHistory, Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 // Self-defined
-import MainRoutes from './routes/MainRoutes';
+import App from '../common/containers/App';
 import configureStore from '../common/store';
 
 // Preload store with basePath
@@ -30,9 +30,9 @@ require('react-chartjs');
 render((
 
     <Provider store={store}>
-
-        <Router history={browserHistory} routes={MainRoutes} />
-
+        <Router>
+            <App basePath={basePath}/>
+        </Router>
     </Provider>
 
 ), document.getElementById('mainEntry'));

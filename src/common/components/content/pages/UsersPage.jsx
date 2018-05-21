@@ -18,7 +18,7 @@ export default class UsersPage extends Component {
                         <div className="box box-primary">
 
                             <UsersTable basePath={this.props.basePath}
-                                        restClient={this.props.restClient}/>
+                                restClient={this.props.restClient}/>
 
                         </div>
                     </div>

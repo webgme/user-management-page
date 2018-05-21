@@ -4,8 +4,9 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 // Style
 import { SideBarMenu as STYLE } from '../../../client/style';
 
@@ -15,41 +16,41 @@ export default class SideBarMenu extends Component {
         const { basePath, pathname } = this.props;
 
         return (
-        <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
+            <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
 
-            <li className="header">Site Navigation</li>
+                <li className="header">Site Navigation</li>
 
-            <li className={/home$/.test(pathname) ? 'active' : ''}>
-                <Link to={`${basePath}home`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-home"/><span>Home</span>
-                </Link>
-            </li>
+                <li className={/home$/.test(pathname) ? 'active' : ''}>
+                    <Link to={`${basePath}home`} style={{textDecoration: "none"}}>
+                        <i className="fa fa-home"/><span>Home</span>
+                    </Link>
+                </li>
 
-            <li className={/profile$/.test(pathname) ? 'active' : ''}>
-                <Link to={`${basePath}profile`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-user"/><span>Profile</span>
-                </Link>
-            </li>
+                <li className={/profile$/.test(pathname) ? 'active' : ''}>
+                    <Link to={`${basePath}profile`} style={{textDecoration: "none"}}>
+                        <i className="fa fa-user"/><span>Profile</span>
+                    </Link>
+                </li>
 
-            <li className={/projects/.test(pathname) ? 'active' : ''}>
-                <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-cubes"/><span> Projects</span>
-                </Link>
-            </li>
+                <li className={/projects/.test(pathname) ? 'active' : ''}>
+                    <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
+                        <i className="fa fa-cubes"/><span> Projects</span>
+                    </Link>
+                </li>
 
-            <li className={/organizations/.test(pathname) ? 'active' : ''}>
-                <Link to={`${basePath}organizations`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-university"/><span>Organizations</span>
-                </Link>
-            </li>
+                <li className={/organizations/.test(pathname) ? 'active' : ''}>
+                    <Link to={`${basePath}organizations`} style={{textDecoration: "none"}}>
+                        <i className="fa fa-university"/><span>Organizations</span>
+                    </Link>
+                </li>
 
-            <li className={/users/.test(pathname) ? 'active' : ''}>
-                <Link to={`${basePath}users`} style={{textDecoration: "none"}}>
-                    <i className="fa fa-users"/><span>Users</span>
-                </Link>
-            </li>
+                <li className={/users/.test(pathname) ? 'active' : ''}>
+                    <Link to={`${basePath}users`} style={{textDecoration: "none"}}>
+                        <i className="fa fa-users"/><span>Users</span>
+                    </Link>
+                </li>
 
-            {/*
+                {/*
             <li className="treeview">
                 <a href="#">
                     <i className="fa fa-link"/> <span>Multilevel</span> <i className="fa fa-angle-left pull-right"/>
@@ -61,7 +62,7 @@ export default class SideBarMenu extends Component {
             </li>
             */}
 
-        </ul>
+            </ul>
         );
     }
 

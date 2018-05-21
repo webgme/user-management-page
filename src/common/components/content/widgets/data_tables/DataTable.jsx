@@ -11,7 +11,7 @@ import DataTablePagination from './table_utilities/DataTablePagination';
 import {
     sortBy, setPageNumber, setSearchText, setSelectValue
 } from
-        '../../../../actions/tables.js';
+    '../../../../actions/tables.js';
 import {TABLE_FIELDS} from '../../../../../client/utils/constants';
 // Style
 import {DataTable as STYLE} from '../../../../../client/style';
@@ -97,13 +97,13 @@ export default class DataTable extends Component {
         let formattedCategories = [];
         categories.forEach(category =>
             formattedCategories.push(<DataTableCategory className={category.className}
-                                                        key={category.id}
-                                                        name={category.name}
-                                                        orderEntries={this.handleOrderEntries}
-                                                        sortable={this.props.sortable}
-                                                        sortedForward={sortedForward}
-                                                        isSorted={category.isSorted}
-                                                        style={category.style}/>));
+                key={category.id}
+                name={category.name}
+                orderEntries={this.handleOrderEntries}
+                sortable={this.props.sortable}
+                sortedForward={sortedForward}
+                isSorted={category.isSorted}
+                style={category.style}/>));
 
         // Filter out nodes..
         let entriesList = entries.filter(oneEntry => {
@@ -143,9 +143,9 @@ export default class DataTable extends Component {
             formattedPaginationButtons.push(
                 <li className={displayedPageNumber === i ? "paginate_button active" : "paginate_button "} key={i}>
                     <a href="#"
-                       data-page={displayedPageNumber}
-                       onClick={this.handlePagination}
-                       style={STYLE.paginationButtons.buttons}>{i}</a>
+                        data-page={displayedPageNumber}
+                        onClick={this.handlePagination}
+                        style={STYLE.paginationButtons.buttons}>{i}</a>
                 </li>);
         }
 
@@ -193,7 +193,7 @@ export default class DataTable extends Component {
 
         // Setting up minimum height of table
         const minHeight = 70 + 35 * (this.props.entries.length < selectValue ? entriesList.length :
-            selectValue),
+                selectValue),
             tableMinHeight = {
                 minHeight: minHeight + "px"
             };
@@ -216,14 +216,14 @@ export default class DataTable extends Component {
                         <div style={{float: "right"}}>
                             <label>
                                 <input type="text"
-                                       className="form-control input-sm"
-                                       placeholder={`Filter...`}
-                                       style={{
-                                           display: totalNbrOfEntries <= 10 && searchText === '' ?
-                                               'none' : 'inline-block'
-                                       }}
-                                       value={searchText}
-                                       onChange={this.handleSearch}/>
+                                    className="form-control input-sm"
+                                    placeholder={`Filter...`}
+                                    style={{
+                                        display: totalNbrOfEntries <= 10 && searchText === '' ?
+                                            'none' : 'inline-block'
+                                    }}
+                                    value={searchText}
+                                    onChange={this.handleSearch}/>
                             </label>
                         </div>
                     </div>
@@ -238,13 +238,13 @@ export default class DataTable extends Component {
                             <table className="table table-bordered table-striped dataTable">
 
                                 <thead>
-                                <tr role="row">
-                                    {formattedCategories}
-                                </tr>
+                                    <tr role="row">
+                                        {formattedCategories}
+                                    </tr>
                                 </thead>
 
                                 <tbody>
-                                {formattedEntries}
+                                    {formattedEntries}
                                 </tbody>
 
                             </table>
@@ -270,9 +270,9 @@ export default class DataTable extends Component {
                     <div className="col-sm-6" style={STYLE.paginationButtons.column}>
                         {showPagination ?
                             <DataTablePagination clickHandler={this.handlePagination}
-                                                 formattedPaginationButtons={formattedPaginationButtons}
-                                                 numPages={numPages}
-                                                 pageNumber={displayedPageNumber}/> : null}
+                                formattedPaginationButtons={formattedPaginationButtons}
+                                numPages={numPages}
+                                pageNumber={displayedPageNumber}/> : null}
                     </div>
 
                     {/* Select dropdown */}
@@ -281,9 +281,9 @@ export default class DataTable extends Component {
                             <div>
                                 <label style={STYLE.selectDropdown.label}>Items per page:
                                     <select className="form-control input-sm"
-                                            onChange={this.handleSelect}
-                                            value={selectValue}
-                                            style={STYLE.selectDropdown.options}>
+                                        onChange={this.handleSelect}
+                                        value={selectValue}
+                                        style={STYLE.selectDropdown.options}>
 
                                         {formattedSelectOptions}
 

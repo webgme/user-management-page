@@ -20,7 +20,7 @@ export default class OrganizationsClient extends BaseClient {
         return new Promise((resolve, reject) => {
             let query = includeDisabled ? {includeDisabled: true} : null;
             super.get(['orgs'], query)
-                .then(function(orgs){
+                .then(function(orgs) {
                     orgs.forEach(org => {
                         org.displayName = org._id;
                     });

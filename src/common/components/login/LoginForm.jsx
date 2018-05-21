@@ -6,15 +6,16 @@
  */
 
 // Libraries
-import React, { Component, PropTypes } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { browserHistory, Link } from 'react-router';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {Button, ButtonGroup} from 'react-bootstrap';
+import {Link, withRouter} from 'react-router-dom';
 // Self-defined
 import LoginField from '../content/widgets/LoginField';
 // Style
-import { LoginForm as STYLE } from '../../../client/style';
+import {LoginForm as STYLE} from '../../../client/style';
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,12 +62,12 @@ export default class LoginForm extends Component {
     }
 
     onGuestLogIn() {
-        browserHistory.push('/');
+        this.props.history.push('/');
         window.location.reload();
     }
 
     onGuestLogInSmallDevice() {
-        browserHistory.push(this.props.basePath);
+        this.props.history.push(this.props.basePath);
         window.location.reload();
     }
 
@@ -82,14 +83,14 @@ export default class LoginForm extends Component {
         });
     }
 
-    onLogIn(isSmallDevice) {
+    onLogIn(/* isSmallDevice */) {
         this.props.loginClient.login(this.state.userId, this.state.password)
             .then(res => {
                 if (/2\d\d/.test(res.statusCode)) {
 
                     let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
-                                       /redirect=(\S+)/.exec(window.location.href)[1] : '',
-                        nextLocation = '';
+                        /redirect=(\S+)/.exec(window.location.href)[1] : '';
+                    let nextLocation = '';
 
                     if (redirectPath === '') {
                         nextLocation = this.props.basePath;
@@ -97,7 +98,7 @@ export default class LoginForm extends Component {
                         nextLocation = window.decodeURIComponent(redirectPath);
                     }
 
-                    browserHistory.push(nextLocation);
+                    this.props.history.push(nextLocation);
                     window.location.reload();
                 }
             })
@@ -124,7 +125,7 @@ export default class LoginForm extends Component {
                 Sign in to start your session
             </p>
 
-            {!this.state.validCredentials ?
+            {this.state.validCredentials ? null :
                 <div>
                     <div className="row">
                         <div className="col-sm-12" style={STYLE.invalidLogin.column}>
@@ -132,28 +133,30 @@ export default class LoginForm extends Component {
                         </div>
                     </div>
                     <br/>
-                </div> : null}
+                </div>}
 
             <form autoComplete="on" method="post">
 
                 {/* Username */}
-                <LoginField autoFocus={true}
-                            hint="User ID"
-                            iconClass="glyphicon glyphicon-user"
-                            name="username"
-                            onInputChange={this.onUserIdChange}
-                            valid={true}
-                            value={this.state.userId}/>
+                <LoginField
+                    autoFocus={true}
+                    hint="User ID"
+                    iconClass="glyphicon glyphicon-user"
+                    name="username"
+                    onInputChange={this.onUserIdChange}
+                    valid={true}
+                    value={this.state.userId}/>
 
                 {/* Password */}
-                <LoginField hint="Password"
-                            iconClass="glyphicon glyphicon-lock"
-                            name="password"
-                            onEnter={this.onLogIn}
-                            onInputChange={this.onPasswordChange}
-                            textType="password"
-                            valid={this.state.validCredentials}
-                            value={this.state.password}/>
+                <LoginField
+                    hint="Password"
+                    iconClass="glyphicon glyphicon-lock"
+                    name="password"
+                    onEnter={this.onLogIn}
+                    onInputChange={this.onPasswordChange}
+                    textType="password"
+                    valid={this.state.validCredentials}
+                    value={this.state.password}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
@@ -191,24 +194,28 @@ export default class LoginForm extends Component {
                         <div style={{float: "right", marginTop: "5px"}}>
                             <ButtonGroup className="hidden-xs">
                                 {this.state.allowGuests ?
-                                    <Button bsStyle="warning"
-                                            onClick={this.onGuestLogIn}>
+                                    <Button
+                                        bsStyle="warning"
+                                        onClick={this.onGuestLogIn}>
                                         Guest
                                     </Button> : null}
-                                <Button bsStyle="primary"
-                                        onClick={this.onClickSignIn}>
+                                <Button
+                                    bsStyle="primary"
+                                    onClick={this.onClickSignIn}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>
 
                             <ButtonGroup className="visible-xs">
                                 {this.state.allowGuests ?
-                                    <Button bsStyle="warning"
-                                            onClick={this.onGuestLogInSmallDevice}>
+                                    <Button
+                                        bsStyle="warning"
+                                        onClick={this.onGuestLogInSmallDevice}>
                                         Guest
                                     </Button> : null}
-                                <Button bsStyle="primary"
-                                        onClick={this.onClickSignInSmallDevice}>
+                                <Button
+                                    bsStyle="primary"
+                                    onClick={this.onClickSignInSmallDevice}>
                                     Sign In
                                 </Button>
                             </ButtonGroup>
@@ -228,3 +235,5 @@ LoginForm.propTypes = {
     basePath: PropTypes.string,
     loginClient: PropTypes.object
 };
+
+export default withRouter(LoginForm);
