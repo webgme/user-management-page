@@ -4,9 +4,9 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // Style
-import { Footer as STYLE } from '../../../client/style';
+import {Footer as STYLE} from '../../../client/style';
 
 export default class Footer extends Component {
 
@@ -31,7 +31,8 @@ export default class Footer extends Component {
                 </strong>
 
                 <span className="pull-right hidden-xs" style={STYLE.footerRight}>
-                    <a href="https://github.com/webgme/user-management-page/releases" target="_blank">v0.3.6</a>
+                    <a href="https://github.com/webgme/user-management-page/releases"
+                        target="_blank">{'v' + document.getElementById('versionHolder').getAttribute('data')}</a>
                 </span>
 
             </footer>
