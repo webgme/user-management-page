@@ -12,6 +12,7 @@ var express = require('express'),
     router = express.Router(),
     bodyParser = require('body-parser'),
     DIST_DIR = path.join(__dirname, '..', '..', 'dist'),
+    version = require('../../package.json').version,
     logger;
 
 function serveFile(fileName, res) {
@@ -63,7 +64,8 @@ function initialize(middlewareOpts) {
             } else {
                 res.contentType('text/html');
                 res.send(ejs.render(indexTemplate, {
-                    baseUrl: req.baseUrl
+                    baseUrl: req.baseUrl,
+                    version: version
                 }));
             }
         });
@@ -88,7 +90,8 @@ function initialize(middlewareOpts) {
             } else {
                 res.contentType('text/html');
                 res.send(ejs.render(indexTemplate, {
-                    baseUrl: req.baseUrl
+                    baseUrl: req.baseUrl,
+                    version: version
                 }));
             }
         });
