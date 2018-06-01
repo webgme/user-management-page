@@ -1,6 +1,6 @@
 /**
  * StatusPage container
- * @author pmeijer / https://github.com/patrickkerrypei
+ * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries

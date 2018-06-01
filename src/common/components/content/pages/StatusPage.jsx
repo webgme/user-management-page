@@ -1,6 +1,6 @@
 /**
  * Home page container
- * @author patrickkerrypei / https://github.com/patrickkerrypei
+ * @author pmeijer / https://github.com/pmeijer
  */
 
 // Libraries
