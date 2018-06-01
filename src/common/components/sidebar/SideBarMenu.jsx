@@ -4,16 +4,16 @@
  */
 
 // Libraries
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 // Style
-import { SideBarMenu as STYLE } from '../../../client/style';
+import {SideBarMenu as STYLE} from '../../../client/style';
 
 export default class SideBarMenu extends Component {
 
     render() {
-        const { basePath, pathname } = this.props;
+        const {basePath, pathname, siteAdmin} = this.props;
 
         return (
             <ul className="sidebar-menu" style={STYLE.sidebarCategoryStyle}>
@@ -50,6 +50,13 @@ export default class SideBarMenu extends Component {
                     </Link>
                 </li>
 
+                {siteAdmin ? (
+                    <li className={/status$/.test(pathname) ? 'active' : ''}>
+                        <Link to={`${basePath}status`} style={{textDecoration: "none"}}>
+                            <i className="fa fa-graduation-cap"/><span>Server Status</span>
+                        </Link>
+                    </li>) : null}
+
                 {/*
             <li className="treeview">
                 <a href="#">
@@ -69,5 +76,6 @@ export default class SideBarMenu extends Component {
 }
 
 SideBarMenu.propTypes = {
-    basePath: PropTypes.string.isRequired
+    basePath: PropTypes.string.isRequired,
+    siteAdmin: PropTypes.bool
 };

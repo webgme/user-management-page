@@ -7,7 +7,7 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 // Self-defined
 import Footer from './footer/Footer';
 import Header from './header/Header';
@@ -22,6 +22,7 @@ import ProjectsPage from '../../common/containers/content/pages/ProjectsPage';
 import UserPage from '../../common/containers/content/pages/UserPage';
 import UsersPage from '../../common/containers/content/pages/UsersPage';
 import NewUserPage from '../../common/containers/content/pages/NewUserPage';
+import StatusPage from '../../common/containers/content/pages/StatusPage';
 
 export default class App extends Component {
 
@@ -35,7 +36,7 @@ export default class App extends Component {
     }
 
     render() {
-        const {themeColor, basePath} = this.props;
+        const {themeColor, siteAdmin, basePath} = this.props;
         const {pathname} = this.props.location;
         const {restClient} = this;
 
@@ -48,13 +49,13 @@ export default class App extends Component {
                     pathname={pathname}
                 />
 
-                <SideBar pathname={pathname}/>
+                <SideBar pathname={pathname} siteAdmin={siteAdmin}/>
                 <div className="content-wrapper">
                     <section className="content-header"/>
                     <Route
                         exact
                         path={`${basePath}`}
-                        render={() => (<HomePage pathname={pathname} restClient={restClient}/>)
+                        render={() => (<Redirect to={`${basePath}home`}/>)
                         }
                     />
                     <Route
@@ -127,6 +128,13 @@ export default class App extends Component {
                         render={() => (<NewUserPage pathname={pathname} restClient={restClient}/>)
                         }
                     />
+
+                    <Route
+                        exact
+                        path={`${basePath}status`}
+                        render={() => (<StatusPage pathname={pathname} restClient={restClient}/>)
+                        }
+                    />
                 </div>
                 <Footer/>
             </div>
@@ -136,5 +144,6 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-    themeColor: PropTypes.string.isRequired
+    themeColor: PropTypes.string.isRequired,
+    siteAdmin: PropTypes.bool
 };
