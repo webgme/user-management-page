@@ -18,7 +18,8 @@ const mapStateToProps = (state) => {
     }
 
     return {
-        themeColor
+        themeColor,
+        siteAdmin: state.user.user.siteAdmin
     };
 };
 

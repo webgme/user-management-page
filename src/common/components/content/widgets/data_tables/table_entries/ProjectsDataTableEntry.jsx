@@ -10,13 +10,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import PrettyLink from '../../../../utils/PrettyLink';
 
 // Self-defined
 import { fetchUserIfNeeded } from '../../../../../actions/user';
 import { timeAgo } from '../../../../../../client/utils/utils';
 import { DEFAULT_ISODATE } from '../../../../../../client/utils/constants';
 import {getUserDisplayName} from '../../../../../../client/utils/usersUtils';
+import PrettyLink from '../../../../utils/PrettyLink';
 
 export default class ProjectsDataTableEntry extends Component {
 
