@@ -7,7 +7,10 @@ import BaseClient from './baseClient';
 
 export default class UserClient extends BaseClient {
 
-    constructor(baseUrl = '/api/') {
+    constructor(baseUrl) {
+        if (typeof baseUrl !== 'string') {
+            baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+        }
         super(baseUrl);
     }
 

@@ -14,7 +14,7 @@ import BaseClient from './baseClient';
  */
 export default class LoginClient extends BaseClient {
 
-    constructor(baseUrl = '') {
+    constructor(baseUrl) {
         super(baseUrl);
     }
 

@@ -21,7 +21,7 @@ export default class UserMenu extends Component {
     constructor(props) {
         super(props);
         this.onSignOutBtnClick = this.onSignOutBtnClick.bind(this);
-        this.restClient = new BaseClient('');
+        this.restClient = new BaseClient();
         this.state = {
             gmeConfig: null
         };
