@@ -12,8 +12,11 @@ import UsersClient from './usersClient';
  * Single rest clients that contains user, users, projects, and orgs clients
  * @param {string} baseUrl - the base url
  */
-function RestClient(baseUrl = '/api/') {
+function RestClient(baseUrl) {
 
+    if (typeof baseUrl !== 'string') {
+        baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+    }
     this.organizations = new OrganizationsClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);
     this.user = new UserClient(baseUrl);

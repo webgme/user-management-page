@@ -48,6 +48,7 @@ export default class HomePage extends Component {
     render() {
         const {basePath, projects, user, users} = this.props;
 
+        console.log('BP:111',basePath);
         // let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
         let numViewableProjects = projects.length,
             numUsers = users.length,
@@ -62,24 +63,26 @@ export default class HomePage extends Component {
                             <Media>
                                 <Media.Left>
                                     <a href="/" style={LINK_STYLE}>
-                                        <img width="128" height="128" src="/img/webgme-icon.png" alt="Image"
-                                            style={{margin: "5px 10px 10px 10px"}}/>
+                                        <img width="128" height="128" src={basePath + '/img/webgme-icon.png'}
+                                             alt="Image"
+                                             style={{margin: "5px 10px 10px 10px"}}/>
                                     </a>
                                 </Media.Left>
                                 <Media.Body>
                                     <p>You are currently at the profile page for webgme.</p>
                                     <p>Here can you view and control the
-                                access level of your webgme projects, see what other users are present
+                                        access level of your webgme projects, see what other users are present
                                         on this deployment
-                                and add them to your organizations.</p>
+                                        and add them to your organizations.</p>
                                     <p>To start using the editor click the icon to the left or go
                                         to your project listing
-                                to open a specific one.</p>
+                                        to open a specific one.</p>
                                 </Media.Body>
 
                             </Media>
                         </Jumbotron>
-                    </div></div>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="small-box bg-light-blue">
@@ -91,7 +94,7 @@ export default class HomePage extends Component {
                                 <i className="fa fa-cubes"/>
                             </div>
                             <Link to={`${basePath}projects`}
-                                className="small-box-footer">
+                                  className="small-box-footer">
                                 Show Projects <i className="fa fa-arrow-circle-right"/>
                             </Link>
                         </div>
@@ -106,7 +109,7 @@ export default class HomePage extends Component {
                                 <i className="fa fa-institution"/>
                             </div>
                             <Link to={`${basePath}organizations`}
-                                className="small-box-footer">
+                                  className="small-box-footer">
                                 Show Organizations <i className="fa fa-arrow-circle-right"/>
                             </Link>
                         </div>
@@ -122,7 +125,7 @@ export default class HomePage extends Component {
                                 <i className="fa fa-users"/>
                             </div>
                             <Link to={`${basePath}users`}
-                                className="small-box-footer">
+                                  className="small-box-footer">
                                 Show Users <i className="fa fa-arrow-circle-right"/>
                             </Link>
                         </div>

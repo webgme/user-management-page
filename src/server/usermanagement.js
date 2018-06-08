@@ -26,7 +26,7 @@ function serveFile(fileName, res) {
     };
 
     logger.debug('serving file', fileName);
-    res.sendFile(fileName, options, function(err) {
+    res.sendFile(fileName, options, function (err) {
         if (err) {
             logger.error('Failed to send ' + fileName, err);
             res.status(err.status).end();
@@ -42,29 +42,30 @@ function initialize(middlewareOpts) {
 
     router.use(bodyParser.json({}));
     router.use(bodyParser.urlencoded({extended: true}));
-    router.use('*', function(req, res, next) {
+    router.use('*', function (req, res, next) {
         // res.setHeader('X-WebGME-Media-Type', 'webgme.v2');
         next();
     });
 
     // Detecting if its a file name
-    router.get(/\./, function(req, res) {
+    router.get(/\./, function (req, res) {
         // eslint-disable-next-line
         var onlyFileExtension = req.originalUrl.match(/[^\/]+$/)[0]; // this is the file name
         serveFile(onlyFileExtension, res);
     });
 
-    router.get(['/login', '/register'], function(req, res) {
+    router.get(['/login', '/register'], function (req, res) {
         logger.debug('Login path taken:', req.originalUrl);
 
-        fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function(err, indexTemplate) {
+        fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function (err, indexTemplate) {
             if (err) {
                 logger.error(err);
                 res.send(404);
             } else {
                 res.contentType('text/html');
                 res.send(ejs.render(indexTemplate, {
-                    baseUrl: req.baseUrl,
+                    baseUrl: middlewareOpts.gmeConfig.client.mountedPath,
+                    mountPath: req.baseUrl,
                     version: version
                 }));
             }
@@ -82,16 +83,17 @@ function initialize(middlewareOpts) {
         '/status'
     ];
 
-    router.get(ROUTES, ensureAuthenticated, function(req, res) {
+    router.get(ROUTES, ensureAuthenticated, function (req, res) {
 
-        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function(err, indexTemplate) {
+        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function (err, indexTemplate) {
             if (err) {
                 logger.error(err);
                 res.send(404);
             } else {
                 res.contentType('text/html');
                 res.send(ejs.render(indexTemplate, {
-                    baseUrl: req.baseUrl,
+                    baseUrl: middlewareOpts.gmeConfig.client.mountedPath,
+                    mountPath: req.baseUrl,
                     version: version
                 }));
             }
@@ -104,10 +106,10 @@ function initialize(middlewareOpts) {
 module.exports = {
     initialize: initialize,
     router: router,
-    start: function(callback) {
+    start: function (callback) {
         callback(null);
     },
-    stop: function(callback) {
+    stop: function (callback) {
         callback(null);
     }
 };
