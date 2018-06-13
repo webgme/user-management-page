@@ -53,10 +53,11 @@ export default class UserMenu extends Component {
 
         tempAnchor.target = '_self';
 
+        tempAnchor.href = gmeConfig.client.mountedPath;
         if (referrer) {
-            tempAnchor.href = '/logout?redirectUrl=' + referrer;
+            tempAnchor.href += '/logout?redirectUrl=' + referrer;
         } else {
-            tempAnchor.href = '/logout';
+            tempAnchor.href += '/logout';
         }
 
         document.body.appendChild(tempAnchor);

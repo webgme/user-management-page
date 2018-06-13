@@ -15,6 +15,9 @@ import BaseClient from './baseClient';
 export default class LoginClient extends BaseClient {
 
     constructor(baseUrl) {
+        if (typeof baseUrl !== 'string') {
+            baseUrl = document.getElementById('baseUrlHolder').getAttribute('data');
+        }
         super(baseUrl);
     }
 
