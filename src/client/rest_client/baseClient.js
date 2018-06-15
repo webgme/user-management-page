@@ -24,13 +24,11 @@ export default class BaseClient {
     get(path, query = {}) {
         let url = this.baseUrl + path.join('/') + '/';
 
-        console.log('GET:', url);
         return new Promise((resolve, reject) => {
             superagent
                 .get(url)
                 .query(query)
                 .end((err, res) => {
-                    console.log('GETRESP:', err, res.body);
                     if (err || !res.ok) {
                         console.error(err); // eslint-disable-line no-console
                         reject(err);
