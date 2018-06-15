@@ -28,7 +28,7 @@ export default class App extends Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient(document.getElementById('baseUrlHolder').getAttribute('data') + 'api/');
+        this.restClient = new RestClient(document.getElementById('baseUrlHolder').getAttribute('data') + '/api/');
         // Set the referrer in the session store (if not already set)
         if (window.top === window && typeof window.sessionStorage.getItem('originalReferrer') !== 'string') {
             window.sessionStorage.setItem('originalReferrer', window.document.referrer);
