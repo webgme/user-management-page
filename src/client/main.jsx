@@ -18,7 +18,7 @@ import configureStore from '../common/store';
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
 const mountPath = document.getElementById('mountPathHolder').getAttribute('data');
 const fullBasePath = basePath + mountPath;
-const store = configureStore({fullBasePath});
+const store = configureStore({basePath: fullBasePath});
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');

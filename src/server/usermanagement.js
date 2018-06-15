@@ -64,7 +64,7 @@ function initialize(middlewareOpts) {
             } else {
                 res.contentType('text/html');
                 res.send(ejs.render(indexTemplate, {
-                    baseUrl: middlewareOpts.gmeConfig.client.mountedPath,
+                    baseUrl: middlewareOpts.getMountedPath(req),
                     mountPath: req.baseUrl,
                     version: version
                 }));
@@ -92,7 +92,7 @@ function initialize(middlewareOpts) {
             } else {
                 res.contentType('text/html');
                 res.send(ejs.render(indexTemplate, {
-                    baseUrl: middlewareOpts.gmeConfig.client.mountedPath,
+                    baseUrl: middlewareOpts.getMountedPath(req),
                     mountPath: req.baseUrl,
                     version: version
                 }));

@@ -47,8 +47,7 @@ export default class HomePage extends Component {
 
     render() {
         const {basePath, projects, user, users} = this.props;
-
-        console.log('BP:111',basePath);
+        const mountedPath = document.getElementById('baseUrlHolder').getAttribute('data');
         // let numOwnedProjects = user.projects ? Object.keys(user.projects).length : 0,
         let numViewableProjects = projects.length,
             numUsers = users.length,
@@ -62,10 +61,9 @@ export default class HomePage extends Component {
                             <h1>Hello {user.displayName || user._id} !</h1>
                             <Media>
                                 <Media.Left>
-                                    <a href="/" style={LINK_STYLE}>
-                                        <img width="128" height="128" src={basePath + '/img/webgme-icon.png'}
-                                             alt="Image"
-                                             style={{margin: "5px 10px 10px 10px"}}/>
+                                    <a href={mountedPath + "/"} style={LINK_STYLE}>
+                                        <img width="128" height="128" src={mountedPath + '/img/webgme-icon.png'}
+                                            alt="Image" style={{margin: "5px 10px 10px 10px"}}/>
                                     </a>
                                 </Media.Left>
                                 <Media.Body>
