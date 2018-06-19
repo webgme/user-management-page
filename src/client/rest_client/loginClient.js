@@ -16,7 +16,11 @@ export default class LoginClient extends BaseClient {
 
     constructor(baseUrl) {
         if (typeof baseUrl !== 'string') {
-            baseUrl = document.getElementById('baseUrlHolder').getAttribute('data');
+            if (typeof document !== 'undefined') {
+                baseUrl = document.getElementById('baseUrlHolder').getAttribute('data');
+            } else {
+                baseUrl = '';
+            }
         }
         super(baseUrl);
     }

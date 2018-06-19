@@ -3,13 +3,18 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+/* eslint-env node, browser */
 import BaseClient from './baseClient';
 
 export default class UserClient extends BaseClient {
 
     constructor(baseUrl) {
         if (typeof baseUrl !== 'string') {
-            baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+            if (typeof document !== 'undefined') {
+                baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+            } else {
+                baseUrl = '/api/';
+            }
         }
         super(baseUrl);
     }

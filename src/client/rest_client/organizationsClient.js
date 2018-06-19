@@ -3,13 +3,18 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+/* eslint-env node, browser */
 import BaseClient from './baseClient';
 
 export default class OrganizationsClient extends BaseClient {
 
     constructor(baseUrl) {
         if (typeof baseUrl !== 'string') {
-            baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+            if (typeof document !== 'undefined') {
+                baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+            } else {
+                baseUrl = '/api/';
+            }
         }
         super(baseUrl);
     }
@@ -23,7 +28,7 @@ export default class OrganizationsClient extends BaseClient {
         return new Promise((resolve, reject) => {
             let query = includeDisabled ? {includeDisabled: true} : null;
             super.get(['orgs'], query)
-                .then(function(orgs) {
+                .then(function (orgs) {
                     orgs.forEach(org => {
                         org.displayName = org._id;
                     });
