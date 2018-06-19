@@ -3,12 +3,20 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+/* eslint-env node, browser */
 import BaseClient from './baseClient';
 import {ensureUsersDisplayNames} from '../utils/usersUtils';
 
 export default class UsersClient extends BaseClient {
 
-    constructor(baseUrl = '/api/') {
+    constructor(baseUrl) {
+        if (typeof baseUrl !== 'string') {
+            if (typeof document !== 'undefined') {
+                baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+            } else {
+                baseUrl = '/api/';
+            }
+        }
         super(baseUrl);
     }
 
@@ -23,10 +31,10 @@ export default class UsersClient extends BaseClient {
             let query = includeDisabled ? {includeDisabled: true} : null;
 
             ensureUsersDisplayNames(self)
-                .then(function() {
+                .then(function () {
                     return self.get(['users'], query);
                 })
-                .then(function(users) {
+                .then(function (users) {
                     users.forEach(user => {
                         user.displayName = user.displayName || user._id;
                     });

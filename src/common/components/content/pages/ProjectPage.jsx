@@ -12,7 +12,7 @@ import {Link} from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 // Self defined
 import ProjectAuthorizationWidget from
-    '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
+        '../../../containers/content/widgets/authorization_widget/ProjectAuthorizationWidget';
 import ProjectCollaboratorTable from '../../../containers/content/widgets/data_tables/ProjectCollaboratorTable';
 import ProjectSelectableChart from '../../../containers/content/widgets/charts/ProjectSelectableChart';
 import ProjectTransferWidget from '../../../containers/content/widgets/ProjectTransferWidget';
@@ -83,6 +83,7 @@ export default class ProjectPage extends Component {
         const {canAuthorize, canTransfer, canDelete, exists} = this.props;
         const {ownerId, projectName} = this.props.params;
         const {user, restClient} = this.props;
+        const mountedPath = document.getElementById('baseUrlHolder').getAttribute('data');
         let displayedProjectName = '';
 
         if (ownerId !== user._id) {
@@ -108,7 +109,8 @@ export default class ProjectPage extends Component {
                                 <i className="fa fa-cube"/>{` ${displayedProjectName}`}
                             </div>
                             <a className="pull-right"
-                                href={"/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
+                                href={mountedPath +
+                                "/?project=" + window.encodeURIComponent(`${ownerId}+${projectName}`)}>
                                 <Button bsStyle="primary" style={STYLE.viewInEditor.button}>
                                     View in editor
                                 </Button>
@@ -122,29 +124,29 @@ export default class ProjectPage extends Component {
                     <div className="col-md-6">
 
                         <ProjectCollaboratorTable canAuthorize={canAuthorize}
-                            ownerId={ownerId}
-                            projectName={projectName}
-                            restClient={restClient}/>
+                                                  ownerId={ownerId}
+                                                  projectName={projectName}
+                                                  restClient={restClient}/>
 
                     </div>
 
                     <div className="col-md-6">
 
                         <ProjectAuthorizationWidget canAuthorize={canAuthorize}
-                            ownerId={ownerId}
-                            projectName={projectName}
-                            restClient={restClient}/>
+                                                    ownerId={ownerId}
+                                                    projectName={projectName}
+                                                    restClient={restClient}/>
 
                         <ProjectTransferWidget canTransfer={canTransfer}
-                            ownerId={ownerId}
-                            projectName={projectName}
-                            restClient={restClient}
-                            userId={user ? user._id : ''}/>
+                                               ownerId={ownerId}
+                                               projectName={projectName}
+                                               restClient={restClient}
+                                               userId={user ? user._id : ''}/>
 
                         <ProjectSelectableChart ownerId={ownerId}
-                            height={300}
-                            width={500}
-                            projectName={projectName}/>
+                                                height={300}
+                                                width={500}
+                                                projectName={projectName}/>
 
                     </div>
 
@@ -152,23 +154,23 @@ export default class ProjectPage extends Component {
 
                 {canDelete ?
                     <Button bsStyle="danger"
-                        onClick={this.showModal}>
+                            onClick={this.showModal}>
                         Delete Project ...
                     </Button> : null}
 
                 <CustomModal cancelButtonMessage="Cancel"
-                    cancelButtonStyle="default"
-                    closeHandler={this.hideModal}
-                    confirmButtonMessage="OK"
-                    confirmButtonStyle="danger"
-                    confirmHandler={this.confirmModal}
-                    confirmId={`${ownerId}+${projectName}`}
-                    modalMessage={
-                        'Are you sure you want to delete ' + ownerId + ' / ' + projectName + '?' +
+                             cancelButtonStyle="default"
+                             closeHandler={this.hideModal}
+                             confirmButtonMessage="OK"
+                             confirmButtonStyle="danger"
+                             confirmHandler={this.confirmModal}
+                             confirmId={`${ownerId}+${projectName}`}
+                             modalMessage={
+                                 'Are you sure you want to delete ' + ownerId + ' / ' + projectName + '?' +
                                  ' A deleted project will be removed from the database and cannot be recovered..'
-                    }
-                    showModal={this.state.showModal}
-                    title="Delete Project"/>
+                             }
+                             showModal={this.state.showModal}
+                             title="Delete Project"/>
             </section>
         );
     }

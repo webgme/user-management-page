@@ -3,6 +3,7 @@
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
 
+/* eslint-env node, browser */
 import OrganizationsClient from './organizationsClient';
 import ProjectsClient from './projectsClient';
 import UserClient from './userClient';
@@ -12,8 +13,15 @@ import UsersClient from './usersClient';
  * Single rest clients that contains user, users, projects, and orgs clients
  * @param {string} baseUrl - the base url
  */
-function RestClient(baseUrl = '/api/') {
+function RestClient(baseUrl) {
 
+    if (typeof baseUrl !== 'string') {
+        if (typeof document !== 'undefined') {
+            baseUrl = document.getElementById('baseUrlHolder').getAttribute('data') + '/api/';
+        } else {
+            baseUrl = '/api/';
+        }
+    }
     this.organizations = new OrganizationsClient(baseUrl);
     this.projects = new ProjectsClient(baseUrl);
     this.user = new UserClient(baseUrl);

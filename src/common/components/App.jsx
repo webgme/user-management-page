@@ -1,4 +1,4 @@
-/* globals window */
+/* globals window, document */
 /**
  * Main app for SPA (Single Page Application)
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -28,7 +28,7 @@ export default class App extends Component {
 
     constructor(props) {
         super(props);
-        this.restClient = new RestClient();
+        this.restClient = new RestClient(document.getElementById('baseUrlHolder').getAttribute('data') + '/api/');
         // Set the referrer in the session store (if not already set)
         if (window.top === window && typeof window.sessionStorage.getItem('originalReferrer') !== 'string') {
             window.sessionStorage.setItem('originalReferrer', window.document.referrer);

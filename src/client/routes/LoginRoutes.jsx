@@ -14,16 +14,18 @@ import LoginForm from '../../common/components/login/LoginForm';
 import RegisterPage from '../../common/components/login/RegisterPage';
 
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
+const mountPath = document.getElementById('mountPathHolder').getAttribute('data');
+const fullBasePath = basePath + mountPath;
 
 export default (
     <div>
-        <Route path={`${basePath}login`} render={() => (
-            <App basePath={basePath}>
+        <Route path={`${fullBasePath}login`} render={() => (
+            <App basePath={fullBasePath}>
                 <LoginForm/>
             </App>)}
         />
-        <Route path={`${basePath}register`} render={() => (
-            <App basePath={basePath}>
+        <Route path={`${fullBasePath}register`} render={() => (
+            <App basePath={fullBasePath}>
                 <RegisterPage/>
             </App>)}
         />

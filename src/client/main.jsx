@@ -7,16 +7,18 @@
 
 // Libraries
 import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import {BrowserRouter as Router} from 'react-router-dom';
 // Self-defined
 import App from '../common/containers/App';
 import configureStore from '../common/store';
 
 // Preload store with basePath
 const basePath = document.getElementById('baseUrlHolder').getAttribute('data');
-const store = configureStore({ basePath });
+const mountPath = document.getElementById('mountPathHolder').getAttribute('data');
+const fullBasePath = basePath + mountPath;
+const store = configureStore({basePath: fullBasePath});
 
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('admin-lte/dist/css/skins/_all-skins.min.css');
@@ -31,7 +33,7 @@ render((
 
     <Provider store={store}>
         <Router>
-            <App basePath={basePath}/>
+            <App basePath={fullBasePath}/>
         </Router>
     </Provider>
 
