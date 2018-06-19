@@ -9,7 +9,7 @@ import superagent from 'superagent';
 export default class BaseClient {
 
     constructor(baseUrl) {
-        if (typeof baseUrl !== 'string') {
+        if (typeof baseUrl !== 'string' && typeof document !== 'undefined') {
             baseUrl = document.getElementById('baseUrlHolder').getAttribute('data');
         }
         this.baseUrl = baseUrl;
