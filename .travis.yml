@@ -20,8 +20,8 @@ cache:
 #   depth: 5
 
 node_js:
-  - "4"
   - "6"
+  - "8"
 
 env:
     # Set TEST_FOLDER to avoid webgme dist build (not used here)
@@ -31,5 +31,6 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-script: 
-    - "npm test"
+script:
+  - "npm run build"
+  - "npm test"
