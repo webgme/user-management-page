@@ -23,10 +23,10 @@ In addition the npm installation requires [Git](https://git-scm.com) to be insta
 
 1. Ensure dependencies are installed and mongodb is running on default port 
 2. Install dependencies `npm install`
-3. Set environment variable for webpack: `set NODE_ENV=development` linux: `NODE_ENV=development`
-3. Run webpack `npm run webpack`
+3. Optionally - set environment variable for webpack: `set NODE_ENV=development` linux: `NODE_ENV=development`
+3. Run webpack `npm run webpack -- -w` (`-w` will watch the files and make incremental builds)
 4. Start (webgme) server `npm start` (`NODE_ENV` should not be set)
-5. From a browser visit `http://localhost:8888/usermanagement/`
+5. From a browser visit `http://localhost:8888/profile/`
 
 
 #### Webpack file listener

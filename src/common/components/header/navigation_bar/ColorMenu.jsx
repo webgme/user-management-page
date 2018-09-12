@@ -5,10 +5,12 @@
 
 // Libraries
 import React, { Component } from 'react';
+import {OverlayTrigger, Popover} from 'react-bootstrap';
 // Self-defined
 import { capitalizeFirstLetter } from '../../../../client/utils/utils';
 import { THEME_COLORS } from '../../../../client/utils/constants';
 import { ColorMenu as STYLE } from '../../../../client/style';
+
 
 export default class ColorMenu extends Component {
 
@@ -41,10 +43,14 @@ export default class ColorMenu extends Component {
         return (
             <li className="dropdown messages-menu hidden-xs">
 
-                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                    <i className="fa fa-paint-brush" style={{fontSize: "20px"}}/>
-                </a>
-
+                <OverlayTrigger trigger={["hover", "focus"]} placement="bottom" overlay={
+                    <Popover id="ColorTheme">
+                        Color Theme
+                    </Popover>}>
+                    <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-paint-brush"/>
+                    </a>
+                </OverlayTrigger>
                 <ul className="dropdown-menu" style={STYLE.dropdownMenu}>
 
                     {/* Dropdown title */}
