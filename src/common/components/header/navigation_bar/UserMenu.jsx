@@ -52,6 +52,7 @@ export default class UserMenu extends Component {
         // The redirect target should be the _top so we need to add a temporary anchor..
         let tempAnchor = document.createElement('a');
         let referrer = window.sessionStorage.getItem('originalReferrer');
+        dispatch(userLogout());
 
         tempAnchor.target = '_self';
 
@@ -60,8 +61,6 @@ export default class UserMenu extends Component {
         if (referrer) {
             tempAnchor.href += '?redirectUrl=' + referrer;
         }
-
-        alert('tempAnchor.href: ' + tempAnchor.href);
 
         document.body.appendChild(tempAnchor);
         // Note that path=/ is needed since the cookie is stored at root.
