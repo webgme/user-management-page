@@ -45,6 +45,8 @@ export default class UserMenu extends Component {
         const { dispatch } = this.props;
         const { gmeConfig } = this.state;
 
+        const mountedPath = document.getElementById('baseUrlHolder').getAttribute('data');
+
         // dispatch(userLogout());
 
         // The redirect target should be the _top so we need to add a temporary anchor..
@@ -53,12 +55,13 @@ export default class UserMenu extends Component {
 
         tempAnchor.target = '_self';
 
-        tempAnchor.href = gmeConfig.client.mountedPath;
+        tempAnchor.href = `${mountedPath}/logout`;
+
         if (referrer) {
-            tempAnchor.href += '/logout?redirectUrl=' + referrer;
-        } else {
-            tempAnchor.href += '/logout';
+            tempAnchor.href += '?redirectUrl=' + referrer;
         }
+
+        alert('tempAnchor.href: ' + tempAnchor.href);
 
         document.body.appendChild(tempAnchor);
         // Note that path=/ is needed since the cookie is stored at root.
