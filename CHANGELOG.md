@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.4.3](https://github.com/webgme/user-management-page/tree/v0.4.3) (2018-09-12)
+[Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.2...v0.4.3)
+
+**Fixed bugs:**
+
+- BUG: Remove left-out alert [\#89](https://github.com/webgme/user-management-page/issues/89)
+
 ## [v0.4.2](https://github.com/webgme/user-management-page/tree/v0.4.2) (2018-09-12)
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.1...v0.4.2)
 
