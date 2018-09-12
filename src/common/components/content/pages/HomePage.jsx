@@ -67,9 +67,9 @@ export default class HomePage extends Component {
                                     </a>
                                 </Media.Left>
                                 <Media.Body>
-                                    <p>You are currently at the profile page for webgme.</p>
+                                    <p>You are currently at the profile page for WebGME.</p>
                                     <p>Here can you view and control the
-                                        access level of your webgme projects, see what other users are present
+                                        access level of your WebGME projects, see what other users are present
                                         on this deployment
                                         and add them to your organizations.</p>
                                     <p>To start using the editor click the icon to the left or go
