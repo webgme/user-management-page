@@ -40,13 +40,20 @@ npm run webpack -- -w
 ```
 
 ##### Publish
+First update the changelog:
+
+```
+github_changelog_generator --future-release v0.4.2 -t <GITHUB-TOKEN>
+```
+
+
 Delete all unversioned files in `/dist/**`
 ```
 npm prune
 npm install
-npm version 0.3.0 -m "Release %s"
+npm version 0.5.0 -m "Release %s"
 git push origin master
-git checkout v0.3.0
-git push origin v0.3.0
+git checkout v0.5.0
+git push origin v0.5.0
 npm publish ./
 ```
