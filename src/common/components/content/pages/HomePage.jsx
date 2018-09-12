@@ -6,7 +6,7 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Media, Jumbotron} from 'react-bootstrap';
+import {Media, Jumbotron, OverlayTrigger, Popover} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 // Self-defined
 import {fetchUserIfNeeded} from '../../../actions/user';
@@ -57,14 +57,19 @@ export default class HomePage extends Component {
             <section className="content" style={STYLE.profileBox}>
                 <div className="row">
                     <div className="col-sm-10">
-                        <Jumbotron>
+                        <Jumbotron style={{backgroundColor: '#ecf0f5'}}>
                             <h1>Hello {user.displayName || user._id} !</h1>
                             <Media>
                                 <Media.Left>
-                                    <a href={mountedPath + "/"} style={LINK_STYLE}>
-                                        <img width="128" height="128" src={mountedPath + '/img/webgme-icon.png'}
-                                            alt="Image" style={{margin: "5px 10px 10px 10px"}}/>
-                                    </a>
+                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={
+                                        <Popover id="GoToEditorFromIcon">
+                                            Go to Editor!
+                                        </Popover>}>
+                                        <a href={mountedPath + "/"} style={LINK_STYLE}>
+                                            <img width="128" height="128" src={mountedPath + '/img/webgme-icon.png'}
+                                                alt="Image" style={{margin: "5px 10px 10px 10px"}}/>
+                                        </a>
+                                    </OverlayTrigger>
                                 </Media.Left>
                                 <Media.Body>
                                     <p>You are currently at the profile page for WebGME.</p>
@@ -72,9 +77,17 @@ export default class HomePage extends Component {
                                         access level of your WebGME projects, see what other users are present
                                         on this deployment
                                         and add them to your organizations.</p>
-                                    <p>To start using the editor click the icon to the left or go
-                                        to your project listing
-                                        to open a specific one.</p>
+                                    <p>To start using the editor <OverlayTrigger
+                                        trigger={["hover", "focus"]}
+                                        placement="bottom" overlay={
+                                            <Popover id="GoToEditorPsst">
+                                                Psst. I'm in the header too..
+                                            </Popover>}>
+                                            <a href={mountedPath + "/"} style={{textDecoration: 'none'}}>
+                                            click <i className="fa fa-object-group"/>
+                                            </a>
+                                        </OverlayTrigger>, the icon to the left, or go
+                                        to Projects to open a specific one.</p>
                                 </Media.Body>
 
                             </Media>
