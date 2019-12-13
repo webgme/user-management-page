@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // Self-defined
 import LoginClient from '../../../client/rest_client/loginClient';
+import { IMAGE_ROUTES } from '../../../client/utils/constants';
 
 export default class App extends Component {
 
@@ -32,7 +33,8 @@ export default class App extends Component {
         return (
             <div className="login-box">
                 <div className="login-logo">
-                    <b>GME</b>Profile
+                    <img src={IMAGE_ROUTES.deepforgeIcon}/><br/>
+                    <b>DeepForge</b>Login
                 </div>
 
                 {FormWithBasePath}

@@ -16,7 +16,7 @@ import {fetchOrganizationsIfNeeded} from '../../../actions/organizations';
 // import {getUserIconSource} from '../../../../client/utils/utils';
 // Style
 import {HomePage as STYLE} from '../../../../client/style';
-
+import { IMAGE_ROUTES } from '../../../../client/utils/constants';
 // var IMG_CONTAINER_STYLE = {
 //     textAlign: "center",
 //     display: "flex",
@@ -66,15 +66,16 @@ export default class HomePage extends Component {
                                             Go to Editor!
                                         </Popover>}>
                                         <a href={mountedPath + "/"} style={LINK_STYLE}>
-                                            <img width="128" height="128" src={mountedPath + '/img/webgme-icon.png'}
+                                            <img width="128" height="128"
+                                                 src={IMAGE_ROUTES.deepforgeIcon}
                                                 alt="Image" style={{margin: "5px 10px 10px 10px"}}/>
                                         </a>
                                     </OverlayTrigger>
                                 </Media.Left>
                                 <Media.Body>
-                                    <p>You are currently at the profile page for WebGME.</p>
+                                    <p>You are currently at the profile page for DeepForge.</p>
                                     <p>Here can you view and control the
-                                        access level of your WebGME projects, see what other users are present
+                                        access level of your Deepforge projects, see what other users are present
                                         on this deployment
                                         and add them to your organizations.</p>
                                     <p>To start using the editor <OverlayTrigger
