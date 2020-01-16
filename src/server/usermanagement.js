@@ -54,9 +54,26 @@ function initialize(middlewareOpts) {
         serveFile(onlyFileExtension, res);
     });
 
+    router.get(['/login', '/register'], function(req, res, next) {
+        if (req.cookies.access_token) {
+            logger.info(req.cookies.access_token);
+            middlewareOpts
+                .gmeAuth.verifyJWToken(req.cookies.access_token)
+                .then(result => {
+                    logger.info('Already Logged in', result);
+                    res.redirect('/profile/home');
+                })
+                .catch(err => {
+                    logger.error(err);
+                    next();
+                });
+        } else {
+            next();
+        }
+    });
+
     router.get(['/login', '/register'], function (req, res) {
         logger.debug('Login path taken:', req.originalUrl);
-
         fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function (err, indexTemplate) {
             if (err) {
                 logger.error(err);

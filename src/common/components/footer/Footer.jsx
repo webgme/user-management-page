@@ -18,15 +18,15 @@ export default class Footer extends Component {
         return (
             <footer className="main-footer" style={STYLE.mainFooter}>
 
-                <strong style={STYLE.footerLeft}>&copy; 2018
+                <strong style={STYLE.footerLeft}>&copy; 2019
                     <a href="https://www.vanderbilt.edu" target="_blank">
                         &nbsp;Vanderbilt University
                     </a>
                     <a href="https://www.isis.vanderbilt.edu" target="_blank">
                         &nbsp;ISIS
                     </a>
-                    <a href="https://www.webgme.org" target="_blank">
-                        &nbsp;WebGME
+                    <a href="https://www.deepforge.org" target="_blank">
+                        &nbsp;DeepForge
                     </a>
                 </strong>
 

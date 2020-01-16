@@ -43,3 +43,9 @@ export const TABLE_FIELDS = {
         User: "displayName"
     }
 };
+
+// Deepforge Image Routes
+export const IMAGE_ROUTES = {
+    deepforgeLogo: '/extlib/src/common/styles/img/deepforge-logo.png',
+    deepforgeIcon: '/extlib/src/common/styles/img/deepforge-icon.png',
+};
