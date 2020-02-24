@@ -85,7 +85,7 @@
     "style-loader": "^0.21.0",
     "superagent": "^3.8.3",
     "url-loader": "^1.0.1",
-    "webgme": "^2.30.0",
+    "webgme": "^2.40.0",
     "webpack": "^3.12.0"
   }
 }
