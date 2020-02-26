@@ -12,7 +12,6 @@ import LoginField from '../../../components/content/widgets/LoginField';
 import {fetchUser} from '../../../actions/user';
 import {fetchUsers} from '../../../actions/users';
 import {fetchTokens} from "../../../actions/tokens";
-import {fetchConfig} from "../../../actions/general";
 import {fetchOrganizations} from '../../../actions/organizations';
 import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
 import {getUserIconSource, timeAgo} from '../../../../client/utils/utils';
@@ -50,6 +49,7 @@ export default class ProfileBox extends Component {
             showEditSettings: false,
             editDataValue: JSON.stringify(this.props.user.data, null, 2),
             editSettingsValue: JSON.stringify(this.props.user.settings, null, 2),
+            newToken: null,
             tokens: this.props.tokens,
         };
         // Event handlers
@@ -273,16 +273,16 @@ export default class ProfileBox extends Component {
     generateAccessToken() {
         const {dispatch, restClient} = this.props;
         restClient.tokens.createTokenForCurrentUser()
-            .then(() => {
+            .then(token => {
+                this.state.newToken = token.body;
                 dispatch(fetchTokens());
             });
     }
 
 
-    deleteAccessToken(event) {
+    deleteAccessToken(id) {
         const {dispatch, restClient} = this.props;
-        const tokenID = event.target.getAttribute('data-id');
-        restClient.tokens.deleteTokenForCurrentUser(tokenID)
+        restClient.tokens.deleteTokenForCurrentUser(id)
             .then(() => {
                 dispatch(fetchTokens());
             });
@@ -626,7 +626,7 @@ export default class ProfileBox extends Component {
                                 bsStyle="primary"
                                 disabled={user.disabled || (!guestsCanCreateTokens && isGuest)}
                                 onClick={this.generateAccessToken}
-                                style={STYLE.updateButton}> Generate Tokens
+                                style={STYLE.updateButton}> Generate Token
                             </Button>
                         </div>
                         <br/>
@@ -644,25 +644,25 @@ export default class ProfileBox extends Component {
                                     <tbody>
                                         {
                                             tokens.map((token, index) => {
+                                                const displayTokenID = this.state.newToken
+                                                    && this.state.newToken.id === token.id;
                                                 return (<tr key={index}>
                                                     <td>{token.name || `token${index + 1}`}</td>
-                                                    <td>{token.id}</td>
+                                                    <td>{displayTokenID ? token.id : '*******************'}</td>
                                                     <td>{timeAgo(token.issuedAt)}</td>
                                                     {isGuest ?
                                                         null :
                                                         <td><i
-                                                            style={STYLE.deleteIconColor}
-                                                            data-id={token.id}
                                                             className="glyphicon glyphicon-trash"
-                                                            onClick={this.deleteAccessToken}/>
+                                                            onClick={this.deleteAccessToken.bind(this, token.id)}/>
                                                         </td>
                                                     }
                                                 </tr>);
                                             })
                                         }
-                                        </tbody>
-                                    </Table>
-                                </div>
+                                    </tbody>
+                                </Table>
+                            </div>
                         }
                     </div>
                     : null}

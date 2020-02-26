@@ -232,9 +232,6 @@ export const ProfileBox = {
         maxHeight: "300px",
         overflow: "auto"
     },
-    deleteIconColor: {
-        color: "red",
-    },
 };
 
 export const ProfilePage = {
