@@ -6,17 +6,18 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button} from 'react-bootstrap';
+import {Button, Table} from 'react-bootstrap';
 // Self-defined
 import LoginField from '../../../components/content/widgets/LoginField';
 import {fetchUser} from '../../../actions/user';
 import {fetchUsers} from '../../../actions/users';
+import {fetchTokens} from "../../../actions/tokens";
+import {fetchConfig} from "../../../actions/general";
 import {fetchOrganizations} from '../../../actions/organizations';
 import {verifyEmail, verifyPassword} from '../../../../client/utils/loginUtils';
-import {getUserIconSource} from '../../../../client/utils/utils';
+import {getUserIconSource, timeAgo} from '../../../../client/utils/utils';
 import CustomModal from './CustomModal';
 import {getUserDisplayName} from '../../../../client/utils/usersUtils';
-
 // Style
 import {ProfileBox as STYLE, ProfileImage as PROFILE_STYLE} from '../../../../client/style';
 
@@ -48,7 +49,8 @@ export default class ProfileBox extends Component {
             showEditData: false,
             showEditSettings: false,
             editDataValue: JSON.stringify(this.props.user.data, null, 2),
-            editSettingsValue: JSON.stringify(this.props.user.settings, null, 2)
+            editSettingsValue: JSON.stringify(this.props.user.settings, null, 2),
+            tokens: this.props.tokens,
         };
         // Event handlers
         this.checkAllFields = this.checkAllFields.bind(this);
@@ -73,6 +75,8 @@ export default class ProfileBox extends Component {
         this.showEditInline = this.showEditInline.bind(this);
         this.cancelEditInline = this.cancelEditInline.bind(this);
         this.onEditInlineChange = this.onEditInlineChange.bind(this);
+        this.generateAccessToken = this.generateAccessToken.bind(this);
+        this.deleteAccessToken = this.deleteAccessToken.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -266,6 +270,24 @@ export default class ProfileBox extends Component {
         }
     }
 
+    generateAccessToken() {
+        const {dispatch, restClient} = this.props;
+        restClient.tokens.createTokenForCurrentUser()
+            .then(() => {
+                dispatch(fetchTokens());
+            });
+    }
+
+
+    deleteAccessToken(event) {
+        const {dispatch, restClient} = this.props;
+        const tokenID = event.target.getAttribute('data-id');
+        restClient.tokens.deleteTokenForCurrentUser(tokenID)
+            .then(() => {
+                dispatch(fetchTokens());
+            });
+    }
+
     onUpdate(event) {
         // Release focus
         event.target.blur();
@@ -374,12 +396,12 @@ export default class ProfileBox extends Component {
     }
 
     render() {
-        const {editable, user, config, isCurrentUser, currentUser} = this.props;
+        const {editable, user, config, isCurrentUser, currentUser, tokens} = this.props;
         let isGuest = user._id === config.authentication.guestAccount,
             nbrOfOwnedProjects = Object.keys(user.projects)
                 .filter(projectId => projectId.split('+')[0] === user._id)
-                .length;
-
+                .length,
+            guestsCanCreateTokens = config.executor.authentication.allowGuests === true;
         return (
             <div className="box box-primary" style={STYLE.profileBoxBorder}>
                 <div className="box-body box-profile">
@@ -596,7 +618,52 @@ export default class ProfileBox extends Component {
                             Update
                         </Button> : null}
                 </div>
-
+                {(isCurrentUser) ?
+                    <div>
+                        <div style={STYLE.infoTitle}>
+                            PERSONAL ACCESS TOKENS
+                            <Button
+                                bsStyle="primary"
+                                disabled={user.disabled || (!guestsCanCreateTokens && isGuest)}
+                                onClick={this.generateAccessToken}
+                                style={STYLE.updateButton}> Generate Tokens
+                            </Button>
+                        </div>
+                        <br/>
+                        <div style={STYLE.tableWrap}>
+                            <Table striped responsive hover size="sm">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Token ID</th>
+                                        <th>Created</th>
+                                        {isGuest? null:<th/>}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        tokens.map((token, index) => {
+                                            return (<tr key={index}>
+                                                <td>{token.name || `token${index + 1}`}</td>
+                                                <td>{token.id}</td>
+                                                <td>{timeAgo(token.issuedAt)}</td>
+                                                {isGuest ?
+                                                    null :
+                                                    <td><i
+                                                        style={STYLE.deleteIconColor}
+                                                        data-id={token.id}
+                                                        className="glyphicon glyphicon-trash"
+                                                        onClick={this.deleteAccessToken}/>
+                                                    </td>
+                                                }
+                                            </tr>);
+                                        })
+                                    }
+                                </tbody>
+                            </Table>
+                        </div>
+                    </div>
+                    : null}
                 <CustomModal
                     cancelButtonMessage="Cancel"
                     cancelButtonStyle="default"

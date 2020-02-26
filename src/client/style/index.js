@@ -227,7 +227,14 @@ export const ProfileBox = {
         fontFamily: "monospace",
         fontSize: "12px",
         resize: "vertical"
-    }
+    },
+    tableWrap: {
+        maxHeight: "300px",
+        overflow: "auto"
+    },
+    deleteIconColor: {
+        color: "red",
+    },
 };
 
 export const ProfilePage = {

@@ -10,9 +10,14 @@ const initialState = {
         hasFetched: false,
         isFetching: false,
         config: {
-            authentication: {}
-        }
-    }
+            authentication: {},
+            executor: {
+                authentication: {
+
+                },
+            },
+        },
+    },
 };
 
 const general = (state = initialState, action) => {
