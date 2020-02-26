@@ -630,38 +630,40 @@ export default class ProfileBox extends Component {
                             </Button>
                         </div>
                         <br/>
-                        <div style={STYLE.tableWrap}>
-                            <Table striped responsive hover size="sm">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Token ID</th>
-                                        <th>Created</th>
-                                        {isGuest? null:<th/>}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        tokens.map((token, index) => {
-                                            return (<tr key={index}>
-                                                <td>{token.name || `token${index + 1}`}</td>
-                                                <td>{token.id}</td>
-                                                <td>{timeAgo(token.issuedAt)}</td>
-                                                {isGuest ?
-                                                    null :
-                                                    <td><i
-                                                        style={STYLE.deleteIconColor}
-                                                        data-id={token.id}
-                                                        className="glyphicon glyphicon-trash"
-                                                        onClick={this.deleteAccessToken}/>
-                                                    </td>
-                                                }
-                                            </tr>);
-                                        })
-                                    }
-                                </tbody>
-                            </Table>
-                        </div>
+                        {tokens.length === 0 ? null :
+                            <div style={STYLE.tableWrap}>
+                                <Table striped responsive hover size="sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Token ID</th>
+                                            <th>Created</th>
+                                            {isGuest ? null : <th/>}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            tokens.map((token, index) => {
+                                                return (<tr key={index}>
+                                                    <td>{token.name || `token${index + 1}`}</td>
+                                                    <td>{token.id}</td>
+                                                    <td>{timeAgo(token.issuedAt)}</td>
+                                                    {isGuest ?
+                                                        null :
+                                                        <td><i
+                                                            style={STYLE.deleteIconColor}
+                                                            data-id={token.id}
+                                                            className="glyphicon glyphicon-trash"
+                                                            onClick={this.deleteAccessToken}/>
+                                                        </td>
+                                                    }
+                                                </tr>);
+                                            })
+                                        }
+                                        </tbody>
+                                    </Table>
+                                </div>
+                        }
                     </div>
                     : null}
                 <CustomModal
