@@ -1,5 +1,5 @@
 /**
- * User client - all rest calls for api/user
+ * Tokens client - all rest calls for personal access tokens
  * @author Umesh Timalsina / https://github.com/umesh-timalsina
  */
 
@@ -18,8 +18,11 @@ export default class TokensClient extends BaseClient {
         return super.get(['']);
     }
 
-    createTokenForCurrentUser(){
-        return super.post(['create']);
+    createTokenForCurrentUser(name) {
+        if (!name) {
+            return super.post(['create']);
+        }
+        return super.post(['create', name]);
     }
 
     deleteTokenForCurrentUser(tokenID) {

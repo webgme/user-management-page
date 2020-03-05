@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import ProfileBox from '../widgets/ProfileBox';
 import { fetchUserIfNeeded } from '../../../actions/user';
 import { fetchConfigIfNeeded } from '../../../actions/general';
-import { fetchTokensIfNeeded } from '../../../actions/tokens';
 // Style
 import { ProfilePage as STYLE } from '../../../../client/style';
 
@@ -18,13 +17,14 @@ export default class ProfilePage extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
+
         dispatch(fetchUserIfNeeded());
         dispatch(fetchConfigIfNeeded());
-        dispatch(fetchTokensIfNeeded());
     }
 
     render() {
-        const { dispatch, restClient, user, tokens } = this.props;
+        const { dispatch, restClient, user } = this.props;
+
         return (
             <section className="content" style={STYLE.profileBox}>
 
@@ -34,8 +34,7 @@ export default class ProfilePage extends Component {
                     config={this.props.config}
                     restClient={restClient}
                     currentUser={user}
-                    user={user}
-                    tokens={tokens}/>
+                    user={user} />
 
             </section>
         );

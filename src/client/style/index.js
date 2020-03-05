@@ -228,10 +228,6 @@ export const ProfileBox = {
         fontSize: "12px",
         resize: "vertical"
     },
-    tableWrap: {
-        maxHeight: "300px",
-        overflow: "auto"
-    },
 };
 
 export const ProfilePage = {
@@ -315,6 +311,13 @@ export const SideBarUserPanel = {
         paddingLeft: "7px",
         paddingTop: "5px"
     }
+};
+
+export const TokensTable = {
+    tableWrap: {
+        maxHeight: "1000px",
+        overflow: "auto"
+    },
 };
 
 export const UserMenu = {
