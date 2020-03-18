@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import {Button, Table, OverlayTrigger, Tooltip} from 'react-bootstrap';
 // Self-defined
 import {fetchTokensIfNeeded, fetchTokens} from '../../../actions/tokens';
-import {fetchConfigIfNeeded} from '../../../actions/general';
 import {fetchUserIfNeeded} from '../../../actions/user';
 import CustomModal from './CustomModal';
 import {timeAgo} from '../../../../client/utils/utils';
@@ -25,7 +24,7 @@ export default class TokensTable extends Component {
             hideConfirmBtn: false,
             cancelBtnMessage: 'Cancel',
             modalTitle: 'Generate Tokens',
-            showDuplicateMessage: false,
+            errorMessage: '',
         };
         this.showNewTokenModal = this.showNewTokenModal.bind(this);
         this.deleteAccessToken = this.deleteAccessToken.bind(this);
@@ -42,7 +41,6 @@ export default class TokensTable extends Component {
         const {dispatch} = this.props;
 
         dispatch(fetchTokensIfNeeded());
-        dispatch(fetchConfigIfNeeded());
         dispatch(fetchUserIfNeeded());
     }
 
@@ -59,7 +57,13 @@ export default class TokensTable extends Component {
                 dispatch(fetchTokens());
             })
             .catch((err) => {
-                console.error(err);
+                this.setState({
+                    showModal: true,
+                    modalTitle: 'Error',
+                    modalMessage: <div className="text-danger"> {err.message} </div>,
+                    hideConfirmBtn: true,
+                    cancelBtnMessage: 'Close',
+                });
             });
     }
 
@@ -67,6 +71,9 @@ export default class TokensTable extends Component {
         this.setState({
             showModal: true,
             modalMessage: this.getTokenNameForm(),
+            modalTitle: 'Generate Tokens',
+            hideConfirmBtn: false,
+            hideCancelBtn: false,
         });
     }
 
@@ -76,10 +83,11 @@ export default class TokensTable extends Component {
             showModal: false,
             modalMessage: null,
             tokenName: '',
-            hideConfirmBtn: false,
+            hideConfirmBtn: true,
+            hideCancelBtn: true,
             cancelBtnMessage: 'Cancel',
-            modalTitle: 'Generate Token',
-            showDuplicateMessage: false,
+            modalTitle: '',
+            errorMessage: '',
         });
         dispatch(fetchTokens());
     }
@@ -96,7 +104,7 @@ export default class TokensTable extends Component {
             .then(() => {});
     }
 
-    getTokenNameForm() {
+    getTokenNameForm(showError=false, errorMsg) {
         return (
             <div className="form-group form-inline">
                 <label htmlFor="tokenName"> DisplayName: </label>
@@ -105,9 +113,9 @@ export default class TokensTable extends Component {
                     autoFocus={true}
                     className="form-control" name="tokenName" id="tokenName"/>
                 <br/>
-                {this.state.showDuplicateMessage ?
+                {showError ?
                     <small className="form-text text-danger">
-                        Token with the same name already exists.
+                        {errorMsg}
                     </small>:
                     null}
             </div>
@@ -153,20 +161,18 @@ export default class TokensTable extends Component {
                 this.displayTokenModal(res.body);
             })
             .catch(err => {
-                if (err.status == 400) {
-                    this.setState({showDuplicateMessage: true})
-                    this.setState({
-                        showModal: true,
-                        modalMessage: this.getTokenNameForm(),
-                    });
-                }
+                const modalMessage = this.getTokenNameForm(true, err.message)
+                this.setState(() => ({
+                    showModal: true,
+                    modalMessage: modalMessage,
+                    hideConfirmBtn: false,
+                    cancelBtnMessage: 'Close',
+                }));
             });
     }
 
     render() {
-        const {tokens, config, user} = this.props,
-            isGuest = config.authentication.guestAccount === user._id,
-            guestsCanCreateTokens = config.executor.authentication.allowGuests;
+        const {tokens, user} = this.props;
         return (
             <div>
                 <div className="box-header" style={{paddingBottom: "10px"}}>
@@ -175,7 +181,7 @@ export default class TokensTable extends Component {
                     </h3>
 
                     <Button className="pull-right"
-                        disabled={user.disabled || (!guestsCanCreateTokens && isGuest)}
+                        disabled={user.disabled}
                         bsStyle="primary"
                         bsSize="small"
                         onClick={this.showNewTokenModal.bind(this)}>
@@ -189,7 +195,7 @@ export default class TokensTable extends Component {
                                 <tr>
                                     <th>Name</th>
                                     <th>Created</th>
-                                    {isGuest ? null : <th/>}
+                                    <th/>
                                 </tr>
                             </thead>
                             <tbody>
@@ -198,13 +204,10 @@ export default class TokensTable extends Component {
                                         return (<tr key={index}>
                                             <td>{token.displayName || 'N/A'}</td>
                                             <td>{timeAgo(token.issuedAt)}</td>
-                                            {isGuest ?
-                                                null :
-                                                <td><i
-                                                    className="glyphicon glyphicon-trash"
-                                                    onClick={this.deleteAccessToken.bind(this, token.displayName)}/>
-                                                </td>
-                                            }
+                                            <td><i
+                                                className="glyphicon glyphicon-trash"
+                                                onClick={this.deleteAccessToken.bind(this, token.displayName)}/>
+                                            </td>
                                         </tr>);
                                     })
                                 }
