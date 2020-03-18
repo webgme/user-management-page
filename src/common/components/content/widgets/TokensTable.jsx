@@ -196,7 +196,7 @@ export default class TokensTable extends Component {
                                 {
                                     tokens.map((token, index) => {
                                         return (<tr key={index}>
-                                            <td>{token.displayName || `token${index + 1}`}</td>
+                                            <td>{token.displayName || 'N/A'}</td>
                                             <td>{timeAgo(token.issuedAt)}</td>
                                             {isGuest ?
                                                 null :
