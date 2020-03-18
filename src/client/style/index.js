@@ -315,7 +315,7 @@ export const SideBarUserPanel = {
 
 export const TokensTable = {
     tableWrap: {
-        maxHeight: "1000px",
+        maxHeight: "700px",
         overflow: "auto"
     },
 };

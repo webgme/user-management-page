@@ -2,18 +2,17 @@
  * Container widget for the users data table
  * @author patrickkerrypei / https://github.com/patrickkerrypei
  */
-
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Table} from 'react-bootstrap';
+import {Button, Table, OverlayTrigger, Tooltip} from 'react-bootstrap';
 // Self-defined
 import {fetchTokensIfNeeded, fetchTokens} from '../../../actions/tokens';
-import {fetchConfigIfNeeded} from "../../../actions/general";
-import {fetchUserIfNeeded} from "../../../actions/user";
+import {fetchConfigIfNeeded} from '../../../actions/general';
+import {fetchUserIfNeeded} from '../../../actions/user';
 import CustomModal from './CustomModal';
 import {timeAgo} from '../../../../client/utils/utils';
-import {TokensTable as STYLE} from "../../../../client/style";
+import {TokensTable as STYLE} from '../../../../client/style';
 
 export default class TokensTable extends Component {
 
@@ -25,7 +24,8 @@ export default class TokensTable extends Component {
             tokenName: '',
             hideConfirmBtn: false,
             cancelBtnMessage: 'Cancel',
-            modalTitle: 'Generate Tokens'
+            modalTitle: 'Generate Tokens',
+            showDuplicateMessage: false,
         };
         this.showNewTokenModal = this.showNewTokenModal.bind(this);
         this.deleteAccessToken = this.deleteAccessToken.bind(this);
@@ -35,6 +35,7 @@ export default class TokensTable extends Component {
         this.tokenNameChanged = this.tokenNameChanged.bind(this);
         this.displayTokenModal = this.displayTokenModal.bind(this);
         this.getTokenContent = this.getTokenContent.bind(this);
+        this.copyTextToClipBoard = this.copyTextToClipBoard.bind(this);
     }
 
     componentDidMount() {
@@ -51,11 +52,14 @@ export default class TokensTable extends Component {
     }
 
 
-    deleteAccessToken(id) {
+    deleteAccessToken(name) {
         const {dispatch, restClient} = this.props;
-        restClient.tokens.deleteTokenForCurrentUser(id)
+        restClient.tokens.deleteTokenForCurrentUser(name)
             .then(() => {
                 dispatch(fetchTokens());
+            })
+            .catch((err) => {
+                console.error(err);
             });
     }
 
@@ -75,6 +79,7 @@ export default class TokensTable extends Component {
             hideConfirmBtn: false,
             cancelBtnMessage: 'Cancel',
             modalTitle: 'Generate Token',
+            showDuplicateMessage: false,
         });
         dispatch(fetchTokens());
     }
@@ -85,13 +90,26 @@ export default class TokensTable extends Component {
         });
     }
 
+    copyTextToClipBoard(text, event) {
+        navigator.clipboard // eslint-disable-line no-undef
+            .writeText(text)
+            .then(() => {});
+    }
+
     getTokenNameForm() {
         return (
             <div className="form-group form-inline">
                 <label htmlFor="tokenName"> DisplayName: </label>
                 <input type="text"
                     onChange={this.tokenNameChanged.bind(this)}
-                    className="form-control" id="tokenName"/>
+                    autoFocus={true}
+                    className="form-control" name="tokenName" id="tokenName"/>
+                <br/>
+                {this.state.showDuplicateMessage ?
+                    <small className="form-text text-danger">
+                        Token with the same name already exists.
+                    </small>:
+                    null}
             </div>
         );
     }
@@ -114,7 +132,17 @@ export default class TokensTable extends Component {
                 <br/><br/>
                 Token Name: <span className="text-info">{name || 'No Name'}</span>
                 <br/><br/>
-                ID: <span className="text-info"> {id}</span>
+                ID: <span className="text-info"> {id} </span>
+                <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={(<Tooltip> Copy </Tooltip>)}
+                >
+                    <Button
+                        className="btn btn-link fa fa-clipboard"
+                        onClick={this.copyTextToClipBoard.bind(this, id)}
+                    />
+                </OverlayTrigger>
             </div>
         );
     }
@@ -124,11 +152,15 @@ export default class TokensTable extends Component {
             .then(res => {
                 this.displayTokenModal(res.body);
             })
-            .catch((err) => console.error(err));
-        this.setState({
-            tokenName: '',
-            showModal: false,
-        });
+            .catch(err => {
+                if (err.status == 400) {
+                    this.setState({showDuplicateMessage: true})
+                    this.setState({
+                        showModal: true,
+                        modalMessage: this.getTokenNameForm(),
+                    });
+                }
+            });
     }
 
     render() {
@@ -156,7 +188,6 @@ export default class TokensTable extends Component {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>ID</th>
                                     <th>Created</th>
                                     {isGuest ? null : <th/>}
                                 </tr>
@@ -166,13 +197,12 @@ export default class TokensTable extends Component {
                                     tokens.map((token, index) => {
                                         return (<tr key={index}>
                                             <td>{token.displayName || `token${index + 1}`}</td>
-                                            <td>{token.id}</td>
                                             <td>{timeAgo(token.issuedAt)}</td>
                                             {isGuest ?
                                                 null :
                                                 <td><i
                                                     className="glyphicon glyphicon-trash"
-                                                    onClick={this.deleteAccessToken.bind(this, token.id)}/>
+                                                    onClick={this.deleteAccessToken.bind(this, token.displayName)}/>
                                                 </td>
                                             }
                                         </tr>);
