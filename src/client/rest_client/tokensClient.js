@@ -25,7 +25,7 @@ export default class TokensClient extends BaseClient {
         return super.post(['create', name]);
     }
 
-    deleteTokenForCurrentUser(tokenID) {
-        return super.delete([`${tokenID}`]);
+    deleteTokenForCurrentUser(tokenName) {
+        return super.delete([tokenName]);
     }
 }
