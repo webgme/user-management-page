@@ -227,7 +227,7 @@ export const ProfileBox = {
         fontFamily: "monospace",
         fontSize: "12px",
         resize: "vertical"
-    }
+    },
 };
 
 export const ProfilePage = {
@@ -311,6 +311,13 @@ export const SideBarUserPanel = {
         paddingLeft: "7px",
         paddingTop: "5px"
     }
+};
+
+export const TokensTable = {
+    tableWrap: {
+        maxHeight: "700px",
+        overflow: "auto"
+    },
 };
 
 export const UserMenu = {

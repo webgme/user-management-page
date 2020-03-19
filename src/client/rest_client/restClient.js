@@ -8,6 +8,7 @@ import OrganizationsClient from './organizationsClient';
 import ProjectsClient from './projectsClient';
 import UserClient from './userClient';
 import UsersClient from './usersClient';
+import TokensClient from './tokensClient';
 
 /**
  * Single rest clients that contains user, users, projects, and orgs clients
@@ -26,6 +27,7 @@ function RestClient(baseUrl) {
     this.projects = new ProjectsClient(baseUrl);
     this.user = new UserClient(baseUrl);
     this.users = new UsersClient(baseUrl);
+    this.tokens = new TokensClient();
 
     /**
      * Gets the current user

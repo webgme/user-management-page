@@ -10,9 +10,9 @@ const initialState = {
         hasFetched: false,
         isFetching: false,
         config: {
-            authentication: {}
-        }
-    }
+            authentication: {},
+        },
+    },
 };
 
 const general = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const general = (state = initialState, action) => {
                     hasFetched: true,
                     isFetching: false,
                     config: action.config
-                }
+                },
             });
         case REQUEST_CONFIG:
             newState = Object.assign({}, state);

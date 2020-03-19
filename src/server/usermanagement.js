@@ -76,6 +76,7 @@ function initialize(middlewareOpts) {
         '/',
         '/home',
         '/profile',
+        '/tokens',
         '/projects', /\/projects\/\w+$/, /\/projects\/\w+\/\w+$/,
         '/organizations', /\/organizations\/\w+$/,
         '/users', /\/users\/\w+$/,

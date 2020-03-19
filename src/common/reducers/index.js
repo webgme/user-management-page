@@ -13,6 +13,7 @@ import tables from './tables';
 import user from './user';
 import users from './users';
 import general from './general';
+import tokens from './tokens';
 import { USER_LOGOUT } from '../actions/general';
 
 const reducers = combineReducers({
@@ -22,7 +23,8 @@ const reducers = combineReducers({
     tables,
     user,
     users,
-    general
+    general,
+    tokens,
 });
 
 const rootReducer = (state, action) => {

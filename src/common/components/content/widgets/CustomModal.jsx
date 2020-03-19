@@ -30,15 +30,18 @@ export default class CustomModal extends Component {
                 {this.props.children}
 
                 <Modal.Footer>
-                    <Button bsStyle={this.props.confirmButtonStyle}
-                        id={this.props.confirmId}
-                        onClick={this.props.confirmHandler} >
-                        {this.props.confirmButtonMessage}
-                    </Button>
-                    <Button bsStyle={this.props.cancelButtonStyle}
-                        onClick={this.props.closeHandler}>
-                        {this.props.cancelButtonMessage}
-                    </Button>
+                    {this.props.hideConfirmBtn ? null :
+                        <Button bsStyle={this.props.confirmButtonStyle}
+                            id={this.props.confirmId}
+                            onClick={this.props.confirmHandler} >
+                            {this.props.confirmButtonMessage}
+                        </Button>}
+                    {this.props.hideCancelBtn? null :
+                        <Button
+                            bsStyle={this.props.cancelButtonStyle}
+                            onClick={this.props.closeHandler}>
+                            {this.props.cancelButtonMessage}
+                        </Button>}
                 </Modal.Footer>
 
             </Modal>
@@ -57,5 +60,7 @@ CustomModal.propTypes = {
     modalMessage: PropTypes.string,
     showModal: PropTypes.bool.isRequired,
     style: PropTypes.object,
-    title: PropTypes.string
+    title: PropTypes.string,
+    hideCancelBtn: PropTypes.bool,
+    hideConfirmBtn: PropTypes.bool,
 };
