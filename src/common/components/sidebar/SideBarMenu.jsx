@@ -32,9 +32,15 @@ export default class SideBarMenu extends Component {
                     </Link>
                 </li>
 
+                <li className={/tokens/.test(pathname) ? 'active': ''}>
+                    <Link to={`${basePath}tokens`} style={{textDecoration: "none"}}>
+                        <i className="fa fa-key"/><span>Access Tokens</span>
+                    </Link>
+                </li>
+
                 <li className={/projects/.test(pathname) ? 'active' : ''}>
                     <Link to={`${basePath}projects`} style={{textDecoration: "none"}}>
-                        <i className="fa fa-cubes"/><span> Projects</span>
+                        <i className="fa fa-cubes"/><span>Projects</span>
                     </Link>
                 </li>
 

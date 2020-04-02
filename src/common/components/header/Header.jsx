@@ -25,6 +25,7 @@ export default class Header extends React.Component {
 
     render() {
         const {basePath, pathname} = this.props;
+
         let breadcrumbs = [],
             pathWithoutBase = pathname.replace(basePath, ''),
             parameters = pathWithoutBase.split('/');

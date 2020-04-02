@@ -23,6 +23,7 @@ import UserPage from '../../common/containers/content/pages/UserPage';
 import UsersPage from '../../common/containers/content/pages/UsersPage';
 import NewUserPage from '../../common/containers/content/pages/NewUserPage';
 import StatusPage from '../../common/containers/content/pages/StatusPage';
+import TokensPage from '../../common/containers/content/pages/TokensPage';
 
 export default class App extends Component {
 
@@ -82,6 +83,12 @@ export default class App extends Component {
                         path={`${basePath}profile`}
                         render={() => (<ProfilePage pathname={pathname} restClient={restClient}/>)
                         }
+                    />
+
+                    <Route
+                        exact
+                        path={`${basePath}tokens`}
+                        render={() => (<TokensPage pathname={pathname} restClient={restClient}/>)}
                     />
 
                     <Route
