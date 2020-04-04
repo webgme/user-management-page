@@ -318,6 +318,10 @@ export const TokensTable = {
         maxHeight: "700px",
         overflow: "auto"
     },
+    modalDialogTextField: {
+        marginLeft: "15px",
+        paddingRight: "15px"
+    },
 };
 
 export const UserMenu = {

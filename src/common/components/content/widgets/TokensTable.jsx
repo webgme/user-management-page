@@ -5,36 +5,19 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Table, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Button, Table} from 'react-bootstrap';
 // Self-defined
-import {fetchTokensIfNeeded, fetchTokens} from '../../../actions/tokens';
+import {fetchTokensIfNeeded} from '../../../actions/tokens';
 import {fetchUserIfNeeded} from '../../../actions/user';
 import CustomModal from './CustomModal';
 import {timeAgo} from '../../../../client/utils/utils';
 import {TokensTable as STYLE} from '../../../../client/style';
+import LoginField from './LoginField';
 
 export default class TokensTable extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            showModal: false,
-            modalMessage: null,
-            tokenName: '',
-            hideConfirmBtn: false,
-            cancelBtnMessage: 'Cancel',
-            modalTitle: 'Generate a new access token',
-            errorMessage: '',
-        };
-        this.showNewTokenModal = this.showNewTokenModal.bind(this);
-        this.deleteAccessToken = this.deleteAccessToken.bind(this);
-        this.generateAccessToken = this.generateAccessToken.bind(this);
-        this.getTokenNameForm = this.getTokenNameForm.bind(this);
-        this.onGenerateToken = this.onGenerateToken.bind(this);
-        this.tokenNameChanged = this.tokenNameChanged.bind(this);
-        this.displayTokenModal = this.displayTokenModal.bind(this);
-        this.getTokenContent = this.getTokenContent.bind(this);
-        this.copyTextToClipBoard = this.copyTextToClipBoard.bind(this);
     }
 
     componentDidMount() {
@@ -42,134 +25,6 @@ export default class TokensTable extends Component {
 
         dispatch(fetchTokensIfNeeded());
         dispatch(fetchUserIfNeeded());
-    }
-
-    generateAccessToken(name) {
-        const {restClient} = this.props;
-        return restClient.tokens.createTokenForCurrentUser(name);
-    }
-
-
-    deleteAccessToken(name) {
-        const {dispatch, restClient} = this.props;
-        restClient.tokens.deleteTokenForCurrentUser(name)
-            .then(() => {
-                dispatch(fetchTokens());
-            })
-            .catch((err) => {
-                this.setState({
-                    showModal: true,
-                    modalTitle: 'Error',
-                    modalMessage: <div className="text-danger"> {err.message} </div>,
-                    hideConfirmBtn: true,
-                    cancelBtnMessage: 'Close',
-                });
-            });
-    }
-
-    showNewTokenModal() {
-        this.setState({
-            showModal: true,
-            modalMessage: this.getTokenNameForm(),
-            modalTitle: 'Generate a new access token',
-            hideConfirmBtn: false,
-            hideCancelBtn: false,
-        });
-    }
-
-    hideModal() {
-        const {dispatch} = this.props;
-        this.setState({
-            showModal: false,
-            modalMessage: null,
-            tokenName: '',
-            hideConfirmBtn: true,
-            hideCancelBtn: true,
-            cancelBtnMessage: 'Cancel',
-            modalTitle: '',
-            errorMessage: '',
-        });
-        dispatch(fetchTokens());
-    }
-
-    tokenNameChanged(event) {
-        this.setState({
-            tokenName: event.target.value,
-        });
-    }
-
-    copyTextToClipBoard(text, event) {
-        navigator.clipboard // eslint-disable-line no-undef
-            .writeText(text)
-            .then(() => {});
-    }
-
-    getTokenNameForm(showError=false, errorMsg) {
-        return (
-            <div className="form-group form-inline">
-                <label htmlFor="tokenName"> Token Name: </label>
-                <input type="text"
-                    onChange={this.tokenNameChanged.bind(this)}
-                    autoFocus={true}
-                    className="form-control" name="tokenName" id="tokenName"/>
-                <br/>
-                {showError ?
-                    <small className="form-text text-danger">
-                        {errorMsg}
-                    </small>:
-                    null}
-            </div>
-        );
-    }
-
-    displayTokenModal(token) {
-        this.setState({
-            showModal: true,
-            modalMessage: this.getTokenContent(token.id, token.displayName),
-            tokenName: null,
-            hideConfirmBtn: true,
-            cancelBtnMessage: 'Close',
-            modalTitle: 'Generated Token',
-        });
-    }
-
-    getTokenContent(id, name) {
-        return (
-            <div>
-                Token Name: <span className="text-info">{name || 'No Name'}</span>
-                <br/><br/>
-                ID: <span className="text-info"> {id} </span>
-                <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={(<Tooltip> Copy </Tooltip>)}
-                >
-                    <Button
-                        className="btn btn-link fa fa-clipboard"
-                        onClick={this.copyTextToClipBoard.bind(this, id)}
-                    />
-                </OverlayTrigger>
-                <br/>
-                <span className='text-danger'>Token ID will only be displayed once.</span>
-            </div>
-        );
-    }
-
-    onGenerateToken() {
-        this.generateAccessToken(this.state.tokenName)
-            .then(res => {
-                this.displayTokenModal(res.body);
-            })
-            .catch(err => {
-                const errMessage = 'Token generation failed';
-                const modalMessage = this.getTokenNameForm(true, err.response.body || errMessage);
-                this.setState(() => ({
-                    showModal: true,
-                    modalMessage: modalMessage,
-                    hideConfirmBtn: false,
-                    cancelBtnMessage: 'Close',
-                }));
-            });
     }
 
     render() {
@@ -185,7 +40,7 @@ export default class TokensTable extends Component {
                         disabled={user.disabled}
                         bsStyle="primary"
                         bsSize="small"
-                        onClick={this.showNewTokenModal.bind(this)}>
+                        onClick={this.props.showNewTokenModal}>
                         Generate Token
                     </Button>
                 </div>
@@ -207,7 +62,7 @@ export default class TokensTable extends Component {
                                             <td>{timeAgo(token.issuedAt)}</td>
                                             <td><i
                                                 className="glyphicon glyphicon-trash"
-                                                onClick={this.deleteAccessToken.bind(this, token.displayName)}/>
+                                                onClick={this.props.deleteAccessToken.bind(this, token.displayName)}/>
                                             </td>
                                         </tr>);
                                     })
@@ -217,17 +72,28 @@ export default class TokensTable extends Component {
                     </div>
                 }
                 <CustomModal
-                    closeHandler={this.hideModal.bind(this)}
-                    cancelButtonMessage={this.state.cancelBtnMessage}
-                    cancelButtonStyle="danger"
-                    confirmButtonMessage="OK"
-                    confirmButtonStyle="default"
-                    confirmHandler={this.onGenerateToken.bind(this)}
-                    modalMessage={this.state.modalMessage}
-                    hideCancelBtn={false}
-                    hideConfirmBtn={this.state.hideConfirmBtn}
-                    showModal={this.state.showModal}
-                    title={this.state.modalTitle}/>
+                    closeHandler={this.props.hideModal}
+                    cancelButtonMessage={this.props.modalCancelBtnMessage}
+                    cancelButtonStyle="default"
+                    confirmButtonMessage={this.props.modalConfirmBtnMessage}
+                    confirmButtonStyle="primary"
+                    confirmHandler={this.props.onGenerateToken}
+                    modalMessage={this.props.modalMessage}
+                    hideCancelBtn={this.props.hideModalCancelBtn}
+                    hideConfirmBtn={this.props.hideModalConfirmBtn}
+                    showModal={this.props.showModal}
+                    title={this.props.modalTitle}>
+                    {this.props.showLoginFieldInModal ?
+                        <LoginField autoFocus={true}
+                            hint="Token Name"
+                            indentStyle={STYLE.modalDialogTextField}
+                            iconClass="fa fa-key"
+                            valid={this.props.isValidTokenName}
+                            onInputChange={this.props.tokenNameChanged}
+                            onEnter={this.props.onGenerateToken}
+                            invalidMessage={this.props.invalidTokenMessage}
+                            name="token"/> : null}
+                </CustomModal>
             </div>
         );
     }
@@ -235,5 +101,20 @@ export default class TokensTable extends Component {
 
 
 TokensTable.propTypes = {
-    tokens: PropTypes.array.isRequired
+    tokens: PropTypes.array.isRequired,
+    showNewTokenModal: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    modalTitle: PropTypes.string.isRequired,
+    modalCancelBtnMessage: PropTypes.string.isRequired,
+    modalConfirmBtnMessage: PropTypes.string.isRequired,
+    onGenerateToken: PropTypes.func.isRequired,
+    deleteAccessToken: PropTypes.func.isRequired,
+    modalMessage: PropTypes.object.isRequired,
+    hideModalCancelBtn: PropTypes.bool.isRequired,
+    hideModalConfirmBtn: PropTypes.bool.isRequired,
+    showModal: PropTypes.bool.isRequired,
+    showLoginFieldInModal: PropTypes.bool.isRequired,
+    isValidTokenName: PropTypes.bool.isRequired,
+    tokenNameChanged: PropTypes.func.isRequired,
+    invalidTokenMessage: PropTypes.string.isRequired,
 };
