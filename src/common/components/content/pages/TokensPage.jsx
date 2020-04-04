@@ -66,7 +66,7 @@ export default class TokensPage extends Component {
             hideModalConfirmBtn: false,
             hideModalCancelBtn: false,
             modalCancelBtnMessage: 'Close',
-            modalConfirmBtnMessage: 'Create',
+            modalConfirmBtnMessage: 'Generate',
             isValidTokenName: true,
             modalMessage: 'Please enter the name of the access token you wish to create',
         });
