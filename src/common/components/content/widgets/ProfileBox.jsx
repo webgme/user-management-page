@@ -376,7 +376,7 @@ export default class ProfileBox extends Component {
     render() {
         const {editable, user, config, isCurrentUser, currentUser} = this.props;
         let isGuest = user._id === config.authentication.guestAccount,
-            nbrOfOwnedProjects = Object.keys(user.projects)
+            nbrOfOwnedProjects = Object.keys(user.projects || {})
                 .filter(projectId => projectId.split('+')[0] === user._id)
                 .length;
 
