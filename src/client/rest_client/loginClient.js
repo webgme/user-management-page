@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /**
  * @author pmeijer / https://github.com/pmeijer
  * @author patrickkerrypei / https://github.com/patrickkerrypei
@@ -33,9 +34,9 @@ export default class LoginClient extends BaseClient {
      * @return {Promise} resolves if successfully logged in.
      */
     login(userId, password) {
-        let data = {
+        const data = {
             userId: userId,
-            password: password
+            password: password,
         };
 
         return super.post(['/login'], data);
@@ -49,16 +50,67 @@ export default class LoginClient extends BaseClient {
      * @return {Promise} - resolves if successfully added user, rejects otherwise.
      */
     register(userId, password, email) {
-        let data = {
+        const data = {
             userId: userId,
             password: password,
-            email: email || ''
+            email: email || '',
         };
 
         return super.post(['/api', 'register'], data);
     }
 
+    /**
+     * Get request to gather configuration information.
+     * @return {Promise} - resolves if successfully get configuration data.
+     */
     getGmeConfig() {
         return super.get(['/gmeConfig.json']);
+    }
+
+    /**
+     * Post request for reset a userId.
+     * If successful client will be redirected to the path given in query parameter
+     * @param {string} userId - id of user
+     * @return {Promise} resolves if successfully logged in.
+     */
+    reset(userId) {
+        const data = {
+            userId: userId,
+        };
+
+        return super.post(['/api', 'reset'], data);
+    }
+
+    /**
+     * Get request for logging in as userId.
+     * If successful client will be redirected to the path given in query parameter
+     * @param {string} userId - id of user
+     * @param {string} resetHash - the temporary id of the reset request
+     * @return {Promise} resolves if successfully logged in.
+     */
+    verifyReset(userId, resetHash) {
+        const query = {
+            userId: userId,
+            resetHash: resetHash,
+        };
+
+        return super.get(['/api', 'reset'], query);
+    }
+
+    /**
+     * Post request for logging in as userId.
+     * If successful client will be redirected to the path given in query parameter
+     * @param {string} userId - id of user
+     * @param {string} resetHash - the code of the reset
+     * @param {string} newPassword - the new password
+     * @return {Promise} resolves if successfully logged in.
+     */
+    updatePassword(userId, resetHash, newPassword) {
+        const data = {
+            userId: userId,
+            resetHash: resetHash,
+            newPassword: newPassword,
+        };
+        return super.patch(['/api', 'reset'], data);
     }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable require-jsdoc */
+/* globals module */
 /**
  * @author kecso / https://github.com/kecso
  */
@@ -16,17 +18,17 @@ var express = require('express'),
     logger;
 
 function serveFile(fileName, res) {
-    var options = {
+    const options = {
         root: DIST_DIR,
         dotfiles: 'deny',
         headers: {
             'x-timestamp': Date.now(),
-            'x-sent': true
+            'x-sent': true,
         }
     };
 
     logger.debug('serving file', fileName);
-    res.sendFile(fileName, options, function (err) {
+    res.sendFile(fileName, options, function(err) {
         if (err) {
             logger.error('Failed to send ' + fileName, err);
             res.status(err.status).end();
@@ -35,14 +37,14 @@ function serveFile(fileName, res) {
 }
 
 function initialize(middlewareOpts) {
-    var ensureAuthenticated = middlewareOpts.ensureAuthenticated;
+    const ensureAuthenticated = middlewareOpts.ensureAuthenticated;
 
     logger = middlewareOpts.logger.fork('UserManagementPage');
     logger.debug('initializing ...');
 
     router.use(bodyParser.json({}));
     router.use(bodyParser.urlencoded({extended: true}));
-    router.use('*', function (req, res, next) {
+    router.use('*', function(req, res, next) {
         // res.setHeader('X-WebGME-Media-Type', 'webgme.v2');
         next();
     });
@@ -54,10 +56,10 @@ function initialize(middlewareOpts) {
         serveFile(onlyFileExtension, res);
     });
 
-    router.get(['/login', '/register'], function (req, res) {
+    router.get(['/login', '/register', /\/reset\/\w+\/\w+$/], function(req, res) {
         logger.debug('Login path taken:', req.originalUrl);
 
-        fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function (err, indexTemplate) {
+        fs.readFile(path.join(DIST_DIR, 'login.html'), 'utf8', function(err, indexTemplate) {
             if (err) {
                 logger.error(err);
                 res.send(404);
@@ -66,13 +68,13 @@ function initialize(middlewareOpts) {
                 res.send(ejs.render(indexTemplate, {
                     baseUrl: middlewareOpts.getMountedPath(req),
                     mountPath: req.baseUrl,
-                    version: version
+                    version: version,
                 }));
             }
         });
     });
 
-    var ROUTES = [
+    const ROUTES = [
         '/',
         '/home',
         '/profile',
@@ -81,12 +83,12 @@ function initialize(middlewareOpts) {
         '/organizations', /\/organizations\/\w+$/,
         '/users', /\/users\/\w+$/,
         '/newuser',
-        '/status'
+        '/status',
     ];
 
-    router.get(ROUTES, ensureAuthenticated, function (req, res) {
+    router.get(ROUTES, ensureAuthenticated, function(req, res) {
 
-        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function (err, indexTemplate) {
+        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function(err, indexTemplate) {
             if (err) {
                 logger.error(err);
                 res.send(404);
@@ -95,7 +97,7 @@ function initialize(middlewareOpts) {
                 res.send(ejs.render(indexTemplate, {
                     baseUrl: middlewareOpts.getMountedPath(req),
                     mountPath: req.baseUrl,
-                    version: version
+                    version: version,
                 }));
             }
         });
