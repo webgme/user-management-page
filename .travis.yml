@@ -20,8 +20,9 @@ cache:
 #   depth: 5
 
 node_js:
-  - "6"
   - "8"
+  - "10"
+  - "12"
 
 env:
     # Set TEST_FOLDER to avoid webgme dist build (not used here)
