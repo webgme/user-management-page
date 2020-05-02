@@ -1,6 +1,32 @@
-# Change Log
+# Changelog
+
+## [v0.5.0](https://github.com/webgme/user-management-page/tree/v0.5.0) (2020-05-01)
+
+[Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.3...v0.5.0)
+
+**Implemented enhancements:**
+
+- Allow Users to generate access tokens from the User Management Page [\#91](https://github.com/webgme/user-management-page/issues/91)
+- Reset [\#98](https://github.com/webgme/user-management-page/pull/98) ([kecso](https://github.com/kecso))
+
+**Fixed bugs:**
+
+- Fix reload in profile/profile route. Fixes \#93 [\#96](https://github.com/webgme/user-management-page/pull/96) ([umesh-timalsina](https://github.com/umesh-timalsina))
+
+**Closed issues:**
+
+- Profile Page Fails to Reload [\#93](https://github.com/webgme/user-management-page/issues/93)
+
+**Merged pull requests:**
+
+- Bump extend from 3.0.1 to 3.0.2 [\#101](https://github.com/webgme/user-management-page/pull/101) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump handlebars from 4.0.11 to 4.7.6 [\#100](https://github.com/webgme/user-management-page/pull/100) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mixin-deep from 1.3.1 to 1.3.2 [\#99](https://github.com/webgme/user-management-page/pull/99) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump jquery from 3.3.1 to 3.5.0 [\#97](https://github.com/webgme/user-management-page/pull/97) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add token generation support to the user-managment-page \(Closes \#91\) [\#92](https://github.com/webgme/user-management-page/pull/92) ([umesh-timalsina](https://github.com/umesh-timalsina))
 
 ## [v0.4.3](https://github.com/webgme/user-management-page/tree/v0.4.3) (2018-09-12)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.2...v0.4.3)
 
 **Fixed bugs:**
@@ -8,6 +34,7 @@
 - BUG: Remove left-out alert [\#89](https://github.com/webgme/user-management-page/issues/89)
 
 ## [v0.4.2](https://github.com/webgme/user-management-page/tree/v0.4.2) (2018-09-12)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.1...v0.4.2)
 
 **Implemented enhancements:**
@@ -21,6 +48,7 @@
 - Fix broken logout button [\#88](https://github.com/webgme/user-management-page/pull/88) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.4.1](https://github.com/webgme/user-management-page/tree/v0.4.1) (2018-06-21)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.0...v0.4.1)
 
 **Implemented enhancements:**
@@ -29,6 +57,7 @@
 - Updates when webgme is "mounted" at non-root [\#83](https://github.com/webgme/user-management-page/pull/83) ([kecso](https://github.com/kecso))
 
 ## [v0.4.0](https://github.com/webgme/user-management-page/tree/v0.4.0) (2018-06-01)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.8...v0.4.0)
 
 **Implemented enhancements:**
@@ -37,6 +66,7 @@
 - Fixes \#79 Add first cut on status page and update babel features [\#82](https://github.com/webgme/user-management-page/pull/82) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.8](https://github.com/webgme/user-management-page/tree/v0.3.8) (2018-05-22)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.7...v0.3.8)
 
 **Implemented enhancements:**
@@ -45,6 +75,7 @@
 - Migrate to newer react webpack etc [\#80](https://github.com/webgme/user-management-page/pull/80) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.7](https://github.com/webgme/user-management-page/tree/v0.3.7) (2018-04-10)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.6...v0.3.7)
 
 **Implemented enhancements:**
@@ -52,6 +83,7 @@
 - Use display name if defined for user [\#78](https://github.com/webgme/user-management-page/pull/78) ([kecso](https://github.com/kecso))
 
 ## [v0.3.6](https://github.com/webgme/user-management-page/tree/v0.3.6) (2018-03-29)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.5...v0.3.6)
 
 **Fixed bugs:**
@@ -59,6 +91,7 @@
 - Make sure to clear cookie in browser at logout [\#77](https://github.com/webgme/user-management-page/pull/77) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.5](https://github.com/webgme/user-management-page/tree/v0.3.5) (2018-01-29)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.4...v0.3.5)
 
 **Implemented enhancements:**
@@ -66,6 +99,7 @@
 - Bump admin-lte and remove explicty dependency to jquery [\#76](https://github.com/webgme/user-management-page/pull/76) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.4](https://github.com/webgme/user-management-page/tree/v0.3.4) (2018-01-11)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.3...v0.3.4)
 
 **Implemented enhancements:**
@@ -76,6 +110,7 @@
 - Bump year to 2018. [\#73](https://github.com/webgme/user-management-page/pull/73) ([kecso](https://github.com/kecso))
 
 ## [v0.3.3](https://github.com/webgme/user-management-page/tree/v0.3.3) (2017-10-23)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.2...v0.3.3)
 
 **Implemented enhancements:**
@@ -83,6 +118,7 @@
 - post message to outer window at the logout [\#72](https://github.com/webgme/user-management-page/pull/72) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.2](https://github.com/webgme/user-management-page/tree/v0.3.2) (2017-09-25)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.1...v0.3.2)
 
 **Fixed bugs:**
@@ -90,6 +126,7 @@
 - Guard against cross-origin issue when digging out referrer from iframe [\#71](https://github.com/webgme/user-management-page/pull/71) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.1](https://github.com/webgme/user-management-page/tree/v0.3.1) (2017-07-28)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.3.0...v0.3.1)
 
 **Implemented enhancements:**
@@ -103,9 +140,9 @@
 **Fixed bugs:**
 
 - User name order should ignore upper cases. [\#65](https://github.com/webgme/user-management-page/issues/65)
-- Table improvements Fixes \\#64 Fixes \\#65 Fixes \\#66 [\#69](https://github.com/webgme/user-management-page/pull/69) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.3.0](https://github.com/webgme/user-management-page/tree/v0.3.0) (2017-07-03)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.2.4...v0.3.0)
 
 **Implemented enhancements:**
@@ -119,6 +156,7 @@
 - Setting theme-color overwrites user.data stored [\#61](https://github.com/webgme/user-management-page/issues/61)
 
 ## [v0.2.4](https://github.com/webgme/user-management-page/tree/v0.2.4) (2017-06-19)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.2.3...v0.2.4)
 
 **Implemented enhancements:**
@@ -127,6 +165,7 @@
 - Minor readability fix and update year/version [\#59](https://github.com/webgme/user-management-page/pull/59) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.2.3](https://github.com/webgme/user-management-page/tree/v0.2.3) (2016-10-20)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.2.2...v0.2.3)
 
 **Implemented enhancements:**
@@ -135,6 +174,7 @@
 - Closes \#51 Add entries for site-admins to delete users and organizations. [\#56](https://github.com/webgme/user-management-page/pull/56) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.2.2](https://github.com/webgme/user-management-page/tree/v0.2.2) (2016-09-30)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.2.1...v0.2.2)
 
 **Implemented enhancements:**
@@ -146,6 +186,7 @@
 - Fix const keyword for declaring variable on server [\#54](https://github.com/webgme/user-management-page/pull/54) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.2.1](https://github.com/webgme/user-management-page/tree/v0.2.1) (2016-08-10)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.2.0...v0.2.1)
 
 **Implemented enhancements:**
@@ -158,6 +199,7 @@
 - Closes \#50 and fixes issues with stored pagination [\#53](https://github.com/webgme/user-management-page/pull/53) ([pmeijer](https://github.com/pmeijer))
 
 ## [v0.2.0](https://github.com/webgme/user-management-page/tree/v0.2.0) (2016-07-29)
+
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.1.0...v0.2.0)
 
 **Implemented enhancements:**
@@ -186,14 +228,10 @@
 - Introduce redux [\#28](https://github.com/webgme/user-management-page/pull/28) ([patrickpei](https://github.com/patrickpei))
 - Owned projects bug [\#27](https://github.com/webgme/user-management-page/pull/27) ([patrickpei](https://github.com/patrickpei))
 
-**Fixed bugs:**
-
-- Guest account fixes [\#49](https://github.com/webgme/user-management-page/pull/49) ([pmeijer](https://github.com/pmeijer))
-- Bug fixes [\#46](https://github.com/webgme/user-management-page/pull/46) ([patrickpei](https://github.com/patrickpei))
-- Final tweaks [\#45](https://github.com/webgme/user-management-page/pull/45) ([patrickpei](https://github.com/patrickpei))
-- User/Profile page changes [\#44](https://github.com/webgme/user-management-page/pull/44) ([pmeijer](https://github.com/pmeijer))
-
 ## [v0.1.0](https://github.com/webgme/user-management-page/tree/v0.1.0) (2016-07-04)
+
+[Full Changelog](https://github.com/webgme/user-management-page/compare/1b0959542a5a3eab4d5b085d97fc335848a7b7d2...v0.1.0)
+
 **Implemented enhancements:**
 
 - Rights origin fix [\#26](https://github.com/webgme/user-management-page/pull/26) ([patrickpei](https://github.com/patrickpei))
@@ -224,4 +262,4 @@
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
