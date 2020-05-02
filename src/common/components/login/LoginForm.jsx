@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /* global window */
 
 /**
@@ -21,10 +22,13 @@ class LoginForm extends Component {
         this.state = {
             allowGuests: false,
             allowUserRegistration: false,
+            allowPasswordReset: false,
             password: '',
             rememberMe: false,
             userId: '',
-            validCredentials: true
+            hasAdditionalInfo: false,
+            additionalInfo: '',
+            reset: 'none',
         };
         // Event handlers
         this.onClickSignIn = this.onClickSignIn.bind(this); // Allows click to release focus vs enter key
@@ -35,6 +39,7 @@ class LoginForm extends Component {
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRememberMeChange = this.onRememberMeChange.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
+        this.onReset = this.onReset.bind(this);
     }
 
     componentDidMount() {
@@ -42,7 +47,8 @@ class LoginForm extends Component {
             .then((gmeConfig) => {
                 this.setState({
                     allowGuests: gmeConfig.authentication.allowGuests,
-                    allowUserRegistration: gmeConfig.authentication.allowUserRegistration
+                    allowUserRegistration: gmeConfig.authentication.allowUserRegistration,
+                    allowPasswordReset: gmeConfig.authentication.allowPasswordReset,
                 });
             });
     }
@@ -73,13 +79,14 @@ class LoginForm extends Component {
 
     onPasswordChange(event) {
         this.setState({
-            password: event.target.value
+            password: event.target.value,
+            hasAdditionalInfo: false,
         });
     }
 
     onRememberMeChange() {
         this.setState({
-            rememberMe: !this.state.rememberMe
+            rememberMe: !this.state.rememberMe,
         });
     }
 
@@ -103,19 +110,39 @@ class LoginForm extends Component {
                 }
             })
             .catch(err => {
-                console.error(err); // eslint-disable-line no-console
                 // Reset fields
                 this.setState({
                     password: '',
                     rememberMe: false,
-                    validCredentials: false
+                    hasAdditionalInfo: true,
+                    additionalInfo: 'Invalid username or password.',
+                    reset: this.state.allowPasswordReset ? 'ready' : null,
+                });
+            });
+    }
+
+    onReset() {
+        this.props.loginClient.reset(this.state.userId)
+            .then(_ => {
+                this.setState({
+                    reset: 'success',
+                    hasAdditionalInfo: true,
+                    additionalInfo: 'Password reset request has been sent.',
+                });
+            })
+            .catch( err => {
+                this.setState({
+                    reset: 'falied',
+                    hasAdditionalInfo: true,
+                    additionalInfo: 'Cannot send password reset request!',
                 });
             });
     }
 
     onUserIdChange(event) {
         this.setState({
-            userId: event.target.value
+            userId: event.target.value,
+            hasAdditionalInfo: false,
         });
     }
 
@@ -125,15 +152,15 @@ class LoginForm extends Component {
                 Sign in to start your session
             </p>
 
-            {this.state.validCredentials ? null :
+            {this.state.hasAdditionalInfo ?
                 <div>
                     <div className="row">
                         <div className="col-sm-12" style={STYLE.invalidLogin.column}>
-                            <span style={STYLE.invalidLogin.text}>Invalid username or password</span>
+                            <span style={STYLE.invalidLogin.text}>{this.state.additionalInfo}</span>
                         </div>
                     </div>
                     <br/>
-                </div>}
+                </div> : null}
 
             <form autoComplete="on" method="post">
 
@@ -155,13 +182,13 @@ class LoginForm extends Component {
                     onEnter={this.onLogIn}
                     onInputChange={this.onPasswordChange}
                     textType="password"
-                    valid={this.state.validCredentials}
+                    valid={this.state.hasAdditionalInfo}
                     value={this.state.password}/>
 
                 {/* Remember Check / Sign in attempt */}
                 <div className="row">
 
-                    <div className="col-sm-5" style={{paddingTop: "10px"}}>
+                    <div className="col-sm-4" style={{paddingTop: '10px'}}>
 
                         {/*
                         <Checkbox checked={this.state.rememberMe}
@@ -188,11 +215,16 @@ class LoginForm extends Component {
                                 Register
                             </Link> : null}
                     </div>
+                    <div className="col-sm-8">
 
-                    <div className="col-sm-7">
-
-                        <div style={{float: "right", marginTop: "5px"}}>
+                        <div style={{float: 'right', marginTop: '5px'}}>
                             <ButtonGroup className="hidden-xs">
+                                {this.state.allowPasswordReset && this.state.reset === 'ready' ?
+                                    <Button
+                                        bsStyle="danger"
+                                        onClick={this.onReset}>
+                                        Reset
+                                    </Button> : null}
                                 {this.state.allowGuests ?
                                     <Button
                                         bsStyle="warning"
@@ -207,6 +239,12 @@ class LoginForm extends Component {
                             </ButtonGroup>
 
                             <ButtonGroup className="visible-xs">
+                                {this.state.allowPasswordReset && this.state.reset === 'ready' ?
+                                    <Button
+                                        bsStyle="danger"
+                                        onClick={this.onReset}>
+                                        Reset
+                                    </Button> : null}
                                 {this.state.allowGuests ?
                                     <Button
                                         bsStyle="warning"
