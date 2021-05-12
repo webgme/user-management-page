@@ -57,7 +57,7 @@
     "bootstrap": "^3.4.1",
     "bootstrap-webpack": "0.0.6",
     "chai": "^4.2.0",
-    "chart.js": "^1.1.1",
+    "chart.js": "^2.9.4",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
