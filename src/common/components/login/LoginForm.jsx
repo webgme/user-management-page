@@ -29,6 +29,7 @@ class LoginForm extends Component {
             hasAdditionalInfo: false,
             additionalInfo: '',
             reset: 'none',
+            allowAzureLogin: false,
         };
         // Event handlers
         this.onClickSignIn = this.onClickSignIn.bind(this); // Allows click to release focus vs enter key
@@ -40,6 +41,9 @@ class LoginForm extends Component {
         this.onRememberMeChange = this.onRememberMeChange.bind(this);
         this.onUserIdChange = this.onUserIdChange.bind(this);
         this.onReset = this.onReset.bind(this);
+
+        this.onClickAAD = this.onClickAAD.bind(this);
+        this.onAADLogin = this.onAADLogin.bind(this);
     }
 
     componentDidMount() {
@@ -49,6 +53,8 @@ class LoginForm extends Component {
                     allowGuests: gmeConfig.authentication.allowGuests,
                     allowUserRegistration: gmeConfig.authentication.allowUserRegistration,
                     allowPasswordReset: gmeConfig.authentication.allowPasswordReset,
+                    allowAzureLogin: gmeConfig.authentication.enable &&
+                        gmeConfig.authentication.azureActiveDirectory.enable,
                 });
             });
     }
@@ -58,6 +64,13 @@ class LoginForm extends Component {
         event.target.blur();
 
         this.onLogIn();
+    }
+
+    onClickAAD(event) {
+        // Release focus
+        event.target.blur();
+
+        this.onAADLogin();
     }
 
     onClickSignInSmallDevice(event) {
@@ -116,6 +129,37 @@ class LoginForm extends Component {
                     rememberMe: false,
                     hasAdditionalInfo: true,
                     additionalInfo: 'Invalid username or password.',
+                    reset: this.state.allowPasswordReset ? 'ready' : null,
+                });
+            });
+    }
+
+    onAADLogin(/* isSmallDevice */) {
+        this.props.loginClient.azureLogin()
+            .then(res => {
+                if (/2\d\d/.test(res.statusCode)) {
+
+                    let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
+                        /redirect=(\S+)/.exec(window.location.href)[1] : '';
+                    let nextLocation = '';
+
+                    if (redirectPath === '') {
+                        nextLocation = this.props.basePath;
+                    } else {
+                        nextLocation = window.decodeURIComponent(redirectPath);
+                    }
+
+                    this.props.history.push(nextLocation);
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                // Reset fields
+                this.setState({
+                    password: '',
+                    rememberMe: false,
+                    hasAdditionalInfo: true,
+                    additionalInfo: 'Error during AAD authentication of the user - check with your administrator.',
                     reset: this.state.allowPasswordReset ? 'ready' : null,
                 });
             });
@@ -231,6 +275,12 @@ class LoginForm extends Component {
                                         onClick={this.onGuestLogIn}>
                                         Guest
                                     </Button> : null}
+                                {this.state.allowAzureLogin ?
+                                    <Button
+                                        bsStyle="warning"
+                                        onClick={this.onClickAAD}>
+                                        AAD login
+                                    </Button> : null}
                                 <Button
                                     bsStyle="primary"
                                     onClick={this.onClickSignIn}>
@@ -250,6 +300,12 @@ class LoginForm extends Component {
                                         bsStyle="warning"
                                         onClick={this.onGuestLogInSmallDevice}>
                                         Guest
+                                    </Button> : null}
+                                {this.state.allowAzureLogin ?
+                                    <Button
+                                        bsStyle="warning"
+                                        onClick={this.onClickAAD}>
+                                        AAD login
                                     </Button> : null}
                                 <Button
                                     bsStyle="primary"

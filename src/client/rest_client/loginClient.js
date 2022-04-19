@@ -113,4 +113,13 @@ export default class LoginClient extends BaseClient {
         };
         return super.patch(['/api', 'reset'], data);
     }
+
+    /**
+     * Get request for logging in using AzureActiveDirectory.
+     * If successful client will be redirected to the path given in query parameter
+     * @return {Promise} resolves if successfully logged in.
+     */
+    azureLogin() {
+        return super.get(['/aad']);
+    }
 }
