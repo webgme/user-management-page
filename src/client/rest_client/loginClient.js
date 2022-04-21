@@ -120,6 +120,7 @@ export default class LoginClient extends BaseClient {
      * @return {Promise} resolves if successfully logged in.
      */
     azureLogin() {
-        return super.get(['/aad']);
+        // return super.get(['/aad']);
+        window.location.href = "/aad?redirect=profile/home";
     }
 }
