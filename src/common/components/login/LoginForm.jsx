@@ -135,34 +135,10 @@ class LoginForm extends Component {
     }
 
     onAADLogin(/* isSmallDevice */) {
-        this.props.loginClient.azureLogin()
-            .then(res => {
-                if (/2\d\d/.test(res.statusCode)) {
-
-                    let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
+        let redirectPath = /redirect=(\S+)/.exec(window.location.href) ?
                         /redirect=(\S+)/.exec(window.location.href)[1] : '';
-                    let nextLocation = '';
-
-                    if (redirectPath === '') {
-                        nextLocation = this.props.basePath;
-                    } else {
-                        nextLocation = window.decodeURIComponent(redirectPath);
-                    }
-
-                    this.props.history.push(nextLocation);
-                    window.location.reload();
-                }
-            })
-            .catch(err => {
-                // Reset fields
-                this.setState({
-                    password: '',
-                    rememberMe: false,
-                    hasAdditionalInfo: true,
-                    additionalInfo: 'Error during AAD authentication of the user - check with your administrator.',
-                    reset: this.state.allowPasswordReset ? 'ready' : null,
-                });
-            });
+        console.log(redirectPath);
+        this.props.loginClient.azureLogin(redirectPath);
     }
 
     onReset() {
