@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.5.0](https://github.com/webgme/user-management-page/tree/v0.5.0) (2020-05-01)
+## [v0.6.0](https://github.com/webgme/user-management-page/tree/v0.6.0) (2023-09-01)
+
+[Full Changelog](https://github.com/webgme/user-management-page/compare/v0.5.0...v0.6.0)
+
+**Implemented enhancements:**
+
+- Update node-modules and add github workflow for test [\#124](https://github.com/webgme/user-management-page/pull/124) ([pmeijer](https://github.com/pmeijer))
+
+## [v0.5.0](https://github.com/webgme/user-management-page/tree/v0.5.0) (2020-05-02)
 
 [Full Changelog](https://github.com/webgme/user-management-page/compare/v0.4.3...v0.5.0)
 

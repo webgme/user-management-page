@@ -43,7 +43,7 @@ npm run webpack -- -w
 First update the changelog:
 
 ```
-github_changelog_generator --future-release v0.4.2 -t <GITHUB-TOKEN>
+github_changelog_generator --user webgme --project user-management-page --future-release v0.6.0 -t bla-bla-..
 ```
 
 
