@@ -1,6 +1,6 @@
 {
   "name": "webgme-user-management-page",
-  "version": "0.5.0",
+  "version": "0.6.0-beta",
   "description": "User management page for webgme",
   "main": "./src/server/usermanagement.js",
   "scripts": {
@@ -40,9 +40,9 @@
   },
   "homepage": "https://github.com/webgme/user-management-page#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "ejs": "^2.7.4",
-    "express": "4.16.3"
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "4.18.2"
   },
   "devDependencies": {
     "admin-lte": "2.4.3",

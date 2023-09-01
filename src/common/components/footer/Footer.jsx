@@ -18,7 +18,7 @@ export default class Footer extends Component {
         return (
             <footer className="main-footer" style={STYLE.mainFooter}>
 
-                <strong style={STYLE.footerLeft}>&copy; 2018
+                <strong style={STYLE.footerLeft}>&copy; 2023
                     <a href="https://www.vanderbilt.edu" target="_blank">
                         &nbsp;Vanderbilt University
                     </a>
