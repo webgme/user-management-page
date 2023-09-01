@@ -18,7 +18,7 @@ and replace the mounted user-management-page point to your customization.
 ## Developers
 #### Steps to run as an external REST router within WebGME
 
-WebGME requires [NodeJS](https://nodejs.org/) (0.12 <= version, CI tests are performed on versions 4.x, 6.x) and [MongoDB](https://www.mongodb.com/) (version >= 2.6) installed on the host system (the server).
+WebGME requires [NodeJS](https://nodejs.org/) (14 <= version, CI tests are performed on versions 16, 18) and [MongoDB](https://www.mongodb.com/) (version >= 2.6) installed on the host system (the server).
 In addition the npm installation requires [Git](https://git-scm.com) to be installed and available in PATH.
 
 1. Ensure dependencies are installed and mongodb is running on default port 
@@ -26,7 +26,7 @@ In addition the npm installation requires [Git](https://git-scm.com) to be insta
 3. Optionally - set environment variable for webpack: `set NODE_ENV=development` linux: `NODE_ENV=development`
 3. Run webpack `npm run webpack -- -w` (`-w` will watch the files and make incremental builds)
 4. Start (webgme) server `npm start` (`NODE_ENV` should not be set)
-5. From a browser visit `http://localhost:8888/profile/`
+5. From a browser visit `http://localhost:8888/usermanagement/`
 
 
 #### Webpack file listener
