@@ -34,4 +34,4 @@ jobs:
       - name: Build website bundle
         run: npm run build
       - name: Mocha tests
-        run: node ./node_modules/mocha/bin/mocha --recursive test
+        run: node ./node_modules/mocha/bin/mocha --recursive --require babel-core/register test
