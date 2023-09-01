@@ -31,5 +31,7 @@ jobs:
         uses: browser-actions/setup-chrome@latest
       - name: NPM install
         run: npm install 
+      - name: Building website
+        run: npm run build
       - name: Mocha tests
         run: node ./node_modules/mocha/bin/mocha --recursive test
