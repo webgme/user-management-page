@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/webgme/user-management-page.svg?branch=master)](https://travis-ci.org/webgme/user-management-page)
 [![Version](https://badge.fury.io/js/webgme-user-management-page.svg)](https://www.npmjs.com/package/webgme-user-management-page)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
 
