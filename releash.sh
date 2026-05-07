@@ -32,13 +32,15 @@ for FILE in "${FILES[@]}"; do
   fi
 done
 
-# Remove non-hidden contents while preserving dotfiles (e.g. .gitignore)
-for DIR in "dist" "docs/REST" "docs/source"; do
-  if [ -d "$DIR" ]; then
-    find "$DIR" -mindepth 1 -maxdepth 1 ! -name ".*" -exec rm -rf {} +
-    echo "Cleaned non-hidden contents in $DIR"
-  fi
-done
+# Remove generated files in dist while preserving dotfiles and key html files.
+if [ -d "dist" ]; then
+  find "dist" -mindepth 1 -maxdepth 1 \
+    ! -name ".*" \
+    ! -name "index.html" \
+    ! -name "login.html" \
+    -exec rm -rf {} +
+  echo "Cleaned generated contents in dist (kept index.html and login.html)"
+fi
 
 npm install
 

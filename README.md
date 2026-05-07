@@ -39,14 +39,12 @@ npm run webpack -- -w
 ```
 
 ##### Publish
-First update the changelog:
+Use `./release.sh <semantic_version>` to release, e.g. `release.sh 0.6.1` and follow instructions.
 
-```
-github_changelog_generator --user webgme --project user-management-page --future-release v0.6.0 -t bla-bla-..
-```
+This will delete generated files in `/dist/**` while keeping `dist/index.html`, `dist/login.html`, and dotfiles.
 
+Manual release:
 
-Delete all unversioned files in `/dist/**`
 ```
 npm prune
 npm install
