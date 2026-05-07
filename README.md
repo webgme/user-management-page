@@ -51,7 +51,7 @@ Delete all unversioned files in `/dist/**`
 npm prune
 npm install
 npm version 0.5.0 -m "Release %s"
-git push origin master
+git push origin main
 git checkout v0.5.0
 git push origin v0.5.0
 npm publish ./
